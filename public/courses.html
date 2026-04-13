@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Courses — Phone Saathi</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#1B2A4A;--navy-md:#2E4070;--navy-lt:#EEF1F8;
+  --cream:#F7F5F2;--warm:#F0EBE3;
+  --gold:#B07D2F;--gold-lt:#F8EDD8;--gold-md:#C8922A;
+  --slate:#4A5568;--slate-lt:#8896A8;--border:#E2DDD6;
+  --green:#2D6A4F;--green-lt:#E6F4EE;
+  --amber:#92400E;--amber-lt:#FEF3C7;
+  --purple:#4C1D95;--purple-lt:#EDE9FE;
+  --red:#C0392B;--red-lt:#FDECEA;
+  --radius:14px;--shadow:0 2px 14px rgba(27,42,74,.07);
+}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy);font-size:16px;line-height:1.6}
+
+/* NAV */
+.nav{background:var(--navy);padding:0 28px;display:flex;align-items:center;justify-content:space-between;height:60px;position:sticky;top:0;z-index:100;box-shadow:0 2px 20px rgba(0,0,0,.15)}
+.nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo{width:34px;height:34px;background:var(--gold);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px}
+.nav-name{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:#fff}
+.nav-name span{color:#D4A843}
+.nav-links{display:flex;gap:4px;list-style:none}
+.nav-links a{color:rgba(255,255,255,.6);text-decoration:none;font-size:13px;font-weight:500;padding:6px 13px;border-radius:7px;transition:.15s}
+.nav-links a:hover,.nav-links a.active{background:rgba(255,255,255,.12);color:#fff}
+.nav-back{color:rgba(255,255,255,.65);font-size:13px;font-weight:600;text-decoration:none;padding:7px 14px;border-radius:8px;border:1px solid rgba(255,255,255,.2);transition:.15s}
+.nav-back:hover{background:rgba(255,255,255,.1);color:#fff}
+
+/* HERO */
+.hero{background:linear-gradient(160deg,#1B2A4A,#2E4070 100%);padding:52px 32px 48px;text-align:center;position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;right:-80px;top:-80px;width:320px;height:320px;border-radius:50%;background:rgba(176,125,47,.07);pointer-events:none}
+.hero-eyebrow{font-size:12px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold-md);margin-bottom:14px}
+.hero h1{font-family:'Playfair Display',serif;font-size:38px;font-weight:700;color:#fff;margin-bottom:12px;line-height:1.2;letter-spacing:-.5px}
+.hero p{font-size:17px;color:rgba(255,255,255,.68);max-width:500px;margin:0 auto 26px;line-height:1.65}
+.hero-pills{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+.hero-pill{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);color:rgba(255,255,255,.85);padding:6px 16px;border-radius:40px;font-size:13px;font-weight:600}
+
+/* RECOMMENDED BANNER */
+.rec-banner{max-width:1080px;margin:28px auto 0;padding:0 28px}
+.rec-card{background:linear-gradient(135deg,var(--gold-lt),#fdf3dc);border:2px solid #D4A843;border-radius:var(--radius);padding:20px 24px;display:flex;align-items:center;gap:18px;box-shadow:0 4px 20px rgba(176,125,47,.12)}
+.rec-icon{font-size:32px;flex-shrink:0}
+.rec-body{flex:1}
+.rec-label{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold-md);margin-bottom:3px}
+.rec-title{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--navy);margin-bottom:3px}
+.rec-desc{font-size:13px;color:var(--slate);font-weight:500}
+.rec-btn{padding:11px 22px;background:var(--navy);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;white-space:nowrap;transition:.15s;flex-shrink:0}
+.rec-btn:hover{background:var(--navy-md)}
+
+/* FILTER */
+.filter-wrap{max-width:1080px;margin:0 auto;padding:28px 28px 0;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.filter-label{font-size:13px;font-weight:700;color:var(--slate-lt);letter-spacing:.5px;margin-right:4px}
+.filter-btn{padding:8px 20px;border-radius:40px;border:1.5px solid var(--border);background:#fff;font-size:14px;font-weight:600;font-family:'DM Sans',sans-serif;color:var(--slate);cursor:pointer;transition:.15s}
+.filter-btn:hover{border-color:var(--navy-md);color:var(--navy)}
+.filter-btn.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+
+/* NOTES SHORTCUT */
+.notes-bar{max-width:1080px;margin:16px auto 0;padding:0 28px}
+.notes-link{display:flex;align-items:center;gap:12px;background:#fff;border:1.5px solid var(--border);border-radius:var(--radius);padding:14px 20px;text-decoration:none;transition:.15s;box-shadow:var(--shadow)}
+.notes-link:hover{border-color:var(--navy-md);background:var(--navy-lt)}
+.notes-link-icon{font-size:22px;width:40px;height:40px;background:var(--amber-lt);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.notes-link-text{flex:1}
+.notes-link-title{font-size:14px;font-weight:700;color:var(--navy)}
+.notes-link-sub{font-size:12px;color:var(--slate-lt);font-weight:500}
+.notes-link-arrow{font-size:18px;color:var(--slate-lt)}
+
+/* SECTION HEADER */
+.sec-header{max-width:1080px;margin:40px auto 0;padding:0 28px 0;border-top:1.5px solid var(--border);padding-top:36px}
+.sec-header:first-of-type{border-top:none;padding-top:0}
+.sec-title{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--navy);margin-bottom:4px}
+.sec-sub{font-size:14px;color:var(--slate-lt);font-weight:500}
+
+/* GRID */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px;padding:18px 28px 0;max-width:1080px;margin:0 auto}
+
+/* CARD */
+.card{background:#fff;border:1.5px solid var(--border);border-radius:var(--radius);overflow:hidden;cursor:pointer;transition:box-shadow .2s,transform .2s,border-color .2s;box-shadow:var(--shadow);display:flex;flex-direction:column}
+.card:hover{transform:translateY(-4px);box-shadow:0 10px 30px rgba(27,42,74,.12);border-color:var(--navy-md)}
+.card.hidden{display:none}
+.card-stripe{height:5px}
+.stripe-beginner{background:var(--green)}
+.stripe-intermediate{background:var(--gold-md)}
+.stripe-advanced{background:var(--purple)}
+.card-body{padding:20px 22px 18px;flex:1;display:flex;flex-direction:column}
+.card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:8px}
+.card-title{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--navy);line-height:1.3}
+.level-tag{font-size:11px;font-weight:700;padding:4px 11px;border-radius:20px;white-space:nowrap;flex-shrink:0;letter-spacing:.4px}
+.tag-beginner{background:var(--green-lt);color:var(--green)}
+.tag-intermediate{background:var(--gold-lt);color:var(--amber)}
+.tag-advanced{background:var(--purple-lt);color:var(--purple)}
+.card-desc{font-size:14px;color:var(--slate);line-height:1.65;margin-bottom:14px;flex:1;font-weight:500}
+.topics{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.topic-tag{font-size:11px;font-weight:600;padding:4px 10px;border-radius:6px;background:var(--warm);color:var(--slate);border:1px solid var(--border)}
+.card-footer{display:flex;align-items:center;justify-content:space-between;padding-top:12px;border-top:1px solid var(--border)}
+.card-meta{font-size:12px;color:var(--slate-lt);font-weight:600;display:flex;gap:10px}
+.card-meta span{display:flex;align-items:center;gap:4px}
+.start-btn{background:var(--navy);color:#fff;border:none;border-radius:9px;padding:9px 18px;font-size:13px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;transition:.15s;letter-spacing:.2px}
+.start-btn:hover{background:var(--navy-md)}
+
+/* DONE BADGE on card */
+.done-badge{position:absolute;top:12px;right:12px;background:var(--green);color:#fff;font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;letter-spacing:.3px}
+
+/* MOTIVE */
+.motive-strip{background:var(--gold-lt);border-top:1.5px solid #E8D5A8;border-bottom:1.5px solid #E8D5A8;padding:20px 32px;text-align:center;margin-top:40px}
+.motive-strip p{font-family:'Playfair Display',serif;font-size:16px;color:var(--amber);font-style:italic}
+
+.footer{height:60px}
+
+@media(max-width:600px){
+  .nav-links{display:none}
+  .hero{padding:36px 20px 32px}
+  .hero h1{font-size:28px}
+  .grid{padding:16px 16px 0;grid-template-columns:1fr}
+  .filter-wrap,.sec-header,.rec-banner,.notes-bar{padding-left:16px;padding-right:16px}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="dashboard.html" class="nav-brand">
+    <div class="nav-logo">📱</div>
+    <div class="nav-name">Phone<span>Saathi</span></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="dashboard.html">🏠 Home</a></li>
+    <li><a href="courses.html" class="active">📚 Courses</a></li>
+    <li><a href="quizzes.html">🧠 Quiz</a></li>
+    <li><a href="games.html">🎮 Games</a></li>
+    <li><a href="notes.html">📝 Notes</a></li>
+    <li><a href="ai-chat.html" class="active">🤖 AI Chat</a></li>
+  </ul>
+  <a href="dashboard.html" class="nav-back">← Dashboard</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">Digital Literacy Programme</div>
+  <h1>All Courses</h1>
+  <p>Learn at your own pace — every lesson is designed to be clear, comfortable and confidence-building.</p>
+  <div class="hero-pills">
+    <span class="hero-pill">5 Topics</span>
+    <span class="hero-pill">15 Lessons</span>
+    <span class="hero-pill">Free Forever</span>
+  </div>
+</div>
+
+<!-- RECOMMENDED -->
+<div class="rec-banner">
+  <div class="rec-card" id="recCard" style="display:none">
+    <div class="rec-icon">⭐</div>
+    <div class="rec-body">
+      <div class="rec-label">Recommended for you</div>
+      <div class="rec-title" id="recTitle">Loading…</div>
+      <div class="rec-desc" id="recDesc">Based on your profile</div>
+    </div>
+    <button class="rec-btn" id="recBtn">Start now →</button>
+  </div>
+</div>
+
+<!-- NOTES SHORTCUT -->
+<div class="notes-bar">
+  <a href="notes.html" class="notes-link">
+    <div class="notes-link-icon">📝</div>
+    <div class="notes-link-text">
+      <div class="notes-link-title">My Learning Notes</div>
+      <div class="notes-link-sub">Write down what you learned, make to-do lists, save reminders</div>
+    </div>
+    <div class="notes-link-arrow">→</div>
+  </a>
+</div>
+
+<!-- FILTER -->
+<div class="filter-wrap">
+  <span class="filter-label">Filter:</span>
+  <button class="filter-btn active" onclick="filterCards('all',this)">All Levels</button>
+  <button class="filter-btn" onclick="filterCards('beginner',this)">🟢 Beginner</button>
+  <button class="filter-btn" onclick="filterCards('intermediate',this)">🟡 Intermediate</button>
+  <button class="filter-btn" onclick="filterCards('advanced',this)">🟣 Advanced</button>
+</div>
+
+<!-- WHATSAPP -->
+<div class="sec-header" style="margin-top:36px;border-top:none;">
+  <div class="sec-title">💬 WhatsApp</div>
+  <div class="sec-sub">Text, call, video chat, share photos and stay connected with loved ones</div>
+</div>
+<div class="grid">
+  <div class="card" data-level="beginner" onclick="go('whatsapp-basic')">
+    <div class="card-stripe stripe-beginner"></div>
+    <div class="card-body">
+      <div class="card-top"><div class="card-title">WhatsApp</div><span class="level-tag tag-beginner">Beginner</span></div>
+      <div class="card-desc">Install WhatsApp, set up your profile with a photo and name, and send your very first message to a family member.</div>
+      <div class="topics"><span class="topic-tag">Installing WhatsApp</span><span class="topic-tag">Profile & photo</span><span class="topic-tag">First message</span></div>
+      <div class="card-footer">
+        <div class="card-meta"><span>⏱ 15 min</span><span>📖 5 steps</span></div>
+        <button class="start-btn">Begin →</button>
+      </div>
+    </div>
+  </div>
+  <div class="card" data-level="intermediate" onclick="go('whatsapp-intermediate')">
+    <div class="card-stripe stripe-intermediate"></div>
+    <div class="card-body">
+      <div class="card-top"><div class="card-title">WhatsApp</div><span class="level-tag tag-intermediate">Intermediate</span></div>
+      <div class="card-desc">Make voice and video calls, share photos and documents, create family group chats and use voice messages.</div>
+      <div class="topics"><span class="topic-tag">Voice & video calls</span><span class="topic-tag">Sharing photos</span><span class="topic-tag">Group chats</span></div>
+      <div class="card-footer">
+        <div class="card-meta"><span>⏱ 20 min</span><span>📖 5 steps</span></div>
+        <button class="start-btn">Begin →</button>
+      </div>
+    </div>
+  </div>
+  <div class="card" data-level="advanced" onclick="go('whatsapp-advanced')">
+    <div class="card-stripe stripe-advanced"></div>
+    <div class="card-body">
+      <div class="card-top"><div class="card-title">WhatsApp</div><span class="level-tag tag-advanced">Advanced</span></div>
+      <div class="card-desc">Manage privacy settings, spot WhatsApp scams, block unwanted contacts and back up your chats safely.</div>
+      <div class="topics"><span class="topic-tag">Privacy settings</span><span class="topic-tag">Scam awareness</span><span class="topic-tag">Chat backup</span></div>
+      <div class="card-footer">
+        <div class="card-meta"><span>⏱ 25 min</span><span>📖 5 steps</span></div>
+        <button class="start-btn">Begin →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ONLINE PAYMENTS -->
+<div class="sec-header">
+  <div class="sec-title">💳 Online Payments</div>
+  <div class="sec-sub">Pay safely using UPI, Google Pay, Paytm and your bank</div>
+</div>
+<div class="grid">
+  <div class="card" data-level="beginner" onclick="go('payments-beginner')">
+    <div class="card-stripe stripe-beginner"></div>
+    <div class="card-body">
+      <div class="card-top"><div class="card-title">Online Payments</div><span class="level-tag tag-beginner">Beginner</span></div>
+      <div class="card-desc">What is UPI, how to set it up on your phone, and how to make your first safe payment to a family member.</div>
+      <div class="topics"><span class="topic-tag">What is UPI</span><span class="topic-tag">Setting up</span><span class="topic-tag">First payment</span></div>
+      <div class="card-footer">
+        <div class="card-meta"><span>⏱ 15 min</span><span>📖 5 steps</span></div>
+        <button class="start-btn">Begin →</button>
+      </div>
+    </div>
+  </div>
+  <div class="card" data-level="intermediate" onclick="go('payments-intermediate')">
+    <div class="card-stripe stripe-intermediate"></div>
+    <div class="card-body">
+      <div class="card-top"><div class="card-title">Online Payments</div><span class="level-tag tag-intermediate">Intermediate</span></div>
+      <div class="card-desc">Pay electricity and phone bills, send money to family and check your transaction history safely.</div>
+      <div class="topics"><span class="topic-tag">Bill payments</span><span class="topic-tag">Send money</span><span class="topic-tag">Transaction history</span></div>
+      <div class="card-footer">
+        <div class="card-meta"><span>⏱ 20 min</span><span>📖 5 steps</span></div>
+        <button class="start-btn">Begin →</button>
+      </div>
+    </div>
+  </div>
+  <div class="card" data-level="advanced" onclick="go('payments-advanced')">
+    <div class="card-stripe stripe-advanced"></div>
+    <div class="card-body">
+      <div class="card-top"><div class="card-title">Online Payments</div><span class="level-tag tag-advanced">Advanced</span></div>
+      <div class="card-desc">Recognise payment scams, avoid fraud, manage multiple UPI apps and protect your bank account.</div>
+      <div class="topics"><span class="topic-tag">Fraud prevention</span><span class="topic-tag">Scam awareness</span><span class="topic-tag">Banking safety</span></div>
+      <div class="card-footer">
+        <div class="card-meta"><span>⏱ 25 min</span><span>📖 5 steps</span></div>
+        <button class="start-btn">Begin →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EMAIL -->
+<div class="sec-header">
+  <div class="sec-title">📧 Email Basics</div>
+  <div class="sec-sub">Send, receive and manage emails with confidence</div>
+</div>
+<div class="grid">
+  <div class="card" data-level="beginner" onclick="go('email-beginner')">
+    <div class="card-stripe stripe-beginner"></div>
+    <div class="card-body">
+      <div class="card-top"><div class="card-title">Email Basics</div><span class="level-tag tag-beginner">Beginner</span></div>
+      <div class="card-desc">What an email is, how to create a Gmail account and how to send your very first message.</div>
+      <div class="topics"><span class="topic-tag">What is email</span><span class="topic-tag">Gmail account</span><span class="topic-tag">Sending email</span></div>
+      <div class="card-footer">
+        <div class="card-meta"><span>⏱ 15 min</span><span>📖 5 steps</span></div>
+        <button class="start-btn">Begin →</button>
+      </div>
+    </div>
+  </div>
+  <div class="card" data-level="intermediate" onclick="go('email-intermediate')">
+    <div class="card-stripe stripe-intermediate"></div>
+    <div class="card-body">
+      <div class="card-top"><div class="card-title">Email Basics</div><span class="level-tag tag-intermediate">Intermediate</span></div>
+      <div class="card-desc">Reply, forward, attach photos to emails and keep your inbox tidy with folders and labels.</div>
+      <div class="topics"><span class="topic-tag">Reply & Forward</span><span class="topic-tag">Attachments</span><span class="topic-tag">Inbox folders</span></div>
+      <div class="card-footer">
+        <div class="card-meta"><span>⏱ 20 min</span><span>📖 5 steps</span></div>
+        <button class="start-btn">Begin →</button>
+      </div>
+    </div>
+  </div>
+  <div class="card" data-level="advanced" onclick="go('email-advanced')">
+    <div class="card-stripe stripe-advanced"></div>
+    <div class="card-body">
+      <div class="card-top"><div class="card-title">Email Basics</div><span class="level-tag tag-advanced">Advanced</span></div>
+      <div class="card-desc">Identify phishing scams, block spam emails, manage multiple accounts and set up filters.</div>
+      <div class="topics"><span class="topic-tag">Spam & phishing</span><span class="topic-tag">Filters</span><span class="topic-tag">Multiple accounts</span></div>
+      <div class="card-footer">
+        <div class="card-meta"><span>⏱ 25 min</span><span>📖 5 steps</span></div>
+        <button class="start-btn">Begin →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SOCIAL MEDIA -->
+<div class="sec-header">
+  <div class="sec-title">📸 Social Media</div>
+  <div class="sec-sub">Use Facebook, Instagram and more safely and confidently</div>
+</div>
+<div class="grid">
+  <div class="card" data-level="beginner" onclick="go('social-media-beginner')">
+    <div class="card-stripe stripe-beginner"></div>
+    <div class="card-body">
+      <div class="card-top"><div class="card-title">Social Media</div><span class="level-tag tag-beginner">Beginner</span></div>
+      <div class="card-desc">Create a Facebook account, add a profile photo, find family and friends and write your first post.</div>
+      <div class="topics"><span class="topic-tag">Facebook account</span><span class="topic-tag">Profile setup</span><span class="topic-tag">Finding friends</span></div>
+      <div class="card-footer">
+        <div class="card-meta"><span>⏱ 15 min</span><span>📖 5 steps</span></div>
+        <button class="start-btn">Begin →</button>
+      </div>
+    </div>
+  </div>
+  <div class="card" data-level="intermediate" onclick="go('social-media-intermediate')">
+    <div class="card-stripe stripe-intermediate"></div>
+    <div class="card-body">
+      <div class="card-top"><div class="card-title">Social Media</div><span class="level-tag tag-intermediate">Intermediate</span></div>
+      <div class="card-desc">Share photos, join family groups, comment on posts and understand who can see what you share.</div>
+      <div class="topics"><span class="topic-tag">Sharing photos</span><span class="topic-tag">Groups</span><span class="topic-tag">Privacy basics</span></div>
+      <div class="card-footer">
+        <div class="card-meta"><span>⏱ 20 min</span><span>📖 5 steps</span></div>
+        <button class="start-btn">Begin →</button>
+      </div>
+    </div>
+  </div>
+  <div class="card" data-level="advanced" onclick="go('social-media-advanced')">
+    <div class="card-stripe stripe-advanced"></div>
+    <div class="card-body">
+      <div class="card-top"><div class="card-title">Social Media</div><span class="level-tag tag-advanced">Advanced</span></div>
+      <div class="card-desc">Advanced privacy controls, recognising fake accounts, blocking people and reporting harmful content.</div>
+      <div class="topics"><span class="topic-tag">Privacy settings</span><span class="topic-tag">Fake accounts</span><span class="topic-tag">Block & report</span></div>
+      <div class="card-footer">
+        <div class="card-meta"><span>⏱ 25 min</span><span>📖 5 steps</span></div>
+        <button class="start-btn">Begin →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SMARTPHONE BASICS -->
+<div class="sec-header">
+  <div class="sec-title">📱 Smartphone Basics</div>
+  <div class="sec-sub">Get comfortable and confident using your Android or iPhone</div>
+</div>
+<div class="grid">
+  <div class="card" data-level="beginner" onclick="go('basics-beginner')">
+    <div class="card-stripe stripe-beginner"></div>
+    <div class="card-body">
+      <div class="card-top"><div class="card-title">Smartphone Basics</div><span class="level-tag tag-beginner">Beginner</span></div>
+      <div class="card-desc">Turn your phone on and off, adjust the volume, connect to Wi-Fi and make your first phone call.</div>
+      <div class="topics"><span class="topic-tag">Power & volume</span><span class="topic-tag">Wi-Fi</span><span class="topic-tag">Phone calls</span></div>
+      <div class="card-footer">
+        <div class="card-meta"><span>⏱ 15 min</span><span>📖 5 steps</span></div>
+        <button class="start-btn">Begin →</button>
+      </div>
+    </div>
+  </div>
+  <div class="card" data-level="intermediate" onclick="go('basics-intermediate')">
+    <div class="card-stripe stripe-intermediate"></div>
+    <div class="card-body">
+      <div class="card-top"><div class="card-title">Smartphone Basics</div><span class="level-tag tag-intermediate">Intermediate</span></div>
+      <div class="card-desc">Install apps from the store, take photos, use the camera, manage your storage and update your phone.</div>
+      <div class="topics"><span class="topic-tag">Installing apps</span><span class="topic-tag">Camera & photos</span><span class="topic-tag">Storage</span></div>
+      <div class="card-footer">
+        <div class="card-meta"><span>⏱ 20 min</span><span>📖 5 steps</span></div>
+        <button class="start-btn">Begin →</button>
+      </div>
+    </div>
+  </div>
+  <div class="card" data-level="advanced" onclick="go('basics-advanced')">
+    <div class="card-stripe stripe-advanced"></div>
+    <div class="card-body">
+      <div class="card-top"><div class="card-title">Smartphone Basics</div><span class="level-tag tag-advanced">Advanced</span></div>
+      <div class="card-desc">Set a fingerprint lock, manage app permissions, back up your photos and keep your phone secure.</div>
+      <div class="topics"><span class="topic-tag">Fingerprint lock</span><span class="topic-tag">Permissions</span><span class="topic-tag">Backup</span></div>
+      <div class="card-footer">
+        <div class="card-meta"><span>⏱ 25 min</span><span>📖 5 steps</span></div>
+        <button class="start-btn">Begin →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="motive-strip">
+  <p>"Every step forward, however small, is progress. Take your time — you are doing wonderfully."</p>
+</div>
+<div class="footer"></div>
+
+<script type="module">
+import { auth, db } from "./firebase.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+// Recommended course map — interest → course key + label
+const REC_MAP = {
+  "Smartphone Basics":  { key:"basics-beginner",       title:"Smartphone Basics",    desc:"A great place to start — learn the basics of your phone." },
+  "Internet Safety":    { key:"basics-advanced",        title:"Internet Safety",       desc:"Learn how to stay safe online and avoid scams." },
+  "Video Calling":      { key:"whatsapp-intermediate",  title:"WhatsApp Video Calls",  desc:"Make video calls to family and friends easily." },
+  "Online Payments":    { key:"payments-beginner",      title:"Online Payments",       desc:"Learn how to pay safely using UPI and Google Pay." },
+  "Social Media":       { key:"social-media-beginner",  title:"Social Media Basics",   desc:"Create your first Facebook account and find friends." },
+  "Email":              { key:"email-beginner",         title:"Email Basics",          desc:"Learn how to send and receive emails." },
+};
+
+onAuthStateChanged(auth, async (user) => {
+  if (!user) { window.location.href = "index.html"; return; }
+  try {
+    const snap = await getDoc(doc(db, "users", user.uid));
+    if (!snap.exists()) return;
+    const d = snap.data();
+
+    // Show recommended course based on interest
+    if (d.interest && REC_MAP[d.interest]) {
+      const rec = REC_MAP[d.interest];
+      document.getElementById("recTitle").textContent = rec.title;
+      document.getElementById("recDesc").textContent  = rec.desc;
+      document.getElementById("recBtn").onclick = () => go(rec.key);
+      document.getElementById("recCard").style.display = "flex";
+    }
+  } catch(e) {
+    console.error("Could not load user data", e);
+  }
+});
+
+window.go = (course) => { window.location.href = "courses/" + course + ".html"; };
+
+window.filterCards = (level, btn) => {
+  document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+  document.querySelectorAll(".card").forEach(c => {
+    c.classList.toggle("hidden", level !== "all" && c.dataset.level !== level);
+  });
+};
+</script>
+</body>
+</html>

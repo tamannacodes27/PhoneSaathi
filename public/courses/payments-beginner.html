@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Online Payments — Beginner · Digital Literacy</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --navy:#1B2A4A;--navy-md:#2E4070;--navy-lt:#EEF1F8;--cream:#FAF8F5;--warm:#F3EFE8;
+  --gold:#B07D2F;--gold-lt:#FDF3DC;--slate:#4A5568;--slate-lt:#718096;--border:#E2DDD6;
+  --white:#FFFFFF;--green:#2D6A4F;--green-lt:#E8F5EF;--green-md:#3A8C65;
+  --upi:#1A6DC8;--upi-dark:#0F4A8A;--upi-lt:#E8F0FC;
+  --radius:16px;--shadow:0 4px 24px rgba(27,42,74,0.10);
+}
+body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--navy);min-height:100vh;font-size:18px;}
+.topbar{background:var(--navy);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,0.2);}
+.back-btn{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:700;color:rgba(255,255,255,0.7);cursor:pointer;padding:6px 14px;border:1px solid rgba(255,255,255,0.18);border-radius:8px;background:rgba(255,255,255,0.06);transition:0.15s;text-decoration:none;}
+.back-btn:hover{background:rgba(255,255,255,0.13);color:#fff;}
+.topbar-center{display:flex;align-items:center;gap:10px;}
+.pay-dot{width:30px;height:30px;background:var(--upi);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;}
+.topbar-title{font-family:'Lora',serif;font-size:16px;font-weight:600;color:#fff;}
+.level-badge{font-size:12px;font-weight:800;background:var(--green);color:#fff;padding:3px 12px;border-radius:20px;}
+.progress-wrap{background:var(--white);border-bottom:1.5px solid var(--border);padding:14px 24px;}
+.progress-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.progress-label{font-size:13px;font-weight:700;color:var(--slate);}
+.progress-pct{font-size:13px;font-weight:800;color:var(--green);}
+.progress-track{height:8px;background:var(--warm);border-radius:8px;overflow:hidden;}
+.progress-fill{height:8px;background:linear-gradient(90deg,var(--upi-dark),var(--upi));border-radius:8px;transition:width 0.6s cubic-bezier(.4,0,.2,1);}
+.step-dots{display:flex;justify-content:center;gap:8px;padding:16px 24px 0;}
+.dot{height:8px;border-radius:8px;background:var(--border);transition:all 0.35s cubic-bezier(.4,0,.2,1);width:8px;}
+.dot.done{background:var(--upi);}
+.dot.active{background:var(--navy);width:28px;}
+.main{max-width:680px;margin:0 auto;padding:24px 20px 110px;}
+.step-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;animation:fadeUp 0.4s cubic-bezier(.4,0,.2,1) both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.card-hero{padding:28px 28px 22px;background:linear-gradient(135deg,var(--navy) 0%,#243860 100%);display:flex;gap:18px;align-items:center;}
+.hero-emoji{font-size:56px;line-height:1;flex-shrink:0;filter:drop-shadow(0 3px 10px rgba(0,0,0,0.25));}
+.hero-step{font-size:11px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:#60A5FA;margin-bottom:5px;}
+.hero-title{font-family:'Lora',serif;font-size:24px;font-weight:600;color:#fff;line-height:1.25;}
+.card-body{padding:26px 28px 28px;}
+.body-text{font-size:17px;color:var(--slate);line-height:1.85;margin-bottom:18px;}
+.encourage{display:flex;align-items:center;gap:12px;background:var(--gold-lt);border:1.5px solid #EDD9A0;border-radius:12px;padding:14px 18px;margin-bottom:22px;}
+.encourage-icon{font-size:22px;flex-shrink:0;}
+.encourage-text{font-size:15px;font-weight:700;color:var(--gold);line-height:1.5;}
+.instr-list{list-style:none;display:flex;flex-direction:column;gap:12px;margin-bottom:24px;}
+.instr-item{display:flex;gap:13px;align-items:flex-start;padding:14px 16px;background:var(--cream);border:1.5px solid var(--border);border-radius:12px;transition:border-color 0.2s,background 0.2s;}
+.instr-item:hover{border-color:var(--navy-md);background:var(--navy-lt);}
+.instr-num{width:30px;height:30px;border-radius:50%;background:var(--navy);color:#fff;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.instr-text{font-size:16px;color:var(--slate);line-height:1.7;padding-top:3px;}
+.tip-box{display:flex;gap:13px;align-items:flex-start;background:var(--green-lt);border:1.5px solid #B7DEC9;border-radius:12px;padding:16px 18px;margin-top:20px;}
+.tip-icon{font-size:22px;flex-shrink:0;margin-top:1px;}
+.tip-label{font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);margin-bottom:3px;}
+.tip-text{font-size:15px;color:#285C42;line-height:1.65;}
+.reveal-block{border-radius:13px;overflow:hidden;margin:20px 0;border:2px dashed var(--border);cursor:pointer;transition:border-color 0.2s;}
+.reveal-block:hover{border-color:var(--navy-md);}
+.reveal-prompt{padding:18px 20px;display:flex;align-items:center;gap:14px;background:var(--navy-lt);}
+.reveal-prompt-icon{font-size:26px;}
+.reveal-prompt-text{font-size:16px;font-weight:700;color:var(--navy-md);flex:1;}
+.reveal-prompt-arrow{font-size:18px;color:var(--navy-md);transition:transform 0.3s;}
+.reveal-block.open .reveal-prompt-arrow{transform:rotate(90deg);}
+.reveal-answer{max-height:0;overflow:hidden;transition:max-height 0.45s cubic-bezier(.4,0,.2,1),padding 0.3s;background:var(--white);padding:0 20px;}
+.reveal-block.open .reveal-answer{max-height:400px;padding:18px 20px;}
+.reveal-answer-inner{font-size:16px;color:var(--slate);line-height:1.75;}
+.tap-question{background:var(--navy-lt);border:1.5px solid #C5D0E8;border-radius:13px;padding:20px 20px;margin:20px 0;}
+.tap-q-label{font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--navy-md);margin-bottom:8px;}
+.tap-q-text{font-size:17px;font-weight:700;color:var(--navy);margin-bottom:14px;line-height:1.4;}
+.tap-options{display:flex;flex-direction:column;gap:9px;}
+.tap-opt{padding:13px 18px;border-radius:10px;border:2px solid var(--border);background:var(--white);font-size:16px;font-weight:700;font-family:'Nunito',sans-serif;color:var(--slate);cursor:pointer;transition:0.18s;text-align:left;}
+.tap-opt:hover:not(:disabled){border-color:var(--navy-md);background:var(--navy-lt);color:var(--navy);}
+.tap-opt.correct{background:var(--green-lt);border-color:var(--green);color:var(--green);pointer-events:none;}
+.tap-opt.wrong{background:#FEF2F2;border-color:#FCA5A5;color:#B91C1C;pointer-events:none;}
+.tap-opt.dim{opacity:0.4;pointer-events:none;}
+.tap-result{font-size:15px;font-weight:700;margin-top:12px;padding:11px 14px;border-radius:9px;display:none;}
+.tap-result.show{display:block;}
+.tap-result.good{background:var(--green-lt);color:var(--green);}
+.tap-result.oops{background:#FEF2F2;color:#B91C1C;}
+.feature-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0;}
+.feature-card{background:var(--cream);border:1.5px solid var(--border);border-radius:12px;padding:16px 14px;text-align:center;transition:transform 0.2s,box-shadow 0.2s;}
+.feature-card:hover{transform:translateY(-3px);box-shadow:0 6px 18px rgba(27,42,74,0.10);border-color:var(--navy-md);}
+.feature-card-icon{font-size:32px;margin-bottom:8px;}
+.feature-card-name{font-size:14px;font-weight:800;color:var(--navy);margin-bottom:3px;}
+.feature-card-desc{font-size:12px;color:var(--slate-lt);line-height:1.5;}
+.upi-demo{background:var(--upi-lt);border:1.5px solid #BFDBFE;border-radius:13px;padding:18px 20px;margin:16px 0;}
+.upi-demo-title{font-size:13px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--upi);margin-bottom:10px;}
+.upi-id-box{background:var(--white);border:2px solid var(--upi);border-radius:10px;padding:12px 16px;font-size:18px;font-weight:800;color:var(--navy);text-align:center;letter-spacing:1px;}
+.upi-id-sub{font-size:13px;color:var(--slate-lt);text-align:center;margin-top:6px;}
+.completion-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;animation:fadeUp 0.4s cubic-bezier(.4,0,.2,1) both;}
+.completion-top{background:linear-gradient(135deg,var(--upi-dark) 0%,var(--upi) 100%);padding:44px 28px 36px;text-align:center;}
+.completion-big-icon{font-size:72px;margin-bottom:16px;}
+.completion-title{font-family:'Lora',serif;font-size:28px;font-weight:600;color:#fff;margin-bottom:8px;}
+.completion-sub{font-size:16px;color:rgba(255,255,255,0.88);line-height:1.6;}
+.completion-body{padding:32px 28px;}
+.learned-list{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:28px;}
+.learned-item{display:flex;align-items:center;gap:12px;padding:13px 16px;background:var(--green-lt);border:1.5px solid #B7DEC9;border-radius:10px;font-size:16px;font-weight:700;color:var(--green);}
+.completion-actions{display:flex;flex-direction:column;gap:12px;}
+.btn-primary{padding:16px 24px;border-radius:12px;border:none;background:var(--navy);color:#fff;font-size:17px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;transition:background 0.15s;}
+.btn-primary:hover{background:var(--navy-md);}
+.btn-secondary{padding:14px 24px;border-radius:12px;border:1.5px solid var(--border);background:var(--white);color:var(--navy);font-size:16px;font-weight:700;font-family:'Nunito',sans-serif;cursor:pointer;transition:0.15s;}
+.btn-secondary:hover{border-color:var(--navy);background:var(--navy-lt);}
+.nav-bar{position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:1.5px solid var(--border);padding:14px 20px;display:flex;gap:12px;z-index:200;box-shadow:0 -4px 20px rgba(27,42,74,0.09);}
+.btn-back{padding:14px 22px;border-radius:12px;border:1.5px solid var(--border);background:var(--white);font-size:16px;font-weight:700;font-family:'Nunito',sans-serif;color:var(--slate);cursor:pointer;transition:0.15s;}
+.btn-back:hover{border-color:var(--navy);color:var(--navy);background:var(--navy-lt);}
+.btn-next{flex:1;padding:14px 24px;border-radius:12px;border:none;background:var(--navy);font-size:17px;font-weight:800;font-family:'Nunito',sans-serif;color:#fff;cursor:pointer;transition:background 0.15s;}
+.btn-next:hover{background:var(--navy-md);}
+.hidden{display:none!important;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="back-btn" href="../courses.html">&#8592; Courses</a>
+  <div class="topbar-center">
+    <div class="pay-dot">💳</div>
+    <span class="topbar-title">Online Payments</span>
+  </div>
+  <span class="level-badge">Beginner</span>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-row">
+    <span class="progress-label" id="progressLabel">Step 1 of 5</span>
+    <span class="progress-pct" id="progressPct">0% done</span>
+  </div>
+  <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+</div>
+
+<div class="step-dots" id="stepDots">
+  <div class="dot active" id="dot-0"></div>
+  <div class="dot" id="dot-1"></div>
+  <div class="dot" id="dot-2"></div>
+  <div class="dot" id="dot-3"></div>
+  <div class="dot" id="dot-4"></div>
+</div>
+
+<div class="main" id="mainContent"></div>
+
+<div class="nav-bar" id="navBar">
+  <button class="btn-back" id="btnBack" onclick="prevStep()">&#8592; Back</button>
+  <button class="btn-next" id="btnNext" onclick="nextStep()">Next →</button>
+</div>
+
+<script type="module">
+import { auth, db } from "../firebase.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const COURSE_KEY = "payments-beginner";
+let currentStep = 0, currentUser = null;
+
+const STEPS = [
+  () => `<div class="step-card">
+    <div class="card-hero">
+      <div class="hero-emoji">💳</div>
+      <div class="hero-text">
+        <div class="hero-step">Step 1 of 5</div>
+        <div class="hero-title">What is UPI?</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">🙏</span><span class="encourage-text">Welcome! Online payments can feel scary at first, but we'll go step by step. You will feel very confident by the end!</span></div>
+      <p class="body-text"><strong>UPI</strong> stands for <strong>Unified Payments Interface</strong>. It is a safe and easy way to pay money directly from your bank account using your phone — no cash, no card needed.</p>
+      <div class="feature-grid">
+        <div class="feature-card"><div class="feature-card-icon">⚡</div><div class="feature-card-name">Instant</div><div class="feature-card-desc">Money reaches the other person in seconds</div></div>
+        <div class="feature-card"><div class="feature-card-icon">🆓</div><div class="feature-card-name">Free</div><div class="feature-card-desc">No charges for sending or receiving money</div></div>
+        <div class="feature-card"><div class="feature-card-icon">🏦</div><div class="feature-card-name">Bank to Bank</div><div class="feature-card-desc">Goes directly from your bank account</div></div>
+        <div class="feature-card"><div class="feature-card-icon">📱</div><div class="feature-card-name">On Your Phone</div><div class="feature-card-desc">No need to go to the bank or ATM</div></div>
+      </div>
+      <div class="reveal-block" id="rev-0" onclick="toggleReveal('rev-0')">
+        <div class="reveal-prompt"><span class="reveal-prompt-icon">🤔</span><span class="reveal-prompt-text">Which apps use UPI?</span><span class="reveal-prompt-arrow">▶</span></div>
+        <div class="reveal-answer"><div class="reveal-answer-inner">Many popular apps use UPI — <strong>Google Pay (GPay), PhonePe, Paytm</strong> and even your bank's own app. They all work the same way — you choose which one you like!</div></div>
+      </div>
+      <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Good to know</div><div class="tip-text">UPI is made by the Government of India (NPCI) — it is safe, trusted and used by over 30 crore people every month.</div></div></div>
+    </div>
+  </div>`,
+
+  () => `<div class="step-card">
+    <div class="card-hero">
+      <div class="hero-emoji">📲</div>
+      <div class="hero-text">
+        <div class="hero-step">Step 2 of 5</div>
+        <div class="hero-title">Setting Up Google Pay</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">⭐</span><span class="encourage-text">We'll use Google Pay as it is very easy to use. You only set this up once — after that it becomes very simple!</span></div>
+      <p class="body-text">To use Google Pay, you need a <strong>bank account</strong> and the <strong>mobile number linked to that account</strong>. Let's get started:</p>
+      <ul class="instr-list">
+        <li class="instr-item"><span class="instr-num">1</span><span class="instr-text">Open the <strong>Play Store</strong> and download <strong>Google Pay</strong> (the colourful G icon).</span></li>
+        <li class="instr-item"><span class="instr-num">2</span><span class="instr-text">Open Google Pay and sign in with your <strong>Google account</strong>.</span></li>
+        <li class="instr-item"><span class="instr-num">3</span><span class="instr-text">Tap <strong>Add bank account</strong> and select your bank from the list.</span></li>
+        <li class="instr-item"><span class="instr-num">4</span><span class="instr-text">Google Pay sends an SMS to verify your number — tap <strong>Allow</strong>.</span></li>
+        <li class="instr-item"><span class="instr-num">5</span><span class="instr-text">Set a <strong>4-digit UPI PIN</strong> — remember this number, it is your payment password!</span></li>
+      </ul>
+      <div class="tap-question">
+        <div class="tap-q-label">✏️ Quick check</div>
+        <div class="tap-q-text">What do you need to set up Google Pay?</div>
+        <div class="tap-options">
+          <button class="tap-opt" onclick="tapAnswer(this,false,'q2')">💵 A lot of cash</button>
+          <button class="tap-opt" onclick="tapAnswer(this,true,'q2')">🏦 A bank account linked to your mobile number</button>
+          <button class="tap-opt" onclick="tapAnswer(this,false,'q2')">🌐 A special government ID</button>
+        </div>
+        <div class="tap-result" id="res-q2"></div>
+      </div>
+      <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Good to know</div><div class="tip-text">Your <strong>UPI PIN</strong> is very important — never share it with anyone, not even your children or bank staff. It is yours alone!</div></div></div>
+    </div>
+  </div>`,
+
+  () => `<div class="step-card">
+    <div class="card-hero">
+      <div class="hero-emoji">🔑</div>
+      <div class="hero-text">
+        <div class="hero-step">Step 3 of 5</div>
+        <div class="hero-title">Your UPI ID</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">🌸</span><span class="encourage-text">Halfway there! Your UPI ID is like your phone's payment address — it's how people send money to you.</span></div>
+      <p class="body-text">Every Google Pay user gets a <strong>UPI ID</strong> — this is like your payment address. People use it to send money directly to you. You can share it freely — it is safe to share your UPI ID.</p>
+      <div class="upi-demo">
+        <div class="upi-demo-title">Example UPI ID</div>
+        <div class="upi-id-box">yourname@okicici</div>
+        <div class="upi-id-sub">or yourphone@okhdfcbank or yourphone@ybl</div>
+      </div>
+      <ul class="instr-list">
+        <li class="instr-item"><span class="instr-num">1</span><span class="instr-text">In Google Pay, tap your <strong>profile picture</strong> in the top right corner.</span></li>
+        <li class="instr-item"><span class="instr-num">2</span><span class="instr-text">Tap <strong>Bank account</strong> to see your UPI ID.</span></li>
+        <li class="instr-item"><span class="instr-num">3</span><span class="instr-text">You can <strong>share this UPI ID</strong> with anyone who wants to send you money.</span></li>
+      </ul>
+      <div class="reveal-block" id="rev-3" onclick="toggleReveal('rev-3')">
+        <div class="reveal-prompt"><span class="reveal-prompt-icon">🤔</span><span class="reveal-prompt-text">Is it safe to share my UPI ID?</span><span class="reveal-prompt-arrow">▶</span></div>
+        <div class="reveal-answer"><div class="reveal-answer-inner">✅ <strong>Yes, your UPI ID is safe to share!</strong> It only allows people to SEND you money — nobody can take money from you using only your UPI ID. What you must NEVER share is your UPI PIN or OTP.</div></div>
+      </div>
+      <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Good to know</div><div class="tip-text">You can also receive money by showing your <strong>QR code</strong> — tap "Receive" in Google Pay to find it!</div></div></div>
+    </div>
+  </div>`,
+
+  () => `<div class="step-card">
+    <div class="card-hero">
+      <div class="hero-emoji">💸</div>
+      <div class="hero-text">
+        <div class="hero-step">Step 4 of 5</div>
+        <div class="hero-title">Making Your First Payment</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">🌟</span><span class="encourage-text">Almost done! Let's practise sending a small amount — even Rs 1 — to a family member you trust.</span></div>
+      <p class="body-text">Paying someone on Google Pay is very simple. You can pay using their <strong>phone number, UPI ID, or QR code</strong>.</p>
+      <ul class="instr-list">
+        <li class="instr-item"><span class="instr-num">1</span><span class="instr-text">Open Google Pay and tap <strong>"Pay"</strong> or the <strong>Search bar</strong>.</span></li>
+        <li class="instr-item"><span class="instr-num">2</span><span class="instr-text">Type the <strong>mobile number or UPI ID</strong> of the person you want to pay.</span></li>
+        <li class="instr-item"><span class="instr-num">3</span><span class="instr-text">Enter the <strong>amount</strong> — start with something small like Rs 1 for practice.</span></li>
+        <li class="instr-item"><span class="instr-num">4</span><span class="instr-text">Add a note like <em>"test"</em>, then tap <strong>Pay</strong>.</span></li>
+        <li class="instr-item"><span class="instr-num">5</span><span class="instr-text">Enter your <strong>4-digit UPI PIN</strong> and tap the tick ✓. Done!</span></li>
+      </ul>
+      <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Good to know</div><div class="tip-text">Always <strong>double-check the name</strong> that appears after entering the number — make sure it matches the person you want to pay before entering your PIN.</div></div></div>
+    </div>
+  </div>`,
+
+  () => `<div class="step-card">
+    <div class="card-hero">
+      <div class="hero-emoji">📋</div>
+      <div class="hero-text">
+        <div class="hero-step">Step 5 of 5</div>
+        <div class="hero-title">Checking Your Transaction History</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">🎉</span><span class="encourage-text">Last step! You can always see a list of everything you've paid — just like a receipt for every payment.</span></div>
+      <p class="body-text">Google Pay keeps a <strong>record of every payment</strong> you make or receive. You can check it any time to make sure everything is correct.</p>
+      <ul class="instr-list">
+        <li class="instr-item"><span class="instr-num">1</span><span class="instr-text">Open Google Pay and tap the <strong>clock / history icon</strong> at the bottom of the screen.</span></li>
+        <li class="instr-item"><span class="instr-num">2</span><span class="instr-text">You'll see a list of all your payments — the newest one is at the top.</span></li>
+        <li class="instr-item"><span class="instr-num">3</span><span class="instr-text">Tap any payment to see the <strong>full details</strong> — amount, date, and the other person's name.</span></li>
+        <li class="instr-item"><span class="instr-num">4</span><span class="instr-text">Each payment also gets a <strong>Transaction ID</strong> — a long number you can use if there is ever a problem.</span></li>
+      </ul>
+      <div class="tap-question">
+        <div class="tap-q-label">✏️ Quick check</div>
+        <div class="tap-q-text">Before entering your UPI PIN to pay, what should you check?</div>
+        <div class="tap-options">
+          <button class="tap-opt" onclick="tapAnswer(this,false,'q5')">📶 That Wi-Fi is connected</button>
+          <button class="tap-opt" onclick="tapAnswer(this,true,'q5')">✅ That the name shown matches the person I want to pay</button>
+          <button class="tap-opt" onclick="tapAnswer(this,false,'q5')">🕐 What time it is</button>
+        </div>
+        <div class="tap-result" id="res-q5"></div>
+      </div>
+      <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Good to know</div><div class="tip-text">If a payment fails, the money goes <strong>back to your account automatically</strong> within 2–3 working days. You don't need to worry!</div></div></div>
+    </div>
+  </div>`,
+];
+
+onAuthStateChanged(auth, async (user) => {
+  if (!user) { window.location.href = "../index.html"; return; }
+  currentUser = user;
+  try {
+    const snap = await getDoc(doc(db, "users", user.uid));
+    if (snap.exists() && snap.data().progress?.[COURSE_KEY] === 100) currentStep = STEPS.length;
+  } catch(e) {}
+  render();
+});
+
+async function saveProgress(pct) {
+  if (!currentUser) return;
+  try { await setDoc(doc(db, "users", currentUser.uid), { progress: { [COURSE_KEY]: pct } }, { merge: true }); } catch(e) {}
+}
+
+function render() {
+  updateProgress(); updateDots();
+  const main = document.getElementById("mainContent");
+  if (currentStep < STEPS.length) { main.innerHTML = STEPS[currentStep](); } else { renderCompletion(main); }
+  updateNav();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function updateProgress() {
+  const pct = Math.round((currentStep / STEPS.length) * 100);
+  document.getElementById("progressFill").style.width = pct + "%";
+  document.getElementById("progressPct").textContent = pct + "% done";
+  document.getElementById("progressLabel").textContent = currentStep < STEPS.length ? `Step ${currentStep + 1} of ${STEPS.length}` : "Lesson Complete!";
+}
+
+function updateDots() {
+  for (let i = 0; i < STEPS.length; i++) {
+    const d = document.getElementById("dot-" + i);
+    if (!d) continue;
+    d.className = "dot" + (i < currentStep ? " done" : i === currentStep ? " active" : "");
+  }
+}
+
+function updateNav() {
+  const navBar = document.getElementById("navBar");
+  if (currentStep >= STEPS.length) { navBar.classList.add("hidden"); return; }
+  navBar.classList.remove("hidden");
+  document.getElementById("btnBack").style.visibility = currentStep === 0 ? "hidden" : "visible";
+  document.getElementById("btnNext").textContent = currentStep === STEPS.length - 1 ? "Finish lesson 🎉" : "Next →";
+}
+
+function renderCompletion(container) {
+  container.innerHTML = `<div class="completion-card">
+    <div class="completion-top">
+      <div class="completion-big-icon">🎊</div>
+      <div class="completion-title">Well done!</div>
+      <div class="completion-sub">You've completed Online Payments — Beginner.<br>You can now make safe digital payments!</div>
+    </div>
+    <div class="completion-body">
+      <ul class="learned-list">
+        <li class="learned-item">✅ What UPI is and how it works</li>
+        <li class="learned-item">✅ How to set up Google Pay</li>
+        <li class="learned-item">✅ What your UPI ID is and how to share it</li>
+        <li class="learned-item">✅ How to make your first payment safely</li>
+        <li class="learned-item">✅ How to check your payment history</li>
+      </ul>
+      <div class="completion-actions">
+        <button class="btn-primary" onclick="window.location.href='payments-intermediate.html'">Next: Payments Intermediate →</button>
+        <button class="btn-secondary" onclick="window.location.href='../courses.html'">Back to all courses</button>
+      </div>
+    </div>
+  </div>`;
+  document.getElementById("navBar").classList.add("hidden");
+  document.getElementById("stepDots").classList.add("hidden");
+  saveProgress(100);
+}
+
+window.toggleReveal = (id) => document.getElementById(id).classList.toggle("open");
+window.tapAnswer = function(btn, isCorrect, qid) {
+  const opts = btn.parentElement.querySelectorAll(".tap-opt");
+  opts.forEach(o => { o.classList.add("dim"); o.disabled = true; });
+  btn.classList.remove("dim"); btn.classList.add(isCorrect ? "correct" : "wrong");
+  if (!isCorrect) { opts.forEach(o => { if (o.getAttribute("onclick")?.includes("true")) { o.classList.remove("dim"); o.classList.add("correct"); } }); }
+  const res = document.getElementById("res-" + qid);
+  if (res) { res.className = "tap-result show " + (isCorrect ? "good" : "oops"); res.textContent = isCorrect ? "✅ Exactly right! Well done!" : "💭 Not quite — the correct answer is highlighted above. That's okay, now you know!"; }
+};
+window.nextStep = function() { currentStep++; saveProgress(Math.round((currentStep / STEPS.length) * 100)); render(); };
+window.prevStep = function() { if (currentStep > 0) { currentStep--; render(); } };
+</script>
+</body>
+</html>

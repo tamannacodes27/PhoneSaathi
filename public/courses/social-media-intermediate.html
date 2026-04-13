@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Social Media — Intermediate · Digital Literacy</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --navy:#1B2A4A;--navy-md:#2E4070;--navy-lt:#EEF1F8;--cream:#FAF8F5;--warm:#F3EFE8;
+  --gold:#B07D2F;--gold-lt:#FDF3DC;--slate:#4A5568;--slate-lt:#718096;--border:#E2DDD6;
+  --white:#FFFFFF;--green:#2D6A4F;--green-lt:#E8F5EF;
+  --amber:#92400E;--amber-lt:#FEF3C7;
+  --fb:#1877F2;--fb-dark:#0d5dbf;--fb-lt:#E7F0FD;
+  --radius:16px;--shadow:0 4px 24px rgba(27,42,74,0.10);
+}
+body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--navy);min-height:100vh;font-size:18px;}
+.topbar{background:var(--navy);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,0.2);}
+.back-btn{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:700;color:rgba(255,255,255,0.7);cursor:pointer;padding:6px 14px;border:1px solid rgba(255,255,255,0.18);border-radius:8px;background:rgba(255,255,255,0.06);transition:0.15s;text-decoration:none;}
+.back-btn:hover{background:rgba(255,255,255,0.13);color:#fff;}
+.topbar-center{display:flex;align-items:center;gap:10px;}
+.fb-dot{width:30px;height:30px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;}
+.topbar-title{font-family:'Lora',serif;font-size:16px;font-weight:600;color:#fff;}
+.level-badge{font-size:12px;font-weight:800;background:var(--amber);color:#fff;padding:3px 12px;border-radius:20px;}
+.progress-wrap{background:var(--white);border-bottom:1.5px solid var(--border);padding:14px 24px;}
+.progress-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.progress-label{font-size:13px;font-weight:700;color:var(--slate);}
+.progress-pct{font-size:13px;font-weight:800;color:var(--amber);}
+.progress-track{height:8px;background:var(--warm);border-radius:8px;overflow:hidden;}
+.progress-fill{height:8px;background:linear-gradient(90deg,var(--amber),var(--gold));border-radius:8px;transition:width 0.6s cubic-bezier(.4,0,.2,1);}
+.step-dots{display:flex;justify-content:center;gap:8px;padding:16px 24px 0;}
+.dot{height:8px;border-radius:8px;background:var(--border);transition:all 0.35s cubic-bezier(.4,0,.2,1);width:8px;}
+.dot.done{background:var(--gold);}
+.dot.active{background:var(--navy);width:28px;}
+.main{max-width:680px;margin:0 auto;padding:24px 20px 110px;}
+.step-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;animation:fadeUp 0.4s cubic-bezier(.4,0,.2,1) both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.card-hero{padding:28px 28px 22px;background:linear-gradient(135deg,#5A3800 0%,#9A6200 100%);display:flex;gap:18px;align-items:center;}
+.hero-emoji{font-size:56px;line-height:1;flex-shrink:0;filter:drop-shadow(0 3px 10px rgba(0,0,0,0.25));}
+.hero-step{font-size:11px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:#FCD34D;margin-bottom:5px;}
+.hero-title{font-family:'Lora',serif;font-size:24px;font-weight:600;color:#fff;line-height:1.25;}
+.card-body{padding:26px 28px 28px;}
+.body-text{font-size:17px;color:var(--slate);line-height:1.85;margin-bottom:18px;}
+.encourage{display:flex;align-items:center;gap:12px;background:var(--gold-lt);border:1.5px solid #EDD9A0;border-radius:12px;padding:14px 18px;margin-bottom:22px;}
+.encourage-icon{font-size:22px;flex-shrink:0;}
+.encourage-text{font-size:15px;font-weight:700;color:var(--gold);line-height:1.5;}
+.instr-list{list-style:none;display:flex;flex-direction:column;gap:12px;margin-bottom:24px;}
+.instr-item{display:flex;gap:13px;align-items:flex-start;padding:14px 16px;background:var(--cream);border:1.5px solid var(--border);border-radius:12px;transition:border-color 0.2s,background 0.2s;}
+.instr-item:hover{border-color:var(--navy-md);background:var(--navy-lt);}
+.instr-num{width:30px;height:30px;border-radius:50%;background:var(--navy);color:#fff;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.instr-text{font-size:16px;color:var(--slate);line-height:1.7;padding-top:3px;}
+.tip-box{display:flex;gap:13px;align-items:flex-start;background:var(--green-lt);border:1.5px solid #B7DEC9;border-radius:12px;padding:16px 18px;margin-top:20px;}
+.tip-icon{font-size:22px;flex-shrink:0;margin-top:1px;}
+.tip-label{font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);margin-bottom:3px;}
+.tip-text{font-size:15px;color:#285C42;line-height:1.65;}
+.warn-box{display:flex;gap:13px;align-items:flex-start;background:var(--amber-lt);border:1.5px solid #F59E0B;border-radius:12px;padding:16px 18px;margin-top:20px;}
+.warn-icon{font-size:22px;flex-shrink:0;margin-top:1px;}
+.warn-label{font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--amber);margin-bottom:3px;}
+.warn-text{font-size:15px;color:#78350F;line-height:1.65;}
+.reveal-block{border-radius:13px;overflow:hidden;margin:20px 0;border:2px dashed var(--border);cursor:pointer;transition:border-color 0.2s;}
+.reveal-block:hover{border-color:var(--navy-md);}
+.reveal-prompt{padding:18px 20px;display:flex;align-items:center;gap:14px;background:var(--navy-lt);}
+.reveal-prompt-icon{font-size:26px;}
+.reveal-prompt-text{font-size:16px;font-weight:700;color:var(--navy-md);flex:1;}
+.reveal-prompt-arrow{font-size:18px;color:var(--navy-md);transition:transform 0.3s;}
+.reveal-block.open .reveal-prompt-arrow{transform:rotate(90deg);}
+.reveal-answer{max-height:0;overflow:hidden;transition:max-height 0.45s cubic-bezier(.4,0,.2,1),padding 0.3s;background:var(--white);padding:0 20px;}
+.reveal-block.open .reveal-answer{max-height:400px;padding:18px 20px;}
+.reveal-answer-inner{font-size:16px;color:var(--slate);line-height:1.75;}
+.tap-question{background:var(--navy-lt);border:1.5px solid #C5D0E8;border-radius:13px;padding:20px 20px;margin:20px 0;}
+.tap-q-label{font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--navy-md);margin-bottom:8px;}
+.tap-q-text{font-size:17px;font-weight:700;color:var(--navy);margin-bottom:14px;line-height:1.4;}
+.tap-options{display:flex;flex-direction:column;gap:9px;}
+.tap-opt{padding:13px 18px;border-radius:10px;border:2px solid var(--border);background:var(--white);font-size:16px;font-weight:700;font-family:'Nunito',sans-serif;color:var(--slate);cursor:pointer;transition:0.18s;text-align:left;}
+.tap-opt:hover:not(:disabled){border-color:var(--navy-md);background:var(--navy-lt);color:var(--navy);}
+.tap-opt.correct{background:var(--green-lt);border-color:var(--green);color:var(--green);pointer-events:none;}
+.tap-opt.wrong{background:#FEF2F2;border-color:#FCA5A5;color:#B91C1C;pointer-events:none;}
+.tap-opt.dim{opacity:0.4;pointer-events:none;}
+.tap-result{font-size:15px;font-weight:700;margin-top:12px;padding:11px 14px;border-radius:9px;display:none;}
+.tap-result.show{display:block;}
+.tap-result.good{background:var(--green-lt);color:var(--green);}
+.tap-result.oops{background:#FEF2F2;color:#B91C1C;}
+.app-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0;}
+.app-card{background:var(--cream);border:1.5px solid var(--border);border-radius:12px;padding:16px 14px;text-align:center;}
+.app-card-icon{font-size:34px;margin-bottom:8px;}
+.app-card-name{font-size:14px;font-weight:800;color:var(--navy);margin-bottom:3px;}
+.app-card-desc{font-size:12px;color:var(--slate-lt);line-height:1.5;}
+.privacy-list{display:flex;flex-direction:column;gap:10px;margin:16px 0;}
+.privacy-row{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;background:var(--cream);border:1.5px solid var(--border);border-radius:12px;}
+.privacy-icon{font-size:24px;flex-shrink:0;}
+.privacy-name{font-size:14px;font-weight:800;color:var(--navy);margin-bottom:2px;}
+.privacy-desc{font-size:13px;color:var(--slate);line-height:1.5;}
+.completion-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;animation:fadeUp 0.4s cubic-bezier(.4,0,.2,1) both;}
+.completion-top{background:linear-gradient(135deg,#5A3800 0%,var(--gold) 100%);padding:44px 28px 36px;text-align:center;}
+.completion-big-icon{font-size:72px;margin-bottom:16px;}
+.completion-title{font-family:'Lora',serif;font-size:28px;font-weight:600;color:#fff;margin-bottom:8px;}
+.completion-sub{font-size:16px;color:rgba(255,255,255,0.88);line-height:1.6;}
+.completion-body{padding:32px 28px;}
+.learned-list{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:28px;}
+.learned-item{display:flex;align-items:center;gap:12px;padding:13px 16px;background:var(--green-lt);border:1.5px solid #B7DEC9;border-radius:10px;font-size:16px;font-weight:700;color:var(--green);}
+.completion-actions{display:flex;flex-direction:column;gap:12px;}
+.btn-primary{padding:16px 24px;border-radius:12px;border:none;background:var(--navy);color:#fff;font-size:17px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;transition:background 0.15s;}
+.btn-primary:hover{background:var(--navy-md);}
+.btn-secondary{padding:14px 24px;border-radius:12px;border:1.5px solid var(--border);background:var(--white);color:var(--navy);font-size:16px;font-weight:700;font-family:'Nunito',sans-serif;cursor:pointer;transition:0.15s;}
+.btn-secondary:hover{border-color:var(--navy);background:var(--navy-lt);}
+.nav-bar{position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:1.5px solid var(--border);padding:14px 20px;display:flex;gap:12px;z-index:200;box-shadow:0 -4px 20px rgba(27,42,74,0.09);}
+.btn-back{padding:14px 22px;border-radius:12px;border:1.5px solid var(--border);background:var(--white);font-size:16px;font-weight:700;font-family:'Nunito',sans-serif;color:var(--slate);cursor:pointer;transition:0.15s;}
+.btn-back:hover{border-color:var(--navy);color:var(--navy);background:var(--navy-lt);}
+.btn-next{flex:1;padding:14px 22px;border-radius:12px;border:none;background:var(--navy);color:#fff;font-size:17px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;transition:background 0.15s;}
+.btn-next:hover{background:var(--navy-md);}
+.hidden{display:none!important;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="back-btn" href="../courses.html">&#8592; Courses</a>
+  <div class="topbar-center">
+    <div class="fb-dot">📱</div>
+    <span class="topbar-title">Social Media</span>
+  </div>
+  <span class="level-badge">Intermediate</span>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-row">
+    <span class="progress-label" id="progressLabel">Step 1 of 7</span>
+    <span class="progress-pct" id="progressPct">0% done</span>
+  </div>
+  <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+</div>
+
+<div class="step-dots" id="stepDots">
+  <div class="dot active" id="dot-0"></div>
+  <div class="dot" id="dot-1"></div>
+  <div class="dot" id="dot-2"></div>
+  <div class="dot" id="dot-3"></div>
+  <div class="dot" id="dot-4"></div>
+  <div class="dot" id="dot-5"></div>
+  <div class="dot" id="dot-6"></div>
+</div>
+
+<div class="main" id="mainContent"></div>
+
+<div class="nav-bar" id="navBar">
+  <button class="btn-back" id="btnBack" onclick="prevStep()">&#8592; Back</button>
+  <button class="btn-next" id="btnNext" onclick="nextStep()">Next →</button>
+</div>
+
+<script type="module">
+import { auth, db } from "../firebase.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const COURSE_KEY = "social-media-intermediate";
+let currentStep = 0, currentUser = null;
+
+const STEPS = [
+  () => `<div class="step-card">
+    <div class="card-hero"><div class="hero-emoji">📸</div><div class="hero-text"><div class="hero-step">Step 1 of 7</div><div class="hero-title">Sharing Photos & Videos</div></div></div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">🌸</span><span class="encourage-text">Welcome back! You already know how to post text. Now let's share photos and videos — the most popular thing people do on social media!</span></div>
+      <p class="body-text">Sharing photos on Facebook lets your family see your life — festivals, grandchildren, travel, food, special moments. Here's how to do it properly.</p>
+      <ul class="instr-list">
+        <li class="instr-item"><span class="instr-num">1</span><span class="instr-text">Tap <strong>"What's on your mind?"</strong> to start a post.</span></li>
+        <li class="instr-item"><span class="instr-num">2</span><span class="instr-text">Tap the <strong>Photo/Video 📷</strong> button at the bottom of the box.</span></li>
+        <li class="instr-item"><span class="instr-num">3</span><span class="instr-text">Your phone's photo gallery opens. <strong>Tap to select</strong> one or more photos (you can select up to 10 at once).</span></li>
+        <li class="instr-item"><span class="instr-num">4</span><span class="instr-text">Tap <strong>Done</strong> or <strong>Next</strong>. The photos appear in your post.</span></li>
+        <li class="instr-item"><span class="instr-num">5</span><span class="instr-text">Add a <strong>caption</strong> — a description or feeling. For example: <em>"Diwali celebrations with the family 🪔"</em></span></li>
+        <li class="instr-item"><span class="instr-num">6</span><span class="instr-text">Tap <strong>Post</strong>. Your photos are now shared with your friends!</span></li>
+      </ul>
+      <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Good to know</div><div class="tip-text">You can also <strong>tag people</strong> in your photos — tap the photo after posting and tap on a person's face, then search for their name. They get a notification that you tagged them!</div></div></div>
+    </div>
+  </div>`,
+
+  () => `<div class="step-card">
+    <div class="card-hero"><div class="hero-emoji">👥</div><div class="hero-text"><div class="hero-step">Step 2 of 7</div><div class="hero-title">Joining & Using Facebook Groups</div></div></div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">🏡</span><span class="encourage-text">Facebook Groups are like community gatherings — people with shared interests meeting in one place. There are groups for everything!</span></div>
+      <p class="body-text"><strong>Groups</strong> are communities within Facebook. There are groups for your city, your interests (gardening, cooking, religion, local news), and even family groups!</p>
+      <ul class="instr-list">
+        <li class="instr-item"><span class="instr-num">1</span><span class="instr-text">Tap the <strong>three lines ☰</strong> (menu) or find <strong>Groups</strong> in the bottom navigation bar.</span></li>
+        <li class="instr-item"><span class="instr-num">2</span><span class="instr-text">Tap <strong>"Discover"</strong> or use the <strong>Search 🔍</strong> to find a group — for example, "Delhi Gardening Club" or "Sharma Family Group".</span></li>
+        <li class="instr-item"><span class="instr-num">3</span><span class="instr-text">Tap on the group, then tap <strong>"Join group"</strong>. Some groups require approval from the admin.</span></li>
+        <li class="instr-item"><span class="instr-num">4</span><span class="instr-text">Once inside, you can <strong>read posts, comment, and post</strong> — just like your regular feed.</span></li>
+        <li class="instr-item"><span class="instr-num">5</span><span class="instr-text">To <strong>create a family group</strong>: Tap Groups → Create Group → add family members by name.</span></li>
+      </ul>
+      <div class="tap-question">
+        <div class="tap-q-label">✏️ Quick check</div>
+        <div class="tap-q-text">You want to share family photos only with relatives. What is the best way?</div>
+        <div class="tap-options">
+          <button class="tap-opt" onclick="tapAnswer(this,false,'q2')">📢 Post publicly for everyone to see</button>
+          <button class="tap-opt" onclick="tapAnswer(this,true,'q2')">👨‍👩‍👧 Create a private Family Group and post there</button>
+          <button class="tap-opt" onclick="tapAnswer(this,false,'q2')">📧 Send each person an email</button>
+        </div>
+        <div class="tap-result" id="res-q2"></div>
+      </div>
+      <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Good to know</div><div class="tip-text">Choose <strong>Private groups</strong> over Public ones for family matters — in a private group, only members can see what is posted inside.</div></div></div>
+    </div>
+  </div>`,
+
+  () => `<div class="step-card">
+    <div class="card-hero"><div class="hero-emoji">📷</div><div class="hero-text"><div class="hero-step">Step 3 of 7</div><div class="hero-title">Instagram — Sharing Your World</div></div></div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">🌺</span><span class="encourage-text">Instagram is all about beautiful photos! If you love photography, flowers, food or travel, you'll enjoy this app.</span></div>
+      <p class="body-text"><strong>Instagram</strong> is owned by the same company as Facebook (Meta). It focuses on <strong>photos and short videos</strong>. Many younger family members are on Instagram even if they're not on Facebook.</p>
+      <ul class="instr-list">
+        <li class="instr-item"><span class="instr-num">1</span><span class="instr-text">Download <strong>Instagram</strong> from the Play Store or App Store. Sign up with your email or link your Facebook account.</span></li>
+        <li class="instr-item"><span class="instr-num">2</span><span class="instr-text">Your home screen shows a <strong>feed</strong> — photos posted by people you follow, scrolling downwards.</span></li>
+        <li class="instr-item"><span class="instr-num">3</span><span class="instr-text">To post a photo: Tap the <strong>+ plus button</strong> at the bottom. Select your photo, add a caption and hashtags (like #family #india), then tap <strong>Share</strong>.</span></li>
+        <li class="instr-item"><span class="instr-num">4</span><span class="instr-text">To find family: Tap the <strong>Search 🔍</strong> icon and type their name or username.</span></li>
+        <li class="instr-item"><span class="instr-num">5</span><span class="instr-text">On Instagram you <strong>"Follow"</strong> people instead of "Friend" them. Tap <strong>Follow</strong> on their profile to see their posts.</span></li>
+      </ul>
+      <div class="reveal-block" id="rev-3" onclick="toggleReveal('rev-3')">
+        <div class="reveal-prompt"><span class="reveal-prompt-icon">🤔</span><span class="reveal-prompt-text">What is a hashtag and why do people use them?</span><span class="reveal-prompt-arrow">▶</span></div>
+        <div class="reveal-answer"><div class="reveal-answer-inner">A <strong>hashtag</strong> is a word with a # symbol before it — like <strong>#diwali</strong> or <strong>#familytime</strong>. It groups your post with others using the same tag. For example, tapping #diwali shows you all photos tagged with that word. It helps your post reach people who are interested in that topic.</div></div>
+      </div>
+      <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Good to know</div><div class="tip-text">Set your Instagram to <strong>Private</strong> in Settings → Account Privacy → Private Account. This means only people you approve can see your photos.</div></div></div>
+    </div>
+  </div>`,
+
+  () => `<div class="step-card">
+    <div class="card-hero"><div class="hero-emoji">▶️</div><div class="hero-text"><div class="hero-step">Step 4 of 7</div><div class="hero-title">YouTube — Watching & Learning</div></div></div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">🎬</span><span class="encourage-text">YouTube is like a free television with millions of channels — cooking, devotional music, news, exercise, everything you can imagine!</span></div>
+      <p class="body-text"><strong>YouTube</strong> is the world's largest video platform. You can watch anything — from bhajans to cooking recipes, from news to health advice — completely free.</p>
+      <ul class="instr-list">
+        <li class="instr-item"><span class="instr-num">1</span><span class="instr-text">Open the <strong>YouTube app</strong> (already installed on most phones, or download from Play Store).</span></li>
+        <li class="instr-item"><span class="instr-num">2</span><span class="instr-text">Tap the <strong>Search 🔍</strong> at the top. Type what you want to watch — for example: <em>"Morning yoga for seniors"</em> or <em>"Rajasthani cooking"</em>.</span></li>
+        <li class="instr-item"><span class="instr-num">3</span><span class="instr-text">Tap a video to play it. Tap the screen once to see the <strong>pause ⏸ and play ▶ buttons</strong>.</span></li>
+        <li class="instr-item"><span class="instr-num">4</span><span class="instr-text">Tap <strong>Subscribe</strong> on a channel you enjoy — their new videos will appear on your home screen automatically.</span></li>
+        <li class="instr-item"><span class="instr-num">5</span><span class="instr-text">Tap the <strong>thumbs up 👍</strong> to like a video, or <strong>Share</strong> to send it to family on WhatsApp.</span></li>
+      </ul>
+      <div class="warn-box"><span class="warn-icon">⚠️</span><div><div class="warn-label">Be careful</div><div class="warn-text">YouTube may show <strong>ads</strong> before videos — these are normal and will skip after 5 seconds. <strong>Never click on ads that offer prizes, money, or ask for your personal information.</strong></div></div></div>
+      <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Good to know</div><div class="tip-text">Use <strong>YouTube in Hindi or your regional language</strong> — tap the Search icon and type in your language. The results will be in that language too!</div></div></div>
+    </div>
+  </div>`,
+
+  () => `<div class="step-card">
+    <div class="card-hero"><div class="hero-emoji">⭕</div><div class="hero-text"><div class="hero-step">Step 5 of 7</div><div class="hero-title">Stories — Posts That Disappear</div></div></div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">✨</span><span class="encourage-text">Stories are fun and casual — perfect for quick updates like "I'm at the temple today!" without cluttering your permanent profile.</span></div>
+      <p class="body-text"><strong>Stories</strong> are photos or short videos that appear at the top of Facebook and Instagram. They disappear automatically after <strong>24 hours</strong>. Many family members use Stories for quick daily updates.</p>
+      <ul class="instr-list">
+        <li class="instr-item"><span class="instr-num">1</span><span class="instr-text">On Facebook or Instagram, look at the <strong>circles at the very top</strong> of your screen — those are Stories from your friends.</span></li>
+        <li class="instr-item"><span class="instr-num">2</span><span class="instr-text">Tap any circle to <strong>view that person's Story</strong>. It plays automatically. Tap the right side to go to the next one.</span></li>
+        <li class="instr-item"><span class="instr-num">3</span><span class="instr-text">To create your own Story: Tap <strong>"Add to Story"</strong> or the <strong>+ circle with your photo</strong>.</span></li>
+        <li class="instr-item"><span class="instr-num">4</span><span class="instr-text">Take a photo or choose one from your gallery. Add text or stickers if you like. Tap <strong>Share to Story</strong>.</span></li>
+        <li class="instr-item"><span class="instr-num">5</span><span class="instr-text">After 24 hours it disappears automatically — you don't need to delete it!</span></li>
+      </ul>
+      <div class="tap-question">
+        <div class="tap-q-label">✏️ Quick check</div>
+        <div class="tap-q-text">You post a Story today. What happens to it tomorrow?</div>
+        <div class="tap-options">
+          <button class="tap-opt" onclick="tapAnswer(this,false,'q5')">📌 It stays on your profile forever</button>
+          <button class="tap-opt" onclick="tapAnswer(this,true,'q5')">⏳ It disappears automatically after 24 hours</button>
+          <button class="tap-opt" onclick="tapAnswer(this,false,'q5')">🗑️ You have to delete it manually</button>
+        </div>
+        <div class="tap-result" id="res-q5"></div>
+      </div>
+      <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Good to know</div><div class="tip-text">You can see <strong>who viewed your Story</strong> — while it's active, swipe up on it to see a list of names. A great way to know who's keeping up with you!</div></div></div>
+    </div>
+  </div>`,
+
+  () => `<div class="step-card">
+    <div class="card-hero"><div class="hero-emoji">🔒</div><div class="hero-text"><div class="hero-step">Step 6 of 7</div><div class="hero-title">Understanding Privacy Settings</div></div></div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">🛡️</span><span class="encourage-text">Privacy settings let you control who sees your posts and information. You are always in control — nobody can see more than what you allow!</span></div>
+      <p class="body-text">On Facebook, every post and profile section has a <strong>privacy setting</strong>. You choose who can see each thing. Here are the main options:</p>
+      <div class="privacy-list">
+        <div class="privacy-row"><div class="privacy-icon">🌍</div><div><div class="privacy-name">Public</div><div class="privacy-desc">Anyone on or off Facebook can see this — even people you don't know. Use carefully.</div></div></div>
+        <div class="privacy-row"><div class="privacy-icon">👥</div><div><div class="privacy-name">Friends</div><div class="privacy-desc">Only your Facebook friends can see this. This is the recommended setting for most posts.</div></div></div>
+        <div class="privacy-row"><div class="privacy-icon">👤</div><div><div class="privacy-name">Only me</div><div class="privacy-desc">Only you can see this — nobody else. Good for private notes or personal memories.</div></div></div>
+        <div class="privacy-row"><div class="privacy-icon">✏️</div><div><div class="privacy-name">Custom</div><div class="privacy-desc">You choose specific friends who can see, or exclude certain people.</div></div></div>
+      </div>
+      <p class="body-text">To change your overall privacy: Go to <strong>Menu ☰ → Settings & Privacy → Privacy Settings</strong>. Here you can control who can find you, send you friend requests, and see your posts.</p>
+      <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Good to know</div><div class="tip-text">The recommended setting for most seniors: set your posts to <strong>"Friends"</strong> and your profile to <strong>"Friends of Friends"</strong>. This keeps you connected without being visible to strangers.</div></div></div>
+    </div>
+  </div>`,
+
+  () => `<div class="step-card">
+    <div class="card-hero"><div class="hero-emoji">🎛️</div><div class="hero-text"><div class="hero-step">Step 7 of 7</div><div class="hero-title">Managing Your Feed & Notifications</div></div></div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">🎉</span><span class="encourage-text">Last step! Learn to control what you see and when your phone alerts you — so social media works for you, not the other way around!</span></div>
+      <p class="body-text">Over time your Facebook feed can get very busy. Here's how to keep it clean and enjoyable, and manage your notification sounds.</p>
+      <ul class="instr-list">
+        <li class="instr-item"><span class="instr-num">1</span><span class="instr-text"><strong>Unfollow without unfriending:</strong> If someone posts too much, tap the <strong>three dots ⋮</strong> on their post → "Unfollow". You stay friends but don't see their posts.</span></li>
+        <li class="instr-item"><span class="instr-num">2</span><span class="instr-text"><strong>See less of certain content:</strong> Tap <strong>three dots ⋮</strong> on any post → "Hide post" or "I don't want to see this".</span></li>
+        <li class="instr-item"><span class="instr-num">3</span><span class="instr-text"><strong>Manage notifications:</strong> Go to <strong>Menu ☰ → Settings → Notifications</strong>. You can turn off sounds, badges, or alerts for specific things.</span></li>
+        <li class="instr-item"><span class="instr-num">4</span><span class="instr-text"><strong>Snooze someone for 30 days:</strong> Tap ⋮ on their post → "Snooze [Name] for 30 days". Their posts pause temporarily.</span></li>
+        <li class="instr-item"><span class="instr-num">5</span><span class="instr-text"><strong>Favourites:</strong> On Facebook, tap the star ⭐ on a friend's profile to always see their posts first in your feed.</span></li>
+      </ul>
+      <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Good to know</div><div class="tip-text">Social media is meant to bring <strong>joy, not stress</strong>. If your feed feels overwhelming, it's perfectly fine to take a break and only check it once a day. You are always in charge!</div></div></div>
+    </div>
+  </div>`,
+];
+
+onAuthStateChanged(auth, async (user) => {
+  if (!user) { window.location.href = "../index.html"; return; }
+  currentUser = user;
+  try {
+    const snap = await getDoc(doc(db, "users", user.uid));
+    if (snap.exists() && snap.data().progress?.[COURSE_KEY] === 100) currentStep = STEPS.length;
+  } catch(e) {}
+  render();
+});
+
+async function saveProgress(pct) {
+  if (!currentUser) return;
+  try { await setDoc(doc(db, "users", currentUser.uid), { progress: { [COURSE_KEY]: pct } }, { merge: true }); } catch(e) {}
+}
+
+function render() {
+  updateProgress(); updateDots();
+  const main = document.getElementById("mainContent");
+  if (currentStep < STEPS.length) { main.innerHTML = STEPS[currentStep](); } else { renderCompletion(main); }
+  updateNav();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function updateProgress() {
+  const pct = Math.round((currentStep / STEPS.length) * 100);
+  document.getElementById("progressFill").style.width = pct + "%";
+  document.getElementById("progressPct").textContent = pct + "% done";
+  document.getElementById("progressLabel").textContent = currentStep < STEPS.length ? `Step ${currentStep + 1} of ${STEPS.length}` : "Lesson Complete!";
+}
+
+function updateDots() {
+  for (let i = 0; i < STEPS.length; i++) {
+    const d = document.getElementById("dot-" + i);
+    if (!d) continue;
+    d.className = "dot" + (i < currentStep ? " done" : i === currentStep ? " active" : "");
+  }
+}
+
+function updateNav() {
+  const navBar = document.getElementById("navBar");
+  if (currentStep >= STEPS.length) { navBar.classList.add("hidden"); return; }
+  navBar.classList.remove("hidden");
+  document.getElementById("btnBack").style.visibility = currentStep === 0 ? "hidden" : "visible";
+  document.getElementById("btnNext").textContent = currentStep === STEPS.length - 1 ? "Finish lesson 🎉" : "Next →";
+}
+
+function renderCompletion(container) {
+  container.innerHTML = `<div class="completion-card">
+    <div class="completion-top">
+      <div class="completion-big-icon">🎊</div>
+      <div class="completion-title">Excellent work!</div>
+      <div class="completion-sub">You've completed Social Media — Intermediate.<br>You're now using social media like a pro!</div>
+    </div>
+    <div class="completion-body">
+      <ul class="learned-list">
+        <li class="learned-item">✅ How to share photos and videos on Facebook</li>
+        <li class="learned-item">✅ How to join and use Facebook Groups</li>
+        <li class="learned-item">✅ How to use Instagram for photos</li>
+        <li class="learned-item">✅ How to watch and subscribe on YouTube</li>
+        <li class="learned-item">✅ How to view and post Stories</li>
+        <li class="learned-item">✅ How to control your privacy settings</li>
+        <li class="learned-item">✅ How to manage your feed and notifications</li>
+      </ul>
+      <div class="completion-actions">
+        <button class="btn-primary" onclick="window.location.href='social-media-advanced.html'">Next: Social Media Advanced →</button>
+        <button class="btn-secondary" onclick="window.location.href='../courses.html'">Back to all courses</button>
+      </div>
+    </div>
+  </div>`;
+  document.getElementById("navBar").classList.add("hidden");
+  document.getElementById("stepDots").classList.add("hidden");
+  saveProgress(100);
+}
+
+window.toggleReveal = (id) => document.getElementById(id).classList.toggle("open");
+window.tapAnswer = function(btn, isCorrect, qid) {
+  const opts = btn.parentElement.querySelectorAll(".tap-opt");
+  opts.forEach(o => { o.classList.add("dim"); o.disabled = true; });
+  btn.classList.remove("dim"); btn.classList.add(isCorrect ? "correct" : "wrong");
+  if (!isCorrect) { opts.forEach(o => { if (o.getAttribute("onclick")?.includes("true")) { o.classList.remove("dim"); o.classList.add("correct"); } }); }
+  const res = document.getElementById("res-" + qid);
+  if (res) { res.className = "tap-result show " + (isCorrect ? "good" : "oops"); res.textContent = isCorrect ? "✅ Exactly right! Well done!" : "💭 Not quite — the correct answer is highlighted above. That's okay, now you know!"; }
+};
+window.nextStep = function() { currentStep++; saveProgress(Math.round((currentStep / STEPS.length) * 100)); render(); };
+window.prevStep = function() { if (currentStep > 0) { currentStep--; render(); } };
+</script>
+</body>
+</html>

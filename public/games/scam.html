@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phone-Saathi — Spot the Scam</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#1A2940;--bg:#ECF0F5;--white:#fff;
+  --saffron:#FF6B1A;--purple:#7C3AED;--purple-lt:#F5F3FF;
+  --gray-lt:#F1F5F9;--gray-md:#94A3B8;--gray-dk:#475569;
+  --text:#1A2940;--success:#059669;--danger:#DC2626;--warn:#D97706;
+}
+body{font-family:'Nunito',sans-serif;background:var(--bg);display:flex;flex-direction:column;align-items:center;min-height:100vh}
+.top-bar{width:100%;background:var(--navy);padding:0 20px;display:flex;align-items:center;justify-content:space-between;height:56px;box-shadow:0 2px 10px rgba(0,0,0,.2)}
+.nav-brand{font-family:'Baloo 2',cursive;font-size:18px;font-weight:700;color:#fff;text-decoration:none;display:flex;align-items:center;gap:8px}
+.nav-brand span{color:#A78BFA}
+.nav-links{display:flex;gap:8px}
+.nav-link{display:inline-flex;align-items:center;gap:5px;font-size:13px;font-weight:700;color:rgba(255,255,255,.75);text-decoration:none;padding:6px 12px;border-radius:8px;border:1px solid rgba(255,255,255,.18);transition:.2s}
+.nav-link:hover{background:rgba(255,255,255,.1);color:#fff}
+/* COACH */
+.coach-bar{width:100%;background:#fff;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #E2E8F0;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.coach-content{display:flex;align-items:center;gap:10px;flex:1}
+.coach-avatar{width:40px;height:40px;background:var(--purple-lt);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.coach-text{font-size:15px;font-weight:700;color:var(--navy);line-height:1.4;max-width:240px}
+.coach-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.level-badge{background:var(--purple-lt);color:var(--purple);padding:5px 12px;border-radius:100px;font-size:12px;font-weight:800;white-space:nowrap}
+.hint-btn{background:#FFFBEB;border:2px solid #FDE68A;color:#B45309;font-size:12px;font-weight:800;padding:5px 10px;border-radius:100px;cursor:pointer;display:none}
+.hint-btn:hover{background:#FEF3C7}
+/* FEEDBACK */
+.feedback-bar{padding:11px 20px;text-align:center;font-size:14px;font-weight:700;display:none;width:100%;animation:slideDown .3s ease;line-height:1.45}
+@keyframes slideDown{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+.fb-error{background:#FEF2F2;color:#DC2626;border-bottom:2px solid #FCA5A5}
+.fb-success{background:#D1FAE5;color:#059669;border-bottom:2px solid #6EE7B7}
+/* STARS */
+.score-bar{display:none;gap:4px;padding:8px 12px;justify-content:center;background:#fff;border-bottom:1px solid #E2E8F0}
+.score-star{font-size:18px;opacity:.2;transition:opacity .4s,transform .4s}
+.score-star.lit{opacity:1;transform:scale(1.15)}
+/* STEPS (6 for scam) */
+.steps-bar{display:none;align-items:center;padding:8px 16px;background:#fff;border-bottom:1px solid #E2E8F0;justify-content:center;gap:0}
+.step{width:24px;height:24px;border-radius:50%;border:2px solid #CBD5E1;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#94A3B8;background:#fff;transition:.35s;flex-shrink:0}
+.step.done{background:var(--success);border-color:var(--success);color:#fff}
+.step.active{background:var(--saffron);border-color:var(--saffron);color:#fff}
+.step-line{height:2px;background:#CBD5E1;width:16px;flex-shrink:0;transition:.35s}
+.step-line.done{background:var(--success)}
+/* PROGRESS BAR */
+.prog-wrap{width:100%;background:#E2E8F0;height:4px;display:none}
+.prog-fill{height:4px;background:linear-gradient(90deg,var(--purple),#EC4899);transition:width .5s ease}
+/* PHONE */
+.phone{background:var(--white);border-radius:44px;width:100%;max-width:370px;height:650px;margin:14px auto;border:10px solid #1A2940;overflow:hidden;position:relative;box-shadow:0 0 0 2px #334155,0 20px 40px -5px rgba(0,0,0,.25)}
+.phone::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:80px;height:20px;background:#1A2940;border-radius:0 0 14px 14px;z-index:50}
+.phone.shake{animation:shake .45s ease-in-out}
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:opacity .3s ease;overflow:hidden}
+.screen.active{opacity:1;pointer-events:auto}
+/* INTRO */
+#screen-intro{justify-content:center;align-items:center;background:var(--purple-lt)}
+.intro-icon{width:80px;height:80px;background:#fff;border-radius:50%;display:flex;justify-content:center;align-items:center;margin:0 auto 14px;font-size:38px;box-shadow:0 8px 20px rgba(0,0,0,.1);animation:pop .5s cubic-bezier(.34,1.56,.64,1)}
+@keyframes pop{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}
+.intro-title{font-family:'Baloo 2',cursive;font-size:24px;font-weight:800;color:var(--navy);margin-bottom:8px;text-align:center}
+.intro-desc{font-size:14px;color:var(--gray-dk);margin-bottom:14px;line-height:1.55;text-align:center;padding:0 8px}
+.scenario-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:16px;width:100%;padding:0 4px}
+.sc-card{background:#fff;border-radius:12px;padding:9px 6px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.sc-icon{font-size:20px}
+.sc-name{font-size:10px;font-weight:800;color:var(--navy);margin-top:4px;line-height:1.3}
+.btn{width:100%;padding:14px;background:var(--purple);color:#fff;border:none;border-radius:14px;font-family:'Baloo 2',cursive;font-size:16px;font-weight:700;cursor:pointer;transition:.2s;box-shadow:0 4px 12px rgba(124,58,237,.3)}
+.btn:hover{background:#6D28D9;transform:scale(1.02)}
+.btn:active{transform:scale(.97)}
+.btn-sm{font-size:14px;padding:11px}
+.btn-gray{background:#6B7280;box-shadow:none}
+.btn-ghost{background:var(--gray-lt);color:var(--gray-dk);box-shadow:none;margin-top:8px}
+/* SMS */
+.sms-top{background:#F9FAFB;padding:32px 14px 12px;display:flex;flex-direction:column;align-items:center;border-bottom:1px solid #E2E8F0;flex-shrink:0}
+.sms-avatar{width:48px;height:48px;background:#E2E8F0;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:5px}
+.sms-contact{font-size:15px;font-weight:800;color:var(--navy)}
+.sms-subtext{font-size:11px;color:var(--gray-md);margin-top:2px}
+.sms-body{flex:1;padding:14px;overflow-y:auto}
+.sms-bubble{background:#F1F5F9;padding:14px;border-radius:18px;border-top-left-radius:4px;font-size:15px;color:#000;line-height:1.65}
+.sms-link{color:#007AFF;text-decoration:underline}
+/* WHATSAPP */
+.wa-top{background:#075E54;color:#fff;padding:32px 14px 12px;display:flex;align-items:center;gap:10px;flex-shrink:0}
+.wa-back{font-size:18px;margin-right:2px}
+.wa-ava{width:38px;height:38px;border-radius:50%;background:#25D366;display:flex;align-items:center;justify-content:center;font-size:18px}
+.wa-info .wa-name{font-size:15px;font-weight:800}
+.wa-info .wa-sub{font-size:11px;opacity:.75}
+.wa-body{flex:1;padding:12px;background:#E5DDD5;overflow-y:auto;display:flex;flex-direction:column;gap:8px}
+.wa-msg{background:#fff;padding:12px;border-radius:10px;border-top-left-radius:2px;font-size:14px;line-height:1.65;max-width:92%;box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.wa-time{font-size:10px;color:#999;text-align:right;margin-top:4px}
+.wa-system{text-align:center;font-size:11px;color:#8C8C8C;background:rgba(255,255,255,.6);padding:4px 10px;border-radius:8px;align-self:center}
+/* FACEBOOK */
+.fb-top{background:#1877F2;color:#fff;padding:32px 14px 12px;font-size:20px;font-weight:700;flex-shrink:0}
+.fb-scroll{flex:1;overflow-y:auto;padding:12px}
+.fb-post{background:#fff;border-radius:10px;overflow:hidden;border:.5px solid #E2E8F0}
+.fb-post-header{padding:12px;display:flex;align-items:center;gap:9px}
+.fb-ava{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:19px;background:#E2E8F0;flex-shrink:0}
+.fb-name{font-weight:800;font-size:14px;color:var(--text)}
+.fb-time{font-size:11px;color:var(--gray-dk)}
+.fb-sponsored{font-size:10px;background:#EDE9FE;color:#5B21B6;padding:1px 6px;border-radius:3px;font-weight:800}
+.fb-content{padding:0 12px 12px;font-size:14px;line-height:1.65;color:var(--text)}
+.fb-img{margin:0 12px 12px;padding:16px;background:#FEF3C7;border:1px solid #FDE68A;border-radius:10px;text-align:center;font-size:15px;font-weight:800;color:#D97706}
+/* EMAIL */
+.em-top{background:#EA4335;color:#fff;padding:32px 14px 12px;font-size:18px;font-weight:600;flex-shrink:0}
+.em-scroll{flex:1;padding:14px;overflow-y:auto}
+.em-subj{font-size:18px;font-weight:700;margin-bottom:14px;color:var(--text);line-height:1.3}
+.em-from{display:flex;align-items:center;gap:10px;margin-bottom:14px;border-bottom:1px solid #E2E8F0;padding-bottom:12px}
+.em-ava{width:38px;height:38px;background:#F97316;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;flex-shrink:0}
+.em-from-name{font-weight:800;font-size:14px}
+.em-from-addr{font-size:11px;color:var(--gray-dk)}
+.em-body{font-size:14px;line-height:1.7;color:var(--text)}
+.em-link{color:#DC2626;font-weight:700}
+/* UPI SCENARIO */
+.upi-top{background:#5B21B6;color:#fff;padding:32px 14px 12px;display:flex;align-items:center;gap:10px;flex-shrink:0}
+.upi-logo{font-size:22px}
+.upi-title{font-size:17px;font-weight:800}
+.upi-body{flex:1;padding:14px;overflow-y:auto;display:flex;flex-direction:column;gap:12px}
+.upi-card{background:#fff;border-radius:14px;padding:16px;border:1.5px solid #E2E8F0}
+.upi-amount{font-size:32px;font-weight:800;color:var(--navy);text-align:center;margin-bottom:4px}
+.upi-to{text-align:center;font-size:14px;color:var(--gray-dk);margin-bottom:12px}
+.upi-to strong{color:var(--navy)}
+.upi-note{font-size:13px;color:var(--gray-dk);background:#F8FAFC;padding:10px;border-radius:8px;line-height:1.6}
+.upi-warning{background:#FEF2F2;border-radius:10px;padding:12px;font-size:13px;color:#DC2626;font-weight:700;line-height:1.5}
+/* CALL */
+.call-top{background:#1F2937;padding:32px 14px 14px;display:flex;flex-direction:column;align-items:center;flex-shrink:0}
+.call-ava{width:72px;height:72px;border-radius:50%;background:#374151;display:flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:10px}
+.call-name{font-size:20px;font-weight:800;color:#fff;margin-bottom:4px}
+.call-sub{font-size:13px;color:#9CA3AF}
+.call-body{flex:1;background:#111827;padding:14px;overflow-y:auto;display:flex;flex-direction:column;gap:10px}
+.call-bubble{background:#1F2937;border-radius:12px;padding:12px;font-size:14px;color:#E5E7EB;line-height:1.6}
+.call-bubble.caller{color:#FDE68A}
+/* CHOICES */
+.choice-sheet{background:#F8FAFC;padding:14px;border-top:1.5px solid #E2E8F0;display:flex;flex-direction:column;gap:8px;flex-shrink:0}
+.choice-label{font-size:12px;font-weight:800;color:var(--gray-md);text-transform:uppercase;letter-spacing:1px;margin-bottom:2px}
+.choice-btn{padding:13px 14px;border-radius:13px;font-size:14px;font-weight:700;text-align:left;cursor:pointer;border:2px solid #E2E8F0;background:var(--white);color:var(--navy);transition:all .2s;line-height:1.4;font-family:'Nunito',sans-serif}
+.choice-btn:hover{transform:scale(1.01);border-color:#C4B5FD}
+.choice-btn.danger-choice{border-color:#FCA5A5;background:#FEF2F2;color:#DC2626}
+.choice-btn.safe-choice{border-color:#86EFAC;background:#F0FDF4;color:#166534}
+.choice-btn:disabled{opacity:.5;pointer-events:none}
+/* CLUE HIGHLIGHT */
+.clue-highlight{background:#FEF08A;border-radius:3px;cursor:help;padding:0 2px}
+.clue-highlight.tapped{background:#BBF7D0;color:#065F46;font-weight:700}
+/* MODALS */
+.overlay{position:absolute;inset:0;background:rgba(15,23,42,.7);z-index:30;display:flex;justify-content:center;align-items:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .3s}
+.overlay.active{opacity:1;pointer-events:auto}
+.modal-card{background:#fff;padding:22px 18px;border-radius:22px;text-align:center;width:100%;max-width:290px;box-shadow:0 20px 40px rgba(0,0,0,.2);transform:scale(.9);transition:transform .3s}
+.overlay.active .modal-card{transform:scale(1)}
+.modal-emoji{font-size:46px;margin-bottom:10px;display:block;animation:pop .4s cubic-bezier(.34,1.56,.64,1)}
+.modal-title{font-family:'Baloo 2',cursive;font-size:20px;font-weight:800;color:var(--navy);margin-bottom:6px}
+.modal-msg{font-size:14px;color:var(--gray-dk);line-height:1.5}
+.modal-score{font-size:17px;font-weight:800;color:var(--purple);margin-top:8px}
+.explain-box{background:var(--purple-lt);border-radius:10px;padding:12px;margin-top:10px;text-align:left;font-size:13px;color:var(--text);line-height:1.6;border-left:4px solid var(--purple)}
+.red-flags{text-align:left;padding:8px 0;display:flex;flex-direction:column;gap:4px}
+.red-flag{font-size:12px;color:#DC2626;font-weight:700;display:flex;align-items:flex-start;gap:5px;line-height:1.4}
+.modal-final-score{font-size:22px;font-weight:800;color:#D97706;margin:10px 0}
+.modal-actions{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.confetti{position:absolute;top:0;left:0;right:0;height:100%;pointer-events:none;z-index:35;overflow:hidden}
+.cp{position:absolute;width:9px;height:9px;border-radius:2px;animation:fall 1.3s ease-in forwards}
+@keyframes fall{0%{opacity:1;transform:translateY(-20px) rotate(0)}100%{opacity:0;transform:translateY(700px) rotate(720deg)}}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a class="nav-brand" href="../index.html">📱 Phone<span>Saathi</span></a>
+  <div class="nav-links">
+    <a class="nav-link" href="../games.html">← All Games</a>
+    <a class="nav-link" href="../dashboard.html">🏠 Home</a>
+  </div>
+</div>
+
+<div class="coach-bar">
+  <div class="coach-content">
+    <div class="coach-avatar">🛡️</div>
+    <div class="coach-text" id="coach-text">Ready to become a scam detective?</div>
+  </div>
+  <div class="coach-right">
+    <button class="hint-btn" id="hint-btn" onclick="showHint()">💡 Hint</button>
+    <div class="level-badge" id="level-badge">Intro</div>
+  </div>
+</div>
+<div class="feedback-bar" id="feedback"></div>
+<div class="score-bar" id="score-bar">
+  <span class="score-star lit" id="s1">⭐</span><span class="score-star lit" id="s2">⭐</span>
+  <span class="score-star lit" id="s3">⭐</span><span class="score-star lit" id="s4">⭐</span>
+  <span class="score-star lit" id="s5">⭐</span><span class="score-star lit" id="s6">⭐</span>
+  <span class="score-star lit" id="s7">⭐</span><span class="score-star lit" id="s8">⭐</span>
+  <span class="score-star lit" id="s9">⭐</span><span class="score-star lit" id="s10">⭐</span>
+</div>
+<div class="steps-bar" id="steps-bar">
+  <div class="step active" id="step1">1</div><div class="step-line" id="line1"></div>
+  <div class="step" id="step2">2</div><div class="step-line" id="line2"></div>
+  <div class="step" id="step3">3</div><div class="step-line" id="line3"></div>
+  <div class="step" id="step4">4</div><div class="step-line" id="line4"></div>
+  <div class="step" id="step5">5</div><div class="step-line" id="line5"></div>
+  <div class="step" id="step6">6</div>
+</div>
+<div class="prog-wrap" id="prog-wrap"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+
+<div class="phone" id="phone">
+
+  <!-- INTRO -->
+  <div class="screen active" id="screen-intro">
+    <div style="padding:20px 18px;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;background:var(--purple-lt)">
+      <div class="intro-icon">🛡️</div>
+      <div class="intro-title">Spot the Scam</div>
+      <div class="intro-desc">6 real-life scam scenarios. Learn to protect yourself and your family from online fraud!</div>
+      <div class="scenario-grid">
+        <div class="sc-card"><div class="sc-icon">📱</div><div class="sc-name">Fake SMS</div></div>
+        <div class="sc-card"><div class="sc-icon">💬</div><div class="sc-name">WhatsApp Trick</div></div>
+        <div class="sc-card"><div class="sc-icon">👥</div><div class="sc-name">Facebook Scam</div></div>
+        <div class="sc-card"><div class="sc-icon">📧</div><div class="sc-name">Phishing Email</div></div>
+        <div class="sc-card"><div class="sc-icon">💸</div><div class="sc-name">UPI Trick</div></div>
+        <div class="sc-card"><div class="sc-icon">📞</div><div class="sc-name">Phone Fraud</div></div>
+      </div>
+      <button class="btn" onclick="startGame()">Start Game ▶</button>
+      <button class="btn btn-ghost" onclick="window.location.href='../games.html'">← Back to Games</button>
+    </div>
+  </div>
+
+  <!-- SCENARIO 1: SMS -->
+  <div class="screen" id="screen-sms">
+    <div class="sms-top">
+      <div class="sms-avatar">👤</div>
+      <div class="sms-contact">Unknown (+91 98127 43210)</div>
+      <div class="sms-subtext">⚠️ Not in your contacts</div>
+    </div>
+    <div class="sms-body">
+      <div class="sms-bubble">
+        <strong>URGENT!</strong> Your <span class="clue-highlight">Aadhaar card</span> is linked to illegal activity. Your <span class="clue-highlight">bank account will be frozen</span> in <span class="clue-highlight">2 hours</span>!<br><br>
+        To stop this, <span class="clue-highlight">call +91 99999 00000</span> immediately or click:<br><br>
+        <span class="clue-highlight sms-link">http://aadhaar-verify-now.xyz/unlock</span>
+      </div>
+    </div>
+    <div class="choice-sheet">
+      <div class="choice-label">What do you do?</div>
+      <div class="choice-btn danger-choice" onclick="answer(1,false)">😨 Call the number — sounds serious!</div>
+      <div class="choice-btn safe-choice" onclick="answer(1,true)">🚫 Ignore & delete — this is a scam!</div>
+      <div class="choice-btn" onclick="answer(1,false)">🔗 Click the link to check my account</div>
+    </div>
+  </div>
+
+  <!-- SCENARIO 2: WHATSAPP -->
+  <div class="screen" id="screen-wa">
+    <div class="wa-top">
+      <span class="wa-back">◀</span>
+      <div class="wa-ava">👨</div>
+      <div class="wa-info"><div class="wa-name">Raju (Son)</div><div class="wa-sub">Online</div></div>
+    </div>
+    <div class="wa-body">
+      <div class="wa-system">Messages and calls are end-to-end encrypted</div>
+      <div class="wa-msg">
+        <span class="clue-highlight">Mama, this is Raju.</span> I am in <span class="clue-highlight">serious trouble</span>! I had an accident at the hospital.<br><br>
+        <span class="clue-highlight">I am calling from a new number</span> because my phone broke. Please <span class="clue-highlight">send ₹15,000</span> urgently to this UPI: <strong>help9922@paytm</strong><br><br>
+        Please <span class="clue-highlight">don't tell anyone</span>. I am okay but need money fast!
+        <div class="wa-time">11:43 AM ✓</div>
+      </div>
+    </div>
+    <div class="choice-sheet">
+      <div class="choice-label">What do you do?</div>
+      <div class="choice-btn danger-choice" onclick="answer(2,false)">💸 Send ₹15,000 — Raju needs help!</div>
+      <div class="choice-btn safe-choice" onclick="answer(2,true)">📞 Call Raju's real number first to verify!</div>
+      <div class="choice-btn" onclick="answer(2,false)">💬 Reply asking for more details</div>
+    </div>
+  </div>
+
+  <!-- SCENARIO 3: FACEBOOK -->
+  <div class="screen" id="screen-fb">
+    <div class="fb-top">facebook</div>
+    <div class="fb-scroll">
+      <div class="fb-post">
+        <div class="fb-post-header">
+          <div class="fb-ava">💊</div>
+          <div>
+            <div class="fb-name">MiracleMeds India <span class="fb-sponsored">Sponsored</span></div>
+            <div class="fb-time">Just now · 🌐</div>
+          </div>
+        </div>
+        <div class="fb-content">
+          🚨 <span class="clue-highlight">DOCTORS DON'T WANT YOU TO KNOW THIS!</span> 🚨<br><br>
+          Our magic powder <span class="clue-highlight">cures diabetes, joint pain AND heart disease</span> in just <span class="clue-highlight">7 days</span>! No side effects. <span class="clue-highlight">100% guaranteed</span>.<br><br>
+          Only <span class="clue-highlight">₹2,499 today</span>. 10,000 people cured! <strong>Book now before stock ends!</strong>
+        </div>
+        <div class="fb-img">✨ MIRACLE CURE POWDER ✨<br><small>Order now! Limited stock!</small></div>
+      </div>
+    </div>
+    <div class="choice-sheet">
+      <div class="choice-label">What do you do?</div>
+      <div class="choice-btn danger-choice" onclick="answer(3,false)">💊 Order it — 10,000 people can't be wrong!</div>
+      <div class="choice-btn safe-choice" onclick="answer(3,true)">🛑 Report this post — it's fake and dangerous!</div>
+      <div class="choice-btn" onclick="answer(3,false)">📤 Share with family — they might need this!</div>
+    </div>
+  </div>
+
+  <!-- SCENARIO 4: PHISHING EMAIL -->
+  <div class="screen" id="screen-email">
+    <div class="em-top">Gmail</div>
+    <div class="em-scroll">
+      <div class="em-subj">⚠️ Your SBI Account Has Been Suspended</div>
+      <div class="em-from">
+        <div class="em-ava">S</div>
+        <div>
+          <div class="em-from-name">SBI Customer Care</div>
+          <div class="em-from-addr"><span class="clue-highlight">alerts@sbi-account-verify.com</span></div>
+        </div>
+      </div>
+      <div class="em-body">
+        Dear Valued Customer,<br><br>
+        We detected <span class="clue-highlight">suspicious activity</span> on your account. Your account has been <strong>temporarily suspended</strong>.<br><br>
+        Verify within <span class="clue-highlight">24 hours</span> or your account will be closed and <span class="clue-highlight">₹50,000 deducted as penalty</span>.<br><br>
+        Click to verify: <span class="clue-highlight em-link">http://sbi-account-verify.com/login</span>
+      </div>
+    </div>
+    <div class="choice-sheet">
+      <div class="choice-label">How do you respond?</div>
+      <div class="choice-btn danger-choice" onclick="answer(4,false)">😰 Click the link — I don't want a penalty!</div>
+      <div class="choice-btn safe-choice" onclick="answer(4,true)">🚫 Delete the email — SBI never emails like this!</div>
+      <div class="choice-btn" onclick="answer(4,false)">📞 Call the number in the email to confirm</div>
+    </div>
+  </div>
+
+  <!-- SCENARIO 5: UPI SCAM -->
+  <div class="screen" id="screen-upi">
+    <div class="upi-top">
+      <span class="upi-logo">💸</span>
+      <div class="upi-title">Payment Request</div>
+    </div>
+    <div class="upi-body">
+      <div style="font-size:14px;color:var(--gray-dk);font-weight:700">You received a UPI collect request from a stranger:</div>
+      <div class="upi-card">
+        <div class="upi-amount">₹10,000</div>
+        <div class="upi-to">From: <strong>prize.winner2024@upi</strong></div>
+        <div class="upi-note">
+          🎉 Congratulations! <span class="clue-highlight">To RECEIVE your prize of ₹1,00,000</span>, first <span class="clue-highlight">pay ₹10,000 as a processing fee</span>. Amount will be <span class="clue-highlight">refunded with prize immediately</span>. <span class="clue-highlight">Offer valid for 10 minutes only!</span>
+        </div>
+      </div>
+      <div class="upi-warning">⚠️ Remember: On UPI, "Pay" means money LEAVES your account!</div>
+    </div>
+    <div class="choice-sheet">
+      <div class="choice-label">What do you do?</div>
+      <div class="choice-btn danger-choice" onclick="answer(5,false)">💰 Pay ₹10,000 to receive ₹1 lakh — great deal!</div>
+      <div class="choice-btn safe-choice" onclick="answer(5,true)">🚫 Decline and block — this is an advance-fee scam!</div>
+      <div class="choice-btn" onclick="answer(5,false)">📞 Call the person to verify first</div>
+    </div>
+  </div>
+
+  <!-- SCENARIO 6: PHONE FRAUD -->
+  <div class="screen" id="screen-call">
+    <div class="call-top">
+      <div class="call-ava">👮</div>
+      <div class="call-name">Unknown Caller</div>
+      <div class="call-sub">Incoming call</div>
+    </div>
+    <div class="call-body">
+      <div class="call-bubble caller"><strong>"Caller" says:</strong></div>
+      <div class="call-bubble">"Hello, I am calling from <span class="clue-highlight">CBI Delhi</span>. <span class="clue-highlight">There is a warrant for your arrest</span> because your Aadhaar was used in a drug case.<br><br>
+      But you can settle this <span class="clue-highlight">privately and secretly</span> by transferring ₹25,000 to our account now. <span class="clue-highlight">Do NOT tell your family</span> — they will panic."</div>
+      <div class="call-bubble caller">You're scared. What do you do?</div>
+    </div>
+    <div class="choice-sheet">
+      <div class="choice-label">Your response?</div>
+      <div class="choice-btn danger-choice" onclick="answer(6,false)">😨 Transfer ₹25,000 — I don't want to be arrested!</div>
+      <div class="choice-btn safe-choice" onclick="answer(6,true)">📵 Hang up immediately — CBI never calls like this!</div>
+      <div class="choice-btn" onclick="answer(6,false)">🗣 Ask the caller for more time</div>
+    </div>
+  </div>
+
+  <!-- EXPLAIN MODAL -->
+  <div class="overlay" id="explain-modal">
+    <div class="modal-card">
+      <span class="modal-emoji" id="exp-emoji">✅</span>
+      <div class="modal-title" id="exp-title">You spotted it!</div>
+      <div class="modal-msg" id="exp-msg"></div>
+      <div class="modal-score" id="exp-score">+1 ⭐ kept</div>
+      <div class="explain-box">
+        <strong style="font-size:13px;color:#5B21B6">🔍 Red flags in this scam:</strong>
+        <div class="red-flags" id="exp-flags"></div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-sm" onclick="continueGame()">Continue →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FINISH MODAL -->
+  <div class="overlay" id="finish-modal">
+    <div class="confetti" id="confetti"></div>
+    <div class="modal-card">
+      <span class="modal-emoji">🏆</span>
+      <div class="modal-title">Scam Detective!</div>
+      <div class="modal-msg">You completed all 6 challenges! You can now protect yourself and your family from online fraud.</div>
+      <div class="modal-final-score" id="final-score"></div>
+      <div style="background:var(--purple-lt);border-radius:10px;padding:10px;margin:6px 0;font-size:14px;font-weight:800;color:#5B21B6">🥇 Badge earned: Fraud Fighter!</div>
+      <div class="modal-actions">
+        <button class="btn btn-sm" onclick="window.location.href='../games.html'">Back to Games</button>
+        <button class="btn btn-sm btn-gray" onclick="location.reload()">Play Again</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /phone -->
+
+<script>
+const courseId="scam",TOTAL=6;
+let scenario=0,score=10,pending=0;
+const coachEl=document.getElementById("coach-text"),badgeEl=document.getElementById("level-badge"),fb=document.getElementById("feedback"),phone=document.getElementById("phone");
+
+const SCENARIOS=[
+  {screen:"screen-sms", coach:"Scenario 1 — Read this SMS carefully. Is it a scam?"},
+  {screen:"screen-wa",  coach:"Scenario 2 — A WhatsApp message from 'your son'. What do you do?"},
+  {screen:"screen-fb",  coach:"Scenario 3 — You see this Facebook post. Trust it or report it?"},
+  {screen:"screen-email",coach:"Scenario 4 — An email from 'SBI'. How do you respond?"},
+  {screen:"screen-upi", coach:"Scenario 5 — A UPI payment request arrived. What do you do?"},
+  {screen:"screen-call",coach:"Scenario 6 — Someone is calling claiming to be CBI!"}
+];
+const EXPLANATIONS={
+  1:{correct:{emoji:"🎉",title:"You spotted it!",msg:"That was a classic Aadhaar scam SMS! You were right to delete it.",flags:["Unknown number not in your contacts","Urgent threats about Aadhaar — scare tactic","Website ends in .xyz — no real gov site does this","Real UIDAI/banks never SMS links like this"]},
+     wrong:{emoji:"⚠️",title:"That was a scam!",msg:"Calling or clicking would have connected you to fraudsters who steal your details.",flags:["Unknown number — never call back scam numbers","Urgent threats are designed to panic you","The .xyz website is fake"]},
+     hint:"Look at the website link — it ends in .xyz. No real government website ever uses .xyz. Real agencies never threaten you over SMS."},
+  2:{correct:{emoji:"🎉",title:"Smart thinking!",msg:"Always call the real number to verify before sending any money, even to family!",flags:["'New number' because phone broke — classic excuse","'Don't tell anyone' — real emergencies are never secret","Hospitals call directly, not via WhatsApp","Scammers create panic so you don't think clearly"]},
+     wrong:{emoji:"😰",title:"That was a scam!",msg:"The real Raju was fine! Scammers impersonate family members. Always call the person's known number.",flags:["'New number' is always suspicious","Never send money without calling the actual person","'Don't tell family' means someone is trying to isolate you"]},
+     hint:"The message says 'calling from a new number' and 'don't tell anyone.' Real family members never ask you to keep emergencies secret. Always call Raju's real number first."},
+  3:{correct:{emoji:"🎉",title:"Excellent!",msg:"No medicine can cure diabetes, heart disease AND joint pain together. This was dangerous fake medicine.",flags:["Sponsored post from unknown page","Impossible claims — cures multiple serious diseases","'Doctors don't want you to know' is a common scam phrase","'Limited stock' creates false urgency"]},
+     wrong:{emoji:"⚠️",title:"That was fake!",msg:"This post was selling harmful fake medicines. No powder can cure serious diseases. Always consult a real doctor.",flags:["Impossible cure claims for multiple diseases","Unknown 'Sponsored' page — not a real pharmacy","Real medicines require a doctor's prescription"]},
+     hint:"Ask yourself: if a powder could cure diabetes AND heart disease, would doctors keep it secret? Any post making impossible health claims is almost certainly fake."},
+  4:{correct:{emoji:"🎉",title:"Perfect!",msg:"The email sender was NOT sbi.co.in — it was a fake domain designed to look real.",flags:["Sender: sbi-account-verify.com (not sbi.co.in)","Threatening penalty of ₹50,000 to create panic","Fake link not from sbi.co.in","Real SBI never threatens penalties over email"]},
+     wrong:{emoji:"🚨",title:"That was phishing!",msg:"Clicking that link would have taken you to a fake SBI page to steal your password and OTP.",flags:["Real SBI email is always @sbi.co.in","'sbi-account-verify.com' is a completely different website","Banks never threaten ₹50,000 penalty via email"]},
+     hint:"Look very carefully at the email address. Real SBI emails always end in @sbi.co.in. This one says @sbi-account-verify.com — that's a totally different, fake website!"},
+  5:{correct:{emoji:"🎉",title:"Well done!",msg:"You cannot receive money by paying money first. This is called an advance-fee scam!",flags:["You must PAY to receive a prize — never real","Unknown person — you didn't enter any lottery","'10 minutes only' — extreme urgency is a red flag","No real prize requires a 'processing fee' first"]},
+     wrong:{emoji:"💸",title:"That was a scam!",msg:"Once you pay ₹10,000, the fraudster disappears. You lose your money and get no prize.",flags:["Legitimate prizes are never conditional on upfront payment","You cannot receive more money by sending money first","Extreme time limit is designed to stop you thinking"]},
+     hint:"Golden rule: You NEVER have to pay money to RECEIVE a prize. If someone asks you to pay first to get a reward, it is 100% a scam. Always."},
+  6:{correct:{emoji:"🎉",title:"Brave decision!",msg:"CBI, police, and courts NEVER call asking for money over the phone!",flags:["'CBI' calling on a private mobile — always fake","Asking for secret payment — real agencies never do this","'Don't tell family' is an isolation tactic","Real legal issues go through official letters and courts"]},
+     wrong:{emoji:"🚨",title:"That was phone fraud!",msg:"This is called a 'Digital Arrest' scam. Real CBI/police never call asking for money.",flags:["Government agencies serve warrants in writing, never by phone","'Don't tell family' means they are trying to control you","Immediate payment demand is the key fraud signal","Hang up and call your local police (100)"]},
+     hint:"Real CBI or police NEVER call private citizens asking for secret payments to avoid arrest. If you get such a call, hang up immediately and call your local police station (100)."}
+};
+
+function setStep(n){
+  document.getElementById("steps-bar").style.display="flex";
+  for(let i=1;i<=TOTAL;i++){
+    document.getElementById("step"+i).className="step"+(i<n?" done":i===n?" active":"");
+    const l=document.getElementById("line"+i);
+    if(l) l.className="step-line"+(i<n?" done":"");
+  }
+  document.getElementById("prog-wrap").style.display="block";
+  document.getElementById("prog-fill").style.width=((n-1)/TOTAL*100)+"%";
+}
+function fb_(msg,ok=false){
+  fb.textContent=msg; fb.className="feedback-bar "+(ok?"fb-success":"fb-error"); fb.style.display="block";
+  clearTimeout(fb._t); fb._t=setTimeout(()=>fb.style.display="none",4500);
+}
+function updateStars(){for(let i=1;i<=10;i++)document.getElementById("s"+i).classList.toggle("lit",i<=score);}
+function show(id){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));document.getElementById(id).classList.add("active");}
+
+window.startGame=function(){
+  scenario=1; document.getElementById("score-bar").style.display="flex";
+  document.getElementById("hint-btn").style.display="inline-block";
+  setStep(1); badgeEl.textContent="Scenario 1 of 6"; loadScenario(1); saveP(0);
+};
+function loadScenario(n){
+  const s=SCENARIOS[n-1]; show(s.screen); coachEl.textContent=s.coach; setStep(n);
+  badgeEl.textContent="Scenario "+n+" of "+TOTAL;
+  document.querySelectorAll("#"+s.screen+" .choice-btn").forEach(b=>b.disabled=false);
+}
+window.answer=function(n,correct){
+  pending=n;
+  document.querySelectorAll("#"+SCENARIOS[n-1].screen+" .choice-btn").forEach(b=>b.disabled=true);
+  const e=EXPLANATIONS[n][correct?"correct":"wrong"];
+  if(!correct){
+    score=Math.max(0,score-1); updateStars();
+    phone.classList.remove("shake"); void phone.offsetWidth; phone.classList.add("shake");
+  }
+  document.getElementById("exp-emoji").textContent=e.emoji;
+  document.getElementById("exp-title").textContent=e.title;
+  document.getElementById("exp-msg").textContent=e.msg;
+  document.getElementById("exp-score").textContent=correct?"✅ Star kept!":"❌ -1 ⭐";
+  document.getElementById("exp-score").style.color=correct?"#059669":"#DC2626";
+  document.getElementById("exp-flags").innerHTML=e.flags.map(f=>`<div class="red-flag">🚩 <span>${f}</span></div>`).join("");
+  saveP(n);
+  setTimeout(()=>document.getElementById("explain-modal").classList.add("active"),300);
+};
+window.continueGame=function(){
+  document.getElementById("explain-modal").classList.remove("active");
+  if(pending<TOTAL){scenario=pending+1;loadScenario(scenario);}
+  else finishGame();
+};
+function finishGame(){
+  document.getElementById("prog-fill").style.width="100%";
+  launchConfetti();
+  const xp=score*10;
+  document.getElementById("final-score").textContent="⭐ Score: "+xp+" / 100";
+  saveP(TOTAL,xp);
+  setTimeout(()=>document.getElementById("finish-modal").classList.add("active"),700);
+}
+const HINTS={1:EXPLANATIONS[1].hint,2:EXPLANATIONS[2].hint,3:EXPLANATIONS[3].hint,4:EXPLANATIONS[4].hint,5:EXPLANATIONS[5].hint,6:EXPLANATIONS[6].hint};
+window.showHint=function(){if(HINTS[scenario])fb_("💡 "+HINTS[scenario],true);};
+function launchConfetti(){
+  const cols=["#7C3AED","#059669","#F59E0B","#2563EB","#EC4899","#EF4444"],c=document.getElementById("confetti");c.innerHTML="";
+  for(let i=0;i<40;i++){const p=document.createElement("div");p.className="cp";p.style.left=Math.random()*100+"%";p.style.background=cols[Math.floor(Math.random()*cols.length)];p.style.animationDelay=Math.random()*.9+"s";p.style.animationDuration=(.7+Math.random()*.9)+"s";p.style.borderRadius=Math.random()>.5?"50%":"3px";c.appendChild(p);}
+}
+function saveP(lvl,xp){
+  try{
+    let m=JSON.parse(localStorage.getItem("dlp_sync")||'{"gamesProgress":{},"scores":{},"achievements":[]}');
+    m.gamesProgress[courseId]=Math.max(m.gamesProgress[courseId]||0,lvl);
+    if(xp!==undefined)m.scores[courseId]=Math.max(m.scores[courseId]||0,xp);
+    if(!m.achievements.includes("first_game"))m.achievements.push("first_game");
+    if(lvl>=TOTAL){if(!m.achievements.includes("master_"+courseId))m.achievements.push("master_"+courseId);if(!m.achievements.includes("fraud_fighter"))m.achievements.push("fraud_fighter");}
+    localStorage.setItem("dlp_sync",JSON.stringify(m));
+    (async()=>{try{const{auth,db}=await import("../firebase.js");const{onAuthStateChanged}=await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js");const{doc,setDoc}=await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");onAuthStateChanged(auth,async u=>{if(u)try{await setDoc(doc(db,"users",u.uid),m,{merge:true});}catch(e){}});}catch(e){}})();
+  }catch(e){}
+}
+</script>
+</body>
+</html>

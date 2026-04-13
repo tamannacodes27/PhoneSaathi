@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phone-Saathi — Email Expert</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Hind:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --gmail:#EA4335;--navy:#1A2940;--bg:#F5F7FA;--white:#FFFFFF;
+  --gray-lt:#F1F5F9;--gray-md:#94A3B8;--gray-dk:#475569;
+  --text:#1A2940;--primary:#2563EB;--success:#059669;--warn:#D97706;
+  --xp:#7C3AED;
+}
+body{font-family:'Hind',sans-serif;background:var(--bg);display:flex;flex-direction:column;align-items:center;min-height:100vh}
+
+.top-bar{width:100%;background:var(--navy);padding:0 20px;display:flex;align-items:center;justify-content:space-between;height:56px;box-shadow:0 2px 10px rgba(0,0,0,0.2)}
+.nav-brand{font-family:'Baloo 2',cursive;font-size:18px;font-weight:700;color:white;text-decoration:none;display:flex;align-items:center;gap:8px}
+.nav-brand span{color:#FCA5A5}
+.nav-links{display:flex;gap:8px}
+.nav-link{display:inline-flex;align-items:center;gap:5px;font-size:13px;font-weight:600;color:rgba(255,255,255,0.75);text-decoration:none;padding:6px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.15);transition:0.2s}
+.nav-link:hover{background:rgba(255,255,255,0.1);color:white}
+
+.coach-bar{width:100%;background:var(--white);padding:12px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #E2E8F0;gap:10px}
+.coach-content{display:flex;align-items:center;gap:10px;flex:1}
+.coach-avatar{width:36px;height:36px;background:#FEF2F2;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.coach-text{font-size:15px;font-weight:600;color:var(--navy);flex:1;line-height:1.35}
+.coach-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.xp-badge{background:#F5F3FF;color:#5B21B6;padding:5px 11px;border-radius:100px;font-size:13px;font-weight:700;white-space:nowrap}
+.hint-btn{background:#FFFBEB;border:2px solid #FDE68A;color:#B45309;font-size:13px;font-weight:700;padding:5px 11px;border-radius:100px;cursor:pointer;transition:0.2s}
+.hint-btn:hover{background:#FEF3C7}
+
+.feedback-bar{padding:12px 20px;text-align:center;font-size:15px;font-weight:600;display:none;width:100%;line-height:1.5}
+.feedback-error{background:#FEF2F2;color:#DC2626;border-bottom:2px solid #FCA5A5}
+.feedback-success{background:#D1FAE5;color:#059669;border-bottom:2px solid #6EE7B7}
+
+.progress-wrap{width:100%;background:#E2E8F0;height:5px;display:none}
+.progress-fill{height:5px;background:linear-gradient(90deg,#EA4335,#D97706);transition:width 0.5s ease}
+
+.timer-bar{width:100%;background:#FFF7ED;border-bottom:2px solid #FED7AA;padding:8px 20px;display:none;align-items:center;gap:10px}
+.timer-label{font-size:13px;font-weight:700;color:#92400E}
+.timer-track{flex:1;height:8px;background:#FED7AA;border-radius:4px;overflow:hidden}
+.timer-fill{height:8px;background:#EA4335;transition:width 0.1s linear;border-radius:4px}
+.timer-count{font-size:14px;font-weight:800;color:#DC2626;min-width:30px;text-align:right}
+
+.phone{background:var(--white);border-radius:44px;width:100%;max-width:370px;height:660px;margin:16px auto;border:10px solid #1A2940;overflow:hidden;position:relative;box-shadow:0 0 0 2px #334155,0 20px 40px -5px rgba(0,0,0,0.25)}
+.phone::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:80px;height:20px;background:#1A2940;border-radius:0 0 14px 14px;z-index:50}
+.phone.shake{animation:shake 0.4s ease-in-out}
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:opacity 0.3s ease;overflow:hidden}
+.screen.active{opacity:1;pointer-events:auto}
+
+/* ── XP POPUP ── */
+.xp-pop{position:absolute;top:60px;right:20px;background:#7C3AED;color:white;font-family:'Baloo 2',cursive;font-size:17px;font-weight:800;padding:8px 16px;border-radius:100px;z-index:60;opacity:0;pointer-events:none;transform:translateY(0)}
+.xp-pop.fly{animation:xpFly 1.2s ease-out forwards}
+@keyframes xpFly{0%{opacity:1;transform:translateY(0)}80%{opacity:1;transform:translateY(-40px)}100%{opacity:0;transform:translateY(-60px)}}
+
+/* ── STREAK ── */
+.streak-pop{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(251,191,36,0.95);color:#78350F;font-family:'Baloo 2',cursive;font-size:20px;font-weight:800;padding:12px 24px;border-radius:16px;z-index:70;text-align:center;display:none}
+
+/* ── INTRO ── */
+#screen-intro{padding:24px;text-align:center;justify-content:center;align-items:center;background:#FEF2F2}
+.intro-icon{width:80px;height:80px;background:white;border-radius:50%;display:flex;justify-content:center;align-items:center;margin:0 auto 16px;font-size:40px;box-shadow:0 8px 20px rgba(0,0,0,0.1);animation:pop 0.5s cubic-bezier(0.34,1.56,0.64,1)}
+@keyframes pop{from{transform:scale(0.5);opacity:0}to{transform:scale(1);opacity:1}}
+.intro-title{font-family:'Baloo 2',cursive;font-size:26px;font-weight:800;color:var(--navy);margin-bottom:8px}
+.intro-desc{font-size:14px;color:var(--gray-dk);margin-bottom:14px;line-height:1.55}
+.level-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:18px}
+.level-card{background:white;border-radius:12px;padding:10px 8px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+.level-card .lc-icon{font-size:22px}
+.level-card .lc-name{font-size:11px;font-weight:700;color:var(--navy);margin-top:4px}
+.level-card .lc-xp{font-size:10px;color:var(--xp);font-weight:600}
+.btn{width:100%;padding:14px;background:var(--gmail);color:white;border:none;border-radius:14px;font-family:'Baloo 2',cursive;font-size:17px;font-weight:700;cursor:pointer;transition:all 0.2s;box-shadow:0 4px 12px rgba(234,67,53,0.3)}
+.btn:hover{background:#C62828;transform:scale(1.02)}
+.btn:active{transform:scale(0.97)}
+.btn-blue{background:var(--primary);box-shadow:0 4px 12px rgba(37,99,235,0.3)}
+.btn-green{background:var(--success);box-shadow:0 4px 12px rgba(5,150,105,0.3)}
+.btn-sm{font-size:14px;padding:11px}
+
+/* ── INBOX ── */
+.gmail-top{background:white;padding:30px 14px 10px;border-bottom:1px solid #E2E8F0;display:flex;align-items:center;gap:10px}
+.gmail-search{flex:1;background:#F1F5F9;border-radius:24px;padding:9px 14px;color:var(--gray-dk);display:flex;align-items:center;gap:7px;font-size:14px}
+.gmail-avatar{width:32px;height:32px;background:var(--primary);color:white;border-radius:50%;display:flex;justify-content:center;align-items:center;font-weight:700;font-size:13px}
+.section-label{font-size:12px;font-weight:700;color:var(--gray-md);text-transform:uppercase;letter-spacing:1px;padding:10px 14px 5px}
+.email-row{padding:12px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:background 0.2s;border-bottom:1px solid #F1F5F9;position:relative}
+.email-row:active{background:#F8FAFC}
+.unread-dot{width:8px;height:8px;border-radius:50%;background:#EA4335;position:absolute;left:6px;top:50%;transform:translateY(-50%)}
+.sender-circle{width:40px;height:40px;border-radius:50%;display:flex;justify-content:center;align-items:center;color:white;font-size:16px;font-weight:700;flex-shrink:0}
+.email-info{flex:1;min-width:0}
+.email-sender{font-size:15px;font-weight:700;color:var(--text)}
+.email-subject{font-size:13px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.email-preview{font-size:12px;color:var(--gray-dk);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.spam-tag{background:#FEF3C7;color:#92400E;font-size:10px;font-weight:700;padding:2px 7px;border-radius:100px;flex-shrink:0}
+.danger-tag{background:#FEF2F2;color:#DC2626;font-size:10px;font-weight:700;padding:2px 7px;border-radius:100px;flex-shrink:0}
+.fab{position:absolute;bottom:20px;right:18px;background:#C2E7FF;color:#001D35;border-radius:14px;padding:12px 16px;display:flex;align-items:center;gap:8px;font-weight:700;font-size:14px;cursor:pointer;box-shadow:0 4px 10px rgba(0,0,0,0.12);transition:all 0.2s;z-index:10}
+.fab:hover{transform:translateY(-2px)}
+
+/* ── READ ── */
+.read-bar{padding:14px 14px 8px;display:flex;align-items:center;gap:10px;cursor:pointer;border-bottom:1px solid #E2E8F0}
+.read-subject{padding:16px 14px 8px;font-size:20px;font-weight:600;color:var(--text);line-height:1.3}
+.read-from{padding:0 14px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #E2E8F0}
+.read-body{padding:16px 14px;font-size:15px;color:var(--text);line-height:1.7;flex:1;overflow-y:auto}
+.read-actions{padding:12px 14px;display:flex;gap:10px;border-top:1px solid #E2E8F0}
+.action-btn{flex:1;padding:11px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;border:2px solid transparent;transition:0.2s}
+.action-reply{background:#EFF6FF;color:#1E40AF;border-color:#BFDBFE}
+.action-reply:hover{background:#DBEAFE}
+.action-delete{background:#FEF2F2;color:#991B1B;border-color:#FECACA}
+.action-delete:hover{background:#FEE2E2}
+.action-report{background:#FFF7ED;color:#92400E;border-color:#FED7AA}
+.action-report:hover{background:#FEF3C7}
+
+/* ── REPLY ── */
+.reply-header{padding:14px;border-bottom:1px solid #E2E8F0;display:flex;align-items:center;gap:10px}
+.reply-body{flex:1;padding:14px;display:flex;flex-direction:column;gap:10px}
+.reply-to-chip{background:#EFF6FF;color:#1E40AF;font-size:13px;font-weight:700;padding:6px 12px;border-radius:100px;align-self:flex-start}
+.reply-options{display:flex;flex-direction:column;gap:8px}
+.reply-opt{padding:14px;border-radius:12px;font-size:14px;font-weight:600;color:var(--text);background:#F8FAFC;border:2px solid #E2E8F0;cursor:pointer;transition:0.2s;line-height:1.45}
+.reply-opt:hover{border-color:#93C5FD;background:#EFF6FF}
+.reply-opt.correct{border-color:#6EE7B7;background:#D1FAE5;color:#065F46}
+.reply-opt.wrong{border-color:#FECACA;background:#FEF2F2;color:#991B1B}
+
+/* ── COMPOSE ── */
+.compose-bar{padding:12px 14px 8px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #E2E8F0}
+.compose-title{font-size:17px;font-weight:700;color:var(--text)}
+.send-btn{background:var(--primary);color:white;border:none;border-radius:8px;padding:8px 14px;font-size:14px;font-weight:700;cursor:pointer;transition:0.2s}
+.send-btn:hover{background:#1D4ED8}
+.field-row{display:flex;align-items:flex-start;padding:12px 14px;border-bottom:1px solid #F1F5F9;cursor:pointer;transition:0.2s}
+.field-row:hover{background:#F8FAFC}
+.field-row.error{border-left:3px solid #EF4444;background:#FFF5F5}
+.field-label{color:var(--gray-dk);width:64px;font-size:14px;flex-shrink:0;padding-top:2px}
+.field-val{font-size:15px;color:var(--text);flex:1}
+.field-val.ph{color:var(--gray-md)}
+.field-check{font-size:16px;margin-left:6px}
+.err-hint{font-size:11px;color:#DC2626;font-weight:700;margin-top:3px}
+.compose-body{flex:1;padding:14px;font-size:15px;color:var(--text);overflow-y:auto;cursor:pointer;line-height:1.65}
+
+/* ── SPAM QUIZ ── */
+.quiz-header{padding:16px 14px 10px;border-bottom:1px solid #E2E8F0;text-align:center}
+.quiz-q{font-size:14px;font-weight:700;color:var(--gray-dk);margin-bottom:4px}
+.quiz-title{font-size:16px;font-weight:700;color:var(--navy);line-height:1.3}
+.quiz-body{flex:1;padding:14px;overflow-y:auto}
+.fake-email{background:#F8FAFC;border-radius:12px;border:1.5px solid #E2E8F0;padding:14px;margin-bottom:14px;font-size:13px;line-height:1.6;color:var(--text)}
+.fake-email .fe-sender{font-weight:700;margin-bottom:6px;font-size:14px}
+.fake-email .fe-subject{color:#EA4335;font-weight:700;margin-bottom:8px}
+.quiz-btns{display:flex;gap:8px}
+.quiz-btn{flex:1;padding:14px;border-radius:12px;font-size:14px;font-weight:700;border:2px solid transparent;cursor:pointer;transition:0.2s;display:flex;align-items:center;justify-content:center;gap:6px}
+.quiz-safe{background:#D1FAE5;color:#065F46;border-color:#6EE7B7}
+.quiz-safe:hover{background:#A7F3D0}
+.quiz-spam{background:#FEF2F2;color:#991B1B;border-color:#FECACA}
+.quiz-spam:hover{background:#FEE2E2}
+.quiz-result{text-align:center;padding:12px;border-radius:10px;font-size:14px;font-weight:700;margin-top:10px;display:none}
+.quiz-progress{display:flex;gap:5px;justify-content:center;padding:8px 0 4px}
+.qp-dot{width:10px;height:10px;border-radius:50%;background:#E2E8F0;transition:0.3s}
+.qp-dot.done{background:#059669}
+.qp-dot.wrong{background:#DC2626}
+.qp-dot.current{background:#F59E0B}
+
+/* ── MODALS ── */
+.overlay{position:absolute;inset:0;background:rgba(15,23,42,0.7);z-index:30;display:flex;justify-content:center;align-items:center;padding:20px;opacity:0;pointer-events:none;transition:opacity 0.3s}
+.overlay.active{opacity:1;pointer-events:auto}
+.modal-card{background:white;padding:24px 20px;border-radius:22px;text-align:center;width:100%;max-width:290px;box-shadow:0 20px 40px rgba(0,0,0,0.2);transform:scale(0.9);transition:transform 0.3s}
+.overlay.active .modal-card{transform:scale(1)}
+.modal-emoji{font-size:48px;margin-bottom:10px;display:block;animation:pop 0.4s cubic-bezier(0.34,1.56,0.64,1)}
+.modal-title{font-family:'Baloo 2',cursive;font-size:21px;font-weight:800;color:var(--navy);margin-bottom:6px}
+.modal-msg{font-size:14px;color:var(--gray-dk);line-height:1.5}
+.modal-xp{font-size:18px;font-weight:800;color:var(--xp);margin-top:8px}
+.modal-actions{display:flex;flex-direction:column;gap:8px;margin-top:16px}
+
+.confetti{position:absolute;top:0;left:0;right:0;height:100%;pointer-events:none;z-index:35;overflow:hidden}
+.confetti-piece{position:absolute;width:9px;height:9px;border-radius:2px;animation:fall 1.3s ease-in forwards}
+@keyframes fall{0%{opacity:1;transform:translateY(-20px) rotate(0)}100%{opacity:0;transform:translateY(700px) rotate(720deg)}}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a class="nav-brand" href="../index.html">📱 Phone<span>Saathi</span></a>
+  <div class="nav-links">
+    <a class="nav-link" href="../games.html">← Games</a>
+    <a class="nav-link" href="../dashboard.html">🏠 Home</a>
+  </div>
+</div>
+
+<div class="coach-bar">
+  <div class="coach-content">
+    <div class="coach-avatar">🎓</div>
+    <div class="coach-text" id="coach-text">Ready to become an Email Expert?</div>
+  </div>
+  <div class="coach-right">
+    <button class="hint-btn" id="hint-btn" onclick="showHint()" style="display:none">💡 Hint</button>
+    <div class="xp-badge" id="xp-display">⭐ 0 XP</div>
+  </div>
+</div>
+
+<div class="feedback-bar" id="feedback"></div>
+
+<div class="progress-wrap" id="prog-wrap">
+  <div class="progress-fill" id="prog-fill" style="width:0%"></div>
+</div>
+
+<div class="timer-bar" id="timer-bar">
+  <span class="timer-label">⏱ Time</span>
+  <div class="timer-track"><div class="timer-fill" id="timer-fill" style="width:100%"></div></div>
+  <span class="timer-count" id="timer-count">30</span>
+</div>
+
+<div class="phone" id="phone">
+
+  <!-- ── INTRO ── -->
+  <div class="screen active" id="screen-intro">
+    <div style="padding:24px 20px;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;background:#FEF2F2">
+      <div class="intro-icon">📧</div>
+      <div class="intro-title">Email Expert</div>
+      <div class="intro-desc">5 real-life challenges. Learn to read, reply, compose, spot scams, and send emails confidently!</div>
+      <div class="level-grid">
+        <div class="level-card"><div class="lc-icon">📬</div><div class="lc-name">Read & Reply</div><div class="lc-xp">+15 XP</div></div>
+        <div class="level-card"><div class="lc-icon">🕵️</div><div class="lc-name">Spot the Scam</div><div class="lc-xp">+20 XP</div></div>
+        <div class="level-card"><div class="lc-icon">✏️</div><div class="lc-name">Compose</div><div class="lc-xp">+20 XP</div></div>
+        <div class="level-card"><div class="lc-icon">🔧</div><div class="lc-name">Fix Errors</div><div class="lc-xp">+20 XP</div></div>
+        <div class="level-card" style="grid-column:span 2"><div class="lc-icon">⚡</div><div class="lc-name">Speed Round — Real or Fake?</div><div class="lc-xp">+25 XP</div></div>
+      </div>
+      <button class="btn" onclick="startGame()">Start Game ▶</button>
+    </div>
+  </div>
+
+  <!-- ── L1: INBOX ── -->
+  <div class="screen" id="screen-inbox">
+    <div class="gmail-top">
+      <div class="gmail-search">🔍 Search in emails</div>
+      <div class="gmail-avatar">U</div>
+    </div>
+    <div class="section-label">Primary (2)</div>
+    <div class="email-row" id="row-aarti" onclick="l1OpenEmail('aarti')">
+      <div class="unread-dot"></div>
+      <div class="sender-circle" style="background:#10B981;margin-left:12px">A</div>
+      <div class="email-info">
+        <div class="email-sender">Aarti Sharma</div>
+        <div class="email-subject">Family photos from the trip 🌄</div>
+        <div class="email-preview">Hi everyone, attaching the photos from our weekend trip...</div>
+      </div>
+    </div>
+    <div class="email-row" id="row-doctor" onclick="l1OpenEmail('doctor')">
+      <div class="unread-dot"></div>
+      <div class="sender-circle" style="background:#2563EB;margin-left:12px">D</div>
+      <div class="email-info">
+        <div class="email-sender">Dr. Meera Clinic</div>
+        <div class="email-subject">Your appointment is confirmed</div>
+        <div class="email-preview">Dear Patient, your appointment on 18 April is confirmed...</div>
+      </div>
+    </div>
+    <div class="section-label">Promotions</div>
+    <div class="email-row" onclick="l1OpenEmail('spam')">
+      <div class="sender-circle" style="background:#9CA3AF">L</div>
+      <div class="email-info">
+        <div class="email-sender" style="font-weight:400;color:var(--gray-dk)">Lucky Draw India</div>
+        <div class="email-subject" style="font-weight:400">🏆 You won ₹50,000! Claim now</div>
+        <div class="email-preview">Congratulations! Tap here immediately to claim your prize...</div>
+      </div>
+      <span class="spam-tag">Promo</span>
+    </div>
+    <div class="fab" onclick="l1FabTap()">✏️ <span id="fab-label">Compose</span></div>
+  </div>
+
+  <!-- ── L1: READ EMAIL ── -->
+  <div class="screen" id="screen-read" style="z-index:5">
+    <div class="read-bar" onclick="closeRead()">
+      <span style="font-size:20px">◀</span>
+      <span style="font-size:15px;font-weight:700;color:var(--text)">Inbox</span>
+    </div>
+    <div class="read-subject" id="read-subject">Email Subject</div>
+    <div class="read-from" id="read-from">
+      <div class="sender-circle" id="read-avatar" style="background:#10B981;width:36px;height:36px;font-size:15px">A</div>
+      <div>
+        <div id="read-sender" style="font-weight:700;font-size:14px">Sender</div>
+        <div id="read-email" style="font-size:11px;color:var(--gray-dk)"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f49199959d98b4918c9599849891da979b99">[email&#160;protected]</a></div>
+      </div>
+    </div>
+    <div class="read-body" id="read-body">Body here</div>
+    <div class="read-actions" id="read-actions">
+      <button class="action-btn action-reply" id="act-reply" onclick="l1Reply()">↩ Reply</button>
+      <button class="action-btn action-delete" id="act-delete" onclick="l1Delete()">🗑 Delete</button>
+      <button class="action-btn action-report" id="act-report" onclick="l1Report()" style="display:none">⛔ Report</button>
+    </div>
+  </div>
+
+  <!-- ── L1: REPLY PICKER ── -->
+  <div class="screen" id="screen-reply" style="z-index:6">
+    <div class="reply-header">
+      <span style="font-size:20px;cursor:pointer" onclick="switchTo('screen-read')">◀</span>
+      <span style="font-size:16px;font-weight:700">Choose your reply</span>
+    </div>
+    <div class="reply-body">
+      <div class="reply-to-chip" id="reply-chip">To: Aarti Sharma</div>
+      <div style="font-size:14px;color:var(--gray-dk);margin-bottom:10px;font-weight:600">Which reply is the best one to send?</div>
+      <div class="reply-options" id="reply-opts"></div>
+    </div>
+  </div>
+
+  <!-- ── L2: SPAM QUIZ ── -->
+  <div class="screen" id="screen-quiz" style="z-index:5">
+    <div class="quiz-header">
+      <div class="quiz-q" id="quiz-q">Question 1 of 5 — Is this email safe or spam?</div>
+      <div class="quiz-progress" id="quiz-progress"></div>
+    </div>
+    <div class="quiz-body">
+      <div class="fake-email" id="quiz-email-card"></div>
+      <div class="quiz-btns">
+        <button class="quiz-btn quiz-safe" onclick="quizAnswer(true)">✅ Safe to open</button>
+        <button class="quiz-btn quiz-spam" onclick="quizAnswer(false)">🚫 Spam / Scam</button>
+      </div>
+      <div class="quiz-result" id="quiz-result"></div>
+    </div>
+  </div>
+
+  <!-- ── L3: COMPOSE ── -->
+  <div class="screen" id="screen-compose" style="z-index:5">
+    <div class="compose-bar">
+      <span style="cursor:pointer;font-size:20px" onclick="switchTo('screen-inbox')">✕</span>
+      <div class="compose-title">New Message</div>
+      <button class="send-btn" onclick="l3Send()">Send ▶</button>
+    </div>
+    <div class="field-row" id="crow-to" onclick="l3Fill('to')">
+      <div class="field-label">To</div>
+      <div style="flex:1">
+        <div class="field-val ph" id="cval-to">Tap to add email address</div>
+        <div class="err-hint" id="cerr-to" style="display:none"></div>
+      </div>
+      <div class="field-check" id="cchk-to"></div>
+    </div>
+    <div class="field-row" id="crow-sub" onclick="l3Fill('sub')">
+      <div class="field-label">Subject</div>
+      <div style="flex:1">
+        <div class="field-val ph" id="cval-sub">Tap to add a subject</div>
+        <div class="err-hint" id="cerr-sub" style="display:none"></div>
+      </div>
+      <div class="field-check" id="cchk-sub"></div>
+    </div>
+    <div class="compose-body" id="compose-body" onclick="l3Fill('body')">
+      <span style="color:var(--gray-md)" id="cbody-ph">Tap here to write your message…</span>
+    </div>
+  </div>
+
+  <!-- ── L4: FIX ERRORS ── -->
+  <div class="screen" id="screen-fix" style="z-index:5">
+    <div class="compose-bar">
+      <span style="font-size:15px;font-weight:700;color:#DC2626">⚠️ Draft has errors</span>
+      <button class="send-btn" onclick="l4Send()">Send ▶</button>
+    </div>
+    <div style="padding:8px 14px;background:#FEF2F2;font-size:13px;font-weight:600;color:#DC2626;border-bottom:1px solid #FECACA">
+      Tap the red fields to fix them before sending!
+    </div>
+    <div class="field-row error" id="frow-to" onclick="l4Fix('to')">
+      <div class="field-label">To</div>
+      <div style="flex:1">
+        <div class="field-val" id="fval-to">suresh@hotmail</div>
+        <div class="err-hint" id="ferr-to">⚠️ Incomplete! Missing .com at the end</div>
+      </div>
+      <div class="field-check" id="fchk-to"></div>
+    </div>
+    <div class="field-row error" id="frow-sub" onclick="l4Fix('sub')">
+      <div class="field-label">Subject</div>
+      <div style="flex:1">
+        <div class="field-val ph" id="fval-sub">(no subject)</div>
+        <div class="err-hint" id="ferr-sub">⚠️ Always add a subject line!</div>
+      </div>
+      <div class="field-check" id="fchk-sub"></div>
+    </div>
+    <div class="field-row error" id="frow-body" onclick="l4Fix('body')">
+      <div class="field-label">Message</div>
+      <div style="flex:1">
+        <div class="field-val ph" id="fval-body">(message is blank)</div>
+        <div class="err-hint" id="ferr-body">⚠️ Write your message before sending!</div>
+      </div>
+      <div class="field-check" id="fchk-body"></div>
+    </div>
+    <div style="padding:14px;font-size:13px;color:var(--gray-dk);line-height:1.55;flex:1">
+      <strong>Tip:</strong> Before sending any email, always check:<br>
+      📌 The recipient's address is complete<br>
+      📌 You've written a clear subject<br>
+      📌 The message body is not empty
+    </div>
+  </div>
+
+  <!-- ── L5: SPEED ROUND ── -->
+  <div class="screen" id="screen-speed" style="z-index:5">
+    <div class="quiz-header">
+      <div class="quiz-q" id="speed-q">⚡ Speed Round — Question 1 of 4</div>
+      <div class="quiz-progress" id="speed-progress"></div>
+    </div>
+    <div class="quiz-body">
+      <div style="font-size:14px;font-weight:700;color:var(--gray-dk);margin-bottom:10px" id="speed-instruction">Is this a real situation or a scam?</div>
+      <div class="fake-email" id="speed-card"></div>
+      <div style="display:flex;gap:8px">
+        <button class="quiz-btn quiz-safe" onclick="speedAnswer(true)">👍 Real</button>
+        <button class="quiz-btn quiz-spam" onclick="speedAnswer(false)">👎 Scam</button>
+      </div>
+      <div class="quiz-result" id="speed-result"></div>
+    </div>
+  </div>
+
+  <!-- ── SUCCESS MODAL ── -->
+  <div class="overlay" id="success-modal">
+    <div class="modal-card">
+      <span class="modal-emoji" id="suc-emoji">🌟</span>
+      <div class="modal-title" id="suc-title">Level Done!</div>
+      <div class="modal-msg" id="suc-msg"></div>
+      <div class="modal-xp" id="suc-xp">+15 XP</div>
+      <div class="modal-actions">
+        <button class="btn btn-blue btn-sm" onclick="nextLevel()">Next Level →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── FINISH MODAL ── -->
+  <div class="overlay" id="finish-modal">
+    <div class="confetti" id="confetti"></div>
+    <div class="modal-card">
+      <span class="modal-emoji">🏆</span>
+      <div class="modal-title">Email Expert!</div>
+      <div class="modal-msg">Shabash! You finished all 5 levels. You can now handle emails with full confidence!</div>
+      <div class="modal-xp" id="final-xp" style="font-size:22px;margin:10px 0">⭐ 100 XP</div>
+      <div style="background:#F5F3FF;border-radius:10px;padding:10px;margin:8px 0;font-size:14px;font-weight:700;color:#5B21B6">🥇 Badge earned: Email Saarthi</div>
+      <div class="modal-actions">
+        <button class="btn btn-sm" onclick="window.location.href='../games.html'">Back to Games</button>
+        <button class="btn btn-sm" style="background:#6B7280" onclick="location.reload()">Play Again</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- XP popup -->
+  <div class="xp-pop" id="xp-pop">+15 XP</div>
+  <!-- Streak popup -->
+  <div class="streak-pop" id="streak-pop">🔥 3 in a row!</div>
+
+</div><!-- /phone -->
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+const courseId = "email";
+let xp = 0, activeLevel = 0, streak = 0;
+let l1State = {read:{}, action:null};
+let l3Fields = {to:false, sub:false, body:false};
+let l4Fixed = {to:false, sub:false, body:false};
+let quizIdx = 0, quizScore = 0;
+let speedIdx = 0, speedScore = 0;
+let timerInterval = null, timerSecs = 0;
+
+const $  = id => document.getElementById(id);
+const ct = $('coach-text');
+const fb = $('feedback');
+const ph = $('phone');
+
+function switchTo(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  $(id).classList.add('active');
+}
+function showFeedback(msg, ok=false){
+  fb.textContent = msg;
+  fb.className = 'feedback-bar ' + (ok ? 'feedback-success' : 'feedback-error');
+  fb.style.display = 'block';
+  if(!ok){ ph.classList.remove('shake'); void ph.offsetWidth; ph.classList.add('shake'); }
+  clearTimeout(fb._t);
+  fb._t = setTimeout(()=>fb.style.display='none', 4000);
+}
+function addXP(amount, label=''){
+  xp += amount;
+  $('xp-display').textContent = '⭐ ' + xp + ' XP';
+  const pop = $('xp-pop');
+  pop.textContent = '+' + amount + ' XP' + (label ? ' ' + label : '');
+  pop.classList.remove('fly');
+  void pop.offsetWidth;
+  pop.classList.add('fly');
+}
+function showStreak(n){
+  const s = $('streak-pop');
+  s.textContent = '🔥 ' + n + ' in a row! Bonus!';
+  s.style.display = 'block';
+  setTimeout(()=>s.style.display='none', 1800);
+}
+function updateProgress(pct){
+  $('prog-wrap').style.display = 'block';
+  $('prog-fill').style.width = pct + '%';
+}
+
+/* ── TIMER ── */
+function startTimer(secs, onExpire){
+  clearInterval(timerInterval);
+  timerSecs = secs;
+  $('timer-bar').style.display = 'flex';
+  $('timer-count').textContent = timerSecs;
+  $('timer-fill').style.width = '100%';
+  timerInterval = setInterval(()=>{
+    timerSecs--;
+    $('timer-count').textContent = timerSecs;
+    $('timer-fill').style.width = (timerSecs/secs*100) + '%';
+    if(timerSecs <= 0){ clearInterval(timerInterval); $('timer-bar').style.display='none'; onExpire(); }
+  }, 1000);
+}
+function stopTimer(){ clearInterval(timerInterval); $('timer-bar').style.display='none'; }
+
+/* ════════════════════════════════════════
+   LEVEL 1 — READ & REPLY
+   ════════════════════════════════════════ */
+const EMAILS = {
+  aarti: {
+    subject:'Family photos from the trip 🌄',
+    senderName:'Aarti Sharma', senderEmail:'aarti.sharma@gmail.com',
+    avatarBg:'#10B981', avatarLetter:'A',
+    body:'Hi everyone,\n\nHope you are all well! I am sharing the photos from our wonderful family trip last weekend. It was so nice seeing everyone together. I have attached the best ones for you all to keep.\n\nDo share your favourites on the family WhatsApp group too!\n\nWith love,\nAarti',
+    isSpam: false,
+    action: 'reply',
+    replyOptions:[
+      {text:'Thank you Aarti didi! The photos look beautiful. Will share on WhatsApp 😊', correct:true, why:'Warm, polite and appropriate reply to a family email.'},
+      {text:'Send me your bank account details immediately.', correct:false, why:'Never ask for financial information over email!'},
+      {text:'Reply with your home address and ID number.', correct:false, why:'Never share personal information in email replies.'}
+    ]
+  },
+  doctor: {
+    subject:'Your appointment is confirmed — 18 April',
+    senderName:'Dr. Meera Clinic', senderEmail:'appointments@meeraclinic.in',
+    avatarBg:'#2563EB', avatarLetter:'D',
+    body:'Dear Patient,\n\nThis is to confirm your appointment with Dr. Meera on 18 April at 11:00 AM.\n\nPlease bring:\n• Your previous prescriptions\n• Your Aadhaar card for records\n\nIf you need to reschedule, call us on 98765-43210.\n\nRegards,\nDr. Meera Clinic Reception',
+    isSpam: false,
+    action: 'delete',
+    replyOptions:[
+      {text:'Thank you for the confirmation. I will be there on time.', correct:true, why:'Polite confirmation reply — perfectly appropriate.'},
+      {text:'Click here to cancel and get a ₹5000 refund.', correct:false, why:'A genuine clinic reply would never ask you to click strange links.'},
+    ]
+  },
+  spam:{
+    subject:'🏆 You won ₹50,000! Claim now',
+    senderName:'Lucky Draw India', senderEmail:'lucky@win-india247.xyz',
+    avatarBg:'#9CA3AF', avatarLetter:'L',
+    body:'CONGRATULATIONS! You have been selected as today\'s lucky winner of ₹50,000 in our Lucky Draw!\n\nTo claim your prize:\n1. Reply with your full name and Aadhaar number\n2. Send ₹500 "processing fee" to our account\n3. We will transfer ₹50,000 within 24 hours!\n\nACT FAST — offer expires in 1 hour!\n\nLucky Draw Team',
+    isSpam: true,
+    action:'report'
+  }
+};
+
+window.startGame = function(){
+  activeLevel = 1;
+  $('hint-btn').style.display = 'inline-block';
+  updateProgress(0);
+  switchTo('screen-inbox');
+  ct.textContent = 'Level 1 — Read the email from Aarti and choose the right action!';
+};
+
+let currentEmailKey = null;
+window.l1OpenEmail = function(key){
+  currentEmailKey = key;
+  const e = EMAILS[key];
+  if(!e) return;
+  $('read-subject').textContent = e.subject;
+  $('read-sender').textContent = e.senderName;
+  $('read-email').textContent = e.senderEmail;
+  $('read-avatar').style.background = e.avatarBg;
+  $('read-avatar').textContent = e.avatarLetter;
+  $('read-body').innerHTML = e.body.replace(/\n/g,'<br>');
+  $('act-reply').style.display = e.action==='reply'||e.action==='delete' ? 'block':'none';
+  $('act-delete').style.display = 'block';
+  $('act-report').style.display = e.action==='report'?'block':'none';
+  if(e.isSpam){ showFeedback('⚠️ Look carefully — does this seem trustworthy?'); }
+  switchTo('screen-read');
+  if(!e.isSpam) addXP(5, '— opened email');
+};
+window.closeRead = function(){ switchTo('screen-inbox'); };
+
+window.l1Reply = function(){
+  const e = EMAILS[currentEmailKey];
+  if(!e) return;
+  if(e.isSpam){
+    showFeedback('❌ Never reply to suspicious emails! Use the "Report" button.');
+    streak=0; return;
+  }
+  if(e.action!=='reply'){
+    showFeedback('💡 This email does not need a reply. Use "Delete" to tidy your inbox.');
+    return;
+  }
+  // Build reply options
+  $('reply-chip').textContent = 'To: ' + e.senderName;
+  const container = $('reply-opts');
+  container.innerHTML = '';
+  e.replyOptions.forEach((opt,i)=>{
+    const div = document.createElement('div');
+    div.className = 'reply-opt';
+    div.textContent = (i===0?'A: ':i===1?'B: ':'C: ') + opt.text;
+    div.onclick = ()=>pickReply(opt, div);
+    container.appendChild(div);
+  });
+  switchTo('screen-reply');
+};
+
+function pickReply(opt, el){
+  document.querySelectorAll('.reply-opt').forEach(d=>d.style.pointerEvents='none');
+  if(opt.correct){
+    el.classList.add('correct');
+    streak++; if(streak>=3) showStreak(streak);
+    addXP(10, '— great reply!');
+    showFeedback('✅ ' + opt.why, true);
+    setTimeout(()=>{
+      l1State.aarti = true;
+      checkL1Done();
+    }, 1200);
+  } else {
+    el.classList.add('wrong');
+    streak=0;
+    showFeedback('❌ ' + opt.why);
+  }
+}
+
+window.l1Delete = function(){
+  const e = EMAILS[currentEmailKey];
+  if(e && e.action==='delete'){
+    addXP(5, '— tidy inbox!');
+    streak++;
+    showFeedback('✅ Good habit! Deleting read appointment confirmations keeps your inbox tidy.', true);
+    l1State.doctor = true;
+    setTimeout(checkL1Done, 1200);
+    closeRead();
+  } else if(e && e.action==='reply'){
+    showFeedback('💡 This email deserves a reply first! Tap "Reply" instead.');
+  } else {
+    addXP(3); showFeedback('Good — deleted the spam!', true);
+    closeRead();
+  }
+};
+window.l1Report = function(){
+  const e = EMAILS[currentEmailKey];
+  if(e && e.isSpam){
+    streak++; if(streak>=3) showStreak(streak);
+    addXP(10, '— spam blocked!');
+    showFeedback('✅ Excellent! Reporting spam protects you and others. Always report, never reply!', true);
+    l1State.spam = true;
+    setTimeout(checkL1Done, 1200);
+    closeRead();
+  }
+};
+window.l1FabTap = function(){
+  showFeedback('💡 Not yet — first read and reply to the emails in your inbox!');
+};
+
+function checkL1Done(){
+  if(l1State.aarti && l1State.doctor && l1State.spam){
+    levelComplete(1,'You read real emails, chose the right reply, and reported spam. Bahut acha!', 15);
+  } else if(l1State.aarti && !l1State.doctor){
+    ct.textContent = 'Great! Now open the doctor appointment email.';
+    switchTo('screen-inbox');
+  } else if(l1State.aarti && l1State.doctor && !l1State.spam){
+    ct.textContent = 'Almost done! Open the "Lucky Draw" email — what should you do?';
+    switchTo('screen-inbox');
+  }
+}
+
+/* ════════════════════════════════════════
+   LEVEL 2 — SPOT THE SCAM QUIZ
+   ════════════════════════════════════════ */
+const QUIZ_EMAILS = [
+  {
+    sender:'Bank of India Alert <alert@bankofindia.secure-verify.xyz>',
+    subject:'URGENT: Your account will be blocked!',
+    body:'Your account is at risk. Click here immediately and enter your ATM PIN to verify: bit.ly/3xY9kW',
+    isReal:false,
+    explain:'This is a phishing scam! Real banks NEVER ask for your PIN over email, and the sender address is fake.'
+  },
+  {
+    sender:'Flipkart Order Team <orders@flipkart.com>',
+    subject:'Your order #FL88291 has been shipped',
+    body:'Hi, your Samsung TV has been shipped and will arrive by 16 April. Track here: flipkart.com/track',
+    isReal:true,
+    explain:'This looks like a genuine order email. The sender domain is @flipkart.com and the link goes to the real Flipkart website.'
+  },
+  {
+    sender:'PM Kisan Yojana <pmkisan@gov-india-scheme.info>',
+    subject:'₹6000 waiting! Send Aadhaar to claim',
+    body:'Your PM Kisan installment is ready. Send a photo of your Aadhaar card to this email to receive ₹6000 immediately.',
+    isReal:false,
+    explain:'Scam! Government schemes NEVER ask you to email your Aadhaar. Real PM-Kisan money goes directly to your bank.'
+  },
+  {
+    sender:'WhatsApp <noreply@whatsapp.com>',
+    subject:'Your WhatsApp verification code',
+    body:'Your WhatsApp code is 847-291. Do NOT share this code with anyone, including WhatsApp staff.',
+    isReal:true,
+    explain:'This is a real WhatsApp verification email. Notice it tells you NOT to share the code — real services always say this.'
+  },
+  {
+    sender:'Lottery Commission India <winner2024@lotteryindiaprize.com>',
+    subject:'You have won a car! Claim in 24 hours',
+    body:'Dear winner, you have been selected. Pay ₹999 registration fee via UPI to claim your Maruti Swift prize car.',
+    isReal:false,
+    explain:'Classic advance-fee scam! No real lottery ever asks you to pay money to claim a prize you did not enter.'
+  }
+];
+
+let quizAnswered = false;
+window.quizAnswer = function(saidReal){
+  if(quizAnswered) return;
+  quizAnswered = true;
+  const q = QUIZ_EMAILS[quizIdx];
+  const correct = (saidReal === q.isReal);
+  const res = $('quiz-result');
+  res.style.display = 'block';
+  if(correct){
+    streak++;
+    quizScore++;
+    if(streak>=3) showStreak(streak);
+    addXP(4, '— correct!');
+    res.style.background = '#D1FAE5';
+    res.style.color = '#065F46';
+    res.textContent = '✅ Correct! ' + q.explain;
+    updateQuizDots(quizIdx, true);
+  } else {
+    streak=0;
+    res.style.background = '#FEF2F2';
+    res.style.color = '#991B1B';
+    res.textContent = '❌ Not quite. ' + q.explain;
+    updateQuizDots(quizIdx, false);
+    ph.classList.remove('shake'); void ph.offsetWidth; ph.classList.add('shake');
+  }
+  setTimeout(()=>{
+    quizIdx++;
+    if(quizIdx < QUIZ_EMAILS.length) showQuizQ();
+    else {
+      stopTimer();
+      levelComplete(2, `You got ${quizScore} out of 5 correct! You can now spot suspicious emails.`, 20);
+    }
+  }, 2200);
+};
+
+function showQuizQ(){
+  quizAnswered = false;
+  $('quiz-result').style.display = 'none';
+  const q = QUIZ_EMAILS[quizIdx];
+  $('quiz-q').textContent = `Question ${quizIdx+1} of ${QUIZ_EMAILS.length} — Safe or Scam?`;
+  $('quiz-email-card').innerHTML = `
+    <div class="fe-sender">From: ${q.sender}</div>
+    <div class="fe-subject">Subject: ${q.subject}</div>
+    ${q.body}`;
+  updateQuizDots(quizIdx, null);
+  ct.textContent = 'Level 2 — Is this email safe to trust?';
+}
+function updateQuizDots(current, result){
+  const pg = $('quiz-progress');
+  pg.innerHTML = '';
+  QUIZ_EMAILS.forEach((_, i)=>{
+    const d = document.createElement('div');
+    d.className = 'qp-dot' + (i < current ? (quizScore > i ? ' done':' wrong') : i===current?(result===null?' current':result?' done':' wrong'):'');
+    pg.appendChild(d);
+  });
+}
+
+/* ════════════════════════════════════════
+   LEVEL 3 — COMPOSE
+   ════════════════════════════════════════ */
+const L3_DATA = {to:'priya@gmail.com', sub:'Doctor appointment — need help', body:'Hi Priya,\n\nI have a doctor\'s appointment on Friday at 3 PM. Can you please come with me? It would mean a lot.\n\nThank you,\nBabita'};
+
+window.l3Fill = function(field){
+  if(field==='to'){
+    $('cval-to').textContent = L3_DATA.to;
+    $('cval-to').className = 'field-val';
+    $('cchk-to').textContent = '✅';
+    l3Fields.to = true;
+    addXP(3,'— address added');
+  } else if(field==='sub'){
+    $('cval-sub').textContent = L3_DATA.sub;
+    $('cval-sub').className = 'field-val';
+    $('cchk-sub').textContent = '✅';
+    l3Fields.sub = true;
+    addXP(3,'— subject added');
+  } else if(field==='body'){
+    $('cbody-ph').style.display = 'none';
+    $('compose-body').innerHTML = L3_DATA.body.replace(/\n/g,'<br>') + '<span id="cbody-ph" style="display:none"></span>';
+    l3Fields.body = true;
+    addXP(4,'— message written');
+  }
+  streak++;
+  if(streak>=3) showStreak(streak);
+  const done = l3Fields.to && l3Fields.sub && l3Fields.body;
+  ct.textContent = done ? 'Looking good! Now tap "Send" to send your email.' : 'Keep going — fill in all three parts of the email.';
+};
+window.l3Send = function(){
+  if(!l3Fields.to){ showFeedback('Please add the recipient\'s email address first.'); return; }
+  if(!l3Fields.sub){ showFeedback('Please add a subject line.'); return; }
+  if(!l3Fields.body){ showFeedback('Please write a message before sending.'); return; }
+  levelComplete(3,'Kamaal! You composed a complete email with To, Subject, and Message. It\'s sent!', 20);
+};
+
+/* ════════════════════════════════════════
+   LEVEL 4 — FIX ERRORS
+   ════════════════════════════════════════ */
+window.l4Fix = function(field){
+  if(field==='to' && !l4Fixed.to){
+    $('fval-to').textContent = 'suresh@hotmail.com ✅';
+    $('fval-to').className = 'field-val';
+    $('fchk-to').textContent = '✅';
+    $('ferr-to').style.display = 'none';
+    $('frow-to').classList.remove('error');
+    l4Fixed.to = true; streak++;
+    addXP(5,'— fixed address!');
+    showFeedback('✅ Fixed! Email addresses must end with .com, .in, .org etc.', true);
+  } else if(field==='sub' && !l4Fixed.sub){
+    $('fval-sub').textContent = 'Regarding our meeting tomorrow';
+    $('fval-sub').className = 'field-val';
+    $('fchk-sub').textContent = '✅';
+    $('ferr-sub').style.display = 'none';
+    $('frow-sub').classList.remove('error');
+    l4Fixed.sub = true; streak++;
+    addXP(5,'— subject added!');
+    showFeedback('✅ Good! A clear subject helps the reader know what your email is about.', true);
+  } else if(field==='body' && !l4Fixed.body){
+    $('fval-body').textContent = 'Hi Suresh, please bring the documents to our meeting tomorrow at 10 AM. Thank you.';
+    $('fval-body').className = 'field-val';
+    $('fchk-body').textContent = '✅';
+    $('ferr-body').style.display = 'none';
+    $('frow-body').classList.remove('error');
+    l4Fixed.body = true; streak++;
+    addXP(5,'— message written!');
+    showFeedback('✅ Perfect! Never send an empty email.', true);
+  } else if(l4Fixed[field]){
+    showFeedback('✅ Already fixed!', true);
+  }
+  if(streak>=3) showStreak(streak);
+  const all = l4Fixed.to && l4Fixed.sub && l4Fixed.body;
+  if(all) ct.textContent = 'All three errors fixed! Now tap "Send" to send the email.';
+  else ct.textContent = `${[l4Fixed.to,l4Fixed.sub,l4Fixed.body].filter(Boolean).length} of 3 errors fixed. Keep going!`;
+};
+window.l4Send = function(){
+  if(!l4Fixed.to){ showFeedback('The email address still has an error. Tap it to fix.'); return; }
+  if(!l4Fixed.sub){ showFeedback('Add a subject line before sending.'); return; }
+  if(!l4Fixed.body){ showFeedback('Write a message before sending.'); return; }
+  levelComplete(4,'Shandaar! You found and fixed all 3 mistakes. Real email pros always check before sending!', 20);
+};
+
+/* ════════════════════════════════════════
+   LEVEL 5 — SPEED ROUND
+   ════════════════════════════════════════ */
+const SPEED_Qs = [
+  {
+    instruction:'What should you do with this email?',
+    card:`<div class="fe-sender">From: courier@dtdc.in</div><div class="fe-subject">Subject: Your parcel is out for delivery</div>Your DTDC parcel #DC99821 will be delivered today between 2-5 PM. No action needed.`,
+    isReal:true,
+    explain:'Real delivery notification — the sender is @dtdc.in and no link or payment is requested.'
+  },
+  {
+    instruction:'Is this a real or fake situation?',
+    card:`<div class="fe-sender">From: refund@income-tax-gov.xyz</div><div class="fe-subject">Subject: ₹12,000 tax refund — verify Aadhaar now</div>The Income Tax Department is sending you ₹12,000. Reply with your Aadhaar + bank details within 2 hours.`,
+    isReal:false,
+    explain:'Scam! Real tax refunds come through the official Income Tax portal. They never ask for Aadhaar over email.'
+  },
+  {
+    instruction:'Should you act on this email?',
+    card:`<div class="fe-sender">From: noreply@gmail.com</div><div class="fe-subject">Subject: Google Account security alert</div>A new device signed in to your Google Account. If this was you, no action needed. If not, secure your account at myaccount.google.com`,
+    isReal:true,
+    explain:'This is a real Google security alert. The link goes to the official Google site. You can safely ignore it if you did sign in.'
+  },
+  {
+    instruction:'Real news or a trick?',
+    card:`<div class="fe-sender">From: pmrelief@india-relief-fund.co</div><div class="fe-subject">Subject: PM Relief Fund — ₹8500 approved for you</div>Your PM Relief payment has been approved. Pay ₹200 convenience fee by UPI to release your funds immediately.`,
+    isReal:false,
+    explain:'Advance-fee scam targeting elderly people. No government scheme asks you to pay money to receive money.'
+  }
+];
+
+let speedAnswered = false;
+window.speedAnswer = function(saidReal){
+  if(speedAnswered) return;
+  speedAnswered = true;
+  stopTimer();
+  const q = SPEED_Qs[speedIdx];
+  const correct = (saidReal === q.isReal);
+  const res = $('speed-result');
+  res.style.display = 'block';
+  if(correct){
+    streak++; speedScore++;
+    if(streak>=3) showStreak(streak);
+    addXP(6,'— speed bonus!');
+    res.style.background='#D1FAE5'; res.style.color='#065F46';
+    res.textContent = '✅ ' + q.explain;
+    updateSpeedDots(speedIdx, true);
+  } else {
+    streak=0;
+    res.style.background='#FEF2F2'; res.style.color='#991B1B';
+    res.textContent = '❌ ' + q.explain;
+    updateSpeedDots(speedIdx, false);
+    ph.classList.remove('shake'); void ph.offsetWidth; ph.classList.add('shake');
+  }
+  setTimeout(()=>{
+    speedIdx++;
+    if(speedIdx < SPEED_Qs.length) showSpeedQ();
+    else finishGame();
+  }, 2400);
+};
+
+function showSpeedQ(){
+  speedAnswered = false;
+  $('speed-result').style.display = 'none';
+  const q = SPEED_Qs[speedIdx];
+  $('speed-q').textContent = `⚡ Speed Round — Question ${speedIdx+1} of ${SPEED_Qs.length}`;
+  $('speed-instruction').textContent = q.instruction;
+  $('speed-card').innerHTML = q.card;
+  updateSpeedDots(speedIdx, null);
+  startTimer(20, ()=>{
+    if(!speedAnswered){ speedAnswered=true; showFeedback('Time up! ' + q.explain); updateSpeedDots(speedIdx, false); setTimeout(()=>{ speedIdx++; if(speedIdx<SPEED_Qs.length)showSpeedQ(); else finishGame(); }, 2400); }
+  });
+}
+function updateSpeedDots(current, result){
+  const pg = $('speed-progress');
+  pg.innerHTML = '';
+  SPEED_Qs.forEach((_,i)=>{
+    const d = document.createElement('div');
+    d.className = 'qp-dot' + (i<current?(speedScore>=(i+1)?' done':' wrong'):i===current&&result!==null?(result?' done':' wrong'):i===current?' current':'');
+    pg.appendChild(d);
+  });
+}
+
+/* ════════════════════════════════════════
+   FLOW CONTROL
+   ════════════════════════════════════════ */
+function levelComplete(lvl, msg, xpGain){
+  addXP(xpGain);
+  $('suc-emoji').textContent = ['','✉️','🕵️','✏️','🔧','⚡'][lvl] || '🌟';
+  $('suc-title').textContent = `Level ${lvl} done!`;
+  $('suc-msg').textContent = msg;
+  $('suc-xp').textContent = '+' + xpGain + ' XP earned!';
+  updateProgress(lvl/5*100);
+  $('success-modal').classList.add('active');
+  saveProgress(lvl);
+}
+window.nextLevel = function(){
+  $('success-modal').classList.remove('active');
+  activeLevel++;
+  if(activeLevel===2){
+    quizIdx=0; quizScore=0;
+    updateProgress(20);
+    switchTo('screen-quiz');
+    showQuizQ();
+    ct.textContent = 'Level 2 — Spot the Scam! Read each email carefully.';
+  } else if(activeLevel===3){
+    l3Fields={to:false,sub:false,body:false};
+    $('cval-to').textContent='Tap to add email address'; $('cval-to').className='field-val ph';
+    $('cval-sub').textContent='Tap to add a subject'; $('cval-sub').className='field-val ph';
+    $('cbody-ph').style.display='block';
+    $('compose-body').innerHTML = '<span style="color:var(--gray-md)" id="cbody-ph">Tap here to write your message…</span>';
+    $('cchk-to').textContent=''; $('cchk-sub').textContent='';
+    updateProgress(40);
+    switchTo('screen-compose');
+    ct.textContent = 'Level 3 — Compose a new email to Priya, step by step.';
+  } else if(activeLevel===4){
+    l4Fixed={to:false,sub:false,body:false};
+    updateProgress(60);
+    switchTo('screen-fix');
+    ct.textContent = 'Level 4 — This draft has 3 errors. Tap the red fields to fix them!';
+  } else if(activeLevel===5){
+    speedIdx=0; speedScore=0;
+    updateProgress(80);
+    switchTo('screen-speed');
+    showSpeedQ();
+    ct.textContent = 'Level 5 — Speed Round! You have 20 seconds per question!';
+  }
+};
+function finishGame(){
+  stopTimer();
+  updateProgress(100);
+  launchConfetti();
+  $('final-xp').textContent = '⭐ Total: ' + xp + ' XP';
+  saveProgress(5);
+  setTimeout(()=>$('finish-modal').classList.add('active'), 600);
+}
+
+const HINTS = {
+  1:'Look at the inbox. Open Aarti\'s email and choose the warmest, most polite reply. For the doctor email, delete it after reading. For "Lucky Draw" — report it immediately!',
+  2:'Look at the sender\'s email address. If it ends in something strange like .xyz or has extra words, it\'s suspicious. Real companies use their own domain names.',
+  3:'Tap each field one by one — To, Subject, then the message body. The task is to write an email to Priya about a doctor appointment.',
+  4:'Tap each red field to fix it. The "To" address needs .com at the end. Subject needs text. Body needs a message.',
+  5:'Read the sender\'s domain carefully and check if they are asking for money or personal data. Real services never do that!'
+};
+window.showHint = function(){
+  if(HINTS[activeLevel]) showFeedback('💡 ' + HINTS[activeLevel], true);
+};
+
+function launchConfetti(){
+  const colors=['#EA4335','#2563EB','#059669','#F59E0B','#7C3AED','#EC4899'];
+  const c=$('confetti'); c.innerHTML='';
+  for(let i=0;i<40;i++){
+    const p=document.createElement('div'); p.className='confetti-piece';
+    p.style.left=Math.random()*100+'%';
+    p.style.background=colors[Math.floor(Math.random()*colors.length)];
+    p.style.animationDelay=Math.random()*0.9+'s';
+    p.style.animationDuration=(0.7+Math.random()*0.9)+'s';
+    p.style.borderRadius=Math.random()>.5?'50%':'3px';
+    c.appendChild(p);
+  }
+}
+
+function saveProgress(lvl){
+  try{
+    let m=JSON.parse(localStorage.getItem('dlp_sync')||'{"gamesProgress":{},"scores":{},"achievements":[]}');
+    m.gamesProgress[courseId]=Math.max(m.gamesProgress[courseId]||0,lvl);
+    if(lvl>=5){ m.scores[courseId]=Math.max(m.scores[courseId]||0,xp); if(!m.achievements.includes('email_master')) m.achievements.push('email_master'); }
+    if(!m.achievements.includes('first_game')) m.achievements.push('first_game');
+    if(lvl>=5&&!m.achievements.includes('master_'+courseId)) m.achievements.push('master_'+courseId);
+    const all=["basics","whatsapp","email","upi","scam"];
+    if(all.every(g=>(m.gamesProgress[g]||0)>=1)&&!m.achievements.includes('all_games')) m.achievements.push('all_games');
+    localStorage.setItem('dlp_sync',JSON.stringify(m));
+    (async()=>{
+      try{
+        const{auth,db}=await import('../firebase.js');
+        const{onAuthStateChanged}=await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js');
+        const{doc,setDoc}=await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
+        onAuthStateChanged(auth,async u=>{if(u){try{await setDoc(doc(db,'users',u.uid),m,{merge:true});}catch(e){}}});
+      }catch(e){}
+    })();
+  }catch(e){}
+}

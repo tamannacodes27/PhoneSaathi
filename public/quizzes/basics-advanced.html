@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smartphone Basics — Advanced Quiz · Digital Literacy</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --navy:#1B2A4A;--navy-md:#2E4070;--navy-lt:#EEF1F8;--cream:#FAF8F5;--warm:#F3EFE8;
+  --gold:#B07D2F;--gold-lt:#FDF3DC;--slate:#4A5568;--slate-lt:#718096;--border:#E2DDD6;
+  --white:#FFFFFF;--green:#2D6A4F;--green-lt:#E8F5EF;
+  --accent:#14B8A6;--radius:16px;--shadow:0 4px 24px rgba(27,42,74,0.10);
+}
+body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--navy);min-height:100vh;font-size:17px;}
+.topbar{background:var(--navy);padding:0 20px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,0.2);}
+.back-btn{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:rgba(255,255,255,0.7);padding:5px 12px;border:1px solid rgba(255,255,255,0.18);border-radius:8px;background:rgba(255,255,255,0.06);transition:0.15s;text-decoration:none;}
+.back-btn:hover{background:rgba(255,255,255,0.13);color:#fff;}
+.topbar-center{font-family:'Lora',serif;font-size:15px;font-weight:600;color:#fff;}
+.level-pill{font-size:11px;font-weight:800;background:#EDE9FE;color:#4C1D95;padding:3px 12px;border-radius:20px;}
+.hero{background:linear-gradient(135deg,#3B0764 0%,#6D28D9 100%);padding:32px 20px 28px;text-align:center;position:relative;overflow:hidden;}
+.hero::after{content:'';position:absolute;bottom:-20px;left:0;right:0;height:40px;background:var(--cream);border-radius:50% 50% 0 0/100% 100% 0 0;}
+.hero-emoji{font-size:52px;margin-bottom:12px;display:block;animation:bounceIn 0.6s cubic-bezier(.4,0,.2,1);}
+@keyframes bounceIn{0%{transform:scale(0.5);opacity:0;}70%{transform:scale(1.1);}100%{transform:scale(1);opacity:1;}}
+.hero-title{font-family:'Lora',serif;font-size:26px;font-weight:600;color:#fff;line-height:1.2;margin-bottom:8px;}
+.hero-sub{font-size:14px;color:rgba(255,255,255,0.78);}
+.score-bar{background:var(--white);border-bottom:1.5px solid var(--border);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.score-label{font-size:13px;font-weight:700;color:var(--slate);}
+.score-val{font-size:20px;font-weight:900;color:var(--accent);}
+.stars-row{display:flex;gap:3px;font-size:20px;}
+.q-counter{font-size:13px;font-weight:700;color:var(--slate-lt);}
+.prog-wrap{height:6px;background:var(--warm);}
+.prog-fill{height:6px;background:#16A34A;transition:width 0.5s cubic-bezier(.4,0,.2,1);width:0%;}
+.fc-section{max-width:680px;margin:0 auto;padding:28px 20px 0;}
+.fc-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.fc-heading{display:flex;align-items:center;gap:10px;}
+.fc-title{font-family:'Lora',serif;font-size:19px;font-weight:600;color:var(--navy);}
+.fc-badge{background:#E8F5EF;color:#2D6A4F;font-size:11px;font-weight:800;padding:3px 12px;border-radius:20px;}
+.fc-toggle-btn{padding:8px 18px;border-radius:10px;border:1.5px solid var(--border);background:var(--white);font-size:13px;font-weight:800;font-family:'Nunito',sans-serif;color:var(--navy);cursor:pointer;transition:0.15s;display:flex;align-items:center;gap:6px;}
+.fc-toggle-btn:hover{background:var(--navy-lt);border-color:var(--navy-md);}
+.fc-body{display:none;animation:fadeUp 0.35s ease;}
+.fc-body.open{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+.fc-desc{font-size:14px;color:var(--slate-lt);margin-bottom:16px;font-weight:600;}
+.fc-carousel{display:flex;gap:14px;overflow-x:auto;padding-bottom:12px;scrollbar-width:none;-webkit-overflow-scrolling:touch;}
+.fc-carousel::-webkit-scrollbar{display:none;}
+.fc-item{flex-shrink:0;width:280px;height:200px;cursor:pointer;perspective:800px;}
+.fc-inner{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform 0.55s cubic-bezier(.4,0,.2,1);}
+.fc-item.flipped .fc-inner{transform:rotateY(180deg);}
+.fc-front,.fc-back{position:absolute;inset:0;border-radius:14px;padding:20px;display:flex;flex-direction:column;justify-content:center;backface-visibility:hidden;-webkit-backface-visibility:hidden;}
+.fc-front{background:var(--navy);border:2px solid var(--navy-md);}
+.fc-back{background:var(--white);border:2px solid #14B8A6;transform:rotateY(180deg);}
+.fc-q-label{font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;}
+.fc-front .fc-q-label{color:rgba(255,255,255,0.5);}
+.fc-back .fc-q-label{color:#14B8A6;}
+.fc-front .fc-text{font-size:15px;font-weight:700;color:#fff;line-height:1.55;}
+.fc-back .fc-text{font-size:14px;color:var(--slate);line-height:1.6;font-weight:600;}
+.fc-nav{display:flex;align-items:center;justify-content:space-between;margin-top:14px;}
+.fc-nav-btn{padding:8px 18px;border-radius:10px;border:1.5px solid var(--border);background:var(--white);font-size:14px;font-weight:700;font-family:'Nunito',sans-serif;color:var(--slate);cursor:pointer;transition:0.15s;}
+.fc-nav-btn:hover{border-color:var(--navy);color:var(--navy);background:var(--navy-lt);}
+.fc-count{font-size:13px;font-weight:700;color:var(--slate-lt);}
+.fc-tip{margin-top:14px;background:var(--gold-lt);border:1.5px solid #EDD9A0;border-radius:12px;padding:12px 16px;font-size:13px;font-weight:700;color:var(--gold);display:flex;gap:10px;align-items:center;}
+.quiz-section{max-width:680px;margin:0 auto;padding:24px 20px 120px;}
+.q-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;animation:fadeUp 0.4s cubic-bezier(.4,0,.2,1);}
+.q-header{padding:20px 22px 16px;background:var(--navy-lt);border-bottom:1.5px solid var(--border);}
+.q-num{font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#14B8A6;margin-bottom:6px;}
+.q-text{font-size:18px;font-weight:800;color:var(--navy);line-height:1.45;font-family:'Lora',serif;}
+.q-options{padding:16px 20px 20px;display:flex;flex-direction:column;gap:10px;}
+.q-opt{padding:14px 18px;border-radius:12px;border:2px solid var(--border);background:var(--white);font-size:16px;font-weight:700;font-family:'Nunito',sans-serif;color:var(--slate);cursor:pointer;transition:0.2s;text-align:left;line-height:1.4;display:flex;align-items:center;gap:12px;}
+.q-opt:hover:not(:disabled){border-color:#14B8A6;background:var(--navy-lt);color:var(--navy);transform:translateX(4px);}
+.q-opt .opt-letter{width:28px;height:28px;border-radius:50%;background:var(--warm);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;flex-shrink:0;transition:0.2s;}
+.q-opt:hover:not(:disabled) .opt-letter{background:var(--accent);color:#fff;}
+.q-opt.correct{background:var(--green-lt);border-color:#16A34A;color:var(--green);pointer-events:none;animation:popRight 0.4s;}
+.q-opt.correct .opt-letter{background:#16A34A;color:#fff;}
+.q-opt.wrong{background:#FEF2F2;border-color:#FCA5A5;color:#B91C1C;pointer-events:none;animation:shake 0.4s;}
+.q-opt.wrong .opt-letter{background:#FCA5A5;color:#fff;}
+.q-opt.dim{opacity:0.35;pointer-events:none;}
+@keyframes popRight{0%{transform:scale(1);}50%{transform:scale(1.03);}100%{transform:scale(1);}}
+@keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-6px);}75%{transform:translateX(6px);}}
+.feedback-box{margin:0 20px 20px;padding:14px 18px;border-radius:12px;display:none;animation:fadeUp 0.3s;}
+.feedback-box.show{display:flex;gap:12px;align-items:flex-start;}
+.feedback-box.good{background:var(--green-lt);border:1.5px solid #B7DEC9;}
+.feedback-box.oops{background:#FEF2F2;border:1.5px solid #FCA5A5;}
+.feedback-icon{font-size:24px;flex-shrink:0;}
+.feedback-title{font-size:14px;font-weight:900;margin-bottom:4px;}
+.feedback-box.good .feedback-title{color:var(--green);}
+.feedback-box.oops .feedback-title{color:#B91C1C;}
+.feedback-text{font-size:14px;line-height:1.6;}
+.feedback-box.good .feedback-text{color:#285C42;}
+.feedback-box.oops .feedback-text{color:#7F1D1D;}
+.score-burst{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:80px;opacity:0;pointer-events:none;z-index:999;transition:none;}
+.score-burst.pop{animation:burst 0.8s forwards;}
+@keyframes burst{0%{opacity:1;transform:translate(-50%,-50%) scale(0.5);}50%{opacity:1;transform:translate(-50%,-50%) scale(1.3);}100%{opacity:0;transform:translate(-50%,-50%) scale(1.8);}}
+.completion{display:none;}
+.completion.show{display:block;}
+.completion-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;animation:fadeUp 0.4s;}
+.completion-top{background:linear-gradient(135deg,#3B0764 0%,#6D28D9 100%);padding:44px 28px 36px;text-align:center;}
+.completion-icon{font-size:72px;display:block;margin-bottom:16px;}
+.completion-title{font-family:'Lora',serif;font-size:28px;font-weight:600;color:#fff;margin-bottom:8px;}
+.completion-sub{font-size:16px;color:rgba(255,255,255,0.88);line-height:1.6;}
+.completion-body{padding:28px 24px;}
+.final-score-row{display:flex;align-items:center;justify-content:center;gap:20px;margin-bottom:24px;padding:20px;background:var(--navy-lt);border-radius:14px;}
+.final-score-num{font-size:52px;font-weight:900;color:var(--navy);}
+.final-score-label{font-size:14px;font-weight:700;color:var(--slate);}
+.final-stars{font-size:32px;}
+.result-msg{font-size:16px;font-weight:700;color:var(--slate);text-align:center;margin-bottom:24px;line-height:1.6;}
+.completion-actions{display:flex;flex-direction:column;gap:12px;}
+.btn-primary{padding:16px;border-radius:12px;border:none;background:var(--navy);color:#fff;font-size:17px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;transition:background 0.15s;}
+.btn-primary:hover{background:var(--navy-md);}
+.btn-secondary{padding:14px;border-radius:12px;border:1.5px solid var(--border);background:var(--white);color:var(--navy);font-size:16px;font-weight:700;font-family:'Nunito',sans-serif;cursor:pointer;transition:0.15s;}
+.btn-secondary:hover{border-color:var(--navy);background:var(--navy-lt);}
+.nav-bar{position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:1.5px solid var(--border);padding:14px 20px;display:flex;gap:12px;z-index:200;box-shadow:0 -4px 20px rgba(27,42,74,0.09);}
+.nav-bar.hidden{display:none!important;}
+.btn-next-q{flex:1;padding:14px;border-radius:12px;border:none;background:var(--navy);color:#fff;font-size:17px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;transition:background 0.15s;opacity:0.4;pointer-events:none;}
+.btn-next-q.enabled{opacity:1;pointer-events:all;}
+.btn-next-q.enabled:hover{background:var(--navy-md);}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="back-btn" href="../quizzes.html">&#8592; All Quizzes</a>
+  <div class="topbar-center">Smartphone Basics</div>
+  <span class="level-pill">Advanced</span>
+</div>
+
+<div class="hero">
+  <span class="hero-emoji">🔒</span>
+  <div class="hero-title">Smartphone Basics — Advanced</div>
+  <div class="hero-sub">10 questions · Earn up to ⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐ stars</div>
+</div>
+
+<div class="score-bar">
+  <div><div class="score-label">Your Score</div><div class="score-val" id="scoreVal">0 / 10</div></div>
+  <div class="stars-row" id="starsRow">⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜</div>
+  <div class="q-counter" id="qCounter">Q 1 of 10</div>
+</div>
+<div class="prog-wrap"><div class="prog-fill" id="progFill"></div></div>
+
+<!-- FLASHCARD SECTION -->
+<div class="fc-section">
+  <div class="fc-header">
+    <div class="fc-heading">
+      <div class="fc-title">🃏 Revision Flashcards</div>
+      <span class="fc-badge">Revise first!</span>
+    </div>
+    <button class="fc-toggle-btn" id="fcToggleBtn" onclick="toggleFlashcards()">▼ Open</button>
+  </div>
+  <div class="fc-body" id="fcBody">
+    <div class="fc-desc">Tap any card to flip it and see the answer. Swipe to browse all cards!</div>
+    <div class="fc-carousel" id="fcCarousel">
+        <div class="fc-item" onclick="flipCard(this)" data-index="0">
+          <div class="fc-inner">
+            <div class="fc-front"><div class="fc-q-label">Tap to flip</div><div class="fc-text">What is Two-Factor Authentication (2FA)?</div></div>
+            <div class="fc-back"><div class="fc-q-label">Answer</div><div class="fc-text">An extra layer of security. Even if someone knows your password, they ALSO need a code sent to your phone. Enable it for Gmail, banking apps and social media for maximum protection.</div></div>
+          </div>
+        </div>
+        <div class="fc-item" onclick="flipCard(this)" data-index="1">
+          <div class="fc-inner">
+            <div class="fc-front"><div class="fc-q-label">Tap to flip</div><div class="fc-text">What is a VPN and when should you use it?</div></div>
+            <div class="fc-back"><div class="fc-q-label">Answer</div><div class="fc-text">Virtual Private Network — encrypts your internet connection so others can't spy on your data. Use on public Wi-Fi (cafés, hospitals) to protect banking and personal browsing.</div></div>
+          </div>
+        </div>
+        <div class="fc-item" onclick="flipCard(this)" data-index="2">
+          <div class="fc-inner">
+            <div class="fc-front"><div class="fc-q-label">Tap to flip</div><div class="fc-text">What is Biometric Lock?</div></div>
+            <div class="fc-back"><div class="fc-q-label">Answer</div><div class="fc-text">Using your fingerprint or face to unlock the phone. Much harder to bypass than a PIN. Set it up: Settings → Security → Fingerprint / Face Unlock.</div></div>
+          </div>
+        </div>
+        <div class="fc-item" onclick="flipCard(this)" data-index="3">
+          <div class="fc-inner">
+            <div class="fc-front"><div class="fc-q-label">Tap to flip</div><div class="fc-text">What does 'Rooting' or 'Jailbreaking' a phone mean?</div></div>
+            <div class="fc-back"><div class="fc-q-label">Answer</div><div class="fc-text">Removing manufacturer restrictions to get full system access. It voids warranty, removes security protections and makes your phone much more vulnerable to malware. NOT recommended.</div></div>
+          </div>
+        </div>
+        <div class="fc-item" onclick="flipCard(this)" data-index="4">
+          <div class="fc-inner">
+            <div class="fc-front"><div class="fc-q-label">Tap to flip</div><div class="fc-text">What is Google Find My Device?</div></div>
+            <div class="fc-back"><div class="fc-q-label">Answer</div><div class="fc-text">A free Google feature that lets you locate, lock or remotely ERASE a lost phone. Enable via Settings → Google → Find My Device. Must be signed into Google account.</div></div>
+          </div>
+        </div>
+        <div class="fc-item" onclick="flipCard(this)" data-index="5">
+          <div class="fc-inner">
+            <div class="fc-front"><div class="fc-q-label">Tap to flip</div><div class="fc-text">What is a Factory Reset and when should you use it?</div></div>
+            <div class="fc-back"><div class="fc-q-label">Answer</div><div class="fc-text">Wipes ALL data and returns phone to brand-new state. Use when selling/giving away your phone, or if it's badly infected with malware. Always BACKUP first!</div></div>
+          </div>
+        </div>
+        <div class="fc-item" onclick="flipCard(this)" data-index="6">
+          <div class="fc-inner">
+            <div class="fc-front"><div class="fc-q-label">Tap to flip</div><div class="fc-text">What is App Permissions and why does it matter?</div></div>
+            <div class="fc-back"><div class="fc-q-label">Answer</div><div class="fc-text">When you install an app, it asks for permissions (camera, microphone, location). Only grant what's needed. A Torchlight app asking for your Contacts is suspicious — deny it!</div></div>
+          </div>
+        </div>
+        <div class="fc-item" onclick="flipCard(this)" data-index="7">
+          <div class="fc-inner">
+            <div class="fc-front"><div class="fc-q-label">Tap to flip</div><div class="fc-text">What is the difference between OS Update and App Update?</div></div>
+            <div class="fc-back"><div class="fc-q-label">Answer</div><div class="fc-text">OS Update (e.g. Android 14) = whole phone software, fixes security holes. App Update = updates individual apps. Both are important for security. Enable auto-updates!</div></div>
+          </div>
+        </div>
+    </div>
+    <div class="fc-nav">
+      <button class="fc-nav-btn" onclick="scrollFC(-1)">&#8592; Prev</button>
+      <span class="fc-count" id="fcCount">1 / 8</span>
+      <button class="fc-nav-btn" onclick="scrollFC(1)">Next &#8594;</button>
+    </div>
+    <div class="fc-tip">💡 Review the flashcards before starting — you'll score higher!</div>
+  </div>
+</div>
+
+<!-- QUIZ SECTION -->
+<div class="quiz-section">
+  <div id="quizArea"></div>
+  <div class="completion" id="completion">
+    <div class="completion-card">
+      <div class="completion-top">
+        <span class="completion-icon" id="compIcon">🎉</span>
+        <div class="completion-title" id="compTitle">Quiz Complete!</div>
+        <div class="completion-sub" id="compSub">Smartphone Basics — Advanced Quiz complete!</div>
+      </div>
+      <div class="completion-body">
+        <div class="final-score-row">
+          <div><div class="final-score-num" id="finalScore">0</div><div class="final-score-label">out of 10</div></div>
+          <div class="final-stars" id="finalStars"></div>
+        </div>
+        <div class="result-msg" id="resultMsg"></div>
+        <div class="completion-actions">
+          <button class="btn-primary" onclick="retakeQuiz()">🔄 Try Again</button>
+          <button class="btn-secondary" onclick="window.location.href='../quizzes.html'">← Back to All Quizzes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="nav-bar" id="navBar">
+  <button class="btn-next-q" id="btnNext" onclick="nextQuestion()">Next Question →</button>
+</div>
+
+<div class="score-burst" id="scoreBurst"></div>
+
+<script type="module">
+import { auth, db } from "../firebase.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const QUIZ_KEY = "basics-advanced";
+const QUESTIONS = [{"q": "A stranger found your phone. You have a fingerprint lock set. They try to unlock it 5 times and fail. What is the BEST outcome you can expect?", "options": ["The phone unlocks anyway after 5 attempts", "The phone temporarily locks and requires your PIN/password — fingerprint attempts are limited for security", "The phone deletes all data immediately", "Nothing — anyone can unlock it"], "correct": 1, "explanation": "Most phones lock fingerprint access after several failed attempts and require the PIN/password instead. This protects against someone pressing your sleeping finger to the sensor!"}, {"q": "You are at a hospital using their free Wi-Fi to check your bank balance. What is the SAFEST approach?", "options": ["Use the free Wi-Fi freely — hospitals are safe", "Use a VPN app while on public Wi-Fi, or switch to your own mobile data for banking", "Only check if the Wi-Fi has a password", "Ask hospital staff if the Wi-Fi is safe"], "correct": 1, "explanation": "Public Wi-Fi can be monitored by others on the same network. For banking/sensitive data, use your own mobile data or a reputable VPN. Never do banking on public Wi-Fi without protection!"}, {"q": "You want to sell your old phone to a second-hand shop. Before handing it over, what is the ESSENTIAL step?", "options": ["Just delete your photos from the Gallery", "Factory Reset the phone after removing your Google account — this erases ALL personal data", "Remove only the SIM card", "Delete WhatsApp only"], "correct": 1, "explanation": "Factory Reset (Settings → System → Reset → Factory Reset) wipes everything. Also remove your Google account first (Settings → Accounts) or the new owner may be locked out. Photos deleted normally can be recovered!"}, {"q": "You install a free Torchlight app from the Play Store. It asks for permission to access your Contacts, Messages and Microphone. What should you do?", "options": ["Grant all permissions — it needs them to work", "DENY all — a torchlight only needs Camera permission for the flash. Requesting Contacts/Messages is highly suspicious.", "Grant only Microphone permission", "Uninstall immediately without checking"], "correct": 1, "explanation": "A torchlight only needs Camera/Flash access. Apps requesting unrelated permissions (Contacts, Messages, Microphone) are often data-harvesting or malware. Deny suspicious permissions or uninstall!"}, {"q": "You lost your phone at the railway station. You're using your family member's phone. What is the MOST USEFUL first action for a smartphone user who enabled Google account?", "options": ["Buy a new phone immediately", "Go to find my phone google com, sign in and use Find My Device to locate, lock or erase your phone remotely", "Call your own number repeatedly", "File police complaint first (before trying to locate it)"], "correct": 1, "explanation": "Google's Find My Device (findmydevice.google.com) shows your phone's last known location on a map. You can also lock it remotely with a message, or erase it completely if you think it's stolen!"}, {"q": "Your phone hasn't received an Android OS update in 2 years. Why is this a security concern?", "options": ["Old OS versions look outdated but are equally safe", "Unpatched security vulnerabilities accumulate — hackers exploit known weaknesses in older OS versions that newer updates fix", "Old OS drains battery faster only", "Only gaming performance is affected"], "correct": 1, "explanation": "Every OS update includes security patches for newly discovered vulnerabilities. An outdated OS is like leaving a known broken lock unfixed — hackers specifically target known weaknesses in older versions!"}, {"q": "Someone sends you a link via SMS: 'Your KYC is expired! Update now: bit.ly/update-kyc-now'. What is this?", "options": ["A legitimate bank alert — click immediately", "A smishing (SMS phishing) attack — do not click. Banks never send KYC update links via SMS.", "A Google notification", "An Aadhaar government message"], "correct": 1, "explanation": "Smishing = SMS phishing. Banks and government bodies NEVER send KYC links via SMS. If concerned about your KYC, visit your bank branch directly or go to the bank's official app!"}, {"q": "You want to enable Two-Factor Authentication on your Google account. Where do you go?", "options": ["Play Store → Google → 2FA", "myaccount.google.com → Security → 2-Step Verification → Turn On", "Phone Settings → Accessibility → 2FA", "Gmail → Settings → Security Code"], "correct": 1, "explanation": "Visit myaccount.google.com on your phone browser → Security → 2-Step Verification. Once enabled, every new login requires both your password AND a code sent to your registered phone!"}, {"q": "An app you installed last week is sending you a lot of notifications and your data usage has shot up. What should you do?", "options": ["Ignore — all apps use lots of data", "Check the app's permissions, revoke suspicious ones, block notifications, and consider uninstalling if the behaviour seems malicious", "Switch off mobile data permanently", "Clear the phone screen"], "correct": 1, "explanation": "Sudden high data usage can indicate an app sending your data to external servers. Settings → Apps → [app name] → Permissions to review. Settings → Apps → Notifications to manage. Uninstall if suspicious!"}, {"q": "What is the SAFEST way to download an APK file (Android app) that is NOT on the Play Store?", "options": ["Download from any website that offers it", "Avoid it entirely unless it's from the official developer's verified website, and you understand the risks — enable 'Install Unknown Apps' only temporarily", "Forward the APK file from WhatsApp — it's safer", "All APK files outside Play Store are completely safe"], "correct": 1, "explanation": "APK files outside Play Store bypass Google's safety checks. Only download from verified official sources (like the developer's own website). Enable 'Install Unknown Apps' setting ONLY temporarily and disable it after installing!"}];
+
+let currentQ = 0, score = 0, answered = false, currentUser = null;
+
+onAuthStateChanged(auth, async (user) => {
+  if (!user) { window.location.href = "../index.html"; return; }
+  currentUser = user;
+  renderQuestion();
+});
+
+async function saveScore(s) {
+  if (!currentUser) return;
+  try { await setDoc(doc(db, "users", currentUser.uid), { quizScores: { [QUIZ_KEY]: s } }, { merge: true }); } catch(e) {}
+}
+
+function renderQuestion() {
+  answered = false;
+  const q = QUESTIONS[currentQ];
+  const letters = ["A","B","C","D"];
+  const opts = q.options.map((opt,i) => `
+    <button class="q-opt" onclick="answer(this,${i},${q.correct})">
+      <span class="opt-letter">${letters[i]}</span>
+      <span>${opt}</span>
+    </button>`).join("");
+
+  document.getElementById("quizArea").innerHTML = `
+    <div class="q-card">
+      <div class="q-header">
+        <div class="q-num">Question ${currentQ + 1} of ${QUESTIONS.length}</div>
+        <div class="q-text">${q.q}</div>
+      </div>
+      <div class="q-options">${opts}</div>
+      <div class="feedback-box" id="feedbackBox">
+        <div class="feedback-icon" id="feedbackIcon"></div>
+        <div><div class="feedback-title" id="feedbackTitle"></div><div class="feedback-text" id="feedbackText"></div></div>
+      </div>
+    </div>`;
+  updateProgress();
+  document.getElementById("btnNext").classList.remove("enabled");
+  document.getElementById("btnNext").textContent = currentQ === QUESTIONS.length - 1 ? "See Results 🎉" : "Next Question →";
+}
+
+window.answer = function(btn, chosen, correct) {
+  if (answered) return;
+  answered = true;
+  const opts = document.querySelectorAll(".q-opt");
+  opts.forEach((o,i) => {
+    o.disabled = true;
+    if (i !== chosen) o.classList.add("dim");
+  });
+
+  const isCorrect = chosen === correct;
+  btn.classList.remove("dim");
+  btn.classList.add(isCorrect ? "correct" : "wrong");
+  if (!isCorrect) opts[correct].classList.remove("dim"), opts[correct].classList.add("correct");
+
+  const fb = document.getElementById("feedbackBox");
+  const q = QUESTIONS[currentQ];
+  fb.className = "feedback-box show " + (isCorrect ? "good" : "oops");
+  document.getElementById("feedbackIcon").textContent = isCorrect ? "🎉" : "💭";
+  document.getElementById("feedbackTitle").textContent = isCorrect ? "Excellent! Well done!" : "Oops! Not quite right...";
+  document.getElementById("feedbackText").textContent = q.explanation;
+
+  if (isCorrect) {
+    score++;
+    const burst = document.getElementById("scoreBurst");
+    burst.textContent = "+1 ⭐";
+    burst.classList.add("pop");
+    setTimeout(() => burst.classList.remove("pop"), 800);
+  }
+  updateScoreDisplay();
+  document.getElementById("btnNext").classList.add("enabled");
+};
+
+function updateScoreDisplay() {
+  document.getElementById("scoreVal").textContent = score + " / 10";
+  const stars = "⭐".repeat(score) + "⬜".repeat(10 - score);
+  document.getElementById("starsRow").textContent = stars;
+}
+
+function updateProgress() {
+  const pct = (currentQ / QUESTIONS.length) * 100;
+  document.getElementById("progFill").style.width = pct + "%";
+  document.getElementById("qCounter").textContent = `Q ${currentQ + 1} of ${QUESTIONS.length}`;
+}
+
+window.nextQuestion = function() {
+  if (!answered) return;
+  currentQ++;
+  if (currentQ >= QUESTIONS.length) {
+    showCompletion();
+  } else {
+    renderQuestion();
+    window.scrollTo({top:0,behavior:"smooth"});
+  }
+};
+
+function showCompletion() {
+  document.getElementById("quizArea").style.display = "none";
+  document.getElementById("navBar").classList.add("hidden");
+  const comp = document.getElementById("completion");
+  comp.classList.add("show");
+  document.getElementById("finalScore").textContent = score;
+  document.getElementById("finalStars").textContent = "⭐".repeat(score) + "⬜".repeat(10-score);
+
+  let icon="🎉", msg="";
+  if (score === 10) { icon="🏆"; msg="PERFECT SCORE! You are a true Digital Champion! Your family must be so proud of you! 🌟"; }
+  else if (score >= 8) { icon="🥇"; msg="Outstanding! " + score + "/10 — you really know your stuff! A little more practice and you'll be perfect!"; }
+  else if (score >= 6) { icon="😊"; msg="Good effort! " + score + "/10 — you're getting there! Review the flashcards above and try again to improve!"; }
+  else if (score >= 4) { icon="💪"; msg="Keep going! " + score + "/10 — every expert started as a beginner. Check the flashcards and try again!"; }
+  else { icon="📖"; msg="Don't worry at all! " + score + "/10 — learning takes time. Review the flashcards carefully and have another go — you'll do better!"; }
+
+  document.getElementById("compIcon").textContent = icon;
+  document.getElementById("compTitle").textContent = score === 10 ? "Perfect Score! 🏆" : `You scored ${score} out of 10!`;
+  document.getElementById("compSub").textContent = "Smartphone Basics — Advanced Quiz complete!";
+  document.getElementById("resultMsg").textContent = msg;
+
+  const progFill = document.getElementById("progFill");
+  progFill.style.width = "100%";
+  saveScore(score);
+}
+
+window.retakeQuiz = function() {
+  currentQ = 0; score = 0; answered = false;
+  updateScoreDisplay();
+  document.getElementById("quizArea").style.display = "block";
+  document.getElementById("navBar").classList.remove("hidden");
+  document.getElementById("completion").classList.remove("show");
+  renderQuestion();
+  window.scrollTo({top:0,behavior:"smooth"});
+};
+
+let fcOpen = false;
+let fcIndex = 0;
+const FC_COUNT = 8;
+
+window.toggleFlashcards = function() {
+  fcOpen = !fcOpen;
+  document.getElementById("fcBody").classList.toggle("open", fcOpen);
+  document.getElementById("fcToggleBtn").textContent = fcOpen ? "▲ Close" : "▼ Open";
+};
+window.flipCard = function(el) { el.classList.toggle("flipped"); };
+window.scrollFC = function(dir) {
+  const carousel = document.getElementById("fcCarousel");
+  const items = carousel.querySelectorAll(".fc-item");
+  fcIndex = Math.max(0, Math.min(FC_COUNT-1, fcIndex + dir));
+  items[fcIndex].scrollIntoView({behavior:"smooth",block:"nearest",inline:"center"});
+  document.getElementById("fcCount").textContent = (fcIndex+1) + " / " + FC_COUNT;
+  carousel.addEventListener("scroll", function onScroll() {
+    const itemW = items[0].offsetWidth + 14;
+    fcIndex = Math.round(carousel.scrollLeft / itemW);
+    document.getElementById("fcCount").textContent = (fcIndex+1) + " / " + FC_COUNT;
+  }, {passive:true});
+};
+</script>
+</body>
+</html>

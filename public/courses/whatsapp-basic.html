@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WhatsApp — Beginner · Digital Literacy</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --navy:     #1B2A4A;
+  --navy-md:  #2E4070;
+  --navy-lt:  #EEF1F8;
+  --cream:    #FAF8F5;
+  --warm:     #F3EFE8;
+  --gold:     #B07D2F;
+  --gold-lt:  #FDF3DC;
+  --slate:    #4A5568;
+  --slate-lt: #718096;
+  --border:   #E2DDD6;
+  --white:    #FFFFFF;
+  --green:    #2D6A4F;
+  --green-lt: #E8F5EF;
+  --green-md: #3A8C65;
+  --wa:       #25D366;
+  --wa-dark:  #128C7E;
+  --radius:   16px;
+  --shadow:   0 4px 24px rgba(27,42,74,0.10);
+}
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--cream);
+  color: var(--navy);
+  min-height: 100vh;
+  font-size: 18px;
+}
+
+/* TOP BAR */
+.topbar {
+  background: var(--navy);
+  padding: 0 24px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+}
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.7);
+  cursor: pointer;
+  padding: 6px 14px;
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 8px;
+  background: rgba(255,255,255,0.06);
+  transition: 0.15s;
+  text-decoration: none;
+}
+.back-btn:hover { background: rgba(255,255,255,0.13); color: #fff; }
+.topbar-center { display: flex; align-items: center; gap: 10px; }
+.wa-dot {
+  width: 30px; height: 30px;
+  background: var(--wa);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+}
+.topbar-title { font-family: 'Lora', serif; font-size: 16px; font-weight: 600; color: #fff; }
+.level-badge { font-size: 12px; font-weight: 800; background: var(--wa); color: #fff; padding: 3px 12px; border-radius: 20px; }
+
+/* PROGRESS */
+.progress-wrap { background: var(--white); border-bottom: 1.5px solid var(--border); padding: 14px 24px; }
+.progress-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.progress-label { font-size: 13px; font-weight: 700; color: var(--slate); }
+.progress-pct   { font-size: 13px; font-weight: 800; color: var(--green); }
+.progress-track { height: 8px; background: var(--warm); border-radius: 8px; overflow: hidden; }
+.progress-fill  { height: 8px; background: linear-gradient(90deg, var(--wa-dark), var(--wa)); border-radius: 8px; transition: width 0.6s cubic-bezier(.4,0,.2,1); }
+
+/* STEP DOTS */
+.step-dots { display: flex; justify-content: center; gap: 8px; padding: 16px 24px 0; }
+.dot { height: 8px; border-radius: 8px; background: var(--border); transition: all 0.35s cubic-bezier(.4,0,.2,1); width: 8px; }
+.dot.done   { background: var(--wa); }
+.dot.active { background: var(--navy); width: 28px; }
+
+/* MAIN */
+.main { max-width: 680px; margin: 0 auto; padding: 24px 20px 110px; }
+
+/* STEP CARD */
+.step-card {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  animation: fadeUp 0.4s cubic-bezier(.4,0,.2,1) both;
+}
+@keyframes fadeUp {
+  from { opacity:0; transform: translateY(20px); }
+  to   { opacity:1; transform: translateY(0); }
+}
+
+/* CARD HERO */
+.card-hero {
+  padding: 28px 28px 22px;
+  background: linear-gradient(135deg, var(--navy) 0%, #243860 100%);
+  display: flex;
+  gap: 18px;
+  align-items: center;
+}
+.hero-emoji { font-size: 56px; line-height: 1; flex-shrink: 0; filter: drop-shadow(0 3px 10px rgba(0,0,0,0.25)); }
+.hero-step { font-size: 11px; font-weight: 800; letter-spacing: 2.5px; text-transform: uppercase; color: var(--wa); margin-bottom: 5px; }
+.hero-title { font-family: 'Lora', serif; font-size: 24px; font-weight: 600; color: #fff; line-height: 1.25; }
+
+/* CARD BODY */
+.card-body { padding: 26px 28px 28px; }
+.body-text { font-size: 17px; color: var(--slate); line-height: 1.85; margin-bottom: 18px; }
+
+/* ENCOURAGE BANNER */
+.encourage { display: flex; align-items: center; gap: 12px; background: var(--gold-lt); border: 1.5px solid #EDD9A0; border-radius: 12px; padding: 14px 18px; margin-bottom: 22px; }
+.encourage-icon { font-size: 22px; flex-shrink: 0; }
+.encourage-text { font-size: 15px; font-weight: 700; color: var(--gold); line-height: 1.5; }
+
+/* INSTRUCTION LIST */
+.instr-list { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; }
+.instr-item { display: flex; gap: 13px; align-items: flex-start; padding: 14px 16px; background: var(--cream); border: 1.5px solid var(--border); border-radius: 12px; transition: border-color 0.2s, background 0.2s; }
+.instr-item:hover { border-color: var(--navy-md); background: var(--navy-lt); }
+.instr-num { width: 30px; height: 30px; border-radius: 50%; background: var(--navy); color: #fff; font-size: 14px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+.instr-text { font-size: 16px; color: var(--slate); line-height: 1.7; padding-top: 3px; }
+
+/* TIP BOX */
+.tip-box { display: flex; gap: 13px; align-items: flex-start; background: var(--green-lt); border: 1.5px solid #B7DEC9; border-radius: 12px; padding: 16px 18px; margin-top: 20px; }
+.tip-icon { font-size: 22px; flex-shrink: 0; margin-top: 1px; }
+.tip-label { font-size: 11px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: var(--green); margin-bottom: 3px; }
+.tip-text  { font-size: 15px; color: #285C42; line-height: 1.65; }
+
+/* TAP TO REVEAL */
+.reveal-block { border-radius: 13px; overflow: hidden; margin: 20px 0; border: 2px dashed var(--border); cursor: pointer; transition: border-color 0.2s; }
+.reveal-block:hover { border-color: var(--navy-md); }
+.reveal-prompt { padding: 18px 20px; display: flex; align-items: center; gap: 14px; background: var(--navy-lt); }
+.reveal-prompt-icon { font-size: 26px; }
+.reveal-prompt-text { font-size: 16px; font-weight: 700; color: var(--navy-md); flex: 1; }
+.reveal-prompt-arrow { font-size: 18px; color: var(--navy-md); transition: transform 0.3s; }
+.reveal-block.open .reveal-prompt-arrow { transform: rotate(90deg); }
+.reveal-answer { max-height: 0; overflow: hidden; transition: max-height 0.45s cubic-bezier(.4,0,.2,1), padding 0.3s; background: var(--white); padding: 0 20px; }
+.reveal-block.open .reveal-answer { max-height: 400px; padding: 18px 20px; }
+.reveal-answer-inner { font-size: 16px; color: var(--slate); line-height: 1.75; }
+
+/* TAP QUESTION */
+.tap-question { background: var(--navy-lt); border: 1.5px solid #C5D0E8; border-radius: 13px; padding: 20px 20px; margin: 20px 0; }
+.tap-q-label { font-size: 11px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: var(--navy-md); margin-bottom: 8px; }
+.tap-q-text  { font-size: 17px; font-weight: 700; color: var(--navy); margin-bottom: 14px; line-height: 1.4; }
+.tap-options { display: flex; flex-direction: column; gap: 9px; }
+.tap-opt { padding: 13px 18px; border-radius: 10px; border: 2px solid var(--border); background: var(--white); font-size: 16px; font-weight: 700; font-family: 'Nunito', sans-serif; color: var(--slate); cursor: pointer; transition: 0.18s; text-align: left; }
+.tap-opt:hover:not(:disabled) { border-color: var(--navy-md); background: var(--navy-lt); color: var(--navy); }
+.tap-opt.correct { background: var(--green-lt); border-color: var(--green); color: var(--green); pointer-events: none; }
+.tap-opt.wrong   { background: #FEF2F2; border-color: #FCA5A5; color: #B91C1C; pointer-events: none; }
+.tap-opt.dim     { opacity: 0.4; pointer-events: none; }
+.tap-result { font-size: 15px; font-weight: 700; margin-top: 12px; padding: 11px 14px; border-radius: 9px; display: none; }
+.tap-result.show { display: block; }
+.tap-result.good { background: var(--green-lt); color: var(--green); }
+.tap-result.oops { background: #FEF2F2; color: #B91C1C; }
+
+/* FEATURE GRID */
+.feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
+.feature-card { background: var(--cream); border: 1.5px solid var(--border); border-radius: 12px; padding: 16px 14px; text-align: center; transition: transform 0.2s, box-shadow 0.2s; }
+.feature-card:hover { transform: translateY(-3px); box-shadow: 0 6px 18px rgba(27,42,74,0.10); border-color: var(--navy-md); }
+.feature-card-icon { font-size: 32px; margin-bottom: 8px; }
+.feature-card-name { font-size: 14px; font-weight: 800; color: var(--navy); margin-bottom: 3px; }
+.feature-card-desc { font-size: 12px; color: var(--slate-lt); line-height: 1.5; }
+
+/* TICK DEMO */
+.tick-demo { display: flex; flex-direction: column; gap: 10px; margin: 16px 0; }
+.tick-row { display: flex; align-items: center; gap: 14px; padding: 13px 18px; background: var(--cream); border: 1.5px solid var(--border); border-radius: 11px; }
+.tick-symbol { font-size: 20px; width: 44px; text-align: center; flex-shrink: 0; }
+.tick-meaning { font-size: 15px; font-weight: 700; color: var(--slate); }
+.tick-meaning span { font-weight: 400; color: var(--slate-lt); display: block; font-size: 13px; margin-top: 2px; }
+
+/* COMPLETION */
+.completion-card { background: var(--white); border: 1.5px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; animation: fadeUp 0.4s cubic-bezier(.4,0,.2,1) both; }
+.completion-top { background: linear-gradient(135deg, var(--wa-dark) 0%, var(--wa) 100%); padding: 44px 28px 36px; text-align: center; }
+.completion-big-icon { font-size: 72px; margin-bottom: 16px; }
+.completion-title { font-family: 'Lora', serif; font-size: 28px; font-weight: 600; color: #fff; margin-bottom: 8px; }
+.completion-sub { font-size: 16px; color: rgba(255,255,255,0.88); line-height: 1.6; }
+.completion-body { padding: 32px 28px; }
+.learned-list { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+.learned-item { display: flex; align-items: center; gap: 12px; padding: 13px 16px; background: var(--green-lt); border: 1.5px solid #B7DEC9; border-radius: 10px; font-size: 16px; font-weight: 700; color: var(--green); }
+.completion-actions { display: flex; flex-direction: column; gap: 12px; }
+.btn-primary { padding: 16px 24px; border-radius: 12px; border: none; background: var(--navy); color: #fff; font-size: 17px; font-weight: 800; font-family: 'Nunito', sans-serif; cursor: pointer; transition: background 0.15s; }
+.btn-primary:hover { background: var(--navy-md); }
+.btn-secondary { padding: 14px 24px; border-radius: 12px; border: 1.5px solid var(--border); background: var(--white); color: var(--navy); font-size: 16px; font-weight: 700; font-family: 'Nunito', sans-serif; cursor: pointer; transition: 0.15s; }
+.btn-secondary:hover { border-color: var(--navy); background: var(--navy-lt); }
+
+/* NAV BAR */
+.nav-bar { position: fixed; bottom: 0; left: 0; right: 0; background: var(--white); border-top: 1.5px solid var(--border); padding: 14px 20px; display: flex; gap: 12px; z-index: 200; box-shadow: 0 -4px 20px rgba(27,42,74,0.09); }
+.btn-back { padding: 14px 22px; border-radius: 12px; border: 1.5px solid var(--border); background: var(--white); font-size: 16px; font-weight: 700; font-family: 'Nunito', sans-serif; color: var(--slate); cursor: pointer; transition: 0.15s; }
+.btn-back:hover { border-color: var(--navy); color: var(--navy); background: var(--navy-lt); }
+.btn-next { flex: 1; padding: 14px 24px; border-radius: 12px; border: none; background: var(--navy); font-size: 17px; font-weight: 800; font-family: 'Nunito', sans-serif; color: #fff; cursor: pointer; transition: background 0.15s; }
+.btn-next:hover { background: var(--navy-md); }
+.hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="back-btn" href="../courses.html">&#8592; Courses</a>
+  <div class="topbar-center">
+    <div class="wa-dot">💬</div>
+    <span class="topbar-title">WhatsApp</span>
+  </div>
+  <span class="level-badge">Beginner</span>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-row">
+    <span class="progress-label" id="progressLabel">Step 1 of 5</span>
+    <span class="progress-pct" id="progressPct">0% done</span>
+  </div>
+  <div class="progress-track">
+    <div class="progress-fill" id="progressFill" style="width:0%"></div>
+  </div>
+</div>
+
+<div class="step-dots" id="stepDots">
+  <div class="dot active" id="dot-0"></div>
+  <div class="dot" id="dot-1"></div>
+  <div class="dot" id="dot-2"></div>
+  <div class="dot" id="dot-3"></div>
+  <div class="dot" id="dot-4"></div>
+</div>
+
+<div class="main" id="mainContent"></div>
+
+<div class="nav-bar" id="navBar">
+  <button class="btn-back" id="btnBack" onclick="prevStep()">&#8592; Back</button>
+  <button class="btn-next" id="btnNext" onclick="nextStep()">Next →</button>
+</div>
+
+<script type="module">
+import { auth, db } from "../firebase.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const COURSE_KEY = "whatsapp-beginner";
+let currentStep = 0;
+let currentUser = null;
+
+const STEPS = [
+  () => `
+    <div class="step-card">
+      <div class="card-hero">
+        <div class="hero-emoji">💬</div>
+        <div class="hero-text">
+          <div class="hero-step">Step 1 of 5</div>
+          <div class="hero-title">What is WhatsApp?</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="encourage"><span class="encourage-icon">🙏</span><span class="encourage-text">Welcome! You're about to learn something wonderful. Take your time — there is no rush at all.</span></div>
+        <p class="body-text">WhatsApp is a <strong>free app</strong> on your phone that lets you stay in touch with family and friends — through messages, photos, voice calls and video calls. It works over Wi-Fi or mobile data, so it does <em>not</em> use your regular call or SMS balance.</p>
+        <div class="feature-grid">
+          <div class="feature-card"><div class="feature-card-icon">💬</div><div class="feature-card-name">Text Messages</div><div class="feature-card-desc">Type and send instantly</div></div>
+          <div class="feature-card"><div class="feature-card-icon">🎤</div><div class="feature-card-name">Voice Notes</div><div class="feature-card-desc">Record your voice</div></div>
+          <div class="feature-card"><div class="feature-card-icon">📞</div><div class="feature-card-name">Voice Calls</div><div class="feature-card-desc">Free calls anywhere</div></div>
+          <div class="feature-card"><div class="feature-card-icon">📹</div><div class="feature-card-name">Video Calls</div><div class="feature-card-desc">See your loved ones</div></div>
+        </div>
+        <div class="reveal-block" id="rev-0" onclick="toggleReveal('rev-0')">
+          <div class="reveal-prompt">
+            <span class="reveal-prompt-icon">🤔</span>
+            <span class="reveal-prompt-text">Does WhatsApp cost money?</span>
+            <span class="reveal-prompt-arrow">▶</span>
+          </div>
+          <div class="reveal-answer">
+            <div class="reveal-answer-inner">✅ <strong>WhatsApp is completely free!</strong> It uses your internet connection — not your call balance or SMS. Millions of Indian families use it every day without any extra charges.</div>
+          </div>
+        </div>
+        <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Good to know</div><div class="tip-text">You only need your <strong>phone number</strong> to use WhatsApp — no email or separate password needed.</div></div></div>
+      </div>
+    </div>`,
+
+  () => `
+    <div class="step-card">
+      <div class="card-hero">
+        <div class="hero-emoji">⬇️</div>
+        <div class="hero-text">
+          <div class="hero-step">Step 2 of 5</div>
+          <div class="hero-title">Installing WhatsApp</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="encourage"><span class="encourage-icon">⭐</span><span class="encourage-text">You're doing great! Installing an app is easier than it sounds — let's do it together.</span></div>
+        <p class="body-text">WhatsApp is downloaded from the <strong>Play Store</strong> on Android phones, or the <strong>App Store</strong> on iPhones. It is completely free to download.</p>
+        <ul class="instr-list">
+          <li class="instr-item"><span class="instr-num">1</span><span class="instr-text">Find the colourful <strong>Play Store ▶</strong> icon on your phone and tap it.</span></li>
+          <li class="instr-item"><span class="instr-num">2</span><span class="instr-text">Tap the <strong>Search bar</strong> at the top and type <em>WhatsApp</em>.</span></li>
+          <li class="instr-item"><span class="instr-num">3</span><span class="instr-text">Tap <strong>WhatsApp Messenger</strong> — green icon with a white phone inside.</span></li>
+          <li class="instr-item"><span class="instr-num">4</span><span class="instr-text">Tap <strong>Install</strong>, wait 1–2 minutes, then tap <strong>Open</strong>.</span></li>
+        </ul>
+        <div class="tap-question">
+          <div class="tap-q-label">✏️ Quick check</div>
+          <div class="tap-q-text">Where do you download WhatsApp from?</div>
+          <div class="tap-options">
+            <button class="tap-opt" onclick="tapAnswer(this,false,'q1')">📧 From an email link</button>
+            <button class="tap-opt" onclick="tapAnswer(this,true,'q1')">▶ Play Store or App Store</button>
+            <button class="tap-opt" onclick="tapAnswer(this,false,'q1')">🌐 By typing a website</button>
+          </div>
+          <div class="tap-result" id="res-q1"></div>
+        </div>
+        <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Good to know</div><div class="tip-text">Connect to <strong>Wi-Fi before downloading</strong> so the app doesn't use your mobile data.</div></div></div>
+      </div>
+    </div>`,
+
+  () => `
+    <div class="step-card">
+      <div class="card-hero">
+        <div class="hero-emoji">✅</div>
+        <div class="hero-text">
+          <div class="hero-step">Step 3 of 5</div>
+          <div class="hero-title">Setting Up Your Account</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="encourage"><span class="encourage-icon">🌸</span><span class="encourage-text">Halfway there! This setup only takes a couple of minutes and you only do it once.</span></div>
+        <p class="body-text">When you first open WhatsApp, it will ask you a few simple things. Here is exactly what to do:</p>
+        <ul class="instr-list">
+          <li class="instr-item"><span class="instr-num">1</span><span class="instr-text">Tap <strong>Agree and Continue</strong> on the welcome screen.</span></li>
+          <li class="instr-item"><span class="instr-num">2</span><span class="instr-text">Type your <strong>mobile number</strong>. WhatsApp sends a 6-digit code by SMS.</span></li>
+          <li class="instr-item"><span class="instr-num">3</span><span class="instr-text">Enter the <strong>6-digit code</strong> — WhatsApp may fill it in automatically.</span></li>
+          <li class="instr-item"><span class="instr-num">4</span><span class="instr-text">Tap <strong>Allow</strong> when it asks to access your contacts.</span></li>
+        </ul>
+        <div class="reveal-block" id="rev-2" onclick="toggleReveal('rev-2')">
+          <div class="reveal-prompt">
+            <span class="reveal-prompt-icon">🤔</span>
+            <span class="reveal-prompt-text">What if I don't receive the SMS code?</span>
+            <span class="reveal-prompt-arrow">▶</span>
+          </div>
+          <div class="reveal-answer">
+            <div class="reveal-answer-inner">Don't worry! Wait 60 seconds and tap <strong>"Resend SMS"</strong>. If it still doesn't arrive, tap <strong>"Call me instead"</strong> — WhatsApp will call you and read the code out loud!</div>
+          </div>
+        </div>
+        <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Good to know</div><div class="tip-text">You <strong>never need a password</strong> for WhatsApp. Your phone number is all you need — always.</div></div></div>
+      </div>
+    </div>`,
+
+  () => `
+    <div class="step-card">
+      <div class="card-hero">
+        <div class="hero-emoji">🖼️</div>
+        <div class="hero-text">
+          <div class="hero-step">Step 4 of 5</div>
+          <div class="hero-title">Setting Up Your Profile</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="encourage"><span class="encourage-icon">🌟</span><span class="encourage-text">Almost done! Your profile photo helps family instantly know it's you when you message them.</span></div>
+        <p class="body-text">Your <strong>profile</strong> shows your name and photo when you send messages. Let's make it personal!</p>
+        <ul class="instr-list">
+          <li class="instr-item"><span class="instr-num">1</span><span class="instr-text">Tap the <strong>three dots ⋮</strong> in the top-right corner, then tap <strong>Settings</strong>.</span></li>
+          <li class="instr-item"><span class="instr-num">2</span><span class="instr-text">Tap your <strong>name at the top</strong> to open your profile.</span></li>
+          <li class="instr-item"><span class="instr-num">3</span><span class="instr-text">Tap the <strong>pencil ✏️</strong> next to your name and type your name.</span></li>
+          <li class="instr-item"><span class="instr-num">4</span><span class="instr-text">Tap the <strong>camera 📷</strong> on the circle to add a photo from your gallery.</span></li>
+          <li class="instr-item"><span class="instr-num">5</span><span class="instr-text">Tap <strong>Save</strong>. Done!</span></li>
+        </ul>
+        <div class="tap-question">
+          <div class="tap-q-label">✏️ Quick check</div>
+          <div class="tap-q-text">Where do you go to change your WhatsApp profile photo?</div>
+          <div class="tap-options">
+            <button class="tap-opt" onclick="tapAnswer(this,false,'q3')">💬 The main chat list</button>
+            <button class="tap-opt" onclick="tapAnswer(this,true,'q3')">⋮ Settings → your name at the top</button>
+            <button class="tap-opt" onclick="tapAnswer(this,false,'q3')">📞 The calls tab</button>
+          </div>
+          <div class="tap-result" id="res-q3"></div>
+        </div>
+        <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Good to know</div><div class="tip-text">You can update your name and photo <strong>any time</strong> — there's no limit!</div></div></div>
+      </div>
+    </div>`,
+
+  () => `
+    <div class="step-card">
+      <div class="card-hero">
+        <div class="hero-emoji">✉️</div>
+        <div class="hero-text">
+          <div class="hero-step">Step 5 of 5</div>
+          <div class="hero-title">Sending Your First Message</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="encourage"><span class="encourage-icon">🎉</span><span class="encourage-text">Last step! This is the fun part — let's send your very first WhatsApp message!</span></div>
+        <p class="body-text">Now you're all set up, let's message a family member or friend who is already on WhatsApp.</p>
+        <ul class="instr-list">
+          <li class="instr-item"><span class="instr-num">1</span><span class="instr-text">Tap the green <strong>chat bubble 💬</strong> at the bottom-right corner.</span></li>
+          <li class="instr-item"><span class="instr-num">2</span><span class="instr-text">Find the person's name in the list and <strong>tap their name</strong>.</span></li>
+          <li class="instr-item"><span class="instr-num">3</span><span class="instr-text">Tap the <strong>message box</strong> at the bottom and type your message.</span></li>
+          <li class="instr-item"><span class="instr-num">4</span><span class="instr-text">Tap the green <strong>send button ➤</strong> to send!</span></li>
+        </ul>
+        <p class="body-text">After sending, you'll see <strong>tick marks</strong> next to your message — here's what they mean:</p>
+        <div class="tick-demo">
+          <div class="tick-row"><span class="tick-symbol">✓</span><div class="tick-meaning">One grey tick<span>Sent from your phone</span></div></div>
+          <div class="tick-row"><span class="tick-symbol">✓✓</span><div class="tick-meaning">Two grey ticks<span>Delivered to their phone</span></div></div>
+          <div class="tick-row"><span class="tick-symbol" style="color:#53BDEB;">✓✓</span><div class="tick-meaning">Two blue ticks<span>They have read your message!</span></div></div>
+        </div>
+        <div class="tap-question">
+          <div class="tap-q-label">✏️ Quick check</div>
+          <div class="tap-q-text">Your message shows two BLUE ticks. What does this mean?</div>
+          <div class="tap-options">
+            <button class="tap-opt" onclick="tapAnswer(this,false,'q4')">📤 The message was sent</button>
+            <button class="tap-opt" onclick="tapAnswer(this,false,'q4')">📲 Delivered to their phone</button>
+            <button class="tap-opt" onclick="tapAnswer(this,true,'q4')">👁️ They have read your message</button>
+          </div>
+          <div class="tap-result" id="res-q4"></div>
+        </div>
+        <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Good to know</div><div class="tip-text">Made a typo? <strong>Tap and hold</strong> your message, then tap <strong>Delete</strong> to remove it and retype.</div></div></div>
+      </div>
+    </div>`,
+];
+
+onAuthStateChanged(auth, async (user) => {
+  if (!user) { window.location.href = "../index.html"; return; }
+  currentUser = user;
+  try {
+    const snap = await getDoc(doc(db, "users", user.uid));
+    if (snap.exists() && snap.data().progress?.[COURSE_KEY] === 100) currentStep = STEPS.length;
+  } catch(e) {}
+  render();
+});
+
+async function saveProgress(pct) {
+  if (!currentUser) return;
+  try { await setDoc(doc(db, "users", currentUser.uid), { progress: { [COURSE_KEY]: pct } }, { merge: true }); } catch(e) {}
+}
+
+function render() {
+  updateProgress();
+  updateDots();
+  const main = document.getElementById("mainContent");
+  if (currentStep < STEPS.length) {
+    main.innerHTML = STEPS[currentStep]();
+  } else {
+    renderCompletion(main);
+  }
+  updateNav();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function updateProgress() {
+  const pct = Math.round((currentStep / STEPS.length) * 100);
+  document.getElementById("progressFill").style.width = pct + "%";
+  document.getElementById("progressPct").textContent = pct + "% done";
+  document.getElementById("progressLabel").textContent =
+    currentStep < STEPS.length ? `Step ${currentStep + 1} of ${STEPS.length}` : "Lesson Complete!";
+}
+
+function updateDots() {
+  for (let i = 0; i < STEPS.length; i++) {
+    const d = document.getElementById("dot-" + i);
+    if (!d) continue;
+    d.className = "dot" + (i < currentStep ? " done" : i === currentStep ? " active" : "");
+  }
+}
+
+function updateNav() {
+  const navBar  = document.getElementById("navBar");
+  const btnBack = document.getElementById("btnBack");
+  const btnNext = document.getElementById("btnNext");
+  if (currentStep >= STEPS.length) { navBar.classList.add("hidden"); return; }
+  navBar.classList.remove("hidden");
+  btnBack.style.visibility = currentStep === 0 ? "hidden" : "visible";
+  btnNext.textContent = currentStep === STEPS.length - 1 ? "Finish lesson 🎉" : "Next →";
+}
+
+function renderCompletion(container) {
+  container.innerHTML = `
+    <div class="completion-card">
+      <div class="completion-top">
+        <div class="completion-big-icon">🎊</div>
+        <div class="completion-title">You did it!</div>
+        <div class="completion-sub">You've completed WhatsApp — Beginner.<br>That's a real achievement to be proud of!</div>
+      </div>
+      <div class="completion-body">
+        <ul class="learned-list">
+          <li class="learned-item">✅ What WhatsApp is and what it can do</li>
+          <li class="learned-item">✅ How to install WhatsApp on your phone</li>
+          <li class="learned-item">✅ How to set up your account with your number</li>
+          <li class="learned-item">✅ How to add your name and profile photo</li>
+          <li class="learned-item">✅ How to send your very first message</li>
+        </ul>
+        <div class="completion-actions">
+          <button class="btn-primary" onclick="window.location.href='whatsapp-intermediate.html'">Next: WhatsApp Intermediate →</button>
+          <button class="btn-secondary" onclick="window.location.href='../courses.html'">Back to all courses</button>
+        </div>
+      </div>
+    </div>`;
+  document.getElementById("navBar").classList.add("hidden");
+  document.getElementById("stepDots").classList.add("hidden");
+  saveProgress(100);
+}
+
+window.toggleReveal = (id) => document.getElementById(id).classList.toggle("open");
+
+window.tapAnswer = function(btn, isCorrect, qid) {
+  const opts = btn.parentElement.querySelectorAll(".tap-opt");
+  opts.forEach(o => { o.classList.add("dim"); o.disabled = true; });
+  btn.classList.remove("dim");
+  btn.classList.add(isCorrect ? "correct" : "wrong");
+  if (!isCorrect) {
+    opts.forEach(o => {
+      if (o.getAttribute("onclick") && o.getAttribute("onclick").includes("true")) {
+        o.classList.remove("dim"); o.classList.add("correct");
+      }
+    });
+  }
+  const res = document.getElementById("res-" + qid);
+  if (res) {
+    res.className = "tap-result show " + (isCorrect ? "good" : "oops");
+    res.textContent = isCorrect ? "✅ Exactly right! Well done!" : "💭 Not quite — the correct answer is highlighted above. That's okay, now you know!";
+  }
+};
+
+window.nextStep = function() {
+  currentStep++;
+  saveProgress(Math.round((currentStep / STEPS.length) * 100));
+  render();
+};
+window.prevStep = function() {
+  if (currentStep > 0) { currentStep--; render(); }
+};
+</script>
+</body>
+</html>

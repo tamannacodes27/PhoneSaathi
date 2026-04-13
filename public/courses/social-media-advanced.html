@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Social Media — Advanced · Digital Literacy</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --navy:#1B2A4A;--navy-md:#2E4070;--navy-lt:#EEF1F8;--cream:#FAF8F5;--warm:#F3EFE8;
+  --gold:#B07D2F;--gold-lt:#FDF3DC;--slate:#4A5568;--slate-lt:#718096;--border:#E2DDD6;
+  --white:#FFFFFF;--green:#2D6A4F;--green-lt:#E8F5EF;
+  --amber:#92400E;--amber-lt:#FEF3C7;
+  --purple:#4C1D95;--purple-lt:#EDE9FE;--purple-md:#6D28D9;
+  --radius:16px;--shadow:0 4px 24px rgba(27,42,74,0.10);
+}
+body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--navy);min-height:100vh;font-size:18px;}
+.topbar{background:var(--navy);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,0.2);}
+.back-btn{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:700;color:rgba(255,255,255,0.7);cursor:pointer;padding:6px 14px;border:1px solid rgba(255,255,255,0.18);border-radius:8px;background:rgba(255,255,255,0.06);transition:0.15s;text-decoration:none;}
+.back-btn:hover{background:rgba(255,255,255,0.13);color:#fff;}
+.topbar-center{display:flex;align-items:center;gap:10px;}
+.dot-icon{width:30px;height:30px;background:var(--purple-md);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;}
+.topbar-title{font-family:'Lora',serif;font-size:16px;font-weight:600;color:#fff;}
+.level-badge{font-size:12px;font-weight:800;background:var(--purple);color:#fff;padding:3px 12px;border-radius:20px;}
+.progress-wrap{background:var(--white);border-bottom:1.5px solid var(--border);padding:14px 24px;}
+.progress-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.progress-label{font-size:13px;font-weight:700;color:var(--slate);}
+.progress-pct{font-size:13px;font-weight:800;color:var(--purple);}
+.progress-track{height:8px;background:var(--warm);border-radius:8px;overflow:hidden;}
+.progress-fill{height:8px;background:linear-gradient(90deg,var(--purple),var(--purple-md));border-radius:8px;transition:width 0.6s cubic-bezier(.4,0,.2,1);}
+.step-dots{display:flex;justify-content:center;gap:8px;padding:16px 24px 0;}
+.dot{height:8px;border-radius:8px;background:var(--border);transition:all 0.35s cubic-bezier(.4,0,.2,1);width:8px;}
+.dot.done{background:var(--purple-md);}
+.dot.active{background:var(--navy);width:28px;}
+.main{max-width:680px;margin:0 auto;padding:24px 20px 110px;}
+.step-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;animation:fadeUp 0.4s cubic-bezier(.4,0,.2,1) both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.card-hero{padding:28px 28px 22px;background:linear-gradient(135deg,#2E1065 0%,#4C1D95 100%);display:flex;gap:18px;align-items:center;}
+.hero-emoji{font-size:56px;line-height:1;flex-shrink:0;filter:drop-shadow(0 3px 10px rgba(0,0,0,0.25));}
+.hero-step{font-size:11px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:#C4B5FD;margin-bottom:5px;}
+.hero-title{font-family:'Lora',serif;font-size:24px;font-weight:600;color:#fff;line-height:1.25;}
+.card-body{padding:26px 28px 28px;}
+.body-text{font-size:17px;color:var(--slate);line-height:1.85;margin-bottom:18px;}
+.encourage{display:flex;align-items:center;gap:12px;background:var(--gold-lt);border:1.5px solid #EDD9A0;border-radius:12px;padding:14px 18px;margin-bottom:22px;}
+.encourage-icon{font-size:22px;flex-shrink:0;}
+.encourage-text{font-size:15px;font-weight:700;color:var(--gold);line-height:1.5;}
+.instr-list{list-style:none;display:flex;flex-direction:column;gap:12px;margin-bottom:24px;}
+.instr-item{display:flex;gap:13px;align-items:flex-start;padding:14px 16px;background:var(--cream);border:1.5px solid var(--border);border-radius:12px;}
+.instr-num{width:30px;height:30px;border-radius:50%;background:var(--navy);color:#fff;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.instr-text{font-size:16px;color:var(--slate);line-height:1.7;padding-top:3px;}
+.tip-box{display:flex;gap:13px;align-items:flex-start;background:var(--green-lt);border:1.5px solid #B7DEC9;border-radius:12px;padding:16px 18px;margin-top:20px;}
+.tip-icon{font-size:22px;flex-shrink:0;margin-top:1px;}
+.tip-label{font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);margin-bottom:3px;}
+.tip-text{font-size:15px;color:#285C42;line-height:1.65;}
+.warn-box{display:flex;gap:13px;align-items:flex-start;background:#FEF2F2;border:1.5px solid #FCA5A5;border-radius:12px;padding:16px 18px;margin:16px 0;}
+.warn-icon{font-size:22px;flex-shrink:0;margin-top:1px;}
+.warn-label{font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:#B91C1C;margin-bottom:3px;}
+.warn-text{font-size:15px;color:#7F1D1D;line-height:1.65;}
+.reveal-block{border-radius:13px;overflow:hidden;margin:20px 0;border:2px dashed var(--border);cursor:pointer;transition:border-color 0.2s;}
+.reveal-block:hover{border-color:var(--navy-md);}
+.reveal-prompt{padding:18px 20px;display:flex;align-items:center;gap:14px;background:var(--navy-lt);}
+.reveal-prompt-icon{font-size:26px;}
+.reveal-prompt-text{font-size:16px;font-weight:700;color:var(--navy-md);flex:1;}
+.reveal-prompt-arrow{font-size:18px;color:var(--navy-md);transition:transform 0.3s;}
+.reveal-block.open .reveal-prompt-arrow{transform:rotate(90deg);}
+.reveal-answer{max-height:0;overflow:hidden;transition:max-height 0.45s cubic-bezier(.4,0,.2,1),padding 0.3s;background:var(--white);padding:0 20px;}
+.reveal-block.open .reveal-answer{max-height:500px;padding:18px 20px;}
+.reveal-answer-inner{font-size:16px;color:var(--slate);line-height:1.75;}
+.tap-question{background:var(--navy-lt);border:1.5px solid #C5D0E8;border-radius:13px;padding:20px 20px;margin:20px 0;}
+.tap-q-label{font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--navy-md);margin-bottom:8px;}
+.tap-q-text{font-size:17px;font-weight:700;color:var(--navy);margin-bottom:14px;line-height:1.4;}
+.tap-options{display:flex;flex-direction:column;gap:9px;}
+.tap-opt{padding:13px 18px;border-radius:10px;border:2px solid var(--border);background:var(--white);font-size:16px;font-weight:700;font-family:'Nunito',sans-serif;color:var(--slate);cursor:pointer;transition:0.18s;text-align:left;}
+.tap-opt:hover:not(:disabled){border-color:var(--navy-md);background:var(--navy-lt);color:var(--navy);}
+.tap-opt.correct{background:var(--green-lt);border-color:var(--green);color:var(--green);pointer-events:none;}
+.tap-opt.wrong{background:#FEF2F2;border-color:#FCA5A5;color:#B91C1C;pointer-events:none;}
+.tap-opt.dim{opacity:0.4;pointer-events:none;}
+.tap-result{font-size:15px;font-weight:700;margin-top:12px;padding:11px 14px;border-radius:9px;display:none;}
+.tap-result.show{display:block;}
+.tap-result.good{background:var(--green-lt);color:var(--green);}
+.tap-result.oops{background:#FEF2F2;color:#B91C1C;}
+.scam-list{display:flex;flex-direction:column;gap:10px;margin:16px 0;}
+.scam-item{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;background:#FEF2F2;border:1.5px solid #FCA5A5;border-radius:12px;}
+.scam-icon{font-size:22px;flex-shrink:0;}
+.scam-text{font-size:15px;color:#7F1D1D;line-height:1.6;}
+.safe-list{display:flex;flex-direction:column;gap:10px;margin:16px 0;}
+.safe-item{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;background:var(--green-lt);border:1.5px solid #B7DEC9;border-radius:12px;}
+.safe-icon{font-size:22px;flex-shrink:0;}
+.safe-text{font-size:15px;color:#285C42;line-height:1.6;}
+.completion-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;animation:fadeUp 0.4s cubic-bezier(.4,0,.2,1) both;}
+.completion-top{background:linear-gradient(135deg,#2E1065 0%,var(--purple-md) 100%);padding:44px 28px 36px;text-align:center;}
+.completion-big-icon{font-size:72px;margin-bottom:16px;}
+.completion-title{font-family:'Lora',serif;font-size:28px;font-weight:600;color:#fff;margin-bottom:8px;}
+.completion-sub{font-size:16px;color:rgba(255,255,255,0.88);line-height:1.6;}
+.completion-body{padding:32px 28px;}
+.learned-list{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:28px;}
+.learned-item{display:flex;align-items:center;gap:12px;padding:13px 16px;background:var(--green-lt);border:1.5px solid #B7DEC9;border-radius:10px;font-size:16px;font-weight:700;color:var(--green);}
+.completion-actions{display:flex;flex-direction:column;gap:12px;}
+.btn-primary{padding:16px 24px;border-radius:12px;border:none;background:var(--navy);color:#fff;font-size:17px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;transition:background 0.15s;}
+.btn-primary:hover{background:var(--navy-md);}
+.btn-secondary{padding:14px 24px;border-radius:12px;border:1.5px solid var(--border);background:var(--white);color:var(--navy);font-size:16px;font-weight:700;font-family:'Nunito',sans-serif;cursor:pointer;transition:0.15s;}
+.btn-secondary:hover{border-color:var(--navy);background:var(--navy-lt);}
+.nav-bar{position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:1.5px solid var(--border);padding:14px 20px;display:flex;gap:12px;z-index:200;box-shadow:0 -4px 20px rgba(27,42,74,0.09);}
+.btn-back{padding:14px 22px;border-radius:12px;border:1.5px solid var(--border);background:var(--white);font-size:16px;font-weight:700;font-family:'Nunito',sans-serif;color:var(--slate);cursor:pointer;transition:0.15s;}
+.btn-back:hover{border-color:var(--navy);color:var(--navy);background:var(--navy-lt);}
+.btn-next{flex:1;padding:14px 22px;border-radius:12px;border:none;background:var(--navy);color:#fff;font-size:17px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;transition:background 0.15s;}
+.btn-next:hover{background:var(--navy-md);}
+.hidden{display:none!important;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="back-btn" href="../courses.html">&#8592; Courses</a>
+  <div class="topbar-center">
+    <div class="dot-icon">🛡️</div>
+    <span class="topbar-title">Social Media</span>
+  </div>
+  <span class="level-badge">Advanced</span>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-row">
+    <span class="progress-label" id="progressLabel">Step 1 of 7</span>
+    <span class="progress-pct" id="progressPct">0% done</span>
+  </div>
+  <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+</div>
+
+<div class="step-dots" id="stepDots">
+  <div class="dot active" id="dot-0"></div>
+  <div class="dot" id="dot-1"></div>
+  <div class="dot" id="dot-2"></div>
+  <div class="dot" id="dot-3"></div>
+  <div class="dot" id="dot-4"></div>
+  <div class="dot" id="dot-5"></div>
+  <div class="dot" id="dot-6"></div>
+</div>
+
+<div class="main" id="mainContent"></div>
+
+<div class="nav-bar" id="navBar">
+  <button class="btn-back" id="btnBack" onclick="prevStep()">&#8592; Back</button>
+  <button class="btn-next" id="btnNext" onclick="nextStep()">Next →</button>
+</div>
+
+<script type="module">
+import { auth, db } from "../firebase.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const COURSE_KEY = "social-media-advanced";
+let currentStep = 0, currentUser = null;
+
+const STEPS = [
+  () => `<div class="step-card">
+    <div class="card-hero"><div class="hero-emoji">👤</div><div class="hero-text"><div class="hero-step">Step 1 of 7</div><div class="hero-title">Recognising Fake Accounts</div></div></div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">🛡️</span><span class="encourage-text">You've reached the Advanced level — wonderful! This lesson will help you stay safe and use social media with complete confidence.</span></div>
+      <p class="body-text"><strong>Fake accounts</strong> are profiles created by scammers pretending to be someone else — sometimes even pretending to be your own family member or a celebrity. They try to trick you into sending money or sharing personal information.</p>
+      <div class="scam-list">
+        <div class="scam-item"><span class="scam-icon">🚨</span><div class="scam-text"><strong>Very few or no photos</strong> — a real person usually has many photos over many years. A fake account often has only 1–2 photos.</div></div>
+        <div class="scam-item"><span class="scam-icon">🚨</span><div class="scam-text"><strong>Account created recently</strong> — check when they joined Facebook. A new account from this month that claims to know you is suspicious.</div></div>
+        <div class="scam-item"><span class="scam-icon">🚨</span><div class="scam-text"><strong>No mutual friends</strong> — if a stranger sends a request and you share no common friends, be cautious.</div></div>
+        <div class="scam-item"><span class="scam-icon">🚨</span><div class="scam-text"><strong>Asks for money quickly</strong> — any new "friend" who quickly asks for money or gift cards is almost certainly a scammer.</div></div>
+      </div>
+      <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">What to do</div><div class="tip-text">If you receive a friend request from someone claiming to be a family member you're already friends with, <strong>call that person directly</strong> to confirm. Scammers create duplicate accounts to fool relatives.</div></div></div>
+    </div>
+  </div>`,
+
+  () => `<div class="step-card">
+    <div class="card-hero"><div class="hero-emoji">💸</div><div class="hero-text"><div class="hero-step">Step 2 of 7</div><div class="hero-title">Social Media Scams to Avoid</div></div></div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">🧠</span><span class="encourage-text">Knowing the most common scams is your best protection. Once you recognise them, they lose all their power!</span></div>
+      <p class="body-text">Scammers are very clever. Here are the most common tricks used on social media in India — please read each one carefully:</p>
+      <div class="scam-list">
+        <div class="scam-item"><span class="scam-icon">🎁</span><div class="scam-text"><strong>"You have won a prize!"</strong> — A post or message says you won an iPhone, cash, or gold. They ask for your address or a small "processing fee". This is always a scam.</div></div>
+        <div class="scam-item"><span class="scam-icon">💔</span><div class="scam-text"><strong>Romance scam</strong> — A stranger sends a friend request, becomes very friendly, then after weeks claims an emergency and asks for money. Never send money to someone you have not met in person.</div></div>
+        <div class="scam-item"><span class="scam-icon">👮</span><div class="scam-text"><strong>"Police/CBI calling"</strong> — A message or video call claims to be from police saying you're in trouble. Real police never contact you through Facebook or WhatsApp.</div></div>
+        <div class="scam-item"><span class="scam-icon">📈</span><div class="scam-text"><strong>Investment scams</strong> — Messages promising huge returns on investment (like "double your money in 30 days"). These are always fraudulent.</div></div>
+      </div>
+      <div class="tap-question">
+        <div class="tap-q-label">✏️ Quick check</div>
+        <div class="tap-q-text">A Facebook friend you've never met in person messages: "I'm in an emergency, please send ₹5000 immediately." What do you do?</div>
+        <div class="tap-options">
+          <button class="tap-opt" onclick="tapAnswer(this,false,'q2')">💸 Send the money immediately to help</button>
+          <button class="tap-opt" onclick="tapAnswer(this,true,'q2')">📞 Call the person on their real phone number to verify first</button>
+          <button class="tap-opt" onclick="tapAnswer(this,false,'q2')">📤 Forward the message to other friends to help</button>
+        </div>
+        <div class="tap-result" id="res-q2"></div>
+      </div>
+    </div>
+  </div>`,
+
+  () => `<div class="step-card">
+    <div class="card-hero"><div class="hero-emoji">🔒</div><div class="hero-text"><div class="hero-step">Step 3 of 7</div><div class="hero-title">Advanced Privacy Controls</div></div></div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">🛡️</span><span class="encourage-text">Let's lock down your Facebook so only the right people can see your information. This takes just a few minutes but protects you greatly!</span></div>
+      <p class="body-text">Beyond basic privacy settings, Facebook has powerful controls to protect your profile. Here's how to access and set them properly:</p>
+      <ul class="instr-list">
+        <li class="instr-item"><span class="instr-num">1</span><span class="instr-text">Go to <strong>Menu ☰ → Settings & Privacy → Settings → Privacy</strong>. Review every setting here.</span></li>
+        <li class="instr-item"><span class="instr-num">2</span><span class="instr-text"><strong>Who can send you friend requests?</strong> — Change from "Everyone" to <strong>"Friends of friends"</strong>. This blocks strangers.</span></li>
+        <li class="instr-item"><span class="instr-num">3</span><span class="instr-text"><strong>Who can look you up using phone number?</strong> — Change to <strong>"Friends"</strong> only. This prevents scammers from finding you by your number.</span></li>
+        <li class="instr-item"><span class="instr-num">4</span><span class="instr-text"><strong>Do you want search engines to link to your profile?</strong> — Select <strong>"No"</strong> so Google cannot show your Facebook profile to strangers.</span></li>
+        <li class="instr-item"><span class="instr-num">5</span><span class="instr-text">Use <strong>"Profile Lock"</strong> — Search "Lock Profile" in Facebook settings. This hides your photos and posts from non-friends instantly.</span></li>
+      </ul>
+      <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Good to know</div><div class="tip-text">Facebook's <strong>Privacy Checkup</strong> (Menu → Settings → Privacy → Privacy Checkup) walks you through all important settings one by one in simple language. Do this once every few months!</div></div></div>
+    </div>
+  </div>`,
+
+  () => `<div class="step-card">
+    <div class="card-hero"><div class="hero-emoji">🚫</div><div class="hero-text"><div class="hero-step">Step 4 of 7</div><div class="hero-title">Blocking & Reporting</div></div></div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">💪</span><span class="encourage-text">Blocking and reporting are powerful tools that protect you and others. Never feel bad about using them — they exist for exactly this purpose!</span></div>
+      <p class="body-text">You have the right to control who can contact you. If someone is bothering, threatening, or harassing you — block them immediately.</p>
+      <ul class="instr-list">
+        <li class="instr-item"><span class="instr-num">1</span><span class="instr-text"><strong>To block from a profile:</strong> Go to the person's profile → tap the <strong>three dots ⋮</strong> → select <strong>"Block"</strong>. They cannot see your profile, posts, or message you.</span></li>
+        <li class="instr-item"><span class="instr-num">2</span><span class="instr-text"><strong>To block from a message:</strong> Open the conversation → tap their name at the top → scroll down → tap <strong>"Block"</strong>.</span></li>
+        <li class="instr-item"><span class="instr-num">3</span><span class="instr-text"><strong>To report a fake account:</strong> Go to the profile → tap <strong>three dots ⋮</strong> → <strong>"Report"</strong> → choose "Pretending to be someone" or "Fake account".</span></li>
+        <li class="instr-item"><span class="instr-num">4</span><span class="instr-text"><strong>To report a harmful post:</strong> Tap <strong>three dots ⋮</strong> on the post → <strong>"Report post"</strong> → select the reason.</span></li>
+        <li class="instr-item"><span class="instr-num">5</span><span class="instr-text">Blocked people are <strong>never told</strong> that you blocked them — Facebook keeps this private.</span></li>
+      </ul>
+      <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Good to know</div><div class="tip-text">Reporting suspicious accounts helps Facebook remove them and protects other people too. Every report you make helps keep the platform safer for everyone.</div></div></div>
+    </div>
+  </div>`,
+
+  () => `<div class="step-card">
+    <div class="card-hero"><div class="hero-emoji">📰</div><div class="hero-text"><div class="hero-step">Step 5 of 7</div><div class="hero-title">Spotting False News & Misinformation</div></div></div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">🔍</span><span class="encourage-text">Social media is full of both true and false information. Learning to tell them apart is one of the most valuable skills you can have!</span></div>
+      <p class="body-text"><strong>Misinformation</strong> is false or misleading content shared as if it's true — it spreads very fast on WhatsApp and Facebook and can cause real harm.</p>
+      <div class="safe-list">
+        <div class="safe-item"><span class="safe-icon">✅</span><div class="safe-text"><strong>Check the source.</strong> Is it from a known news channel (NDTV, BBC, Times of India) or from an unknown Facebook page? Unknown pages spread more false news.</div></div>
+        <div class="safe-item"><span class="safe-icon">✅</span><div class="safe-text"><strong>Look for the date.</strong> Old news is often recirculated as "breaking news". Check when the story was first published.</div></div>
+        <div class="safe-item"><span class="safe-icon">✅</span><div class="safe-text"><strong>Reverse image search.</strong> On Google, tap the camera icon in search and upload a photo to see where else it has appeared online.</div></div>
+        <div class="safe-item"><span class="safe-icon">✅</span><div class="safe-text"><strong>Check fact-checking websites</strong> — sites like <em>AltNews.in</em> and <em>FactChecker.in</em> specifically verify viral Indian content.</div></div>
+      </div>
+      <div class="warn-box"><span class="warn-icon">⚠️</span><div><div class="warn-label">Before sharing</div><div class="warn-text"><strong>Stop and think</strong> before forwarding any shocking news or video. If you're not sure it's true, it's better not to share it. Spreading false news — even accidentally — can harm communities.</div></div></div>
+    </div>
+  </div>`,
+
+  () => `<div class="step-card">
+    <div class="card-hero"><div class="hero-emoji">🔐</div><div class="hero-text"><div class="hero-step">Step 6 of 7</div><div class="hero-title">Securing Your Social Media Accounts</div></div></div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">🔑</span><span class="encourage-text">A secure account means nobody can pretend to be you or access your messages. Let's make your account as strong as possible!</span></div>
+      <p class="body-text">Account security protects you from hackers who try to take over your Facebook account and use it to scam your friends and family.</p>
+      <ul class="instr-list">
+        <li class="instr-item"><span class="instr-num">1</span><span class="instr-text"><strong>Strong password:</strong> Use a mix of uppercase, lowercase, numbers and symbols — like "Amma@Delhi2024". Never use your name or birthday.</span></li>
+        <li class="instr-item"><span class="instr-num">2</span><span class="instr-text"><strong>Two-Factor Authentication (2FA):</strong> Go to Settings → Security → Two-Factor Authentication → turn it ON. Now a code is sent to your phone whenever someone tries to log in.</span></li>
+        <li class="instr-item"><span class="instr-num">3</span><span class="instr-text"><strong>Check active sessions:</strong> Settings → Security → Where You're Logged In. If you see an unknown device or city, tap it and select "Log Out".</span></li>
+        <li class="instr-item"><span class="instr-num">4</span><span class="instr-text"><strong>Never share your password</strong> — not even with family. If someone needs to help you, sit with them and log in yourself.</span></li>
+        <li class="instr-item"><span class="instr-num">5</span><span class="instr-text"><strong>Be careful on shared devices</strong> — if you use a computer at a shop or relative's home, always log out completely before leaving.</span></li>
+      </ul>
+      <div class="tap-question">
+        <div class="tap-q-label">✏️ Quick check</div>
+        <div class="tap-q-text">What does Two-Factor Authentication do?</div>
+        <div class="tap-options">
+          <button class="tap-opt" onclick="tapAnswer(this,false,'q6')">🎨 It changes your profile picture automatically</button>
+          <button class="tap-opt" onclick="tapAnswer(this,true,'q6')">🔐 It sends a code to your phone, so even if someone knows your password they can't log in</button>
+          <button class="tap-opt" onclick="tapAnswer(this,false,'q6')">📶 It improves your internet speed</button>
+        </div>
+        <div class="tap-result" id="res-q6"></div>
+      </div>
+    </div>
+  </div>`,
+
+  () => `<div class="step-card">
+    <div class="card-hero"><div class="hero-emoji">🧘</div><div class="hero-text"><div class="hero-step">Step 7 of 7</div><div class="hero-title">Digital Wellbeing & Healthy Habits</div></div></div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">🌿</span><span class="encourage-text">Last step — and a very important one! Using social media wisely and in moderation makes it a joy, not a burden.</span></div>
+      <p class="body-text">Social media is wonderful but it can also be addictive or stressful if not used mindfully. Here are healthy habits to enjoy it without any negative effects:</p>
+      <div class="safe-list">
+        <div class="safe-item"><span class="safe-icon">⏰</span><div class="safe-text"><strong>Set a daily time limit.</strong> Facebook has a built-in timer — Settings → Your Time on Facebook. Set a reminder for 30–60 minutes per day.</div></div>
+        <div class="safe-item"><span class="safe-icon">🌙</span><div class="safe-text"><strong>Avoid social media at night.</strong> Scrolling before bed can disturb sleep. Try to stop at least 30 minutes before sleeping.</div></div>
+        <div class="safe-item"><span class="safe-icon">🤝</span><div class="safe-text"><strong>Value real connections.</strong> Social media complements, but doesn't replace, meeting loved ones in person, calling on the phone, or writing letters.</div></div>
+        <div class="safe-item"><span class="safe-icon">😊</span><div class="safe-text"><strong>Only share what makes you happy.</strong> You are never obligated to post, comment or respond to anything that makes you uncomfortable.</div></div>
+        <div class="safe-item"><span class="safe-icon">🆘</span><div class="safe-text"><strong>Ask for help anytime.</strong> If something on social media worries or confuses you — whether it's a suspicious message or a setting you don't understand — ask a trusted family member immediately.</div></div>
+      </div>
+      <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Remember always</div><div class="tip-text">You are in complete control of your social media experience. You decide what you see, who you connect with, what you share, and when you use it. Social media works for <em>you</em> — not the other way around.</div></div></div>
+    </div>
+  </div>`,
+];
+
+onAuthStateChanged(auth, async (user) => {
+  if (!user) { window.location.href = "../index.html"; return; }
+  currentUser = user;
+  try {
+    const snap = await getDoc(doc(db, "users", user.uid));
+    if (snap.exists() && snap.data().progress?.[COURSE_KEY] === 100) currentStep = STEPS.length;
+  } catch(e) {}
+  render();
+});
+
+async function saveProgress(pct) {
+  if (!currentUser) return;
+  try { await setDoc(doc(db, "users", currentUser.uid), { progress: { [COURSE_KEY]: pct } }, { merge: true }); } catch(e) {}
+}
+
+function render() {
+  updateProgress(); updateDots();
+  const main = document.getElementById("mainContent");
+  if (currentStep < STEPS.length) { main.innerHTML = STEPS[currentStep](); } else { renderCompletion(main); }
+  updateNav();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function updateProgress() {
+  const pct = Math.round((currentStep / STEPS.length) * 100);
+  document.getElementById("progressFill").style.width = pct + "%";
+  document.getElementById("progressPct").textContent = pct + "% done";
+  document.getElementById("progressLabel").textContent = currentStep < STEPS.length ? `Step ${currentStep + 1} of ${STEPS.length}` : "Lesson Complete!";
+}
+
+function updateDots() {
+  for (let i = 0; i < STEPS.length; i++) {
+    const d = document.getElementById("dot-" + i);
+    if (!d) continue;
+    d.className = "dot" + (i < currentStep ? " done" : i === currentStep ? " active" : "");
+  }
+}
+
+function updateNav() {
+  const navBar = document.getElementById("navBar");
+  if (currentStep >= STEPS.length) { navBar.classList.add("hidden"); return; }
+  navBar.classList.remove("hidden");
+  document.getElementById("btnBack").style.visibility = currentStep === 0 ? "hidden" : "visible";
+  document.getElementById("btnNext").textContent = currentStep === STEPS.length - 1 ? "Finish lesson 🎉" : "Next →";
+}
+
+function renderCompletion(container) {
+  container.innerHTML = `<div class="completion-card">
+    <div class="completion-top">
+      <div class="completion-big-icon">🏆</div>
+      <div class="completion-title">Outstanding!</div>
+      <div class="completion-sub">You've completed Social Media — Advanced.<br>You are now a confident and safe social media user!</div>
+    </div>
+    <div class="completion-body">
+      <ul class="learned-list">
+        <li class="learned-item">✅ How to recognise fake and scam accounts</li>
+        <li class="learned-item">✅ Common social media scams and how to avoid them</li>
+        <li class="learned-item">✅ Advanced privacy controls to protect your profile</li>
+        <li class="learned-item">✅ How to block and report harmful accounts</li>
+        <li class="learned-item">✅ How to identify false news and misinformation</li>
+        <li class="learned-item">✅ How to secure your account with 2FA</li>
+        <li class="learned-item">✅ Healthy digital habits for wellbeing</li>
+      </ul>
+      <div class="completion-actions">
+        <button class="btn-primary" onclick="window.location.href='../courses.html'">Explore more courses →</button>
+        <button class="btn-secondary" onclick="window.location.href='../courses.html'">Back to all courses</button>
+      </div>
+    </div>
+  </div>`;
+  document.getElementById("navBar").classList.add("hidden");
+  document.getElementById("stepDots").classList.add("hidden");
+  saveProgress(100);
+}
+
+window.toggleReveal = (id) => document.getElementById(id).classList.toggle("open");
+window.tapAnswer = function(btn, isCorrect, qid) {
+  const opts = btn.parentElement.querySelectorAll(".tap-opt");
+  opts.forEach(o => { o.classList.add("dim"); o.disabled = true; });
+  btn.classList.remove("dim"); btn.classList.add(isCorrect ? "correct" : "wrong");
+  if (!isCorrect) { opts.forEach(o => { if (o.getAttribute("onclick")?.includes("true")) { o.classList.remove("dim"); o.classList.add("correct"); } }); }
+  const res = document.getElementById("res-" + qid);
+  if (res) { res.className = "tap-result show " + (isCorrect ? "good" : "oops"); res.textContent = isCorrect ? "✅ Exactly right! Well done!" : "💭 Not quite — the correct answer is highlighted above. That's okay, now you know!"; }
+};
+window.nextStep = function() { currentStep++; saveProgress(Math.round((currentStep / STEPS.length) * 100)); render(); };
+window.prevStep = function() { if (currentStep > 0) { currentStep--; render(); } };
+</script>
+</body>
+</html>

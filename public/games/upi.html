@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phone-Saathi — Safe UPI Payments</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --upi:#7C3AED;--upi-dk:#6D28D9;--upi-lt:#F5F3FF;
+  --saffron:#FF6B1A;--navy:#1A2940;--bg:#ECF0F5;--white:#fff;
+  --gray-lt:#F1F5F9;--gray-md:#94A3B8;--gray-dk:#475569;
+  --text:#1A2940;--success:#059669;--danger:#DC2626;
+}
+body{font-family:'Nunito',sans-serif;background:var(--bg);display:flex;flex-direction:column;align-items:center;min-height:100vh}
+.top-bar{width:100%;background:var(--navy);padding:0 20px;display:flex;align-items:center;justify-content:space-between;height:56px;box-shadow:0 2px 10px rgba(0,0,0,.2)}
+.nav-brand{font-family:'Baloo 2',cursive;font-size:18px;font-weight:700;color:#fff;text-decoration:none;display:flex;align-items:center;gap:8px}
+.nav-brand span{color:#C4B5FD}
+.nav-links{display:flex;gap:8px}
+.nav-link{display:inline-flex;align-items:center;gap:5px;font-size:13px;font-weight:700;color:rgba(255,255,255,.75);text-decoration:none;padding:6px 12px;border-radius:8px;border:1px solid rgba(255,255,255,.18);transition:.2s}
+.nav-link:hover{background:rgba(255,255,255,.1);color:#fff}
+.coach-bar{width:100%;background:#fff;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #E2E8F0;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.coach-content{display:flex;align-items:center;gap:10px;flex:1}
+.coach-avatar{width:40px;height:40px;background:var(--upi-lt);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.coach-text{font-size:15px;font-weight:700;color:var(--navy);line-height:1.4;max-width:240px}
+.coach-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.level-badge{background:var(--upi-lt);color:var(--upi);padding:5px 12px;border-radius:100px;font-size:12px;font-weight:800;white-space:nowrap}
+.hint-btn{background:#FFFBEB;border:2px solid #FDE68A;color:#B45309;font-size:12px;font-weight:800;padding:5px 10px;border-radius:100px;cursor:pointer;display:none}
+.hint-btn:hover{background:#FEF3C7}
+.feedback-bar{padding:11px 20px;text-align:center;font-size:14px;font-weight:700;display:none;width:100%;animation:slideDown .3s ease;line-height:1.45}
+@keyframes slideDown{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+.fb-error{background:#FEF2F2;color:#DC2626;border-bottom:2px solid #FCA5A5}
+.fb-success{background:#D1FAE5;color:#059669;border-bottom:2px solid #6EE7B7}
+.score-bar{display:none;gap:4px;padding:8px 12px;justify-content:center;background:#fff;border-bottom:1px solid #E2E8F0}
+.score-star{font-size:18px;opacity:.2;transition:opacity .4s,transform .4s}
+.score-star.lit{opacity:1;transform:scale(1.15)}
+.steps-bar{display:none;align-items:center;padding:10px 24px;background:#fff;border-bottom:1px solid #E2E8F0;justify-content:center;gap:0}
+.step{width:26px;height:26px;border-radius:50%;border:2px solid #CBD5E1;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#94A3B8;background:#fff;transition:.35s;flex-shrink:0}
+.step.done{background:var(--success);border-color:var(--success);color:#fff}
+.step.active{background:var(--saffron);border-color:var(--saffron);color:#fff}
+.step-line{height:2px;background:#CBD5E1;width:28px;flex-shrink:0;transition:.35s}
+.step-line.done{background:var(--success)}
+.phone{background:var(--white);border-radius:44px;width:100%;max-width:360px;height:640px;margin:16px auto;border:10px solid #1A2940;overflow:hidden;position:relative;box-shadow:0 0 0 2px #334155,0 20px 40px -5px rgba(0,0,0,.25)}
+.phone::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:80px;height:20px;background:#1A2940;border-radius:0 0 14px 14px;z-index:50}
+.phone.shake{animation:shake .4s ease-in-out}
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:opacity .3s ease}
+.screen.active{opacity:1;pointer-events:auto}
+/* INTRO */
+#screen-intro{padding:28px 22px;text-align:center;justify-content:center;align-items:center;background:linear-gradient(160deg,var(--upi-lt) 0%,#fff 60%)}
+.intro-icon{width:82px;height:82px;background:#fff;border-radius:50%;display:flex;justify-content:center;align-items:center;margin:0 auto 16px;font-size:40px;box-shadow:0 8px 20px rgba(0,0,0,.1);animation:pop .5s cubic-bezier(.34,1.56,.64,1)}
+@keyframes pop{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}
+.intro-title{font-family:'Baloo 2',cursive;font-size:24px;font-weight:800;color:var(--navy);margin-bottom:8px}
+.intro-desc{font-size:14px;color:var(--gray-dk);margin-bottom:14px;line-height:1.55}
+.levels-list{display:flex;flex-direction:column;gap:7px;margin-bottom:18px;width:100%}
+.lv-row{display:flex;align-items:center;gap:10px;background:#fff;border:1.5px solid #E2E8F0;border-radius:10px;padding:9px 12px}
+.lv-icon{font-size:18px;width:26px;text-align:center}
+.lv-info{flex:1;text-align:left}
+.lv-name{font-size:13px;font-weight:800;color:var(--navy)}
+.lv-desc{font-size:11px;color:var(--gray-md);font-weight:600}
+.btn{width:100%;padding:14px;background:var(--upi);color:#fff;border:none;border-radius:14px;font-family:'Baloo 2',cursive;font-size:16px;font-weight:700;cursor:pointer;transition:.2s;box-shadow:0 4px 14px rgba(124,58,237,.3)}
+.btn:hover{background:var(--upi-dk);transform:scale(1.02)}
+.btn:active{transform:scale(.97)}
+.btn-ghost{background:var(--gray-lt);color:var(--gray-dk);box-shadow:none;margin-top:8px}
+.btn-ghost:hover{background:#E2E8F0}
+.btn-danger{background:var(--danger);box-shadow:0 4px 12px rgba(220,38,38,.3)}
+.btn-outline{background:transparent;border:2px solid var(--gray-md);color:var(--text);box-shadow:none}
+/* UPI HOME */
+.upi-header{background:var(--upi);padding:36px 20px 18px;border-bottom-left-radius:24px;border-bottom-right-radius:24px;box-shadow:0 4px 10px rgba(124,58,237,.2)}
+.upi-top-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.upi-app-name{color:#fff;font-family:'Baloo 2',cursive;font-size:22px;font-weight:700}
+.upi-user-icon{width:38px;height:38px;background:rgba(255,255,255,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px}
+.upi-greeting{color:rgba(255,255,255,.85);font-size:14px;margin-bottom:4px}
+.upi-balance-label{color:rgba(255,255,255,.7);font-size:12px}
+.action-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;background:#fff;padding:20px 14px;margin:0 14px;border-radius:18px;box-shadow:0 10px 20px rgba(0,0,0,.06);position:relative;z-index:1;margin-top:-16px}
+.action-item{display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;transition:.2s}
+.action-item:active{transform:scale(.93)}
+.action-icon{width:54px;height:54px;background:var(--upi-lt);color:var(--upi);border-radius:14px;display:flex;justify-content:center;align-items:center;font-size:24px}
+.action-label{font-size:12px;font-weight:800;color:var(--text);text-align:center}
+.section-title{font-size:16px;font-weight:800;padding:20px 16px 10px;color:var(--navy)}
+.recent-list{display:flex;gap:16px;padding:0 16px 16px;overflow-x:auto}
+.recent-item{display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;transition:.2s;flex-shrink:0}
+.recent-item:active{transform:scale(.93)}
+.recent-avatar{width:56px;height:56px;border-radius:50%;display:flex;justify-content:center;align-items:center;font-size:20px;font-weight:700;border:2px solid #E2E8F0}
+/* AMOUNT */
+.pay-header{padding:16px;display:flex;align-items:center;gap:14px;border-bottom:1px solid #E2E8F0}
+.back-icon{font-size:22px;cursor:pointer;padding:4px}
+.pay-center{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px}
+.rupee-symbol{font-size:42px;color:var(--upi);margin-right:4px}
+.amount-field{font-size:56px;font-weight:800;border:none;outline:none;width:160px;text-align:center;color:var(--navy);background:transparent;font-family:'Nunito',sans-serif}
+.payee-name-display{font-size:15px;color:var(--gray-dk);margin-bottom:20px;text-align:center}
+.pay-now-btn{margin:0 20px 28px;padding:18px;background:var(--upi);color:#fff;font-family:'Baloo 2',cursive;font-size:17px;font-weight:700;border:none;border-radius:14px;cursor:pointer;transition:.2s;box-shadow:0 4px 12px rgba(124,58,237,.3)}
+.pay-now-btn:active{transform:scale(.97)}
+/* PIN */
+.pin-bg{flex:1;display:flex;flex-direction:column;align-items:center;padding:40px 20px;background:#0F172A;color:#fff}
+.pin-bank{font-size:18px;margin-bottom:6px;font-weight:700}
+.pin-subtitle{font-size:14px;opacity:.75}
+.pin-dots{display:flex;gap:16px;margin:36px 0}
+.dot{width:14px;height:14px;border-radius:50%;border:2px solid #fff;transition:.2s}
+.dot.filled{background:#fff;transform:scale(1.1)}
+.numpad{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;width:260px;margin-top:auto}
+.nkey{background:transparent;border:none;color:#fff;font-size:28px;cursor:pointer;padding:18px;border-radius:50%;transition:background .1s;font-family:'Nunito',sans-serif;font-weight:700}
+.nkey:active{background:rgba(255,255,255,.15);transform:scale(.9)}
+.nkey-enter{background:rgba(255,255,255,.1);border-radius:12px;font-size:16px}
+/* SCAM SHEET */
+.scam-sheet{position:absolute;bottom:0;left:0;right:0;background:#fff;border-top-left-radius:24px;border-top-right-radius:24px;padding:28px 24px;box-shadow:0 -10px 30px rgba(0,0,0,.15);transform:translateY(100%);transition:transform .4s cubic-bezier(.4,0,.2,1);z-index:15}
+.scam-sheet.open{transform:translateY(0)}
+.scam-warning-icon{width:72px;height:72px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:32px}
+.scam-amount{font-size:28px;font-weight:800;margin-bottom:8px;text-align:center}
+.scam-note{font-size:15px;color:var(--gray-dk);text-align:center;line-height:1.55;margin-bottom:20px}
+.scam-hint-box{background:#FEF3C7;border-radius:12px;padding:12px 14px;font-size:14px;color:#92400E;margin-bottom:20px;line-height:1.55}
+/* MODALS */
+.overlay{position:absolute;inset:0;background:rgba(15,23,42,.65);backdrop-filter:blur(4px);opacity:0;pointer-events:none;transition:opacity .3s;z-index:20;display:flex;justify-content:center;align-items:center;padding:20px}
+.overlay.active{opacity:1;pointer-events:auto}
+.modal-card{background:#fff;padding:28px 22px;border-radius:24px;text-align:center;width:100%;max-width:300px;box-shadow:0 20px 40px rgba(0,0,0,.15);transform:scale(.9) translateY(10px);transition:transform .3s}
+.overlay.active .modal-card{transform:scale(1) translateY(0)}
+.modal-emoji{font-size:52px;margin-bottom:12px;display:block;animation:pop .4s cubic-bezier(.34,1.56,.64,1)}
+.modal-title{font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:var(--navy);margin-bottom:8px}
+.modal-msg{font-size:15px;color:var(--gray-dk);line-height:1.5}
+.modal-score{font-size:20px;font-weight:800;color:#D97706;margin-top:10px}
+.modal-tip{background:#F0FDF4;border-radius:12px;padding:12px;margin-top:12px;font-size:14px;color:#166534}
+.modal-actions{display:flex;flex-direction:column;gap:10px;margin-top:18px}
+.confetti{position:absolute;top:0;left:0;right:0;height:100%;pointer-events:none;z-index:25;overflow:hidden}
+.cp{position:absolute;width:10px;height:10px;border-radius:2px;animation:fall 1.2s ease-in forwards}
+@keyframes fall{0%{transform:translateY(-20px) rotate(0);opacity:1}100%{transform:translateY(700px) rotate(720deg);opacity:0}}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a class="nav-brand" href="../index.html">📱 Phone<span>Saathi</span></a>
+  <div class="nav-links">
+    <a class="nav-link" href="../games.html">← All Games</a>
+    <a class="nav-link" href="../dashboard.html">🏠 Home</a>
+  </div>
+</div>
+
+<div class="coach-bar">
+  <div class="coach-content">
+    <div class="coach-avatar">💳</div>
+    <div class="coach-text" id="coach-text">Ready to practice safe payments?</div>
+  </div>
+  <div class="coach-right">
+    <button class="hint-btn" id="hint-btn" onclick="showHint()">💡 Hint</button>
+    <div class="level-badge" id="level-badge">Intro</div>
+  </div>
+</div>
+<div class="feedback-bar" id="feedback"></div>
+<div class="score-bar" id="score-bar">
+  <span class="score-star lit" id="s1">⭐</span><span class="score-star lit" id="s2">⭐</span>
+  <span class="score-star lit" id="s3">⭐</span><span class="score-star lit" id="s4">⭐</span>
+  <span class="score-star lit" id="s5">⭐</span><span class="score-star lit" id="s6">⭐</span>
+  <span class="score-star lit" id="s7">⭐</span><span class="score-star lit" id="s8">⭐</span>
+  <span class="score-star lit" id="s9">⭐</span><span class="score-star lit" id="s10">⭐</span>
+</div>
+<div class="steps-bar" id="steps-bar">
+  <div class="step active" id="step1">1</div><div class="step-line" id="line1"></div>
+  <div class="step" id="step2">2</div><div class="step-line" id="line2"></div>
+  <div class="step" id="step3">3</div>
+</div>
+
+<div class="phone" id="phone">
+
+  <!-- INTRO -->
+  <div class="screen active" id="screen-intro">
+    <div style="padding:28px 22px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;background:linear-gradient(160deg,var(--upi-lt) 0%,#fff 60%)">
+      <div class="intro-icon">💳</div>
+      <div class="intro-title">Safe UPI Payments</div>
+      <div class="intro-desc">Learn how to check your balance, make payments safely, and identify fake payment scams.</div>
+      <div class="levels-list">
+        <div class="lv-row"><div class="lv-icon">💰</div><div class="lv-info"><div class="lv-name">Level 1 — Check your balance</div><div class="lv-desc">Enter your PIN to view your bank balance</div></div></div>
+        <div class="lv-row"><div class="lv-icon">📤</div><div class="lv-info"><div class="lv-name">Level 2 — Pay safely</div><div class="lv-desc">Send ₹50 to a contact securely</div></div></div>
+        <div class="lv-row"><div class="lv-icon">🛡️</div><div class="lv-info"><div class="lv-name">Level 3 — Spot a scam</div><div class="lv-desc">Identify a fake payment request</div></div></div>
+      </div>
+      <button class="btn" onclick="startGame()">Start Game ▶</button>
+      <button class="btn btn-ghost" onclick="window.location.href='../games.html'">← Back to Games</button>
+    </div>
+  </div>
+
+  <!-- UPI HOME -->
+  <div class="screen" id="screen-home">
+    <div class="upi-header">
+      <div class="upi-top-row">
+        <div class="upi-app-name">💳 PaySafe</div>
+        <div class="upi-user-icon">👤</div>
+      </div>
+      <div class="upi-greeting">Good morning! 🙏</div>
+      <div class="upi-balance-label">Tap "Check Balance" to see your account</div>
+    </div>
+    <div class="action-grid">
+      <div class="action-item" onclick="missAction('Scan QR')"><div class="action-icon">📷</div><div class="action-label">Scan QR</div></div>
+      <div class="action-item" onclick="missAction('Pay')"><div class="action-icon">📤</div><div class="action-label">Pay</div></div>
+      <div class="action-item" onclick="missAction('Bank')"><div class="action-icon">🏦</div><div class="action-label">Bank</div></div>
+      <div class="action-item" onclick="checkBalance()"><div class="action-icon">💰</div><div class="action-label">Check Balance</div></div>
+    </div>
+    <div class="section-title">Recent Contacts</div>
+    <div class="recent-list">
+      <div class="recent-item" onclick="openPayment('Ramesh Kirana','🏪')">
+        <div class="recent-avatar" style="background:#DBEAFE;color:#1D4ED8">🏪</div>
+        <div style="font-size:12px;font-weight:800;color:var(--text);text-align:center">Ramesh<br>Kirana</div>
+      </div>
+      <div class="recent-item" onclick="missContact('Electricity')"><div class="recent-avatar" style="background:#FEF9C3;color:#A16207">⚡</div><div style="font-size:12px;font-weight:800;text-align:center">Electricity</div></div>
+      <div class="recent-item" onclick="missContact('Water Bill')"><div class="recent-avatar" style="background:#E0E7FF;color:#4338CA">💧</div><div style="font-size:12px;font-weight:800;text-align:center">Water Bill</div></div>
+      <div class="recent-item" onclick="missContact('Auto Driver')"><div class="recent-avatar" style="background:#DCFCE7;color:#166534">🚗</div><div style="font-size:12px;font-weight:800;text-align:center">Auto<br>Driver</div></div>
+    </div>
+    <!-- Level 3 scam backdrop -->
+    <div id="scam-backdrop" style="position:absolute;inset:0;background:rgba(0,0,0,.5);opacity:0;pointer-events:none;transition:.3s;z-index:12"></div>
+  </div>
+
+  <!-- AMOUNT ENTRY -->
+  <div class="screen" id="screen-amount">
+    <div class="pay-header">
+      <div class="back-icon" onclick="goHome()">◀</div>
+      <div>
+        <div style="font-size:18px;font-weight:800;color:var(--navy)" id="payee-display">Ramesh Kirana</div>
+        <div style="font-size:13px;color:var(--gray-dk)">ramesh@upi</div>
+      </div>
+    </div>
+    <div class="pay-center">
+      <div class="payee-name-display" id="payee-sub">Paying Ramesh Kirana</div>
+      <div style="display:flex;align-items:center;justify-content:center">
+        <span class="rupee-symbol">₹</span>
+        <input type="number" class="amount-field" id="amt-input" placeholder="0" onclick="typeAmount()" readonly>
+      </div>
+      <div style="font-size:14px;color:var(--gray-md);margin-top:10px;font-weight:700" id="amt-hint">Tap the amount to enter ₹50</div>
+    </div>
+    <button class="pay-now-btn" onclick="proceedToPay()">Pay Now →</button>
+  </div>
+
+  <!-- PIN SCREEN -->
+  <div class="screen" id="screen-pin">
+    <div class="pin-bg">
+      <div class="pin-bank">State Bank of India 🔒</div>
+      <div class="pin-subtitle" id="pin-subtitle">Enter your 4-digit UPI PIN</div>
+      <div class="pin-dots">
+        <div class="dot" id="dot1"></div><div class="dot" id="dot2"></div>
+        <div class="dot" id="dot3"></div><div class="dot" id="dot4"></div>
+      </div>
+      <div class="numpad">
+        <button class="nkey" onclick="pressPin()">1</button><button class="nkey" onclick="pressPin()">2</button><button class="nkey" onclick="pressPin()">3</button>
+        <button class="nkey" onclick="pressPin()">4</button><button class="nkey" onclick="pressPin()">5</button><button class="nkey" onclick="pressPin()">6</button>
+        <button class="nkey" onclick="pressPin()">7</button><button class="nkey" onclick="pressPin()">8</button><button class="nkey" onclick="pressPin()">9</button>
+        <button class="nkey" onclick="clearPin()">⌫</button><button class="nkey" onclick="pressPin()">0</button>
+        <button class="nkey nkey-enter" onclick="confirmPin()">OK ✓</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCAM SHEET (inside phone, above home screen) -->
+  <div class="scam-sheet" id="scam-sheet">
+    <div class="scam-warning-icon" style="background:#FEF2F2">⚠️</div>
+    <div class="scam-amount" style="color:var(--danger)">Request: ₹8,500</div>
+    <div class="scam-note">
+      From: <strong>"KBC Lottery Official"</strong><br>
+      <em>"Congratulations! You won ₹25 Lakh! Enter your PIN to receive your prize money NOW!"</em>
+    </div>
+    <div class="scam-hint-box">🤔 Think carefully: You enter a PIN to <strong>SEND</strong> money — never to receive it. Is this request real?</div>
+    <div style="display:flex;gap:12px">
+      <button class="btn btn-outline" onclick="declineScam()" style="flex:1">❌ Decline</button>
+      <button class="btn btn-danger" onclick="acceptScam()" style="flex:1">Accept & Pay</button>
+    </div>
+  </div>
+
+  <!-- BALANCE MODAL -->
+  <div class="overlay" id="balance-modal">
+    <div class="modal-card">
+      <span class="modal-emoji">💳</span>
+      <div class="modal-title">Your Balance</div>
+      <div style="font-size:14px;color:var(--gray-dk);margin-bottom:4px">State Bank of India</div>
+      <div style="font-size:42px;font-weight:800;color:var(--upi);margin:16px 0">₹ 12,450.00</div>
+      <div style="font-size:14px;color:var(--gray-dk)">A/c ending: ****4521</div>
+      <div class="modal-actions"><button class="btn" onclick="closeBalance()">Done ✓</button></div>
+    </div>
+  </div>
+
+  <!-- PAYMENT SUCCESS MODAL -->
+  <div class="overlay" id="payment-modal">
+    <div class="modal-card">
+      <span class="modal-emoji">✅</span>
+      <div class="modal-title">Payment Sent!</div>
+      <div class="modal-msg">₹50 sent to Ramesh Kirana successfully!</div>
+      <div class="modal-tip">💡 Always check the payee name and amount before confirming with your PIN.</div>
+      <div class="modal-actions"><button class="btn" onclick="afterPayment()">Continue →</button></div>
+    </div>
+  </div>
+
+  <!-- LEVEL COMPLETE MODAL -->
+  <div class="overlay" id="success-modal">
+    <div class="modal-card">
+      <span class="modal-emoji">🌟</span>
+      <div class="modal-title">Level Complete!</div>
+      <div class="modal-msg" id="success-msg"></div>
+      <div class="modal-actions"><button class="btn" onclick="nextLevel()">Next Level →</button></div>
+    </div>
+  </div>
+
+  <!-- FINISH MODAL -->
+  <div class="overlay" id="finish-modal">
+    <div class="confetti" id="confetti"></div>
+    <div class="modal-card">
+      <span class="modal-emoji">🏆</span>
+      <div class="modal-title">UPI Master!</div>
+      <div class="modal-msg">You can now safely use UPI, check balances, and protect yourself from scams!</div>
+      <div class="modal-score" id="final-score"></div>
+      <div class="modal-actions">
+        <button class="btn" onclick="window.location.href='../games.html'">Back to All Games</button>
+        <button class="btn btn-ghost" onclick="location.reload()">Play Again</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /phone -->
+
+<script>
+const courseId="upi",TOTAL=3;
+let level=0,score=10,pinCount=0,pinAction="",amtTyped=false;
+const coachEl=document.getElementById("coach-text"),badgeEl=document.getElementById("level-badge"),fb=document.getElementById("feedback"),phone=document.getElementById("phone");
+
+function setStep(n){
+  document.getElementById("steps-bar").style.display="flex";
+  for(let i=1;i<=TOTAL;i++){
+    document.getElementById("step"+i).className="step"+(i<n?" done":i===n?" active":"");
+    const l=document.getElementById("line"+i);
+    if(l) l.className="step-line"+(i<n?" done":"");
+  }
+}
+function fb_(msg,ok=false){
+  fb.textContent=msg; fb.className="feedback-bar "+(ok?"fb-success":"fb-error"); fb.style.display="block";
+  if(!ok){score=Math.max(0,score-1);updateStars();phone.classList.remove("shake");void phone.offsetWidth;phone.classList.add("shake");}
+  clearTimeout(fb._t); fb._t=setTimeout(()=>fb.style.display="none",4500);
+}
+function updateStars(){for(let i=1;i<=10;i++)document.getElementById("s"+i).classList.toggle("lit",i<=score);}
+function show(id){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));document.getElementById(id).classList.add("active");}
+function resetPin(){pinCount=0;for(let i=1;i<=4;i++)document.getElementById("dot"+i).classList.remove("filled");}
+
+window.startGame=function(){
+  level=1; document.getElementById("score-bar").style.display="flex";
+  document.getElementById("hint-btn").style.display="inline-block";
+  setStep(1); badgeEl.textContent="Level 1 of 3"; show("screen-home");
+  coachEl.textContent="Tap 'Check Balance' 💰 to see how much money you have."; saveP(0);
+};
+window.missAction=function(name){
+  if(level===3)fb_("A payment request is waiting! Read the message on your screen carefully.");
+  else if(level===1)fb_(`That's ${name}. Look for the 💰 Check Balance button.`);
+  else fb_(`That's ${name}. Scroll down and tap Ramesh Kirana in Recent Contacts.`);
+};
+window.missContact=function(name){
+  if(level===2)fb_(`That's ${name}. For this task, tap "Ramesh Kirana" — the shop 🏪.`);
+  else if(level===3)fb_("A payment request is waiting! Read it carefully on screen.");
+  else fb_("Follow the coach instruction above.");
+};
+window.checkBalance=function(){
+  if(level===3){fb_("A suspicious payment request is waiting — read it carefully first!");return;}
+  if(level!==1){fb_("We don't need to check balance right now.");return;}
+  pinAction="balance"; document.getElementById("pin-subtitle").textContent="Enter PIN to view balance";
+  show("screen-pin"); coachEl.textContent="Enter any 4 digits as your PIN to check your balance.";
+};
+window.openPayment=function(name,emoji){
+  if(level===1){fb_("Let's check your balance first before making any payment.");return;}
+  if(level===3){fb_("A payment request is waiting on screen — read it first!");return;}
+  if(level!==2)return;
+  document.getElementById("payee-display").textContent=emoji+" "+name;
+  document.getElementById("payee-sub").textContent="Paying "+name;
+  amtTyped=false; document.getElementById("amt-input").value="";
+  document.getElementById("amt-hint").textContent="Tap the ₹ amount box to enter ₹50";
+  show("screen-amount"); coachEl.textContent="Tap the ₹ box, enter 50, then tap Pay Now.";
+};
+window.goHome=function(){show("screen-home");};
+window.typeAmount=function(){
+  document.getElementById("amt-input").value="50";
+  document.getElementById("amt-hint").textContent="✅ ₹50 entered — now tap Pay Now →";
+  amtTyped=true; coachEl.textContent="Amount ₹50 set! Tap the Pay Now button.";
+};
+window.proceedToPay=function(){
+  if(!amtTyped){fb_("Please tap the ₹ amount box first to enter ₹50.");return;}
+  if(document.getElementById("amt-input").value!=="50"){fb_("Please enter exactly ₹50. Tap the amount box to set it.");return;}
+  pinAction="pay"; document.getElementById("pin-subtitle").textContent="Confirm payment with PIN";
+  show("screen-pin"); coachEl.textContent="Enter any 4 digits as your PIN to confirm the ₹50 payment.";
+};
+window.pressPin=function(){
+  if(pinCount>=4)return; pinCount++;
+  document.getElementById("dot"+pinCount).classList.add("filled");
+};
+window.clearPin=function(){
+  if(pinCount>0){document.getElementById("dot"+pinCount).classList.remove("filled");pinCount--;}
+};
+window.confirmPin=function(){
+  if(pinCount<4){fb_("Please enter all 4 digits of your PIN.");return;}
+  resetPin();
+  if(pinAction==="balance") document.getElementById("balance-modal").classList.add("active");
+  else if(pinAction==="pay") document.getElementById("payment-modal").classList.add("active");
+};
+window.closeBalance=function(){
+  document.getElementById("balance-modal").classList.remove("active");
+  fb_("✅ Balance checked securely! Always use your PIN to verify.",true);
+  document.getElementById("success-msg").textContent="Great! You checked your bank balance safely with your PIN. Always use your PIN to verify your identity.";
+  setTimeout(()=>document.getElementById("success-modal").classList.add("active"),600); saveP(1);
+};
+window.afterPayment=function(){
+  document.getElementById("payment-modal").classList.remove("active");
+  document.getElementById("success-msg").textContent="Well done! You sent ₹50 to Ramesh Kirana safely. Always verify the name and amount before confirming!";
+  document.getElementById("success-modal").classList.add("active"); saveP(2);
+};
+window.nextLevel=function(){
+  document.getElementById("success-modal").classList.remove("active");
+  level++; setStep(level); badgeEl.textContent="Level "+level+" of "+TOTAL; resetPin();
+  if(level===2){show("screen-home");coachEl.textContent="Now pay ₹50 to Ramesh Kirana. Find him in Recent Contacts below.";}
+  else if(level===3){
+    show("screen-home"); coachEl.textContent="A suspicious payment request just arrived! Read it carefully!";
+    setTimeout(()=>{
+      document.getElementById("scam-backdrop").style.opacity="1";
+      document.getElementById("scam-backdrop").style.pointerEvents="auto";
+      document.getElementById("scam-sheet").classList.add("open");
+      coachEl.textContent="A payment request says you won a prize! 🤔 Think carefully — enter PIN to SEND money, never to receive it!";
+    },1200);
+  }
+};
+window.declineScam=function(){
+  document.getElementById("scam-sheet").classList.remove("open");
+  document.getElementById("scam-backdrop").style.opacity="0";
+  document.getElementById("scam-backdrop").style.pointerEvents="none";
+  fb_("✅ Excellent! You correctly declined the scam!",true);
+  setTimeout(()=>{launchConfetti();const xp=score*10;document.getElementById("final-score").textContent="⭐ Score: "+xp+" / 100 XP";saveP(3,xp);setTimeout(()=>document.getElementById("finish-modal").classList.add("active"),600);},800);
+};
+window.acceptScam=function(){
+  score=Math.max(0,score-3); updateStars();
+  phone.classList.remove("shake"); void phone.offsetWidth; phone.classList.add("shake");
+  fb_("⚠️ Stop! Entering your PIN will SEND ₹8,500 — not receive money! Real lotteries never ask for your PIN. Tap DECLINE!");
+};
+const HINTS={1:"Look for the 💰 Check Balance button (bottom right in the grid). Tap it, then enter any 4 digits as your PIN.",2:"Scroll down to 'Recent Contacts'. Tap 'Ramesh Kirana' 🏪. Enter ₹50 in the amount box. Then enter your PIN.",3:"Remember: You only enter a PIN to SEND money. If someone asks for your PIN to GIVE you money — it's ALWAYS a scam. Tap Decline!"};
+window.showHint=function(){if(HINTS[level])fb_("💡 "+HINTS[level],true);};
+function launchConfetti(){
+  const cols=["#7C3AED","#059669","#FF6B1A","#2563EB","#D97706"],c=document.getElementById("confetti");c.innerHTML="";
+  for(let i=0;i<35;i++){const p=document.createElement("div");p.className="cp";p.style.left=Math.random()*100+"%";p.style.background=cols[Math.floor(Math.random()*cols.length)];p.style.animationDelay=Math.random()*.8+"s";p.style.animationDuration=(.8+Math.random()*.8)+"s";p.style.borderRadius=Math.random()>.5?"50%":"2px";c.appendChild(p);}
+}
+function saveP(lvl,xp){
+  try{
+    let m=JSON.parse(localStorage.getItem("dlp_sync")||'{"gamesProgress":{},"scores":{},"achievements":[]}');
+    m.gamesProgress[courseId]=Math.max(m.gamesProgress[courseId]||0,lvl);
+    if(xp!==undefined)m.scores[courseId]=Math.max(m.scores[courseId]||0,xp);
+    if(!m.achievements.includes("first_game"))m.achievements.push("first_game");
+    if(lvl>=TOTAL&&!m.achievements.includes("master_"+courseId))m.achievements.push("master_"+courseId);
+    localStorage.setItem("dlp_sync",JSON.stringify(m));
+    (async()=>{try{const{auth,db}=await import("../firebase.js");const{onAuthStateChanged}=await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js");const{doc,setDoc}=await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");onAuthStateChanged(auth,async u=>{if(u)try{await setDoc(doc(db,"users",u.uid),m,{merge:true});}catch(e){}});}catch(e){}})();
+  }catch(e){}
+}
+</script>
+</body>
+</html>

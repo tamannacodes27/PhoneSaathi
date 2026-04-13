@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Phone Saathi — My Profile</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#1B2A4A;--navy-md:#2E4070;--navy-lt:#EEF1F8;
+  --cream:#F7F5F2;--warm:#F0EBE3;
+  --gold:#B07D2F;--gold-lt:#F8EDD8;--gold-md:#C8922A;
+  --slate:#4A5568;--slate-lt:#8896A8;--border:#E2DDD6;
+  --green:#2D6A4F;--green-lt:#E6F4EE;
+  --red:#C0392B;--red-lt:#FDECEA;
+  --amber:#92400E;
+  --radius:16px;--shadow:0 2px 16px rgba(27,42,74,0.07);
+  --shadow-md:0 4px 24px rgba(27,42,74,0.11);
+}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy);font-size:16px;line-height:1.6;min-height:100vh}
+
+/* ── NAV ── */
+.nav{background:var(--navy);padding:0 28px;display:flex;align-items:center;justify-content:space-between;height:60px;position:sticky;top:0;z-index:100;box-shadow:0 2px 20px rgba(0,0,0,.15)}
+.nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo{width:34px;height:34px;background:var(--gold);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px}
+.nav-name{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:#fff}
+.nav-name span{color:#D4A843}
+.nav-links{display:flex;gap:4px;list-style:none}
+.nav-links a{color:rgba(255,255,255,.6);text-decoration:none;font-size:13px;font-weight:500;padding:6px 13px;border-radius:7px;transition:.15s}
+.nav-links a:hover{background:rgba(255,255,255,.1);color:#fff}
+.nav-back{color:rgba(255,255,255,.65);font-size:13px;font-weight:600;text-decoration:none;padding:7px 14px;border-radius:8px;border:1px solid rgba(255,255,255,.2);transition:.15s}
+.nav-back:hover{background:rgba(255,255,255,.1);color:#fff}
+
+/* ── HERO ── */
+.hero{background:linear-gradient(160deg,#1B2A4A 0%,#2E4070 100%);padding:0 28px;position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;right:-60px;top:-60px;width:280px;height:280px;border-radius:50%;background:rgba(176,125,47,.08);pointer-events:none}
+.hero::before{content:'';position:absolute;left:-40px;bottom:-40px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.03);pointer-events:none}
+.hero-inner{max-width:700px;margin:0 auto;display:flex;align-items:flex-end;gap:22px;padding:32px 0 0}
+.hero-avatar-wrap{position:relative;flex-shrink:0}
+.hero-avatar{width:84px;height:84px;border-radius:50%;background:linear-gradient(135deg,var(--gold-md),var(--gold));display:flex;align-items:center;justify-content:center;font-size:34px;font-weight:700;color:#fff;font-family:'Playfair Display',serif;border:3px solid rgba(255,255,255,.18);box-shadow:0 4px 20px rgba(0,0,0,.2)}
+.hero-status-dot{position:absolute;bottom:4px;right:4px;width:14px;height:14px;background:#4ADE80;border-radius:50%;border:2px solid #2E4070}
+.hero-text{flex:1;padding-bottom:24px}
+.hero-name{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:#fff;margin-bottom:3px;letter-spacing:-.3px}
+.hero-email{font-size:13px;color:rgba(255,255,255,.4);margin-bottom:12px;font-weight:500}
+.hero-pills{display:flex;gap:8px;flex-wrap:wrap}
+.hero-pill{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.82);padding:4px 13px;border-radius:40px;font-size:12px;font-weight:600;letter-spacing:.2px}
+.hero-divider{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent);max-width:700px;margin:0 auto}
+
+/* ── MOTI BAR ── */
+.moti-bar{background:var(--gold-lt);border-bottom:1.5px solid #E8D5A8;padding:13px 28px;text-align:center}
+.moti-bar p{font-family:'Playfair Display',serif;font-size:14px;color:var(--amber);font-style:italic;margin:0}
+
+/* ── LAYOUT ── */
+.wrap{max-width:700px;margin:0 auto;padding:28px 20px 72px}
+
+/* ── STATS ── */
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+.stat-box{background:#fff;border:1.5px solid var(--border);border-radius:var(--radius);padding:18px 12px;box-shadow:var(--shadow);text-align:center;transition:.2s}
+.stat-box:hover{box-shadow:var(--shadow-md);transform:translateY(-1px)}
+.stat-num{font-family:'Playfair Display',serif;font-size:30px;font-weight:700;color:var(--navy);line-height:1}
+.stat-label{font-size:12px;color:var(--slate-lt);margin-top:5px;font-weight:600;letter-spacing:.3px;text-transform:uppercase}
+
+/* ── PROG CARD ── */
+.prog-card{background:#fff;border:1.5px solid var(--border);border-radius:var(--radius);padding:22px 26px;box-shadow:var(--shadow);margin-bottom:20px}
+.prog-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.prog-title{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--navy)}
+.prog-badge{background:var(--navy-lt);color:var(--navy-md);font-size:13px;font-weight:700;padding:4px 12px;border-radius:20px;letter-spacing:.2px}
+.prog-track{height:8px;background:var(--warm);border-radius:8px;overflow:hidden;margin-bottom:10px}
+.prog-fill{height:8px;background:linear-gradient(90deg,var(--navy-md),var(--gold-md));border-radius:8px;transition:width .7s ease}
+.prog-sub{font-size:12px;color:var(--slate-lt);display:flex;justify-content:space-between;font-weight:600}
+.prog-edit-btn{margin-top:16px;width:100%;padding:13px;background:var(--navy);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;transition:.15s;letter-spacing:.2px}
+.prog-edit-btn:hover{background:var(--navy-md)}
+
+/* ── SECTION LABEL ── */
+.section-label{font-size:11px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:var(--slate-lt);margin:0 0 10px 2px}
+
+/* ── CARDS ── */
+.card{background:#fff;border:1.5px solid var(--border);border-radius:var(--radius);padding:24px 26px;box-shadow:var(--shadow);margin-bottom:20px}
+.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--border)}
+.card-title{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--navy)}
+.edit-link{font-size:13px;color:var(--gold-md);font-weight:700;cursor:pointer;background:none;border:none;font-family:'DM Sans',sans-serif;padding:5px 12px;border-radius:7px;background:var(--gold-lt);transition:.15s}
+.edit-link:hover{background:#f0ddb0}
+
+/* ── INFO ROWS ── */
+.info-row{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--warm)}
+.info-row:last-child{border-bottom:none}
+.info-icon{width:32px;height:32px;border-radius:8px;background:var(--navy-lt);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.info-label{font-size:13px;color:var(--slate-lt);font-weight:600;width:120px;flex-shrink:0}
+.info-value{font-size:14px;color:var(--navy);font-weight:600}
+.info-value.empty{color:var(--slate-lt);font-style:italic;font-weight:400}
+
+/* ── BADGES ── */
+.badges-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}
+.badge{border:1.5px solid var(--border);border-radius:12px;padding:16px 10px;text-align:center;transition:.2s}
+.badge.earned{border-color:#D4A843;background:linear-gradient(135deg,#FDF6E3,var(--gold-lt));box-shadow:0 2px 10px rgba(176,125,47,.12)}
+.badge.locked{opacity:.38;filter:grayscale(.4)}
+.badge-icon{font-size:28px;margin-bottom:7px;display:block}
+.badge-name{font-size:12px;font-weight:700;color:var(--navy);margin-bottom:3px}
+.badge.earned .badge-name{color:var(--amber)}
+.badge-desc{font-size:11px;color:var(--slate-lt);line-height:1.4;font-weight:500}
+
+/* ── EDIT FORM ── */
+.edit-form{display:none;padding-top:4px}
+.edit-form.active{display:block;animation:fadeIn .2s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+.view-mode.hidden{display:none}
+
+.field{margin-bottom:14px}
+.field label{display:block;font-size:13px;font-weight:700;color:var(--slate);margin-bottom:7px;letter-spacing:.1px}
+.field input,.field select{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;font-family:'DM Sans',sans-serif;color:var(--navy);background:var(--cream);outline:none;transition:.15s;font-weight:500}
+.field input:focus,.field select:focus{border-color:var(--navy-md);background:#fff;box-shadow:0 0 0 3px rgba(46,64,112,.08)}
+.field input::placeholder{color:#b0a99e;font-weight:400}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form-actions{display:flex;gap:10px;margin-top:8px}
+.save-btn{flex:1;padding:12px;background:var(--navy);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;transition:.15s}
+.save-btn:hover{background:var(--navy-md)}
+.save-btn:disabled{background:var(--slate-lt);cursor:not-allowed}
+.cancel-btn{padding:12px 20px;background:var(--warm);color:var(--slate);border:1.5px solid var(--border);border-radius:10px;font-size:14px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;transition:.15s}
+.cancel-btn:hover{border-color:var(--navy-md);background:var(--navy-lt)}
+
+/* ── TOGGLE ── */
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:4px 0}
+.t-title{font-size:15px;font-weight:700;color:var(--navy)}
+.t-sub{font-size:12px;color:var(--slate-lt);margin-top:2px;font-weight:500}
+.toggle-wrap{position:relative;display:inline-block;width:48px;height:26px;flex-shrink:0;margin-left:18px;cursor:pointer}
+.toggle-wrap input{opacity:0;width:0;height:0;position:absolute}
+.toggle-track{position:absolute;inset:0;background:var(--border);border-radius:26px;transition:.2s}
+.toggle-thumb{position:absolute;left:3px;top:3px;width:20px;height:20px;background:#fff;border-radius:50%;transition:.2s;box-shadow:0 1px 5px rgba(0,0,0,.18)}
+.toggle-wrap input:checked~.toggle-track{background:var(--navy-md)}
+.toggle-wrap input:checked~.toggle-thumb{transform:translateX(22px)}
+
+/* ── ACCOUNT ── */
+.action-row{display:flex;flex-direction:column;gap:10px}
+.action-btn{display:flex;align-items:center;gap:13px;padding:15px 18px;border-radius:11px;border:1.5px solid var(--border);background:#fff;font-size:14px;font-weight:700;color:var(--navy);cursor:pointer;font-family:'DM Sans',sans-serif;transition:.15s;text-decoration:none}
+.action-btn:hover{border-color:var(--navy-md);background:var(--navy-lt)}
+.action-btn.danger{color:var(--red);border-color:#f5c6c6}
+.action-btn.danger:hover{background:var(--red-lt);border-color:var(--red)}
+.action-btn-icon{font-size:19px;width:36px;height:36px;border-radius:9px;background:var(--warm);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.action-btn.danger .action-btn-icon{background:#fdecea}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--green);color:#fff;padding:13px 24px;border-radius:12px;font-size:14px;font-weight:700;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;z-index:999;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,.15)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.error{background:var(--red)}
+
+/* ── FOOTER ── */
+.footer-strip{background:var(--gold-lt);border-top:1.5px solid #E8D5A8;padding:18px 28px;text-align:center}
+.footer-strip p{font-family:'Playfair Display',serif;font-size:14px;color:var(--amber);font-style:italic}
+
+/* ── LOADING SKELETON ── */
+.skeleton{background:linear-gradient(90deg,#eee 25%,#f5f5f5 50%,#eee 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;border-radius:6px;display:inline-block}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+@media(max-width:540px){
+  .two-col{grid-template-columns:1fr}
+  .stats-row{grid-template-columns:1fr 1fr}
+  .nav-links{display:none}
+  .hero-inner{flex-direction:column;align-items:flex-start;gap:12px}
+  .badges-grid{grid-template-columns:1fr 1fr}
+  .wrap{padding:20px 16px 72px}
+  .card{padding:20px 18px}
+  .hero{padding:0 20px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="dashboard.html" class="nav-brand">
+    <div class="nav-logo">📱</div>
+    <div class="nav-name">Phone<span>Saathi</span></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="dashboard.html">🏠 Home</a></li>
+    <li><a href="courses.html">📚 Courses</a></li>
+    <li><a href="quiz.html">🧠 Quiz</a></li>
+    <li><a href="ai-chat.html" class="active">🤖 AI Chat</a></li>
+    <li><a href="notes.html">📝 Notes</a></li>
+
+  </ul>
+  <a href="dashboard.html" class="nav-back">← Dashboard</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-avatar-wrap">
+      <div class="hero-avatar" id="heroAvatar">?</div>
+      <div class="hero-status-dot"></div>
+    </div>
+    <div class="hero-text">
+      <div class="hero-name" id="heroName">Loading…</div>
+      <div class="hero-email" id="heroEmail"></div>
+      <div class="hero-pills" id="heroPills"></div>
+    </div>
+  </div>
+  <div class="hero-divider" style="margin-top:24px"></div>
+</div>
+
+<!-- MOTIVATIONAL BAR -->
+<div class="moti-bar"><p id="motiMsg">Welcome to Phone Saathi!</p></div>
+
+<div class="wrap">
+
+  <!-- Stats -->
+  <div class="stats-row">
+    <div class="stat-box">
+      <div class="stat-num" id="statLessons">0</div>
+      <div class="stat-label">Lessons</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num" id="statQuizzes">0</div>
+      <div class="stat-label">Quizzes</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num" id="statScore">—</div>
+      <div class="stat-label">Best score</div>
+    </div>
+  </div>
+
+  <!-- Profile progress -->
+  <div class="prog-card">
+    <div class="prog-header">
+      <div class="prog-title">Profile completion</div>
+      <div class="prog-badge" id="progPct">0%</div>
+    </div>
+    <div class="prog-track"><div class="prog-fill" id="progBar" style="width:0%"></div></div>
+    <div class="prog-sub">
+      <span id="progSub">Fill in your details below</span>
+      <span id="progFields"></span>
+    </div>
+    <button class="prog-edit-btn" id="topEditBtn">✏️ Edit my profile</button>
+  </div>
+
+  <!-- Achievements -->
+  <div class="section-label">Achievements</div>
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">My badges</div>
+      <span id="badgeCount" style="font-size:13px;color:var(--slate-lt);font-weight:700;background:var(--warm);padding:4px 12px;border-radius:20px">0 earned</span>
+    </div>
+    <div class="badges-grid" id="badgesGrid"></div>
+  </div>
+
+  <!-- Personal info -->
+  <div class="section-label">About me</div>
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Personal info</div>
+      <button class="edit-link" id="editPersonalBtn">✏️ Edit</button>
+    </div>
+
+    <div class="view-mode" id="personalView">
+      <div class="info-row">
+        <div class="info-icon">👤</div>
+        <div class="info-label">Name</div>
+        <div class="info-value" id="vName"><span class="empty">Not set</span></div>
+      </div>
+      <div class="info-row">
+        <div class="info-icon">🎂</div>
+        <div class="info-label">Age group</div>
+        <div class="info-value" id="vAge"><span class="empty">Not set</span></div>
+      </div>
+      <div class="info-row">
+        <div class="info-icon">🗣️</div>
+        <div class="info-label">Language</div>
+        <div class="info-value" id="vLanguage"><span class="empty">Not set</span></div>
+      </div>
+      <div class="info-row">
+        <div class="info-icon">📱</div>
+        <div class="info-label">My device</div>
+        <div class="info-value" id="vDevice"><span class="empty">Not set</span></div>
+      </div>
+    </div>
+
+    <div class="edit-form" id="personalForm">
+      <div class="field"><label>Your name</label><input type="text" id="fName" placeholder="e.g. Ramesh Kumar"/></div>
+      <div class="two-col">
+        <div class="field">
+          <label>Age group</label>
+          <select id="fAge">
+            <option value="">Select…</option>
+            <option>50–60</option><option>60–70</option><option>70+</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Language</label>
+          <select id="fLanguage">
+            <option value="">Select…</option>
+            <option>English</option><option>Hindi</option><option>Gujarati</option>
+            <option>Marathi</option><option>Tamil</option><option>Telugu</option>
+            <option>Bengali</option><option>Kannada</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label>Device I use</label>
+        <select id="fDevice">
+          <option value="">Select…</option>
+          <option>Android Phone</option><option>iPhone</option>
+          <option>Tablet</option><option>Laptop / Computer</option>
+        </select>
+      </div>
+      <div class="form-actions">
+        <button class="cancel-btn" id="cancelPersonalBtn">Cancel</button>
+        <button class="save-btn" id="savePersonalBtn">Save changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- What I want to learn -->
+  <div class="section-label">Learning</div>
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">What I want to learn</div>
+      <button class="edit-link" id="editInterestBtn">✏️ Edit</button>
+    </div>
+    <div class="view-mode" id="interestView">
+      <div class="info-row">
+        <div class="info-icon">📚</div>
+        <div class="info-label">Main interest</div>
+        <div class="info-value" id="vInterest"><span class="empty">Not set</span></div>
+      </div>
+    </div>
+    <div class="edit-form" id="interestForm">
+      <div class="field">
+        <label>What would you most like to learn?</label>
+        <select id="fInterest">
+          <option value="">Select…</option>
+          <option>Smartphone Basics</option>
+          <option>Internet Safety</option>
+          <option>Video Calling</option>
+          <option>Online Payments</option>
+          <option>Social Media</option>
+          <option>Email</option>
+        </select>
+      </div>
+      <p style="font-size:12px;color:var(--slate-lt);margin-bottom:14px;font-weight:500">This helps us recommend the right courses on your dashboard.</p>
+      <div class="form-actions">
+        <button class="cancel-btn" id="cancelInterestBtn">Cancel</button>
+        <button class="save-btn" id="saveInterestBtn">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Accessibility -->
+  <div class="section-label">Accessibility</div>
+  <div class="card">
+    <div class="toggle-row">
+      <div>
+        <div class="t-title">Larger text</div>
+        <div class="t-sub">Makes all text on screen bigger and easier to read</div>
+      </div>
+      <label class="toggle-wrap">
+        <input type="checkbox" id="largeText">
+        <span class="toggle-track"></span>
+        <span class="toggle-thumb"></span>
+      </label>
+    </div>
+  </div>
+
+  <!-- Account -->
+  <div class="section-label">Account</div>
+  <div class="card">
+    <div class="action-row">
+      <a href="courses.html" class="action-btn">
+        <span class="action-btn-icon">📚</span>
+        <div><div style="font-size:14px;font-weight:700">Continue learning</div><div style="font-size:12px;color:var(--slate-lt);font-weight:500">Pick up where you left off</div></div>
+      </a>
+      <a href="dashboard.html" class="action-btn">
+        <span class="action-btn-icon">🏠</span>
+        <div><div style="font-size:14px;font-weight:700">Go to dashboard</div><div style="font-size:12px;color:var(--slate-lt);font-weight:500">See your full progress</div></div>
+      </a>
+      <button class="action-btn danger" id="logoutBtn">
+        <span class="action-btn-icon">🚪</span>
+        <div><div style="font-size:14px;font-weight:700">Sign out</div><div style="font-size:12px;color:#e08080;font-weight:500">Come back soon!</div></div>
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer-strip">
+  <p>"Every step forward, however small, is progress. Take your time — you are doing wonderfully."</p>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+// ─────────────────────────────────────────────────────────────────────────────
+// All Firebase imports at the TOP — this is what was likely causing the save bug
+// ─────────────────────────────────────────────────────────────────────────────
+import { auth, db } from "./firebase.js";
+import { onAuthStateChanged, signOut }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { doc, getDoc, setDoc, updateDoc }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+// ── State ─────────────────────────────────────────────────────────────────────
+let currentUser = null;
+let userData    = {};
+let userDocRef  = null; // cached doc reference
+
+const PROFILE_FIELDS = ["name", "age", "language", "device", "interest"];
+
+const BADGES = [
+  { id:"first_step",    icon:"🌟", name:"First step",    desc:"Completed your first lesson",    check: d => Object.values(d.progress||{}).some(v=>v>=100) },
+  { id:"quiz_taker",   icon:"🧠", name:"Quiz taker",    desc:"Took your first quiz",            check: d => (d.quizzesTaken||0)>=1 },
+  { id:"halfway",      icon:"🏃", name:"Halfway there", desc:"Completed 7+ lessons",            check: d => Object.values(d.progress||{}).filter(v=>v>=100).length>=7 },
+  { id:"profile_done", icon:"✅", name:"All set up",    desc:"Completed your full profile",     check: d => PROFILE_FIELDS.every(f=>d[f]&&d[f]!=="") },
+  { id:"quiz_star",    icon:"🏆", name:"Quiz star",     desc:"Scored 80%+ in a quiz",           check: d => (d.quizScore||0)>=80 },
+  { id:"graduate",     icon:"🎓", name:"Graduate",      desc:"Finished all 15 lessons",         check: d => Object.values(d.progress||{}).filter(v=>v>=100).length>=15 }
+];
+
+// ── Toast ─────────────────────────────────────────────────────────────────────
+function showToast(msg, isError=false) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.toggle("error", isError);
+  t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 2800);
+}
+
+// ── Motivational message ──────────────────────────────────────────────────────
+function getMotiMsg(lessonsDone, profilePct) {
+  if (lessonsDone===0 && profilePct<50) return "Welcome! Set up your profile and start your first lesson — you've got this! 🙌";
+  if (lessonsDone===0)  return "Your profile looks great — now jump into your first lesson!";
+  if (lessonsDone>=15)  return "You've completed every lesson. Incredible — you are a true Phone Saathi! 🎓";
+  if (lessonsDone>=10)  return "So close to the finish! Keep going — you are doing wonderfully.";
+  if (lessonsDone>=5)   return "Great momentum! Every lesson makes you more confident with technology. ⭐";
+  return "You've started your journey. Take it one step at a time — you are doing great!";
+}
+
+// ── Large text ────────────────────────────────────────────────────────────────
+const ltCb = document.getElementById("largeText");
+function applyLargeText(on) { document.body.style.fontSize = on ? "19px" : ""; }
+
+ltCb.addEventListener("change", async () => {
+  applyLargeText(ltCb.checked);
+  if (!userDocRef) return;
+  try { await updateDoc(userDocRef, { largeText: ltCb.checked }); }
+  catch(e) { showToast("Could not save setting", true); }
+});
+
+// ── Progress ──────────────────────────────────────────────────────────────────
+function calcCompletion(d) {
+  const filled = PROFILE_FIELDS.filter(f => d[f] && d[f] !== "").length;
+  return Math.round((filled / PROFILE_FIELDS.length) * 100);
+}
+
+function renderProgress(d) {
+  const pct    = calcCompletion(d);
+  const filled = PROFILE_FIELDS.filter(f => d[f] && d[f] !== "").length;
+  document.getElementById("progPct").textContent  = pct + "%";
+  document.getElementById("progBar").style.width  = pct + "%";
+  document.getElementById("progSub").textContent  = pct === 100 ? "Profile complete 🎉" : "Fill in the sections below";
+  document.getElementById("progFields").textContent = filled + " of " + PROFILE_FIELDS.length + " fields";
+}
+
+// ── Hero ──────────────────────────────────────────────────────────────────────
+function renderHero(user, d) {
+  const name    = d.name || user.displayName || "Learner";
+  const initial = name.trim()[0]?.toUpperCase() || "?";
+  document.getElementById("heroAvatar").textContent = initial;
+  document.getElementById("heroName").textContent   = name;
+  document.getElementById("heroEmail").textContent  = user.email || "";
+  const pills = [d.interest, d.language].filter(Boolean);
+  document.getElementById("heroPills").innerHTML =
+    pills.map(p => `<span class="hero-pill">${p}</span>`).join("");
+}
+
+// ── Badges ────────────────────────────────────────────────────────────────────
+function renderBadges(d) {
+  const earned = BADGES.filter(b => b.check(d)).length;
+  document.getElementById("badgeCount").textContent = earned + " earned";
+  document.getElementById("badgesGrid").innerHTML = BADGES.map(b => {
+    const on = b.check(d);
+    return `<div class="badge ${on ? "earned" : "locked"}">
+      <span class="badge-icon">${b.icon}</span>
+      <div class="badge-name">${b.name}</div>
+      <div class="badge-desc">${b.desc}</div>
+    </div>`;
+  }).join("");
+}
+
+// ── Stats ─────────────────────────────────────────────────────────────────────
+function renderStats(d) {
+  const done = Object.values(d.progress || {}).filter(v => v >= 100).length;
+  document.getElementById("statLessons").textContent = done;
+  document.getElementById("statQuizzes").textContent = d.quizzesTaken || 0;
+  document.getElementById("statScore").textContent   = d.quizScore ? d.quizScore + "%" : "—";
+  document.getElementById("motiMsg").textContent     = getMotiMsg(done, calcCompletion(d));
+}
+
+// ── View renderers ────────────────────────────────────────────────────────────
+function setVal(id, val) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  if (val && val !== "") {
+    el.innerHTML = val;
+    el.classList.remove("empty");
+  } else {
+    el.innerHTML = "<span class='empty'>Not set</span>";
+  }
+}
+
+function renderPersonalView(d) {
+  setVal("vName",     d.name);
+  setVal("vAge",      d.age);
+  setVal("vLanguage", d.language);
+  setVal("vDevice",   d.device);
+}
+
+function renderInterestView(d) {
+  setVal("vInterest", d.interest);
+}
+
+// ── Form population ───────────────────────────────────────────────────────────
+function populatePersonalForm(d) {
+  document.getElementById("fName").value     = d.name     || "";
+  document.getElementById("fAge").value      = d.age      || "";
+  document.getElementById("fLanguage").value = d.language || "";
+  document.getElementById("fDevice").value   = d.device   || "";
+}
+
+function populateInterestForm(d) {
+  document.getElementById("fInterest").value = d.interest || "";
+}
+
+// ── Edit toggle ───────────────────────────────────────────────────────────────
+function openSection(formId, viewId, populateFn) {
+  populateFn(userData);
+  document.getElementById(formId).classList.add("active");
+  document.getElementById(viewId).classList.add("hidden");
+  // Scroll into view smoothly
+  document.getElementById(formId).scrollIntoView({ behavior:"smooth", block:"nearest" });
+}
+
+function closeSection(formId, viewId) {
+  document.getElementById(formId).classList.remove("active");
+  document.getElementById(viewId).classList.remove("hidden");
+}
+
+// Wire buttons
+document.getElementById("editPersonalBtn").onclick   = () => openSection("personalForm","personalView",populatePersonalForm);
+document.getElementById("topEditBtn").onclick        = () => openSection("personalForm","personalView",populatePersonalForm);
+document.getElementById("cancelPersonalBtn").onclick = () => closeSection("personalForm","personalView");
+document.getElementById("editInterestBtn").onclick   = () => openSection("interestForm","interestView",populateInterestForm);
+document.getElementById("cancelInterestBtn").onclick = () => closeSection("interestForm","interestView");
+
+// ── Save to Firestore ─────────────────────────────────────────────────────────
+// KEY FIX: always merge: true so we never overwrite other fields
+async function saveToFirestore(updates) {
+  if (!userDocRef) throw new Error("Not logged in");
+  updates.profileCompletion = calcCompletion(userData);
+  await setDoc(userDocRef, updates, { merge: true });
+}
+
+function refreshAll() {
+  renderHero(currentUser, userData);
+  renderPersonalView(userData);
+  renderInterestView(userData);
+  renderProgress(userData);
+  renderStats(userData);
+  renderBadges(userData);
+}
+
+// ── Save personal ─────────────────────────────────────────────────────────────
+document.getElementById("savePersonalBtn").onclick = async () => {
+  if (!currentUser) { showToast("Please sign in again", true); return; }
+  const btn = document.getElementById("savePersonalBtn");
+  btn.disabled = true; btn.textContent = "Saving…";
+
+  const updates = {
+    name:     document.getElementById("fName").value.trim(),
+    age:      document.getElementById("fAge").value,
+    language: document.getElementById("fLanguage").value,
+    device:   document.getElementById("fDevice").value,
+  };
+
+  // Update local state immediately so UI feels instant
+  Object.assign(userData, updates);
+
+  try {
+    await saveToFirestore({ ...updates }); // pass a copy so we don't pollute
+    refreshAll();
+    closeSection("personalForm", "personalView");
+    showToast("Personal info saved ✓");
+  } catch(err) {
+    console.error("Firestore save error:", err);
+    showToast("Could not save — check your connection", true);
+  }
+
+  btn.disabled = false; btn.textContent = "Save changes";
+};
+
+// ── Save interest ─────────────────────────────────────────────────────────────
+document.getElementById("saveInterestBtn").onclick = async () => {
+  if (!currentUser) { showToast("Please sign in again", true); return; }
+  const btn = document.getElementById("saveInterestBtn");
+  btn.disabled = true; btn.textContent = "Saving…";
+
+  const updates = { interest: document.getElementById("fInterest").value };
+  Object.assign(userData, updates);
+
+  try {
+    await saveToFirestore({ ...updates });
+    refreshAll();
+    closeSection("interestForm", "interestView");
+    showToast("Interest saved ✓");
+  } catch(err) {
+    console.error("Firestore save error:", err);
+    showToast("Could not save — check your connection", true);
+  }
+
+  btn.disabled = false; btn.textContent = "Save";
+};
+
+// ── Logout ────────────────────────────────────────────────────────────────────
+document.getElementById("logoutBtn").onclick = async () => {
+  try { await signOut(auth); window.location.href = "index.html"; }
+  catch(err) { showToast("Sign out failed, try again", true); }
+};
+
+// ── Auth listener — load data once ───────────────────────────────────────────
+onAuthStateChanged(auth, async (user) => {
+  if (!user) { window.location.href = "index.html"; return; }
+  currentUser = user;
+  userDocRef  = doc(db, "users", user.uid); // cache the ref
+
+  try {
+    const snap = await getDoc(userDocRef);
+    // If doc doesn't exist yet, create a skeleton so future setDoc merges work
+    if (!snap.exists()) {
+      await setDoc(userDocRef, { email: user.email, createdAt: new Date().toISOString() });
+      userData = {};
+    } else {
+      userData = snap.data();
+    }
+  } catch(err) {
+    console.error("Firestore load error:", err);
+    showToast("Could not load profile — check your connection", true);
+    userData = {};
+  }
+
+  refreshAll();
+  ltCb.checked = userData.largeText || false;
+  applyLargeText(ltCb.checked);
+});
+</script>
+</body>
+</html>

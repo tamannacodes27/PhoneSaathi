@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smartphone Basics — Intermediate · Digital Literacy</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --navy:#1B2A4A;--navy-md:#2E4070;--navy-lt:#EEF1F8;--cream:#FAF8F5;--warm:#F3EFE8;
+  --gold:#B07D2F;--gold-lt:#FDF3DC;--slate:#4A5568;--slate-lt:#718096;--border:#E2DDD6;
+  --white:#FFFFFF;--green:#2D6A4F;--green-lt:#E8F5EF;
+  --amber:#92400E;--amber-lt:#FEF3C7;
+  --orange:#C2410C;--orange-lt:#FFF7ED;
+  --radius:16px;--shadow:0 4px 24px rgba(27,42,74,0.10);
+}
+body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--navy);min-height:100vh;font-size:18px;}
+.topbar{background:var(--navy);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,0.2);}
+.back-btn{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:700;color:rgba(255,255,255,0.7);cursor:pointer;padding:6px 14px;border:1px solid rgba(255,255,255,0.18);border-radius:8px;background:rgba(255,255,255,0.06);transition:0.15s;text-decoration:none;}
+.back-btn:hover{background:rgba(255,255,255,0.13);color:#fff;}
+.topbar-center{display:flex;align-items:center;gap:10px;}
+.dot-icon{width:30px;height:30px;background:var(--orange);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;}
+.topbar-title{font-family:'Lora',serif;font-size:16px;font-weight:600;color:#fff;}
+.level-badge{font-size:12px;font-weight:800;background:var(--amber);color:#fff;padding:3px 12px;border-radius:20px;}
+.progress-wrap{background:var(--white);border-bottom:1.5px solid var(--border);padding:14px 24px;}
+.progress-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.progress-label{font-size:13px;font-weight:700;color:var(--slate);}
+.progress-pct{font-size:13px;font-weight:800;color:var(--amber);}
+.progress-track{height:8px;background:var(--warm);border-radius:8px;overflow:hidden;}
+.progress-fill{height:8px;background:linear-gradient(90deg,var(--amber),var(--gold));border-radius:8px;transition:width 0.6s cubic-bezier(.4,0,.2,1);}
+.step-dots{display:flex;justify-content:center;gap:8px;padding:16px 24px 0;}
+.dot{height:8px;border-radius:8px;background:var(--border);transition:all 0.35s cubic-bezier(.4,0,.2,1);width:8px;}
+.dot.done{background:var(--gold);}
+.dot.active{background:var(--navy);width:28px;}
+.main{max-width:680px;margin:0 auto;padding:24px 20px 110px;}
+.step-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;animation:fadeUp 0.4s cubic-bezier(.4,0,.2,1) both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.card-hero{padding:28px 28px 22px;background:linear-gradient(135deg,#7C2D12 0%,#C2410C 100%);display:flex;gap:18px;align-items:center;}
+.hero-emoji{font-size:56px;line-height:1;flex-shrink:0;filter:drop-shadow(0 3px 10px rgba(0,0,0,0.25));}
+.hero-step{font-size:11px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:#FED7AA;margin-bottom:5px;}
+.hero-title{font-family:'Lora',serif;font-size:24px;font-weight:600;color:#fff;line-height:1.25;}
+.card-body{padding:26px 28px 28px;}
+.body-text{font-size:17px;color:var(--slate);line-height:1.85;margin-bottom:18px;}
+.encourage{display:flex;align-items:center;gap:12px;background:var(--gold-lt);border:1.5px solid #EDD9A0;border-radius:12px;padding:14px 18px;margin-bottom:22px;}
+.encourage-icon{font-size:22px;flex-shrink:0;}
+.encourage-text{font-size:15px;font-weight:700;color:var(--gold);line-height:1.5;}
+.instr-list{list-style:none;display:flex;flex-direction:column;gap:12px;margin-bottom:24px;}
+.instr-item{display:flex;gap:13px;align-items:flex-start;padding:14px 16px;background:var(--cream);border:1.5px solid var(--border);border-radius:12px;transition:border-color 0.2s,background 0.2s;}
+.instr-item:hover{border-color:var(--navy-md);background:var(--navy-lt);}
+.instr-num{width:30px;height:30px;border-radius:50%;background:var(--navy);color:#fff;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.instr-text{font-size:16px;color:var(--slate);line-height:1.7;padding-top:3px;}
+.tip-box{display:flex;gap:13px;align-items:flex-start;background:var(--green-lt);border:1.5px solid #B7DEC9;border-radius:12px;padding:16px 18px;margin-top:20px;}
+.tip-icon{font-size:22px;flex-shrink:0;margin-top:1px;}
+.tip-label{font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);margin-bottom:3px;}
+.tip-text{font-size:15px;color:#285C42;line-height:1.65;}
+.reveal-block{border-radius:13px;overflow:hidden;margin:20px 0;border:2px dashed var(--border);cursor:pointer;transition:border-color 0.2s;}
+.reveal-block:hover{border-color:var(--navy-md);}
+.reveal-prompt{padding:18px 20px;display:flex;align-items:center;gap:14px;background:var(--navy-lt);}
+.reveal-prompt-icon{font-size:26px;}
+.reveal-prompt-text{font-size:16px;font-weight:700;color:var(--navy-md);flex:1;}
+.reveal-prompt-arrow{font-size:18px;color:var(--navy-md);transition:transform 0.3s;}
+.reveal-block.open .reveal-prompt-arrow{transform:rotate(90deg);}
+.reveal-answer{max-height:0;overflow:hidden;transition:max-height 0.45s cubic-bezier(.4,0,.2,1),padding 0.3s;background:var(--white);padding:0 20px;}
+.reveal-block.open .reveal-answer{max-height:400px;padding:18px 20px;}
+.reveal-answer-inner{font-size:16px;color:var(--slate);line-height:1.75;}
+.tap-question{background:var(--navy-lt);border:1.5px solid #C5D0E8;border-radius:13px;padding:20px 20px;margin:20px 0;}
+.tap-q-label{font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--navy-md);margin-bottom:8px;}
+.tap-q-text{font-size:17px;font-weight:700;color:var(--navy);margin-bottom:14px;line-height:1.4;}
+.tap-options{display:flex;flex-direction:column;gap:9px;}
+.tap-opt{padding:13px 18px;border-radius:10px;border:2px solid var(--border);background:var(--white);font-size:16px;font-weight:700;font-family:'Nunito',sans-serif;color:var(--slate);cursor:pointer;transition:0.18s;text-align:left;}
+.tap-opt:hover:not(:disabled){border-color:var(--navy-md);background:var(--navy-lt);color:var(--navy);}
+.tap-opt.correct{background:var(--green-lt);border-color:var(--green);color:var(--green);pointer-events:none;}
+.tap-opt.wrong{background:#FEF2F2;border-color:#FCA5A5;color:#B91C1C;pointer-events:none;}
+.tap-opt.dim{opacity:0.4;pointer-events:none;}
+.tap-result{font-size:15px;font-weight:700;margin-top:12px;padding:11px 14px;border-radius:9px;display:none;}
+.tap-result.show{display:block;}
+.tap-result.good{background:var(--green-lt);color:var(--green);}
+.tap-result.oops{background:#FEF2F2;color:#B91C1C;}
+.feature-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0;}
+.feature-card{background:var(--orange-lt);border:1.5px solid #FED7AA;border-radius:12px;padding:16px 14px;text-align:center;}
+.feature-card-icon{font-size:32px;margin-bottom:8px;}
+.feature-card-name{font-size:14px;font-weight:800;color:var(--orange);margin-bottom:3px;}
+.feature-card-desc{font-size:12px;color:var(--slate-lt);line-height:1.5;}
+.completion-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;animation:fadeUp 0.4s cubic-bezier(.4,0,.2,1) both;}
+.completion-top{background:linear-gradient(135deg,#7C2D12 0%,var(--gold) 100%);padding:44px 28px 36px;text-align:center;}
+.completion-big-icon{font-size:72px;margin-bottom:16px;}
+.completion-title{font-family:'Lora',serif;font-size:28px;font-weight:600;color:#fff;margin-bottom:8px;}
+.completion-sub{font-size:16px;color:rgba(255,255,255,0.88);line-height:1.6;}
+.completion-body{padding:32px 28px;}
+.learned-list{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:28px;}
+.learned-item{display:flex;align-items:center;gap:12px;padding:13px 16px;background:var(--green-lt);border:1.5px solid #B7DEC9;border-radius:10px;font-size:16px;font-weight:700;color:var(--green);}
+.completion-actions{display:flex;flex-direction:column;gap:12px;}
+.btn-primary{padding:16px 24px;border-radius:12px;border:none;background:var(--navy);color:#fff;font-size:17px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;transition:background 0.15s;}
+.btn-primary:hover{background:var(--navy-md);}
+.btn-secondary{padding:14px 24px;border-radius:12px;border:1.5px solid var(--border);background:var(--white);color:var(--navy);font-size:16px;font-weight:700;font-family:'Nunito',sans-serif;cursor:pointer;transition:0.15s;}
+.btn-secondary:hover{border-color:var(--navy);background:var(--navy-lt);}
+.nav-bar{position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:1.5px solid var(--border);padding:14px 20px;display:flex;gap:12px;z-index:200;box-shadow:0 -4px 20px rgba(27,42,74,0.09);}
+.btn-back{padding:14px 22px;border-radius:12px;border:1.5px solid var(--border);background:var(--white);font-size:16px;font-weight:700;font-family:'Nunito',sans-serif;color:var(--slate);cursor:pointer;transition:0.15s;}
+.btn-back:hover{border-color:var(--navy);color:var(--navy);background:var(--navy-lt);}
+.btn-next{flex:1;padding:14px 22px;border-radius:12px;border:none;background:var(--navy);color:#fff;font-size:17px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;transition:background 0.15s;}
+.btn-next:hover{background:var(--navy-md);}
+.hidden{display:none!important;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="back-btn" href="../courses.html">&#8592; Courses</a>
+  <div class="topbar-center">
+    <div class="dot-icon">⚙️</div>
+    <span class="topbar-title">Smartphone Basics</span>
+  </div>
+  <span class="level-badge">Intermediate</span>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-row">
+    <span class="progress-label" id="progressLabel">Step 1 of 7</span>
+    <span class="progress-pct" id="progressPct">0% done</span>
+  </div>
+  <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+</div>
+
+<div class="step-dots" id="stepDots">
+  <div class="dot active" id="dot-0"></div>
+  <div class="dot" id="dot-1"></div>
+  <div class="dot" id="dot-2"></div>
+  <div class="dot" id="dot-3"></div>
+  <div class="dot" id="dot-4"></div>
+  <div class="dot" id="dot-5"></div>
+  <div class="dot" id="dot-6"></div>
+</div>
+
+<div class="main" id="mainContent"></div>
+
+<div class="nav-bar" id="navBar">
+  <button class="btn-back" id="btnBack" onclick="prevStep()">&#8592; Back</button>
+  <button class="btn-next" id="btnNext" onclick="nextStep()">Next →</button>
+</div>
+
+<script type="module">
+import { auth, db } from "../firebase.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const COURSE_KEY = "basics-intermediate";
+let currentStep = 0, currentUser = null;
+
+const STEPS = [
+  () => `<div class="step-card">
+    <div class="card-hero"><div class="hero-emoji">🏪</div><div class="hero-text"><div class="hero-step">Step 1 of 7</div><div class="hero-title">Installing Apps from the Store</div></div></div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">🌸</span><span class="encourage-text">Welcome back! Apps make your phone truly powerful. Let's learn how to safely find, install and manage apps from the official store.</span></div>
+      <p class="body-text">Apps are programs for your phone — like WhatsApp, Google Maps, YouTube. You download them from the <strong>Play Store</strong> (Android) or <strong>App Store</strong> (iPhone). These are the only safe places to get apps.</p>
+      <ul class="instr-list">
+        <li class="instr-item"><span class="instr-num">1</span><span class="instr-text">Find the <strong>Play Store ▶</strong> (or App Store 🍎) icon on your home screen. Tap to open.</span></li>
+        <li class="instr-item"><span class="instr-num">2</span><span class="instr-text">Tap the <strong>Search 🔍</strong> bar at the top. Type the name of the app — for example: <em>"WhatsApp"</em> or <em>"Google Maps"</em>.</span></li>
+        <li class="instr-item"><span class="instr-num">3</span><span class="instr-text">Look for the <strong>official app</strong> — check the developer name (e.g. "WhatsApp LLC" or "Google LLC"). Choose the one with millions of reviews.</span></li>
+        <li class="instr-item"><span class="instr-num">4</span><span class="instr-text">Tap <strong>Install</strong> (Android) or <strong>Get</strong> (iPhone). Free apps don't ask for payment.</span></li>
+        <li class="instr-item"><span class="instr-num">5</span><span class="instr-text">Wait for the download to finish. The app appears on your <strong>home screen</strong> or in your app drawer.</span></li>
+        <li class="instr-item"><span class="instr-num">6</span><span class="instr-text"><strong>Uninstall apps you don't use:</strong> Press and hold the app icon → tap <strong>Uninstall</strong> or <strong>Remove</strong>. This frees up storage space.</span></li>
+      </ul>
+      <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Good to know</div><div class="tip-text">Always download apps from the official store only. <strong>Never install apps</strong> from unknown websites or links sent by strangers — these can contain viruses that steal your information.</div></div></div>
+    </div>
+  </div>`,
+
+  () => `<div class="step-card">
+    <div class="card-hero"><div class="hero-emoji">📷</div><div class="hero-text"><div class="hero-step">Step 2 of 7</div><div class="hero-title">Camera, Photos & Gallery</div></div></div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">🌺</span><span class="encourage-text">Your phone has a wonderful camera! Capture family moments, festivals, nature — every memory can be preserved beautifully.</span></div>
+      <p class="body-text">The <strong>Camera app</strong> lets you take photos and videos. Your photos are saved in the <strong>Gallery</strong> (also called Photos). Here's how to use both:</p>
+      <ul class="instr-list">
+        <li class="instr-item"><span class="instr-num">1</span><span class="instr-text"><strong>Take a photo:</strong> Open the Camera app 📷 → point at your subject → tap the large <strong>white circle button</strong> at the bottom. Done!</span></li>
+        <li class="instr-item"><span class="instr-num">2</span><span class="instr-text"><strong>Selfie (front camera):</strong> Tap the <strong>flip camera icon 🔄</strong> to switch to the front camera that faces you.</span></li>
+        <li class="instr-item"><span class="instr-num">3</span><span class="instr-text"><strong>Record video:</strong> Swipe to <strong>Video mode</strong> → tap the red circle to start recording → tap again to stop.</span></li>
+        <li class="instr-item"><span class="instr-num">4</span><span class="instr-text"><strong>Zoom in:</strong> Spread two fingers apart on the screen, or tap <strong>1x → 2x</strong> buttons to zoom in.</span></li>
+        <li class="instr-item"><span class="instr-num">5</span><span class="instr-text"><strong>View photos:</strong> Open the <strong>Gallery / Photos app 🖼</strong>. Tap any photo to see it full screen. Pinch to zoom in on faces.</span></li>
+        <li class="instr-item"><span class="instr-num">6</span><span class="instr-text"><strong>Share a photo:</strong> Open the photo → tap the <strong>Share ↗</strong> button → choose WhatsApp, Email, or other apps.</span></li>
+      </ul>
+      <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Good to know</div><div class="tip-text">Hold the phone <strong>steady with both hands</strong> and make sure there's good lighting (natural light from a window is best) for clear, sharp photos!</div></div></div>
+    </div>
+  </div>`,
+
+  () => `<div class="step-card">
+    <div class="card-hero"><div class="hero-emoji">💬</div><div class="hero-text"><div class="hero-step">Step 3 of 7</div><div class="hero-title">Text Messages (SMS)</div></div></div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">✉️</span><span class="encourage-text">SMS text messages work without internet — useful for bank OTPs, government notices, or reaching someone when WhatsApp isn't working!</span></div>
+      <p class="body-text"><strong>SMS (text messages)</strong> are sent through your mobile network — not the internet. They cost a tiny amount or are free depending on your plan. Banks and services send OTPs (one-time passwords) this way.</p>
+      <ul class="instr-list">
+        <li class="instr-item"><span class="instr-num">1</span><span class="instr-text">Open the <strong>Messages app 💬</strong> on your home screen (it looks like a chat bubble).</span></li>
+        <li class="instr-item"><span class="instr-num">2</span><span class="instr-text">Tap the <strong>compose/pencil ✏️ icon</strong> to write a new message.</span></li>
+        <li class="instr-item"><span class="instr-num">3</span><span class="instr-text">In the <strong>To field</strong>, type the person's phone number or tap the contact icon 👤 to pick from your contacts.</span></li>
+        <li class="instr-item"><span class="instr-num">4</span><span class="instr-text">Tap the <strong>message box</strong> and type your message using the keyboard.</span></li>
+        <li class="instr-item"><span class="instr-num">5</span><span class="instr-text">Tap the <strong>Send ➤ arrow</strong>. The message goes instantly!</span></li>
+        <li class="instr-item"><span class="instr-num">6</span><span class="instr-text"><strong>Finding your OTP:</strong> When a bank or service sends a code, it appears in Messages. The 4-6 digit number is your OTP — use it quickly as it expires in a few minutes.</span></li>
+      </ul>
+      <div class="tap-question">
+        <div class="tap-q-label">✏️ Quick check</div>
+        <div class="tap-q-text">Your bank sends a 6-digit code to your phone. Where do you find it?</div>
+        <div class="tap-options">
+          <button class="tap-opt" onclick="tapAnswer(this,false,'q3')">📧 In your Gmail inbox</button>
+          <button class="tap-opt" onclick="tapAnswer(this,true,'q3')">💬 In the Messages (SMS) app on your phone</button>
+          <button class="tap-opt" onclick="tapAnswer(this,false,'q3')">📘 In Facebook Messenger</button>
+        </div>
+        <div class="tap-result" id="res-q3"></div>
+      </div>
+      <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Good to know</div><div class="tip-text"><strong>Never share your OTP with anyone</strong> — not even someone claiming to be from your bank. A real bank will never call and ask for your OTP. If someone does, it is a scam — disconnect immediately.</div></div></div>
+    </div>
+  </div>`,
+
+  () => `<div class="step-card">
+    <div class="card-hero"><div class="hero-emoji">🗺️</div><div class="hero-text"><div class="hero-step">Step 4 of 7</div><div class="hero-title">Google Maps — Never Get Lost</div></div></div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">🧭</span><span class="encourage-text">Google Maps is like having a knowledgeable guide in your pocket! It can find hospitals, temples, shops, and give you turn-by-turn directions.</span></div>
+      <p class="body-text"><strong>Google Maps</strong> uses your phone's GPS to show exactly where you are and guide you to any destination. It works even in areas where you don't know the roads.</p>
+      <ul class="instr-list">
+        <li class="instr-item"><span class="instr-num">1</span><span class="instr-text">Open the <strong>Google Maps app 🗺️</strong>. Allow location permission when asked — this lets it know where you are.</span></li>
+        <li class="instr-item"><span class="instr-num">2</span><span class="instr-text">Tap the <strong>Search bar</strong> at the top. Type what you're looking for — a place name, address, or type like <em>"hospital near me"</em> or <em>"Shiva temple Lajpat Nagar"</em>.</span></li>
+        <li class="instr-item"><span class="instr-num">3</span><span class="instr-text">Tap the right result. You see the location on the map, address, phone number and opening hours.</span></li>
+        <li class="instr-item"><span class="instr-num">4</span><span class="instr-text">Tap the <strong>blue Directions button</strong>. Choose your transport: 🚗 driving, 🚶 walking, 🚌 public transport, or 🛺 auto (in some cities).</span></li>
+        <li class="instr-item"><span class="instr-num">5</span><span class="instr-text">Tap <strong>Start</strong>. A voice guide gives you directions as you go: <em>"In 200 metres, turn left onto MG Road"</em>.</span></li>
+      </ul>
+      <div class="reveal-block" id="rev-4" onclick="toggleReveal('rev-4')">
+        <div class="reveal-prompt"><span class="reveal-prompt-icon">🤔</span><span class="reveal-prompt-text">What if I don't have internet when I travel?</span><span class="reveal-prompt-arrow">▶</span></div>
+        <div class="reveal-answer"><div class="reveal-answer-inner">You can <strong>download maps offline</strong> before you travel! In Google Maps, tap your profile photo → Offline maps → Select your own map → Download. Then Maps works even without internet. Very useful when travelling to areas with poor network.</div></div>
+      </div>
+      <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Good to know</div><div class="tip-text">Google Maps also shows <strong>real-time traffic</strong> — red areas on the map mean heavy traffic. It automatically suggests the fastest route to avoid jams!</div></div></div>
+    </div>
+  </div>`,
+
+  () => `<div class="step-card">
+    <div class="card-hero"><div class="hero-emoji">⚙️</div><div class="hero-text"><div class="hero-step">Step 5 of 7</div><div class="hero-title">Customising Your Phone Settings</div></div></div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">🎨</span><span class="encourage-text">Your phone's Settings let you adjust everything to suit your needs — make text bigger, change the language, set accessibility options. Let's explore!</span></div>
+      <p class="body-text">The <strong>Settings app ⚙️</strong> is where you control everything about how your phone looks and works. Here are the most useful settings for everyday comfort:</p>
+      <ul class="instr-list">
+        <li class="instr-item"><span class="instr-num">1</span><span class="instr-text"><strong>Bigger text size:</strong> Settings → Display → Font size → drag slider to <strong>Large</strong> or <strong>Huge</strong>. Much easier to read!</span></li>
+        <li class="instr-item"><span class="instr-num">2</span><span class="instr-text"><strong>Change language:</strong> Settings → General Management (or System) → Language → choose <strong>Hindi</strong> or your preferred regional language.</span></li>
+        <li class="instr-item"><span class="instr-num">3</span><span class="instr-text"><strong>Louder ring volume:</strong> Settings → Sounds → Ring volume → drag to maximum.</span></li>
+        <li class="instr-item"><span class="instr-num">4</span><span class="instr-text"><strong>Do Not Disturb:</strong> Settings → Sound → Do Not Disturb → schedule it for night time so calls don't wake you. You can allow calls from contacts even in DND.</span></li>
+        <li class="instr-item"><span class="instr-num">5</span><span class="instr-text"><strong>Accessibility features:</strong> Settings → Accessibility → turn on <strong>Large pointer</strong>, <strong>Bold text</strong>, or <strong>High contrast</strong> — these make the phone much easier to use.</span></li>
+      </ul>
+      <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Good to know</div><div class="tip-text">If you accidentally change something and don't know how to go back, just ask a family member to help. You can also search inside Settings — tap the <strong>Search 🔍</strong> icon at the top of the Settings screen and type what you're looking for.</div></div></div>
+    </div>
+  </div>`,
+
+  () => `<div class="step-card">
+    <div class="card-hero"><div class="hero-emoji">💾</div><div class="hero-text"><div class="hero-step">Step 6 of 7</div><div class="hero-title">Managing Storage Space</div></div></div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">🧹</span><span class="encourage-text">When your phone says "Storage is full", it feels stuck! Let's learn how to check and manage your storage so your phone always runs smoothly.</span></div>
+      <p class="body-text">Your phone has a limited amount of <strong>storage space</strong> — like a cupboard. Photos, videos and apps fill this up over time. When it's full, you can't take new photos or install apps.</p>
+      <ul class="instr-list">
+        <li class="instr-item"><span class="instr-num">1</span><span class="instr-text"><strong>Check storage:</strong> Settings → Storage. You'll see how much space is used and how much is free. Aim to keep at least 1–2 GB free.</span></li>
+        <li class="instr-item"><span class="instr-num">2</span><span class="instr-text"><strong>Delete old photos/videos:</strong> Open Gallery → select photos you no longer need → tap Delete 🗑️. Videos take the most space.</span></li>
+        <li class="instr-item"><span class="instr-num">3</span><span class="instr-text"><strong>Clear app cache:</strong> Settings → Apps → tap an app → Storage → <strong>Clear Cache</strong>. This deletes temporary files without removing the app.</span></li>
+        <li class="instr-item"><span class="instr-num">4</span><span class="instr-text"><strong>Move photos to Google Photos:</strong> Google Photos app stores your photos in the cloud (internet) for free. After backup, you can delete them from your phone to free space.</span></li>
+        <li class="instr-item"><span class="instr-num">5</span><span class="instr-text"><strong>SD Card:</strong> Many Android phones accept a small <strong>SD card</strong> (memory card) to add extra storage — ask at a phone shop for help.</span></li>
+      </ul>
+      <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Good to know</div><div class="tip-text"><strong>WhatsApp downloads all received photos and videos automatically</strong> — this fills up storage fast! In WhatsApp: Settings → Storage & Data → turn off "Auto-download" for videos to save space.</div></div></div>
+    </div>
+  </div>`,
+
+  () => `<div class="step-card">
+    <div class="card-hero"><div class="hero-emoji">🔄</div><div class="hero-text"><div class="hero-step">Step 7 of 7</div><div class="hero-title">Keeping Your Phone Updated</div></div></div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">🎉</span><span class="encourage-text">Last step! Updates keep your phone fast, safe and full of the latest features. This is one of the most important things you can do for your phone's health!</span></div>
+      <p class="body-text">Phone <strong>updates</strong> are like health check-ups for your phone — they fix problems, add new features and close security gaps that hackers could exploit. Always keep your phone updated!</p>
+      <ul class="instr-list">
+        <li class="instr-item"><span class="instr-num">1</span><span class="instr-text"><strong>Check for system updates:</strong> Settings → Software Update (or System → Software Update) → tap <strong>Download and install</strong> if an update is available.</span></li>
+        <li class="instr-item"><span class="instr-num">2</span><span class="instr-text"><strong>Update apps:</strong> Open Play Store → tap your <strong>profile photo</strong> top right → <strong>Manage apps & device</strong> → tap <strong>Update all</strong>.</span></li>
+        <li class="instr-item"><span class="instr-num">3</span><span class="instr-text">Connect to <strong>Wi-Fi</strong> before updating — updates can be large and will use a lot of mobile data if not on Wi-Fi.</span></li>
+        <li class="instr-item"><span class="instr-num">4</span><span class="instr-text">Make sure your <strong>battery is above 50%</strong> (or keep it plugged in) while updating — if the phone dies mid-update it can cause problems.</span></li>
+        <li class="instr-item"><span class="instr-num">5</span><span class="instr-text">Your phone may restart during the update — this is normal. It comes back on better than before!</span></li>
+      </ul>
+      <div class="tap-question">
+        <div class="tap-q-label">✏️ Quick check</div>
+        <div class="tap-q-text">Before updating your phone, what two things should you check?</div>
+        <div class="tap-options">
+          <button class="tap-opt" onclick="tapAnswer(this,false,'q7')">📞 Make sure no one is calling you</button>
+          <button class="tap-opt" onclick="tapAnswer(this,true,'q7')">📶 Connect to Wi-Fi and charge battery above 50%</button>
+          <button class="tap-opt" onclick="tapAnswer(this,false,'q7')">🗑️ Delete all your apps first</button>
+        </div>
+        <div class="tap-result" id="res-q7"></div>
+      </div>
+      <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Good to know</div><div class="tip-text">If an update is available and you're nervous about it, ask a family member to sit with you the first time. After you see how simple it is, you'll do it confidently on your own!</div></div></div>
+    </div>
+  </div>`,
+];
+
+onAuthStateChanged(auth, async (user) => {
+  if (!user) { window.location.href = "../index.html"; return; }
+  currentUser = user;
+  try {
+    const snap = await getDoc(doc(db, "users", user.uid));
+    if (snap.exists() && snap.data().progress?.[COURSE_KEY] === 100) currentStep = STEPS.length;
+  } catch(e) {}
+  render();
+});
+
+async function saveProgress(pct) {
+  if (!currentUser) return;
+  try { await setDoc(doc(db, "users", currentUser.uid), { progress: { [COURSE_KEY]: pct } }, { merge: true }); } catch(e) {}
+}
+
+function render() {
+  updateProgress(); updateDots();
+  const main = document.getElementById("mainContent");
+  if (currentStep < STEPS.length) { main.innerHTML = STEPS[currentStep](); } else { renderCompletion(main); }
+  updateNav();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function updateProgress() {
+  const pct = Math.round((currentStep / STEPS.length) * 100);
+  document.getElementById("progressFill").style.width = pct + "%";
+  document.getElementById("progressPct").textContent = pct + "% done";
+  document.getElementById("progressLabel").textContent = currentStep < STEPS.length ? `Step ${currentStep + 1} of ${STEPS.length}` : "Lesson Complete!";
+}
+
+function updateDots() {
+  for (let i = 0; i < STEPS.length; i++) {
+    const d = document.getElementById("dot-" + i);
+    if (!d) continue;
+    d.className = "dot" + (i < currentStep ? " done" : i === currentStep ? " active" : "");
+  }
+}
+
+function updateNav() {
+  const navBar = document.getElementById("navBar");
+  if (currentStep >= STEPS.length) { navBar.classList.add("hidden"); return; }
+  navBar.classList.remove("hidden");
+  document.getElementById("btnBack").style.visibility = currentStep === 0 ? "hidden" : "visible";
+  document.getElementById("btnNext").textContent = currentStep === STEPS.length - 1 ? "Finish lesson 🎉" : "Next →";
+}
+
+function renderCompletion(container) {
+  container.innerHTML = `<div class="completion-card">
+    <div class="completion-top">
+      <div class="completion-big-icon">🎊</div>
+      <div class="completion-title">Excellent work!</div>
+      <div class="completion-sub">You've completed Smartphone Basics — Intermediate.<br>You can now do so much more with your phone!</div>
+    </div>
+    <div class="completion-body">
+      <ul class="learned-list">
+        <li class="learned-item">✅ How to safely install and manage apps</li>
+        <li class="learned-item">✅ How to use the camera and manage your photos</li>
+        <li class="learned-item">✅ How to send and receive SMS text messages</li>
+        <li class="learned-item">✅ How to use Google Maps for navigation</li>
+        <li class="learned-item">✅ How to customise settings for comfort</li>
+        <li class="learned-item">✅ How to manage phone storage</li>
+        <li class="learned-item">✅ How to keep your phone updated safely</li>
+      </ul>
+      <div class="completion-actions">
+        <button class="btn-primary" onclick="window.location.href='basics-advanced.html'">Next: Smartphone Advanced →</button>
+        <button class="btn-secondary" onclick="window.location.href='../courses.html'">Back to all courses</button>
+      </div>
+    </div>
+  </div>`;
+  document.getElementById("navBar").classList.add("hidden");
+  document.getElementById("stepDots").classList.add("hidden");
+  saveProgress(100);
+}
+
+window.toggleReveal = (id) => document.getElementById(id).classList.toggle("open");
+window.tapAnswer = function(btn, isCorrect, qid) {
+  const opts = btn.parentElement.querySelectorAll(".tap-opt");
+  opts.forEach(o => { o.classList.add("dim"); o.disabled = true; });
+  btn.classList.remove("dim"); btn.classList.add(isCorrect ? "correct" : "wrong");
+  if (!isCorrect) { opts.forEach(o => { if (o.getAttribute("onclick")?.includes("true")) { o.classList.remove("dim"); o.classList.add("correct"); } }); }
+  const res = document.getElementById("res-" + qid);
+  if (res) { res.className = "tap-result show " + (isCorrect ? "good" : "oops"); res.textContent = isCorrect ? "✅ Exactly right! Well done!" : "💭 Not quite — the correct answer is highlighted above. That's okay, now you know!"; }
+};
+window.nextStep = function() { currentStep++; saveProgress(Math.round((currentStep / STEPS.length) * 100)); render(); };
+window.prevStep = function() { if (currentStep > 0) { currentStep--; render(); } };
+</script>
+</body>
+</html>

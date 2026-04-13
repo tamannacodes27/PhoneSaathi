@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smartphone Basics — Beginner · Digital Literacy</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --navy:#1B2A4A;--navy-md:#2E4070;--navy-lt:#EEF1F8;--cream:#FAF8F5;--warm:#F3EFE8;
+  --gold:#B07D2F;--gold-lt:#FDF3DC;--slate:#4A5568;--slate-lt:#718096;--border:#E2DDD6;
+  --white:#FFFFFF;--green:#2D6A4F;--green-lt:#E8F5EF;
+  --teal:#0F766E;--teal-lt:#CCFBF1;--teal-md:#14B8A6;
+  --radius:16px;--shadow:0 4px 24px rgba(27,42,74,0.10);
+}
+body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--navy);min-height:100vh;font-size:18px;}
+.topbar{background:var(--navy);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,0.2);}
+.back-btn{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:700;color:rgba(255,255,255,0.7);cursor:pointer;padding:6px 14px;border:1px solid rgba(255,255,255,0.18);border-radius:8px;background:rgba(255,255,255,0.06);transition:0.15s;text-decoration:none;}
+.back-btn:hover{background:rgba(255,255,255,0.13);color:#fff;}
+.topbar-center{display:flex;align-items:center;gap:10px;}
+.dot-icon{width:30px;height:30px;background:var(--teal);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;}
+.topbar-title{font-family:'Lora',serif;font-size:16px;font-weight:600;color:#fff;}
+.level-badge{font-size:12px;font-weight:800;background:var(--green);color:#fff;padding:3px 12px;border-radius:20px;}
+.progress-wrap{background:var(--white);border-bottom:1.5px solid var(--border);padding:14px 24px;}
+.progress-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.progress-label{font-size:13px;font-weight:700;color:var(--slate);}
+.progress-pct{font-size:13px;font-weight:800;color:var(--teal);}
+.progress-track{height:8px;background:var(--warm);border-radius:8px;overflow:hidden;}
+.progress-fill{height:8px;background:linear-gradient(90deg,var(--teal),var(--teal-md));border-radius:8px;transition:width 0.6s cubic-bezier(.4,0,.2,1);}
+.step-dots{display:flex;justify-content:center;gap:8px;padding:16px 24px 0;}
+.dot{height:8px;border-radius:8px;background:var(--border);transition:all 0.35s cubic-bezier(.4,0,.2,1);width:8px;}
+.dot.done{background:var(--teal-md);}
+.dot.active{background:var(--navy);width:28px;}
+.main{max-width:680px;margin:0 auto;padding:24px 20px 110px;}
+.step-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;animation:fadeUp 0.4s cubic-bezier(.4,0,.2,1) both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.card-hero{padding:28px 28px 22px;background:linear-gradient(135deg,#0F4C4A 0%,#0F766E 100%);display:flex;gap:18px;align-items:center;}
+.hero-emoji{font-size:56px;line-height:1;flex-shrink:0;filter:drop-shadow(0 3px 10px rgba(0,0,0,0.25));}
+.hero-step{font-size:11px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:#5EEAD4;margin-bottom:5px;}
+.hero-title{font-family:'Lora',serif;font-size:24px;font-weight:600;color:#fff;line-height:1.25;}
+.card-body{padding:26px 28px 28px;}
+.body-text{font-size:17px;color:var(--slate);line-height:1.85;margin-bottom:18px;}
+.encourage{display:flex;align-items:center;gap:12px;background:var(--gold-lt);border:1.5px solid #EDD9A0;border-radius:12px;padding:14px 18px;margin-bottom:22px;}
+.encourage-icon{font-size:22px;flex-shrink:0;}
+.encourage-text{font-size:15px;font-weight:700;color:var(--gold);line-height:1.5;}
+.instr-list{list-style:none;display:flex;flex-direction:column;gap:12px;margin-bottom:24px;}
+.instr-item{display:flex;gap:13px;align-items:flex-start;padding:14px 16px;background:var(--cream);border:1.5px solid var(--border);border-radius:12px;transition:border-color 0.2s,background 0.2s;}
+.instr-item:hover{border-color:var(--navy-md);background:var(--navy-lt);}
+.instr-num{width:30px;height:30px;border-radius:50%;background:var(--navy);color:#fff;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.instr-text{font-size:16px;color:var(--slate);line-height:1.7;padding-top:3px;}
+.tip-box{display:flex;gap:13px;align-items:flex-start;background:var(--green-lt);border:1.5px solid #B7DEC9;border-radius:12px;padding:16px 18px;margin-top:20px;}
+.tip-icon{font-size:22px;flex-shrink:0;margin-top:1px;}
+.tip-label{font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);margin-bottom:3px;}
+.tip-text{font-size:15px;color:#285C42;line-height:1.65;}
+.reveal-block{border-radius:13px;overflow:hidden;margin:20px 0;border:2px dashed var(--border);cursor:pointer;transition:border-color 0.2s;}
+.reveal-block:hover{border-color:var(--navy-md);}
+.reveal-prompt{padding:18px 20px;display:flex;align-items:center;gap:14px;background:var(--navy-lt);}
+.reveal-prompt-icon{font-size:26px;}
+.reveal-prompt-text{font-size:16px;font-weight:700;color:var(--navy-md);flex:1;}
+.reveal-prompt-arrow{font-size:18px;color:var(--navy-md);transition:transform 0.3s;}
+.reveal-block.open .reveal-prompt-arrow{transform:rotate(90deg);}
+.reveal-answer{max-height:0;overflow:hidden;transition:max-height 0.45s cubic-bezier(.4,0,.2,1),padding 0.3s;background:var(--white);padding:0 20px;}
+.reveal-block.open .reveal-answer{max-height:400px;padding:18px 20px;}
+.reveal-answer-inner{font-size:16px;color:var(--slate);line-height:1.75;}
+.tap-question{background:var(--navy-lt);border:1.5px solid #C5D0E8;border-radius:13px;padding:20px 20px;margin:20px 0;}
+.tap-q-label{font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--navy-md);margin-bottom:8px;}
+.tap-q-text{font-size:17px;font-weight:700;color:var(--navy);margin-bottom:14px;line-height:1.4;}
+.tap-options{display:flex;flex-direction:column;gap:9px;}
+.tap-opt{padding:13px 18px;border-radius:10px;border:2px solid var(--border);background:var(--white);font-size:16px;font-weight:700;font-family:'Nunito',sans-serif;color:var(--slate);cursor:pointer;transition:0.18s;text-align:left;}
+.tap-opt:hover:not(:disabled){border-color:var(--navy-md);background:var(--navy-lt);color:var(--navy);}
+.tap-opt.correct{background:var(--green-lt);border-color:var(--green);color:var(--green);pointer-events:none;}
+.tap-opt.wrong{background:#FEF2F2;border-color:#FCA5A5;color:#B91C1C;pointer-events:none;}
+.tap-opt.dim{opacity:0.4;pointer-events:none;}
+.tap-result{font-size:15px;font-weight:700;margin-top:12px;padding:11px 14px;border-radius:9px;display:none;}
+.tap-result.show{display:block;}
+.tap-result.good{background:var(--green-lt);color:var(--green);}
+.tap-result.oops{background:#FEF2F2;color:#B91C1C;}
+.feature-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0;}
+.feature-card{background:var(--teal-lt);border:1.5px solid #99F6E4;border-radius:12px;padding:16px 14px;text-align:center;}
+.feature-card-icon{font-size:32px;margin-bottom:8px;}
+.feature-card-name{font-size:14px;font-weight:800;color:var(--teal);margin-bottom:3px;}
+.feature-card-desc{font-size:12px;color:var(--slate-lt);line-height:1.5;}
+.gesture-list{display:flex;flex-direction:column;gap:10px;margin:16px 0;}
+.gesture-row{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;background:var(--cream);border:1.5px solid var(--border);border-radius:12px;}
+.gesture-icon{font-size:28px;flex-shrink:0;}
+.gesture-name{font-size:14px;font-weight:800;color:var(--navy);margin-bottom:3px;}
+.gesture-desc{font-size:13px;color:var(--slate);line-height:1.5;}
+.completion-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;animation:fadeUp 0.4s cubic-bezier(.4,0,.2,1) both;}
+.completion-top{background:linear-gradient(135deg,#0F4C4A 0%,var(--teal-md) 100%);padding:44px 28px 36px;text-align:center;}
+.completion-big-icon{font-size:72px;margin-bottom:16px;}
+.completion-title{font-family:'Lora',serif;font-size:28px;font-weight:600;color:#fff;margin-bottom:8px;}
+.completion-sub{font-size:16px;color:rgba(255,255,255,0.88);line-height:1.6;}
+.completion-body{padding:32px 28px;}
+.learned-list{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:28px;}
+.learned-item{display:flex;align-items:center;gap:12px;padding:13px 16px;background:var(--green-lt);border:1.5px solid #B7DEC9;border-radius:10px;font-size:16px;font-weight:700;color:var(--green);}
+.completion-actions{display:flex;flex-direction:column;gap:12px;}
+.btn-primary{padding:16px 24px;border-radius:12px;border:none;background:var(--navy);color:#fff;font-size:17px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;transition:background 0.15s;}
+.btn-primary:hover{background:var(--navy-md);}
+.btn-secondary{padding:14px 24px;border-radius:12px;border:1.5px solid var(--border);background:var(--white);color:var(--navy);font-size:16px;font-weight:700;font-family:'Nunito',sans-serif;cursor:pointer;transition:0.15s;}
+.btn-secondary:hover{border-color:var(--navy);background:var(--navy-lt);}
+.nav-bar{position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:1.5px solid var(--border);padding:14px 20px;display:flex;gap:12px;z-index:200;box-shadow:0 -4px 20px rgba(27,42,74,0.09);}
+.btn-back{padding:14px 22px;border-radius:12px;border:1.5px solid var(--border);background:var(--white);font-size:16px;font-weight:700;font-family:'Nunito',sans-serif;color:var(--slate);cursor:pointer;transition:0.15s;}
+.btn-back:hover{border-color:var(--navy);color:var(--navy);background:var(--navy-lt);}
+.btn-next{flex:1;padding:14px 22px;border-radius:12px;border:none;background:var(--navy);color:#fff;font-size:17px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;transition:background 0.15s;}
+.btn-next:hover{background:var(--navy-md);}
+.hidden{display:none!important;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="back-btn" href="../courses.html">&#8592; Courses</a>
+  <div class="topbar-center">
+    <div class="dot-icon">📱</div>
+    <span class="topbar-title">Smartphone Basics</span>
+  </div>
+  <span class="level-badge">Beginner</span>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-row">
+    <span class="progress-label" id="progressLabel">Step 1 of 7</span>
+    <span class="progress-pct" id="progressPct">0% done</span>
+  </div>
+  <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+</div>
+
+<div class="step-dots" id="stepDots">
+  <div class="dot active" id="dot-0"></div>
+  <div class="dot" id="dot-1"></div>
+  <div class="dot" id="dot-2"></div>
+  <div class="dot" id="dot-3"></div>
+  <div class="dot" id="dot-4"></div>
+  <div class="dot" id="dot-5"></div>
+  <div class="dot" id="dot-6"></div>
+</div>
+
+<div class="main" id="mainContent"></div>
+
+<div class="nav-bar" id="navBar">
+  <button class="btn-back" id="btnBack" onclick="prevStep()">&#8592; Back</button>
+  <button class="btn-next" id="btnNext" onclick="nextStep()">Next →</button>
+</div>
+
+<script type="module">
+import { auth, db } from "../firebase.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const COURSE_KEY = "basics-beginner";
+let currentStep = 0, currentUser = null;
+
+const STEPS = [
+  () => `<div class="step-card">
+    <div class="card-hero"><div class="hero-emoji">📱</div><div class="hero-text"><div class="hero-step">Step 1 of 7</div><div class="hero-title">Parts of Your Smartphone</div></div></div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">🌸</span><span class="encourage-text">Welcome! Your smartphone is your window to the world. Let's start by getting to know every part of it — no rushing, take your time!</span></div>
+      <p class="body-text">Before using your phone, it helps to know what each button and part does. Pick up your phone and follow along!</p>
+      <div class="gesture-list">
+        <div class="gesture-row"><div class="gesture-icon">🔝</div><div><div class="gesture-name">Power Button</div><div class="gesture-desc">Usually on the right side or top. Press once to wake the screen. Press and hold to turn on/off.</div></div></div>
+        <div class="gesture-row"><div class="gesture-icon">🔊</div><div><div class="gesture-name">Volume Buttons</div><div class="gesture-desc">Two buttons on the left side — top one increases volume, bottom one decreases it.</div></div></div>
+        <div class="gesture-row"><div class="gesture-icon">🔌</div><div><div class="gesture-name">Charging Port</div><div class="gesture-desc">The small slot at the bottom where you plug in your charger cable.</div></div></div>
+        <div class="gesture-row"><div class="gesture-icon">📷</div><div><div class="gesture-name">Camera</div><div class="gesture-desc">Back camera for photos. Front camera (selfie camera) above the screen for video calls.</div></div></div>
+        <div class="gesture-row"><div class="gesture-icon">🎤</div><div><div class="gesture-name">Microphone & Speaker</div><div class="gesture-desc">Small holes at the bottom — the microphone picks up your voice, the speaker plays sound.</div></div></div>
+      </div>
+      <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Good to know</div><div class="tip-text">Your phone's screen is made of <strong>tough glass</strong>, but it can crack if dropped. Consider using a <strong>back cover/case</strong> and a <strong>screen protector</strong> to keep it safe.</div></div></div>
+    </div>
+  </div>`,
+
+  () => `<div class="step-card">
+    <div class="card-hero"><div class="hero-emoji">⚡</div><div class="hero-text"><div class="hero-step">Step 2 of 7</div><div class="hero-title">Power, Volume & Brightness</div></div></div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">💪</span><span class="encourage-text">These are the most basic controls — once you know them, you'll feel completely comfortable with your phone!</span></div>
+      <p class="body-text">Let's learn the most common actions: turning the phone on and off, adjusting volume, and changing screen brightness.</p>
+      <ul class="instr-list">
+        <li class="instr-item"><span class="instr-num">1</span><span class="instr-text"><strong>Wake screen:</strong> Press the <strong>Power button once</strong> (short press). The screen lights up.</span></li>
+        <li class="instr-item"><span class="instr-num">2</span><span class="instr-text"><strong>Lock screen:</strong> Press the <strong>Power button once</strong> again. Screen goes dark and locks.</span></li>
+        <li class="instr-item"><span class="instr-num">3</span><span class="instr-text"><strong>Turn off:</strong> Press and <strong>hold</strong> the Power button for 3 seconds → tap "Power off" → tap OK.</span></li>
+        <li class="instr-item"><span class="instr-num">4</span><span class="instr-text"><strong>Adjust call volume:</strong> During a phone call, press <strong>Volume Up ▲</strong> or <strong>Volume Down ▼</strong> buttons on the side.</span></li>
+        <li class="instr-item"><span class="instr-num">5</span><span class="instr-text"><strong>Adjust ringtone volume:</strong> Press the volume buttons when NOT on a call to change ringtone volume.</span></li>
+        <li class="instr-item"><span class="instr-num">6</span><span class="instr-text"><strong>Brightness:</strong> Swipe down from the top of screen → drag the <strong>☀️ brightness slider</strong> left (darker) or right (brighter).</span></li>
+      </ul>
+      <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Good to know</div><div class="tip-text">If your screen goes dark quickly, go to <strong>Settings → Display → Screen timeout</strong> and change it to <strong>2 minutes</strong> or more — so the screen stays on longer while you're reading.</div></div></div>
+    </div>
+  </div>`,
+
+  () => `<div class="step-card">
+    <div class="card-hero"><div class="hero-emoji">👆</div><div class="hero-text"><div class="hero-step">Step 3 of 7</div><div class="hero-title">Touchscreen Gestures</div></div></div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">🌟</span><span class="encourage-text">The touchscreen is the most important thing to learn! Once you know these simple gestures, everything else becomes easy.</span></div>
+      <p class="body-text">Your phone screen responds to <strong>touch</strong>. There are only a few gestures you need to know — and they're very natural once you try them!</p>
+      <div class="gesture-list">
+        <div class="gesture-row"><div class="gesture-icon">👆</div><div><div class="gesture-name">Tap</div><div class="gesture-desc">Touch the screen once gently and lift your finger. Used to open apps, tap buttons, select options.</div></div></div>
+        <div class="gesture-row"><div class="gesture-icon">👇👇</div><div><div class="gesture-name">Double Tap</div><div class="gesture-desc">Tap twice quickly. Often used to zoom into a photo or zoom out again.</div></div></div>
+        <div class="gesture-row"><div class="gesture-icon">👆⬆️</div><div><div class="gesture-name">Swipe / Scroll</div><div class="gesture-desc">Touch and slide your finger up, down, left or right without lifting. Used to scroll through pages.</div></div></div>
+        <div class="gesture-row"><div class="gesture-icon">🤏</div><div><div class="gesture-name">Pinch to Zoom</div><div class="gesture-desc">Place two fingers on screen → pinch them together to zoom out, spread them apart to zoom in.</div></div></div>
+        <div class="gesture-row"><div class="gesture-icon">✋</div><div><div class="gesture-name">Press & Hold</div><div class="gesture-desc">Touch and hold for 2 seconds without moving. Opens extra options — like right-clicking on a computer.</div></div></div>
+      </div>
+      <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Good to know</div><div class="tip-text">If your finger is dry or you use a <strong>stylus pen</strong>, the screen may not respond well. Try touching with a slightly moist fingertip, or use a <strong>capacitive stylus</strong> designed for touchscreens.</div></div></div>
+    </div>
+  </div>`,
+
+  () => `<div class="step-card">
+    <div class="card-hero"><div class="hero-emoji">📶</div><div class="hero-text"><div class="hero-step">Step 4 of 7</div><div class="hero-title">Connecting to Wi-Fi</div></div></div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">🏡</span><span class="encourage-text">Wi-Fi lets your phone use the internet through your home router — it's faster than mobile data and saves your phone bill!</span></div>
+      <p class="body-text"><strong>Wi-Fi</strong> is wireless internet available at home, in hospitals, cafes and airports. When connected, you can browse, video call, and use apps without using your mobile data.</p>
+      <ul class="instr-list">
+        <li class="instr-item"><span class="instr-num">1</span><span class="instr-text">Swipe <strong>down from the top</strong> of your screen to open the quick settings panel.</span></li>
+        <li class="instr-item"><span class="instr-num">2</span><span class="instr-text">Tap the <strong>Wi-Fi icon 📶</strong> to turn it on (it turns blue or lights up when on).</span></li>
+        <li class="instr-item"><span class="instr-num">3</span><span class="instr-text"><strong>Press and hold</strong> the Wi-Fi icon (or go to <strong>Settings → Wi-Fi</strong>) to see nearby networks.</span></li>
+        <li class="instr-item"><span class="instr-num">4</span><span class="instr-text">Tap your <strong>home Wi-Fi network name</strong> (this is on your router or broadband bill).</span></li>
+        <li class="instr-item"><span class="instr-num">5</span><span class="instr-text">Enter the <strong>Wi-Fi password</strong> (also on your router sticker) and tap <strong>Connect</strong>.</span></li>
+        <li class="instr-item"><span class="instr-num">6</span><span class="instr-text">The Wi-Fi icon 📶 appears at the top of your screen — you are connected! Your phone will remember this network.</span></li>
+      </ul>
+      <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Good to know</div><div class="tip-text">Once you connect to a Wi-Fi network once, your phone <strong>automatically reconnects</strong> whenever you're in range. You only need to enter the password the first time!</div></div></div>
+    </div>
+  </div>`,
+
+  () => `<div class="step-card">
+    <div class="card-hero"><div class="hero-emoji">📡</div><div class="hero-text"><div class="hero-step">Step 5 of 7</div><div class="hero-title">Mobile Data & the Status Bar</div></div></div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">🌐</span><span class="encourage-text">Mobile data lets you use the internet anywhere — even when there's no Wi-Fi! Let's understand it and learn to read your phone's status bar.</span></div>
+      <p class="body-text"><strong>Mobile data</strong> uses your SIM card's internet allowance (from Jio, Airtel, Vi, BSNL etc.). It works anywhere you have network signal — in shops, travelling, outdoors.</p>
+      <ul class="instr-list">
+        <li class="instr-item"><span class="instr-num">1</span><span class="instr-text"><strong>Turn on mobile data:</strong> Swipe down → tap the <strong>Mobile Data</strong> icon (looks like arrows or a signal icon). It lights up when on.</span></li>
+        <li class="instr-item"><span class="instr-num">2</span><span class="instr-text">Use Wi-Fi at home and <strong>mobile data when outside</strong> — this saves your monthly data allowance.</span></li>
+        <li class="instr-item"><span class="instr-num">3</span><span class="instr-text"><strong>Check data balance:</strong> Dial <strong>*121#</strong> (Jio: dial 1299) or check your network's app to see how much data you have left.</span></li>
+      </ul>
+      <p class="body-text">The <strong>status bar</strong> — the strip at the very top of your screen — tells you everything at a glance:</p>
+      <div class="feature-grid">
+        <div class="feature-card"><div class="feature-card-icon">📶</div><div class="feature-card-name">Signal bars</div><div class="feature-card-desc">How strong your mobile network is. More bars = better signal.</div></div>
+        <div class="feature-card"><div class="feature-card-icon">🔋</div><div class="feature-card-name">Battery</div><div class="feature-card-desc">How much charge is left. Charge when below 20%.</div></div>
+        <div class="feature-card"><div class="feature-card-icon">📡</div><div class="feature-card-name">4G / 5G</div><div class="feature-card-desc">Your internet speed type. 4G/5G is fast, 3G/E/H is slower.</div></div>
+        <div class="feature-card"><div class="feature-card-icon">🔕</div><div class="feature-card-name">Mute / DND</div><div class="feature-card-desc">Bell with line means ring is off. Moon icon means Do Not Disturb is on.</div></div>
+      </div>
+      <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Good to know</div><div class="tip-text">Charge your phone every night before sleeping — like charging yourself with rest! Never let the battery drop to 0% regularly, as it reduces battery life over time.</div></div></div>
+    </div>
+  </div>`,
+
+  () => `<div class="step-card">
+    <div class="card-hero"><div class="hero-emoji">📞</div><div class="hero-text"><div class="hero-step">Step 6 of 7</div><div class="hero-title">Making & Receiving Phone Calls</div></div></div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">☎️</span><span class="encourage-text">The phone call is the most important thing your phone does! Let's make sure you can call anyone confidently.</span></div>
+      <p class="body-text">Making a call on a smartphone is very similar to an old telephone — but with a few extra steps. Here is exactly how to do it:</p>
+      <ul class="instr-list">
+        <li class="instr-item"><span class="instr-num">1</span><span class="instr-text">Find the <strong>Phone app 📞</strong> on your home screen (green icon with white telephone). Tap it to open.</span></li>
+        <li class="instr-item"><span class="instr-num">2</span><span class="instr-text">Tap the <strong>Keypad</strong> tab at the bottom. A number pad appears — type the phone number you want to call.</span></li>
+        <li class="instr-item"><span class="instr-num">3</span><span class="instr-text">Tap the <strong>green call button 📞</strong> to start calling. Hold the phone to your ear.</span></li>
+        <li class="instr-item"><span class="instr-num">4</span><span class="instr-text">To <strong>end the call</strong>: tap the red button 🔴.</span></li>
+        <li class="instr-item"><span class="instr-num">5</span><span class="instr-text"><strong>Receiving a call:</strong> When someone calls, the screen shows their name/number. Swipe the <strong>green button right to answer</strong>, or swipe the <strong>red button left to decline</strong>.</span></li>
+        <li class="instr-item"><span class="instr-num">6</span><span class="instr-text"><strong>Speaker mode:</strong> During a call, tap <strong>Speaker 🔊</strong> to hear without holding the phone to your ear — useful when cooking!</span></li>
+      </ul>
+      <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Good to know</div><div class="tip-text">To call from <strong>Contacts</strong>: tap the Contacts tab → search or scroll to find the name → tap their name → tap the green call button. No need to remember phone numbers!</div></div></div>
+    </div>
+  </div>`,
+
+  () => `<div class="step-card">
+    <div class="card-hero"><div class="hero-emoji">👥</div><div class="hero-text"><div class="hero-step">Step 7 of 7</div><div class="hero-title">Saving Contacts</div></div></div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">🎉</span><span class="encourage-text">Last step! Saving contacts means you never have to remember a phone number again. You can just tap a name to call!</span></div>
+      <p class="body-text">The <strong>Contacts app</strong> is your phone's address book. Saving someone's number means you can call or message them with just a tap — and you'll see their name when they call you.</p>
+      <ul class="instr-list">
+        <li class="instr-item"><span class="instr-num">1</span><span class="instr-text">Open the <strong>Contacts app 👥</strong> (or tap Contacts inside the Phone app).</span></li>
+        <li class="instr-item"><span class="instr-num">2</span><span class="instr-text">Tap the <strong>+ plus button</strong> to add a new contact.</span></li>
+        <li class="instr-item"><span class="instr-num">3</span><span class="instr-text">Type the person's <strong>First name</strong> and <strong>Last name</strong>. Add a photo by tapping the camera icon (optional but helpful!).</span></li>
+        <li class="instr-item"><span class="instr-num">4</span><span class="instr-text">Tap the <strong>Phone number field</strong> and type their number. Select the type (Mobile / Home / Work).</span></li>
+        <li class="instr-item"><span class="instr-num">5</span><span class="instr-text">Tap <strong>Save</strong>. The contact is saved — now they appear in your list!</span></li>
+        <li class="instr-item"><span class="instr-num">6</span><span class="instr-text"><strong>Find a contact:</strong> Tap the <strong>Search 🔍</strong> in Contacts and type the first few letters of their name.</span></li>
+      </ul>
+      <div class="tap-question">
+        <div class="tap-q-label">✏️ Quick check</div>
+        <div class="tap-q-text">Your doctor gives you her number. Where do you save it so you can call her easily later?</div>
+        <div class="tap-options">
+          <button class="tap-opt" onclick="tapAnswer(this,false,'q7')">📝 Write it on paper</button>
+          <button class="tap-opt" onclick="tapAnswer(this,true,'q7')">👥 Save it in the Contacts app on your phone</button>
+          <button class="tap-opt" onclick="tapAnswer(this,false,'q7')">💭 Try to remember it in my head</button>
+        </div>
+        <div class="tap-result" id="res-q7"></div>
+      </div>
+      <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Good to know</div><div class="tip-text">Save contacts with clear names like <strong>"Dr Meera (AIIMS)"</strong> or <strong>"Beta Rahul"</strong> instead of just "Rahul" — this helps you find the right person quickly when you need them most.</div></div></div>
+    </div>
+  </div>`,
+];
+
+onAuthStateChanged(auth, async (user) => {
+  if (!user) { window.location.href = "../index.html"; return; }
+  currentUser = user;
+  try {
+    const snap = await getDoc(doc(db, "users", user.uid));
+    if (snap.exists() && snap.data().progress?.[COURSE_KEY] === 100) currentStep = STEPS.length;
+  } catch(e) {}
+  render();
+});
+
+async function saveProgress(pct) {
+  if (!currentUser) return;
+  try { await setDoc(doc(db, "users", currentUser.uid), { progress: { [COURSE_KEY]: pct } }, { merge: true }); } catch(e) {}
+}
+
+function render() {
+  updateProgress(); updateDots();
+  const main = document.getElementById("mainContent");
+  if (currentStep < STEPS.length) { main.innerHTML = STEPS[currentStep](); } else { renderCompletion(main); }
+  updateNav();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function updateProgress() {
+  const pct = Math.round((currentStep / STEPS.length) * 100);
+  document.getElementById("progressFill").style.width = pct + "%";
+  document.getElementById("progressPct").textContent = pct + "% done";
+  document.getElementById("progressLabel").textContent = currentStep < STEPS.length ? `Step ${currentStep + 1} of ${STEPS.length}` : "Lesson Complete!";
+}
+
+function updateDots() {
+  for (let i = 0; i < STEPS.length; i++) {
+    const d = document.getElementById("dot-" + i);
+    if (!d) continue;
+    d.className = "dot" + (i < currentStep ? " done" : i === currentStep ? " active" : "");
+  }
+}
+
+function updateNav() {
+  const navBar = document.getElementById("navBar");
+  if (currentStep >= STEPS.length) { navBar.classList.add("hidden"); return; }
+  navBar.classList.remove("hidden");
+  document.getElementById("btnBack").style.visibility = currentStep === 0 ? "hidden" : "visible";
+  document.getElementById("btnNext").textContent = currentStep === STEPS.length - 1 ? "Finish lesson 🎉" : "Next →";
+}
+
+function renderCompletion(container) {
+  container.innerHTML = `<div class="completion-card">
+    <div class="completion-top">
+      <div class="completion-big-icon">🎊</div>
+      <div class="completion-title">Well done!</div>
+      <div class="completion-sub">You've completed Smartphone Basics — Beginner.<br>Your phone holds no more mysteries!</div>
+    </div>
+    <div class="completion-body">
+      <ul class="learned-list">
+        <li class="learned-item">✅ The names and uses of every part of your phone</li>
+        <li class="learned-item">✅ How to control power, volume and brightness</li>
+        <li class="learned-item">✅ All the touchscreen gestures you need</li>
+        <li class="learned-item">✅ How to connect to Wi-Fi at home</li>
+        <li class="learned-item">✅ How mobile data works and how to read the status bar</li>
+        <li class="learned-item">✅ How to make and receive phone calls</li>
+        <li class="learned-item">✅ How to save and find contacts</li>
+      </ul>
+      <div class="completion-actions">
+        <button class="btn-primary" onclick="window.location.href='basics-intermediate.html'">Next: Smartphone Intermediate →</button>
+        <button class="btn-secondary" onclick="window.location.href='../courses.html'">Back to all courses</button>
+      </div>
+    </div>
+  </div>`;
+  document.getElementById("navBar").classList.add("hidden");
+  document.getElementById("stepDots").classList.add("hidden");
+  saveProgress(100);
+}
+
+window.toggleReveal = (id) => document.getElementById(id).classList.toggle("open");
+window.tapAnswer = function(btn, isCorrect, qid) {
+  const opts = btn.parentElement.querySelectorAll(".tap-opt");
+  opts.forEach(o => { o.classList.add("dim"); o.disabled = true; });
+  btn.classList.remove("dim"); btn.classList.add(isCorrect ? "correct" : "wrong");
+  if (!isCorrect) { opts.forEach(o => { if (o.getAttribute("onclick")?.includes("true")) { o.classList.remove("dim"); o.classList.add("correct"); } }); }
+  const res = document.getElementById("res-" + qid);
+  if (res) { res.className = "tap-result show " + (isCorrect ? "good" : "oops"); res.textContent = isCorrect ? "✅ Exactly right! Well done!" : "💭 Not quite — the correct answer is highlighted above. That's okay, now you know!"; }
+};
+window.nextStep = function() { currentStep++; saveProgress(Math.round((currentStep / STEPS.length) * 100)); render(); };
+window.prevStep = function() { if (currentStep > 0) { currentStep--; render(); } };
+</script>
+</body>
+</html>

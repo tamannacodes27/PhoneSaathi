@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Phone Saathi — Create Account</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --navy:#1B2A4A; --navy-md:#2E4070; --navy-lt:#EEF1F8;
+  --cream:#FAF8F5; --warm:#F3EFE8; --gold:#B07D2F; --gold-lt:#F5EDD8;
+  --slate:#4A5568; --slate-lt:#718096; --border:#DDD8CF;
+  --green:#2D6A4F; --green-lt:#E8F5EF; --amber:#92400E;
+  --red:#C0392B; --red-lt:#FDECEC;
+  --radius:12px; --shadow:0 2px 12px rgba(27,42,74,0.08);
+}
+body { font-family:'Inter',sans-serif; background:var(--cream); color:var(--navy); font-size:16px; line-height:1.6; }
+
+.hero { background:var(--navy); padding:40px 24px 36px; text-align:center; }
+.hero-eyebrow { font-size:12px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:var(--gold); margin-bottom:12px; }
+.logo-wrap { display:inline-flex; align-items:center; gap:10px; margin-bottom:8px; }
+.logo-icon { width:42px; height:42px; background:var(--gold); border-radius:11px; display:flex; align-items:center; justify-content:center; font-size:22px; }
+.logo-text { font-family:'Lora',Georgia,serif; font-size:30px; font-weight:600; color:#fff; }
+.logo-text span { color:var(--gold); }
+.hero-sub { font-size:15px; color:rgba(255,255,255,0.62); margin-top:6px; }
+
+.card-wrap { display:flex; justify-content:center; padding:36px 20px 48px; }
+.card { background:#fff; border:1.5px solid var(--border); border-radius:var(--radius); padding:32px 30px 28px; width:100%; max-width:440px; box-shadow:var(--shadow); }
+
+.step-label { font-size:12px; color:var(--slate-lt); margin-bottom:8px; }
+.steps { display:flex; gap:6px; margin-bottom:24px; }
+.step { flex:1; height:4px; border-radius:4px; background:var(--border); }
+.step.done { background:var(--green); }
+
+.card-title { font-family:'Lora',Georgia,serif; font-size:22px; font-weight:600; color:var(--navy); margin-bottom:4px; }
+.card-sub { font-size:14px; color:var(--slate-lt); margin-bottom:26px; }
+
+.field { margin-bottom:16px; }
+.field label { display:block; font-size:13px; font-weight:600; color:var(--slate); margin-bottom:6px; letter-spacing:0.2px; }
+.field input { width:100%; padding:11px 14px; border:1.5px solid var(--border); border-radius:8px; font-size:15px; font-family:'Inter',sans-serif; color:var(--navy); background:var(--cream); outline:none; transition:border-color 0.15s; }
+.field input:focus { border-color:var(--navy-md); background:#fff; }
+.field input::placeholder { color:#b0a99e; }
+.hint { font-size:12px; color:var(--slate-lt); margin-top:5px; }
+
+.signup-btn { width:100%; padding:13px; background:var(--navy); color:#fff; border:none; border-radius:8px; font-size:16px; font-weight:600; font-family:'Inter',sans-serif; cursor:pointer; letter-spacing:0.3px; transition:background 0.15s; margin-bottom:18px; }
+.signup-btn:hover { background:var(--navy-md); }
+.signup-btn:disabled { background:var(--slate-lt); cursor:not-allowed; }
+
+.divider { display:flex; align-items:center; gap:10px; margin-bottom:18px; }
+.divider hr { flex:1; border:none; border-top:1px solid var(--border); }
+.divider span { font-size:12px; color:var(--slate-lt); }
+
+.login-row { text-align:center; font-size:14px; color:var(--slate-lt); }
+.login-row a { color:var(--navy-md); font-weight:600; text-decoration:none; }
+.login-row a:hover { text-decoration:underline; }
+
+.error-msg { font-size:13px; color:var(--red); background:var(--red-lt); padding:10px 14px; border-radius:8px; border:1px solid #f5c6c6; margin-bottom:16px; display:none; }
+
+.strip { background:var(--gold-lt); border-top:1.5px solid #E8D5A8; padding:16px 24px; text-align:center; font-family:'Lora',Georgia,serif; font-size:16px; color:var(--amber); font-style:italic; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-eyebrow">Digital Literacy Programme</div>
+  <div class="logo-wrap">
+    <div class="logo-icon">📱</div>
+    <div class="logo-text">Phone<span>Saathi</span></div>
+  </div>
+  <div class="hero-sub">Join thousands learning digital skills — for free</div>
+</div>
+
+<div class="card-wrap">
+  <div class="card">
+    <div class="step-label">Step 1 of 2 — Create your account</div>
+    <div class="steps"><div class="step done"></div><div class="step"></div></div>
+
+    <div class="card-title">Create account</div>
+    <div class="card-sub">It's free — always has been, always will be</div>
+
+    <div id="errorMsg" class="error-msg"></div>
+
+    <div class="field">
+      <label>Email address</label>
+      <input type="email" id="email" placeholder="yourname@example.com" />
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <input type="password" id="password" placeholder="Create a password" />
+      <div class="hint">Must be at least 6 characters</div>
+    </div>
+
+    <button class="signup-btn" id="signupBtn">Create my account →</button>
+
+    <div class="divider"><hr/><span>Already have an account?</span><hr/></div>
+    <div class="login-row"><a href="index.html">← Back to sign in</a></div>
+  </div>
+</div>
+
+<div class="strip">"Every expert was once a beginner. Your journey starts with one step."</div>
+
+<script type="module">
+import { auth, db } from "./firebase.js";
+import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const signupBtn = document.getElementById("signupBtn");
+const errorMsg  = document.getElementById("errorMsg");
+
+function showError(msg) {
+  errorMsg.textContent = msg;
+  errorMsg.style.display = "block";
+}
+
+signupBtn.addEventListener("click", async () => {
+  const email    = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
+  errorMsg.style.display = "none";
+
+  if (!email || !password) { showError("Please fill in all fields."); return; }
+  if (password.length < 6) { showError("Password must be at least 6 characters."); return; }
+
+  signupBtn.disabled = true;
+  signupBtn.textContent = "Creating account...";
+
+  // Step 1: Create the auth account
+  let cred;
+  try {
+    cred = await createUserWithEmailAndPassword(auth, email, password);
+  } catch (error) {
+    if (error.code === "auth/email-already-in-use") {
+      showError("An account with this email already exists.");
+    } else if (error.code === "auth/invalid-email") {
+      showError("Please enter a valid email address.");
+    } else {
+      showError(error.message);
+    }
+    signupBtn.disabled = false;
+    signupBtn.textContent = "Create my account →";
+    return; // Stop here — don't proceed if auth failed
+  }
+
+  // Step 2: Save user profile to Firestore
+  try {
+    await setDoc(doc(db, "users", cred.user.uid), {
+      email: email,
+      progress: {},
+      profileCompletion: 0,
+      achievements: [],
+      createdAt: serverTimestamp()
+    });
+  } catch (error) {
+    // Firestore failed but account was created — log and continue
+    console.error("Firestore profile save failed:", error);
+  }
+
+  // Always redirect after successful account creation
+  window.location.href = "profile.html";
+});
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") signupBtn.click();
+});
+</script>
+</body>
+</html>

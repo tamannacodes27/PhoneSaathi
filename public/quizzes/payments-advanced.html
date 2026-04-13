@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Online Payments — Advanced Quiz · Digital Literacy</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --navy:#1B2A4A;--navy-md:#2E4070;--navy-lt:#EEF1F8;--cream:#FAF8F5;--warm:#F3EFE8;
+  --gold:#B07D2F;--gold-lt:#FDF3DC;--slate:#4A5568;--slate-lt:#718096;--border:#E2DDD6;
+  --white:#FFFFFF;--green:#2D6A4F;--green-lt:#E8F5EF;
+  --accent:#EF4444;--radius:16px;--shadow:0 4px 24px rgba(27,42,74,0.10);
+}
+body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--navy);min-height:100vh;font-size:17px;}
+
+/* TOPBAR */
+.topbar{background:var(--navy);padding:0 20px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,0.2);}
+.back-btn{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:rgba(255,255,255,0.7);padding:5px 12px;border:1px solid rgba(255,255,255,0.18);border-radius:8px;background:rgba(255,255,255,0.06);transition:0.15s;text-decoration:none;}
+.back-btn:hover{background:rgba(255,255,255,0.13);color:#fff;}
+.topbar-center{font-family:'Lora',serif;font-size:15px;font-weight:600;color:#fff;}
+.level-pill{font-size:11px;font-weight:800;background:#EDE9FE;color:#4C1D95;padding:3px 12px;border-radius:20px;}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#7F1D1D 0%,#B91C1C 100%);padding:32px 20px 28px;text-align:center;position:relative;overflow:hidden;}
+.hero::after{content:'';position:absolute;bottom:-20px;left:0;right:0;height:40px;background:var(--cream);border-radius:50% 50% 0 0/100% 100% 0 0;}
+.hero-emoji{font-size:52px;margin-bottom:12px;display:block;animation:bounceIn 0.6s cubic-bezier(.4,0,.2,1);}
+@keyframes bounceIn{0%{transform:scale(0.5);opacity:0;}70%{transform:scale(1.1);}100%{transform:scale(1);opacity:1;}}
+.hero-title{font-family:'Lora',serif;font-size:26px;font-weight:600;color:#fff;line-height:1.2;margin-bottom:8px;}
+.hero-sub{font-size:14px;color:rgba(255,255,255,0.78);}
+
+/* SCORE BAR */
+.score-bar{background:var(--white);border-bottom:1.5px solid var(--border);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.score-label{font-size:13px;font-weight:700;color:var(--slate);}
+.score-val{font-size:20px;font-weight:900;color:var(--accent);}
+.stars-row{display:flex;gap:3px;font-size:20px;}
+.q-counter{font-size:13px;font-weight:700;color:var(--slate-lt);}
+
+/* PROGRESS */
+.prog-wrap{height:6px;background:var(--warm);}
+.prog-fill{height:6px;background:#7C3AED;transition:width 0.5s cubic-bezier(.4,0,.2,1);width:0%;}
+
+/* ─── FLASHCARD SECTION ─── */
+.fc-section{max-width:680px;margin:0 auto;padding:28px 20px 0;}
+.fc-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.fc-heading{display:flex;align-items:center;gap:10px;}
+.fc-title{font-family:'Lora',serif;font-size:19px;font-weight:600;color:var(--navy);}
+.fc-badge{background:#EDE9FE;color:#4C1D95;font-size:11px;font-weight:800;padding:3px 12px;border-radius:20px;}
+.fc-toggle-btn{padding:8px 18px;border-radius:10px;border:1.5px solid var(--border);background:var(--white);font-size:13px;font-weight:800;font-family:'Nunito',sans-serif;color:var(--navy);cursor:pointer;transition:0.15s;display:flex;align-items:center;gap:6px;}
+.fc-toggle-btn:hover{background:var(--navy-lt);border-color:var(--navy-md);}
+.fc-body{display:none;animation:fadeUp 0.35s ease;}
+.fc-body.open{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+.fc-desc{font-size:14px;color:var(--slate-lt);margin-bottom:16px;font-weight:600;}
+.fc-carousel{display:flex;gap:14px;overflow-x:auto;padding-bottom:12px;scrollbar-width:none;-webkit-overflow-scrolling:touch;}
+.fc-carousel::-webkit-scrollbar{display:none;}
+.fc-item{flex-shrink:0;width:280px;height:200px;cursor:pointer;perspective:800px;}
+.fc-inner{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform 0.55s cubic-bezier(.4,0,.2,1);}
+.fc-item.flipped .fc-inner{transform:rotateY(180deg);}
+.fc-front,.fc-back{position:absolute;inset:0;border-radius:14px;padding:20px;display:flex;flex-direction:column;justify-content:center;backface-visibility:hidden;-webkit-backface-visibility:hidden;}
+.fc-front{background:var(--navy);border:2px solid var(--navy-md);}
+.fc-back{background:var(--white);border:2px solid #EF4444;transform:rotateY(180deg);}
+.fc-q-label{font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;}
+.fc-front .fc-q-label{color:rgba(255,255,255,0.5);}
+.fc-back .fc-q-label{color:#EF4444;}
+.fc-front .fc-text{font-size:15px;font-weight:700;color:#fff;line-height:1.55;}
+.fc-back .fc-text{font-size:14px;color:var(--slate);line-height:1.6;font-weight:600;}
+.fc-nav{display:flex;align-items:center;justify-content:space-between;margin-top:14px;}
+.fc-nav-btn{padding:8px 18px;border-radius:10px;border:1.5px solid var(--border);background:var(--white);font-size:14px;font-weight:700;font-family:'Nunito',sans-serif;color:var(--slate);cursor:pointer;transition:0.15s;}
+.fc-nav-btn:hover{border-color:var(--navy);color:var(--navy);background:var(--navy-lt);}
+.fc-count{font-size:13px;font-weight:700;color:var(--slate-lt);}
+.fc-tip{margin-top:14px;background:var(--gold-lt);border:1.5px solid #EDD9A0;border-radius:12px;padding:12px 16px;font-size:13px;font-weight:700;color:var(--gold);display:flex;gap:10px;align-items:center;}
+
+/* ─── QUIZ SECTION ─── */
+.quiz-section{max-width:680px;margin:0 auto;padding:24px 20px 120px;}
+.q-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;animation:fadeUp 0.4s cubic-bezier(.4,0,.2,1);}
+.q-header{padding:20px 22px 16px;background:var(--navy-lt);border-bottom:1.5px solid var(--border);}
+.q-num{font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#EF4444;margin-bottom:6px;}
+.q-text{font-size:18px;font-weight:800;color:var(--navy);line-height:1.45;font-family:'Lora',serif;}
+.q-options{padding:16px 20px 20px;display:flex;flex-direction:column;gap:10px;}
+.q-opt{padding:14px 18px;border-radius:12px;border:2px solid var(--border);background:var(--white);font-size:16px;font-weight:700;font-family:'Nunito',sans-serif;color:var(--slate);cursor:pointer;transition:0.2s;text-align:left;line-height:1.4;display:flex;align-items:center;gap:12px;}
+.q-opt:hover:not(:disabled){border-color:#EF4444;background:var(--navy-lt);color:var(--navy);transform:translateX(4px);}
+.q-opt .opt-letter{width:28px;height:28px;border-radius:50%;background:var(--warm);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;flex-shrink:0;transition:0.2s;}
+.q-opt:hover:not(:disabled) .opt-letter{background:var(--accent);color:#fff;}
+.q-opt.correct{background:var(--green-lt);border-color:#16A34A;color:var(--green);pointer-events:none;animation:popRight 0.4s;}
+.q-opt.correct .opt-letter{background:#16A34A;color:#fff;}
+.q-opt.wrong{background:#FEF2F2;border-color:#FCA5A5;color:#B91C1C;pointer-events:none;animation:shake 0.4s;}
+.q-opt.wrong .opt-letter{background:#FCA5A5;color:#fff;}
+.q-opt.dim{opacity:0.35;pointer-events:none;}
+@keyframes popRight{0%{transform:scale(1);}50%{transform:scale(1.03);}100%{transform:scale(1);}}
+@keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-6px);}75%{transform:translateX(6px);}}
+
+/* FEEDBACK */
+.feedback-box{margin:0 20px 20px;padding:14px 18px;border-radius:12px;display:none;animation:fadeUp 0.3s;}
+.feedback-box.show{display:flex;gap:12px;align-items:flex-start;}
+.feedback-box.good{background:var(--green-lt);border:1.5px solid #B7DEC9;}
+.feedback-box.oops{background:#FEF2F2;border:1.5px solid #FCA5A5;}
+.feedback-icon{font-size:24px;flex-shrink:0;}
+.feedback-title{font-size:14px;font-weight:900;margin-bottom:4px;}
+.feedback-box.good .feedback-title{color:var(--green);}
+.feedback-box.oops .feedback-title{color:#B91C1C;}
+.feedback-text{font-size:14px;line-height:1.6;}
+.feedback-box.good .feedback-text{color:#285C42;}
+.feedback-box.oops .feedback-text{color:#7F1D1D;}
+
+/* SCORE BURST */
+.score-burst{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:80px;opacity:0;pointer-events:none;z-index:999;transition:none;}
+.score-burst.pop{animation:burst 0.8s forwards;}
+@keyframes burst{0%{opacity:1;transform:translate(-50%,-50%) scale(0.5);}50%{opacity:1;transform:translate(-50%,-50%) scale(1.3);}100%{opacity:0;transform:translate(-50%,-50%) scale(1.8);}}
+
+/* COMPLETION */
+.completion{display:none;}
+.completion.show{display:block;}
+.completion-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;animation:fadeUp 0.4s;}
+.completion-top{background:linear-gradient(135deg,#7F1D1D 0%,#B91C1C 100%);padding:44px 28px 36px;text-align:center;}
+.completion-icon{font-size:72px;display:block;margin-bottom:16px;}
+.completion-title{font-family:'Lora',serif;font-size:28px;font-weight:600;color:#fff;margin-bottom:8px;}
+.completion-sub{font-size:16px;color:rgba(255,255,255,0.88);line-height:1.6;}
+.completion-body{padding:28px 24px;}
+.final-score-row{display:flex;align-items:center;justify-content:center;gap:20px;margin-bottom:24px;padding:20px;background:var(--navy-lt);border-radius:14px;}
+.final-score-num{font-size:52px;font-weight:900;color:var(--navy);}
+.final-score-label{font-size:14px;font-weight:700;color:var(--slate);}
+.final-stars{font-size:32px;}
+.result-msg{font-size:16px;font-weight:700;color:var(--slate);text-align:center;margin-bottom:24px;line-height:1.6;}
+.completion-actions{display:flex;flex-direction:column;gap:12px;}
+.btn-primary{padding:16px;border-radius:12px;border:none;background:var(--navy);color:#fff;font-size:17px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;transition:background 0.15s;}
+.btn-primary:hover{background:var(--navy-md);}
+.btn-secondary{padding:14px;border-radius:12px;border:1.5px solid var(--border);background:var(--white);color:var(--navy);font-size:16px;font-weight:700;font-family:'Nunito',sans-serif;cursor:pointer;transition:0.15s;}
+.btn-secondary:hover{border-color:var(--navy);background:var(--navy-lt);}
+
+/* NAV */
+.nav-bar{position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:1.5px solid var(--border);padding:14px 20px;display:flex;gap:12px;z-index:200;box-shadow:0 -4px 20px rgba(27,42,74,0.09);}
+.nav-bar.hidden{display:none!important;}
+.btn-next-q{flex:1;padding:14px;border-radius:12px;border:none;background:var(--navy);color:#fff;font-size:17px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;transition:background 0.15s;opacity:0.4;pointer-events:none;}
+.btn-next-q.enabled{opacity:1;pointer-events:all;}
+.btn-next-q.enabled:hover{background:var(--navy-md);}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="back-btn" href="../quizzes.html">&#8592; All Quizzes</a>
+  <div class="topbar-center">Online Payments</div>
+  <span class="level-pill">Advanced</span>
+</div>
+
+<div class="hero">
+  <span class="hero-emoji">🚨</span>
+  <div class="hero-title">Online Payments — Advanced</div>
+  <div class="hero-sub">10 questions · Earn up to ⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐ stars</div>
+</div>
+
+<div class="score-bar">
+  <div><div class="score-label">Your Score</div><div class="score-val" id="scoreVal">0 / 10</div></div>
+  <div class="stars-row" id="starsRow">⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜</div>
+  <div class="q-counter" id="qCounter">Q 1 of 10</div>
+</div>
+<div class="prog-wrap"><div class="prog-fill" id="progFill"></div></div>
+
+<!-- FLASHCARD SECTION -->
+<div class="fc-section">
+  <div class="fc-header">
+    <div class="fc-heading">
+      <div class="fc-title">🃏 Revision Flashcards</div>
+      <span class="fc-badge">Revise first!</span>
+    </div>
+    <button class="fc-toggle-btn" id="fcToggleBtn" onclick="toggleFlashcards()">▼ Open</button>
+  </div>
+  <div class="fc-body" id="fcBody">
+    <div class="fc-desc">Tap any card to flip it and see the answer. Swipe to browse all cards!</div>
+    <div class="fc-carousel" id="fcCarousel">
+        <div class="fc-item" onclick="flipCard(this)" data-index="0">
+          <div class="fc-inner">
+            <div class="fc-front"><div class="fc-q-label">Tap to flip</div><div class="fc-text">What is a UPI 'collect request' scam?</div></div>
+            <div class="fc-back"><div class="fc-q-label">Answer</div><div class="fc-text">A fraudster sends you a UPI 'collect request' with a message like 'Accept to receive money'. When you enter your PIN, YOU actually PAY THEM. ALWAYS DECLINE unexpected collect requests. You NEVER need a PIN to receive money!</div></div>
+          </div>
+        </div>
+        <div class="fc-item" onclick="flipCard(this)" data-index="1">
+          <div class="fc-inner">
+            <div class="fc-front"><div class="fc-q-label">Tap to flip</div><div class="fc-text">What is a fake customer care number scam?</div></div>
+            <div class="fc-back"><div class="fc-q-label">Answer</div><div class="fc-text">Fraudsters put up fake helpline numbers on Google for banks/UPI apps. You call thinking it's the bank, they ask for your UPI PIN/OTP to 'help you'. The real number is ONLY on the back of your debit card or the bank's official website.</div></div>
+          </div>
+        </div>
+        <div class="fc-item" onclick="flipCard(this)" data-index="2">
+          <div class="fc-inner">
+            <div class="fc-front"><div class="fc-q-label">Tap to flip</div><div class="fc-text">What to do if you've been scammed?</div></div>
+            <div class="fc-back"><div class="fc-q-label">Answer</div><div class="fc-text">1. Call 1930 (Cyber Crime Helpline) immediately  2. Report in your UPI app → Help → Report fraud  3. Call your bank's helpline (back of your debit card)  4. File complaint at cybercrime.gov.in  5. Visit police station to file FIR. Act FAST — early action improves recovery chances!</div></div>
+          </div>
+        </div>
+        <div class="fc-item" onclick="flipCard(this)" data-index="3">
+          <div class="fc-inner">
+            <div class="fc-front"><div class="fc-q-label">Tap to flip</div><div class="fc-text">What is SIM swap fraud?</div></div>
+            <div class="fc-back"><div class="fc-q-label">Answer</div><div class="fc-text">Fraudsters trick your telecom operator into issuing a new SIM with YOUR number, deactivating yours. Then they access your bank OTPs. Red flag: your SIM suddenly stops working. Call your operator IMMEDIATELY if this happens!</div></div>
+          </div>
+        </div>
+        <div class="fc-item" onclick="flipCard(this)" data-index="4">
+          <div class="fc-inner">
+            <div class="fc-front"><div class="fc-q-label">Tap to flip</div><div class="fc-text">What is the RBI Ombudsman?</div></div>
+            <div class="fc-back"><div class="fc-q-label">Answer</div><div class="fc-text">A FREE complaint service for banking issues. If your bank doesn't resolve a UPI fraud complaint within 30 days, file with RBI Ombudsman at cms.rbi.org.in. They investigate and ensure banks compensate victims in eligible cases.</div></div>
+          </div>
+        </div>
+        <div class="fc-item" onclick="flipCard(this)" data-index="5">
+          <div class="fc-inner">
+            <div class="fc-front"><div class="fc-q-label">Tap to flip</div><div class="fc-text">What is 'screen sharing' payment fraud?</div></div>
+            <div class="fc-back"><div class="fc-q-label">Answer</div><div class="fc-text">Someone asks you to download AnyDesk, TeamViewer or 'support' apps and share your screen to 'fix a UPI problem'. They then see your OTPs and banking apps live and drain your account. NEVER share your screen for banking help!</div></div>
+          </div>
+        </div>
+        <div class="fc-item" onclick="flipCard(this)" data-index="6">
+          <div class="fc-inner">
+            <div class="fc-front"><div class="fc-q-label">Tap to flip</div><div class="fc-text">What is NACH / Auto-debit?</div></div>
+            <div class="fc-back"><div class="fc-q-label">Answer</div><div class="fc-text">National Automated Clearing House — allows companies to automatically deduct from your account on a set date (like insurance premium, loan EMI, subscriptions). You approve it once in your UPI app. Check all active mandates in Google Pay → Autopay.</div></div>
+          </div>
+        </div>
+        <div class="fc-item" onclick="flipCard(this)" data-index="7">
+          <div class="fc-inner">
+            <div class="fc-front"><div class="fc-q-label">Tap to flip</div><div class="fc-text">What is UPI Lite?</div></div>
+            <div class="fc-back"><div class="fc-q-label">Answer</div><div class="fc-text">A new feature for small payments (under ₹500) that works WITHOUT internet and doesn't require UPI PIN for each transaction. Load money into UPI Lite wallet once, then tap-to-pay instantly. Great at places with poor signal!</div></div>
+          </div>
+        </div>
+    </div>
+    <div class="fc-nav">
+      <button class="fc-nav-btn" onclick="scrollFC(-1)">&#8592; Prev</button>
+      <span class="fc-count" id="fcCount">1 / 8</span>
+      <button class="fc-nav-btn" onclick="scrollFC(1)">Next &#8594;</button>
+    </div>
+    <div class="fc-tip">💡 Review the flashcards before starting — you'll score higher!</div>
+  </div>
+</div>
+
+<!-- QUIZ SECTION -->
+<div class="quiz-section">
+  <div id="quizArea"></div>
+  <div class="completion" id="completion">
+    <div class="completion-card">
+      <div class="completion-top">
+        <span class="completion-icon" id="compIcon">🎉</span>
+        <div class="completion-title" id="compTitle">Quiz Complete!</div>
+        <div class="completion-sub" id="compSub">You did it!</div>
+      </div>
+      <div class="completion-body">
+        <div class="final-score-row">
+          <div><div class="final-score-num" id="finalScore">0</div><div class="final-score-label">out of 10</div></div>
+          <div class="final-stars" id="finalStars"></div>
+        </div>
+        <div class="result-msg" id="resultMsg"></div>
+        <div class="completion-actions">
+          <button class="btn-primary" onclick="retakeQuiz()">🔄 Try Again</button>
+          <button class="btn-secondary" onclick="window.location.href='../quizzes.html'">← Back to All Quizzes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="nav-bar" id="navBar">
+  <button class="btn-next-q" id="btnNext" onclick="nextQuestion()">Next Question →</button>
+</div>
+
+<div class="score-burst" id="scoreBurst"></div>
+
+<script type="module">
+import { auth, db } from "../firebase.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const QUIZ_KEY = "payments-advanced";
+const QUESTIONS = [{"q": "Someone sends you a UPI 'collect request' saying it's from Google Pay: 'Confirm ₹1 to verify your account and receive your prize money.' What do you do?", "options": ["Accept — it's just ₹1 to verify", "DECLINE immediately — any collect request requires YOUR UPI PIN, meaning YOU pay. This is always a scam.", "Accept only if the amount is under ₹10", "Call Google Pay to ask if this is real"], "correct": 1, "explanation": "ANY collect request = YOU paying them. The ₹1 is a test — if you accept, they'll send bigger requests. ALWAYS decline unexpected collect requests!"}, {"q": "You Google 'PhonePe customer care number' and call the top result. They ask for your UPI PIN 'to verify your account.' This is:", "options": ["Normal — they need your PIN to help you", "A scam — fraudsters create fake customer care numbers on Google. Real PhonePe support NEVER asks for your UPI PIN.", "Safe as long as the call is from an Indian number", "Fine if the Google result has good reviews"], "correct": 1, "explanation": "Fake helpline scam! Fraudsters pay to rank their fake numbers on Google. The REAL customer care numbers are: PhonePe: 080-68727374, Google Pay: gpay.in/contact. Never trust Google search results for bank numbers!"}, {"q": "Your phone's SIM card suddenly shows 'No Service' or 'SIM not registered'. What is the URGENT first step?", "options": ["Restart your phone and wait", "Immediately call your telecom operator from ANOTHER phone — your SIM may have been swapped by fraudsters to steal your OTPs", "Go to your telecom store after a few days", "Insert the SIM in another phone to check"], "correct": 1, "explanation": "Sudden SIM deactivation is a RED ALERT for SIM swap fraud. Fraudsters may be in the process of receiving YOUR bank OTPs to drain your account. Call your operator IMMEDIATELY!"}, {"q": "A 'bank employee' calls and asks you to download AnyDesk to 'fix your UPI account remotely.' You should:", "options": ["Download it — the bank employee will help you", "Hang up immediately. This is a screen-sharing scam. Real banks never ask you to download remote access apps.", "Download but don't share the 9-digit code they ask for", "Ask them to email you the instruction first"], "correct": 1, "explanation": "Screen sharing apps give fraudsters LIVE view of your phone — they'll watch you open your banking app and see everything. No legitimate bank ever asks for this. Hang up!"}, {"q": "You realize ₹15,000 was fraudulently transferred from your account 10 minutes ago. What is the FIRST thing to do?", "options": ["Wait and see if the bank reverses it automatically", "IMMEDIATELY call 1930 (Cyber Crime Helpline) and your bank's fraud helpline (on your debit card). Speed is critical!", "File a police complaint (takes days)", "Complain to consumer court"], "correct": 1, "explanation": "TIME IS CRITICAL. Call 1930 and your bank IMMEDIATELY. If the money hasn't reached the fraudster's bank yet, it can be frozen. Every minute counts!"}, {"q": "You notice an unknown 'Autopay/Mandate' in Google Pay automatically deducting ₹299 monthly. What do you do?", "options": ["Ignore it — it might be a system charge", "Google Pay → Autopay → find the mandate → Pause or Revoke it. Then check what service it was for and whether you authorised it.", "Change your UPI PIN to stop it", "Delete and reinstall Google Pay"], "correct": 1, "explanation": "Go to Google Pay → Autopay to see all active mandates. Revoke any you don't recognise. Then check your bank statement to see how long it's been charging and dispute with your bank!"}, {"q": "Your bank did not resolve your UPI fraud complaint after 45 days. What is your next step?", "options": ["Accept the loss — nothing more can be done", "File a complaint with the RBI Ombudsman at cms.rbi.org.in — it's free and they can direct banks to compensate victims", "Hire a lawyer", "Contact your local MLA"], "correct": 1, "explanation": "The RBI Ombudsman is a free, powerful consumer protection body. If your bank hasn't resolved your fraud complaint in 30 days, you can escalate to RBI Ombudsman and they take it very seriously!"}, {"q": "Which of these is a GENUINE indicator that a UPI payment app notification is real?", "options": ["The notification comes with urgent language ('Your account will be blocked!')", "The notification opens your UPI app when tapped, and shows the same transaction in your transaction history inside the app", "The notification includes a phone number to call for 'support'", "The notification offers cashback if you tap within 5 minutes"], "correct": 1, "explanation": "Real app notifications: tapping opens the actual app, and the same info appears in your app's transaction history. Fake notifications redirect to external sites or ask for calls/downloads."}, {"q": "What makes UPI safer than sharing your bank account number + IFSC code directly?", "options": ["UPI is not safer — bank transfer is more secure", "UPI uses a VPA (Virtual Payment Address) ID so the recipient never sees your actual bank account number, branch, or IFSC. Much more private!", "UPI requires Aadhaar verification for every transaction", "There is no difference in safety"], "correct": 1, "explanation": "With UPI, you share only your UPI ID (like name@bank) — the recipient never knows your account number, IFSC or bank branch. This privacy layer is a major security advantage!"}, {"q": "The safest way to use UPI on public Wi-Fi (like in a hospital or café) is:", "options": ["Use it normally — UPI is always safe regardless of network", "Avoid making UPI payments on public/unknown Wi-Fi. Use your own mobile data for financial transactions.", "Turn off Wi-Fi, use 5G only", "Only make payments under ₹100 on public Wi-Fi"], "correct": 1, "explanation": "Public Wi-Fi can be monitored or set up by hackers to intercept data ('man-in-the-middle' attack). Always switch to your own mobile data for UPI transactions when outside. Your personal data network is much safer!"}];
+
+let currentQ = 0, score = 0, answered = false, currentUser = null;
+
+onAuthStateChanged(auth, async (user) => {
+  if (!user) { window.location.href = "../index.html"; return; }
+  currentUser = user;
+  renderQuestion();
+});
+
+async function saveScore(s) {
+  if (!currentUser) return;
+  try { await setDoc(doc(db, "users", currentUser.uid), { quizScores: { [QUIZ_KEY]: s } }, { merge: true }); } catch(e) {}
+}
+
+function renderQuestion() {
+  answered = false;
+  const q = QUESTIONS[currentQ];
+  const letters = ["A","B","C","D"];
+  const opts = q.options.map((opt,i) => `
+    <button class="q-opt" onclick="answer(this,${i},${q.correct})">
+      <span class="opt-letter">${letters[i]}</span>
+      <span>${opt}</span>
+    </button>`).join("");
+
+  document.getElementById("quizArea").innerHTML = `
+    <div class="q-card">
+      <div class="q-header">
+        <div class="q-num">Question ${currentQ + 1} of ${QUESTIONS.length}</div>
+        <div class="q-text">${q.q}</div>
+      </div>
+      <div class="q-options">${opts}</div>
+      <div class="feedback-box" id="feedbackBox">
+        <div class="feedback-icon" id="feedbackIcon"></div>
+        <div><div class="feedback-title" id="feedbackTitle"></div><div class="feedback-text" id="feedbackText"></div></div>
+      </div>
+    </div>`;
+  updateProgress();
+  document.getElementById("btnNext").classList.remove("enabled");
+  document.getElementById("btnNext").textContent = currentQ === QUESTIONS.length - 1 ? "See Results 🎉" : "Next Question →";
+}
+
+window.answer = function(btn, chosen, correct) {
+  if (answered) return;
+  answered = true;
+  const opts = document.querySelectorAll(".q-opt");
+  opts.forEach((o,i) => {
+    o.disabled = true;
+    if (i !== chosen) o.classList.add("dim");
+  });
+
+  const isCorrect = chosen === correct;
+  btn.classList.remove("dim");
+  btn.classList.add(isCorrect ? "correct" : "wrong");
+  if (!isCorrect) opts[correct].classList.remove("dim"), opts[correct].classList.add("correct");
+
+  const fb = document.getElementById("feedbackBox");
+  const q = QUESTIONS[currentQ];
+  fb.className = "feedback-box show " + (isCorrect ? "good" : "oops");
+  document.getElementById("feedbackIcon").textContent = isCorrect ? "🎉" : "💭";
+  document.getElementById("feedbackTitle").textContent = isCorrect ? "Excellent! Well done!" : "Oops! Not quite right...";
+  document.getElementById("feedbackText").textContent = q.explanation;
+
+  if (isCorrect) {
+    score++;
+    const burst = document.getElementById("scoreBurst");
+    burst.textContent = "+1 ⭐";
+    burst.classList.add("pop");
+    setTimeout(() => burst.classList.remove("pop"), 800);
+  }
+  updateScoreDisplay();
+  document.getElementById("btnNext").classList.add("enabled");
+};
+
+function updateScoreDisplay() {
+  document.getElementById("scoreVal").textContent = score + " / 10";
+  const stars = "⭐".repeat(score) + "⬜".repeat(10 - score);
+  document.getElementById("starsRow").textContent = stars;
+}
+
+function updateProgress() {
+  const pct = (currentQ / QUESTIONS.length) * 100;
+  document.getElementById("progFill").style.width = pct + "%";
+  document.getElementById("qCounter").textContent = `Q ${currentQ + 1} of ${QUESTIONS.length}`;
+}
+
+window.nextQuestion = function() {
+  if (!answered) return;
+  currentQ++;
+  if (currentQ >= QUESTIONS.length) {
+    showCompletion();
+  } else {
+    renderQuestion();
+    window.scrollTo({top:0,behavior:"smooth"});
+  }
+};
+
+function showCompletion() {
+  document.getElementById("quizArea").style.display = "none";
+  document.getElementById("navBar").classList.add("hidden");
+  const comp = document.getElementById("completion");
+  comp.classList.add("show");
+  document.getElementById("finalScore").textContent = score;
+  document.getElementById("finalStars").textContent = "⭐".repeat(score) + "⬜".repeat(10-score);
+
+  let icon="🎉", msg="";
+  if (score === 10) { icon="🏆"; msg="PERFECT SCORE! You are a true Digital Champion! Your family must be so proud of you! 🌟"; }
+  else if (score >= 8) { icon="🥇"; msg="Outstanding! " + score + "/10 — you really know your stuff! A little more practice and you'll be perfect!"; }
+  else if (score >= 6) { icon="😊"; msg="Good effort! " + score + "/10 — you're getting there! Review the flashcards above and try again to improve!"; }
+  else if (score >= 4) { icon="💪"; msg="Keep going! " + score + "/10 — every expert started as a beginner. Check the flashcards and try again!"; }
+  else { icon="📖"; msg="Don't worry at all! " + score + "/10 — learning takes time. Review the flashcards carefully and have another go — you'll do better!"; }
+
+  document.getElementById("compIcon").textContent = icon;
+  document.getElementById("compTitle").textContent = score === 10 ? "Perfect Score! 🏆" : `You scored ${score} out of 10!`;
+  document.getElementById("compSub").textContent = "Online Payments — Advanced Quiz complete!";
+  document.getElementById("resultMsg").textContent = msg;
+
+  const progFill = document.getElementById("progFill");
+  progFill.style.width = "100%";
+  saveScore(score);
+}
+
+window.retakeQuiz = function() {
+  currentQ = 0; score = 0; answered = false;
+  updateScoreDisplay();
+  document.getElementById("quizArea").style.display = "block";
+  document.getElementById("navBar").classList.remove("hidden");
+  document.getElementById("completion").classList.remove("show");
+  renderQuestion();
+  window.scrollTo({top:0,behavior:"smooth"});
+};
+
+// ── FLASHCARDS ──
+let fcOpen = false;
+let fcIndex = 0;
+const FC_COUNT = 8;
+
+window.toggleFlashcards = function() {
+  fcOpen = !fcOpen;
+  document.getElementById("fcBody").classList.toggle("open", fcOpen);
+  document.getElementById("fcToggleBtn").textContent = fcOpen ? "▲ Close" : "▼ Open";
+};
+window.flipCard = function(el) { el.classList.toggle("flipped"); };
+window.scrollFC = function(dir) {
+  const carousel = document.getElementById("fcCarousel");
+  const items = carousel.querySelectorAll(".fc-item");
+  fcIndex = Math.max(0, Math.min(FC_COUNT-1, fcIndex + dir));
+  items[fcIndex].scrollIntoView({behavior:"smooth",block:"nearest",inline:"center"});
+  document.getElementById("fcCount").textContent = (fcIndex+1) + " / " + FC_COUNT;
+  // Track scroll for count
+  carousel.addEventListener("scroll", function onScroll() {
+    const itemW = items[0].offsetWidth + 14;
+    fcIndex = Math.round(carousel.scrollLeft / itemW);
+    document.getElementById("fcCount").textContent = (fcIndex+1) + " / " + FC_COUNT;
+  }, {passive:true});
+};
+</script>
+</body>
+</html>

@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Phone Saathi — AI Help</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:#1B2A4A;
+      --navy-md:#2E4070;
+      --cream:#FAF8F5;
+      --gold:#B07D2F;
+      --gold-lt:#F5EDD8;
+      --slate:#4A5568;
+      --slate-lt:#718096;
+      --border:#DDD8CF;
+      --radius:12px;
+      --shadow:0 2px 12px rgba(27,42,74,0.08);
+    }
+
+    body {
+      font-family:'Inter',sans-serif;
+      background:var(--cream);
+      color:var(--navy);
+      font-size:16px;
+      line-height:1.6;
+    }
+
+    .nav {
+      background:var(--navy);
+      padding:0 24px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      height:56px;
+      position:sticky;
+      top:0;
+      z-index:100;
+    }
+
+    .nav-brand {
+      display:flex;
+      align-items:center;
+      gap:8px;
+      text-decoration:none;
+    }
+
+    .nav-logo {
+      width:32px;
+      height:32px;
+      background:var(--gold);
+      border-radius:8px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:16px;
+    }
+
+    .nav-name {
+      font-family:'Lora',Georgia,serif;
+      font-size:18px;
+      font-weight:600;
+      color:#fff;
+    }
+
+    .nav-name span { color:var(--gold); }
+
+    .nav-links {
+      display:flex;
+      gap:4px;
+      list-style:none;
+    }
+
+    .nav-links a {
+      color:rgba(255,255,255,0.65);
+      text-decoration:none;
+      font-size:13px;
+      font-weight:500;
+      padding:6px 12px;
+      border-radius:6px;
+      transition:background 0.15s, color 0.15s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      background:rgba(255,255,255,0.12);
+      color:#fff;
+    }
+
+    .nav-avatar {
+      width:34px;
+      height:34px;
+      border-radius:50%;
+      background:var(--gold);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:14px;
+      font-weight:700;
+      color:#fff;
+      text-decoration:none;
+    }
+
+    .wrap {
+      max-width:980px;
+      margin:0 auto;
+      padding:28px 20px 40px;
+    }
+
+    .page-head {
+      margin-bottom:18px;
+    }
+
+    .page-title {
+      font-family:'Lora',Georgia,serif;
+      font-size:28px;
+      font-weight:600;
+      margin-bottom:6px;
+    }
+
+    .page-sub {
+      color:var(--slate-lt);
+      font-size:15px;
+    }
+
+    .help-shell {
+      background:#fff;
+      border:1.5px solid var(--border);
+      border-radius:16px;
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+
+    .help-top {
+      background:var(--navy);
+      color:#fff;
+      padding:16px 18px;
+    }
+
+    .help-top h2 {
+      font-size:18px;
+      font-weight:600;
+      margin-bottom:4px;
+    }
+
+    .help-top p {
+      font-size:13px;
+      color:rgba(255,255,255,0.75);
+    }
+
+    .help-body {
+      padding:22px;
+    }
+
+    .section-title {
+      font-size:18px;
+      font-weight:600;
+      margin-bottom:8px;
+    }
+
+    .section-text {
+      color:var(--slate-lt);
+      margin-bottom:18px;
+      font-size:15px;
+    }
+
+    .question-grid {
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:14px;
+      margin-bottom:24px;
+    }
+
+    .question-btn {
+      width:100%;
+      text-align:left;
+      border:1.5px solid var(--border);
+      background:#fff;
+      border-radius:14px;
+      padding:18px 16px;
+      cursor:pointer;
+      box-shadow:var(--shadow);
+      transition:transform 0.15s, border-color 0.15s, background 0.15s;
+      font-family:'Inter',sans-serif;
+    }
+
+    .question-btn:hover {
+      transform:translateY(-2px);
+      border-color:var(--navy-md);
+      background:#fcfbf9;
+    }
+
+    .q-title {
+      font-size:16px;
+      font-weight:600;
+      color:var(--navy);
+      margin-bottom:6px;
+    }
+
+    .q-sub {
+      font-size:13px;
+      color:var(--slate-lt);
+    }
+
+    .chat-shell {
+      border:1.5px solid var(--border);
+      border-radius:14px;
+      overflow:hidden;
+      background:#faf9f7;
+    }
+
+    .chat-box {
+      min-height:220px;
+      max-height:320px;
+      overflow-y:auto;
+      padding:18px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .msg {
+      max-width:78%;
+      padding:12px 14px;
+      border-radius:14px;
+      font-size:15px;
+      line-height:1.5;
+      white-space:pre-wrap;
+      word-wrap:break-word;
+    }
+
+    .msg.user {
+      align-self:flex-end;
+      background:var(--navy);
+      color:#fff;
+      border-bottom-right-radius:4px;
+    }
+
+    .msg.bot {
+      align-self:flex-start;
+      background:#fff;
+      border:1.5px solid var(--border);
+      color:var(--navy);
+      border-bottom-left-radius:4px;
+    }
+
+    .chat-form {
+      border-top:1.5px solid var(--border);
+      background:#fff;
+      padding:14px;
+      display:flex;
+      gap:10px;
+      align-items:flex-end;
+    }
+
+    .chat-input {
+      flex:1;
+      min-height:56px;
+      max-height:150px;
+      resize:vertical;
+      border:1.5px solid var(--border);
+      border-radius:12px;
+      padding:14px;
+      font-size:15px;
+      font-family:'Inter',sans-serif;
+      outline:none;
+    }
+
+    .chat-input:focus {
+      border-color:var(--navy-md);
+    }
+
+    .send-btn {
+      border:none;
+      background:var(--gold);
+      color:#fff;
+      padding:14px 18px;
+      border-radius:12px;
+      cursor:pointer;
+      font-weight:700;
+      min-width:110px;
+    }
+
+    .send-btn:hover {
+      opacity:0.95;
+    }
+
+    .bottom-note {
+      margin-top:20px;
+      padding:14px 16px;
+      background:var(--gold-lt);
+      border:1px solid #ead7ad;
+      border-radius:12px;
+      color:#7a571d;
+      font-size:14px;
+    }
+
+    @media(max-width:700px) {
+      .nav-links { display:none; }
+      .question-grid { grid-template-columns:1fr; }
+      .msg { max-width:88%; }
+      .chat-form { flex-direction:column; }
+      .send-btn { width:100%; }
+      .chat-input { width:100%; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <a href="dashboard.html" class="nav-brand">
+      <div class="nav-logo">📱</div>
+      <div class="nav-name">Phone<span>Saathi</span></div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="dashboard.html">🏠 Home</a></li>
+      <li><a href="courses.html">📚 Courses</a></li>
+      <li><a href="quizzes.html">🧠 Quiz</a></li>
+      <li><a href="games.html">🎮 Games</a></li>
+      <li><a href="ai-chat.html" class="active">🤖 AI Chat</a></li>
+      <li><a href="notes.html">📝 Notes</a></li>
+    </ul>
+    <a href="profile.html" class="nav-avatar" id="avatarBtn">?</a>
+  </nav>
+
+  <div class="wrap">
+    <div class="page-head">
+      <div class="page-title">Quick Help</div>
+      <div class="page-sub">Choose a help topic or type a message below.</div>
+    </div>
+
+    <div class="help-shell">
+      <div class="help-top">
+        <h2>📚 Phone Saathi Help</h2>
+        <p>Quick help buttons are active. Chat is temporarily unavailable.</p>
+      </div>
+
+      <div class="help-body">
+        <div class="section-title">Popular questions</div>
+        <div class="section-text">Tap a question to open the matching course directly.</div>
+
+        <div class="question-grid">
+          <button class="question-btn" data-link="courses/whatsapp-basic.html">
+            <div class="q-title">How do I send a photo on WhatsApp?</div>
+            <div class="q-sub">Open WhatsApp beginner lesson</div>
+          </button>
+
+          <button class="question-btn" data-link="courses/basics-beginner.html">
+            <div class="q-title">How do I identify a scam or fake message?</div>
+            <div class="q-sub">Open internet safety basics</div>
+          </button>
+
+          <button class="question-btn" data-link="courses/payments-beginner.html">
+            <div class="q-title">How do I use UPI safely for online payments?</div>
+            <div class="q-sub">Open payments beginner lesson</div>
+          </button>
+
+          <button class="question-btn" data-link="courses/email-beginner.html">
+            <div class="q-title">How do I create and use an email account?</div>
+            <div class="q-sub">Open email beginner lesson</div>
+          </button>
+
+          <button class="question-btn" data-link="courses/social-media-beginner.html">
+            <div class="q-title">How do I use social media safely?</div>
+            <div class="q-sub">Open social media beginner lesson</div>
+          </button>
+
+          <button class="question-btn" data-link="courses.html">
+            <div class="q-title">Show me all courses</div>
+            <div class="q-sub">Browse every available course</div>
+          </button>
+        </div>
+
+        <div class="section-title">Message section</div>
+        <div class="section-text">This section is visible, but chat is not working right now.</div>
+
+        <div class="chat-shell">
+          <div class="chat-box" id="chatBox">
+            <div class="msg bot">Service unavailable right now. Please use the quick help buttons above.</div>
+          </div>
+
+          <form class="chat-form" id="chatForm">
+            <textarea id="userInput" class="chat-input" placeholder="Type your question here..."></textarea>
+            <button type="submit" class="send-btn">Send</button>
+          </form>
+        </div>
+
+        <div class="bottom-note">
+          The input area is only for layout right now. Any typed message will show a service unavailable notice.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { auth } from "./firebase.js";
+    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-auth.js";
+
+    const avatarBtn = document.getElementById("avatarBtn");
+    const chatForm = document.getElementById("chatForm");
+    const userInput = document.getElementById("userInput");
+    const chatBox = document.getElementById("chatBox");
+
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        window.location.href = "index.html";
+        return;
+      }
+      const initials = (user.displayName || user.email || "?")[0].toUpperCase();
+      avatarBtn.textContent = initials;
+    });
+
+    document.querySelectorAll(".question-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const link = btn.getAttribute("data-link");
+        if (link) window.location.href = link;
+      });
+    });
+
+    function addMessage(role, text) {
+      const div = document.createElement("div");
+      div.className = `msg ${role}`;
+      div.textContent = text;
+      chatBox.appendChild(div);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    chatForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const text = userInput.value.trim();
+      if (!text) return;
+      addMessage("user", text);
+      addMessage("bot", "Service unavailable right now. Please use the quick help buttons above.");
+      userInput.value = "";
+    });
+  </script>
+</body>
+</html>

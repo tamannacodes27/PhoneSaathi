@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Email Basics — Intermediate · Digital Literacy</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --navy:#1B2A4A;--navy-md:#2E4070;--navy-lt:#EEF1F8;--cream:#FAF8F5;--warm:#F3EFE8;
+  --gold:#B07D2F;--gold-lt:#FDF3DC;--slate:#4A5568;--slate-lt:#718096;--border:#E2DDD6;
+  --white:#FFFFFF;--green:#2D6A4F;--green-lt:#E8F5EF;
+  --gmail:#EA4335;--gmail-dark:#C5221F;--gmail-lt:#FDECEC;
+  --radius:16px;--shadow:0 4px 24px rgba(27,42,74,0.10);
+}
+body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--navy);min-height:100vh;font-size:18px;}
+.topbar{background:var(--navy);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,0.2);}
+.back-btn{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:700;color:rgba(255,255,255,0.7);cursor:pointer;padding:6px 14px;border:1px solid rgba(255,255,255,0.18);border-radius:8px;background:rgba(255,255,255,0.06);transition:0.15s;text-decoration:none;}
+.back-btn:hover{background:rgba(255,255,255,0.13);color:#fff;}
+.topbar-center{display:flex;align-items:center;gap:10px;}
+.email-dot{width:30px;height:30px;background:var(--gmail);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;}
+.topbar-title{font-family:'Lora',serif;font-size:16px;font-weight:600;color:#fff;}
+.level-badge{font-size:12px;font-weight:800;background:#B07D2F;color:#fff;padding:3px 12px;border-radius:20px;}
+.progress-wrap{background:var(--white);border-bottom:1.5px solid var(--border);padding:14px 24px;}
+.progress-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.progress-label{font-size:13px;font-weight:700;color:var(--slate);}
+.progress-pct{font-size:13px;font-weight:800;color:var(--green);}
+.progress-track{height:8px;background:var(--warm);border-radius:8px;overflow:hidden;}
+.progress-fill{height:8px;background:linear-gradient(90deg,var(--gmail-dark),var(--gmail));border-radius:8px;transition:width 0.6s cubic-bezier(.4,0,.2,1);}
+.step-dots{display:flex;justify-content:center;gap:8px;padding:16px 24px 0;}
+.dot{height:8px;border-radius:8px;background:var(--border);transition:all 0.35s cubic-bezier(.4,0,.2,1);width:8px;}
+.dot.done{background:var(--gmail);}
+.dot.active{background:var(--navy);width:28px;}
+.main{max-width:680px;margin:0 auto;padding:24px 20px 110px;}
+.step-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;animation:fadeUp 0.4s cubic-bezier(.4,0,.2,1) both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.card-hero{padding:28px 28px 22px;background:linear-gradient(135deg,var(--navy) 0%,#243860 100%);display:flex;gap:18px;align-items:center;}
+.hero-emoji{font-size:56px;line-height:1;flex-shrink:0;filter:drop-shadow(0 3px 10px rgba(0,0,0,0.25));}
+.hero-step{font-size:11px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:#FCA5A5;margin-bottom:5px;}
+.hero-title{font-family:'Lora',serif;font-size:24px;font-weight:600;color:#fff;line-height:1.25;}
+.card-body{padding:26px 28px 28px;}
+.body-text{font-size:17px;color:var(--slate);line-height:1.85;margin-bottom:18px;}
+.encourage{display:flex;align-items:center;gap:12px;background:var(--gold-lt);border:1.5px solid #EDD9A0;border-radius:12px;padding:14px 18px;margin-bottom:22px;}
+.encourage-icon{font-size:22px;flex-shrink:0;}
+.encourage-text{font-size:15px;font-weight:700;color:var(--gold);line-height:1.5;}
+.instr-list{list-style:none;display:flex;flex-direction:column;gap:12px;margin-bottom:24px;}
+.instr-item{display:flex;gap:13px;align-items:flex-start;padding:14px 16px;background:var(--cream);border:1.5px solid var(--border);border-radius:12px;transition:border-color 0.2s,background 0.2s;}
+.instr-item:hover{border-color:var(--navy-md);background:var(--navy-lt);}
+.instr-num{width:30px;height:30px;border-radius:50%;background:var(--navy);color:#fff;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.instr-text{font-size:16px;color:var(--slate);line-height:1.7;padding-top:3px;}
+.tip-box{display:flex;gap:13px;align-items:flex-start;background:var(--green-lt);border:1.5px solid #B7DEC9;border-radius:12px;padding:16px 18px;margin-top:20px;}
+.tip-icon{font-size:22px;flex-shrink:0;margin-top:1px;}
+.tip-label{font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);margin-bottom:3px;}
+.tip-text{font-size:15px;color:#285C42;line-height:1.65;}
+.reveal-block{border-radius:13px;overflow:hidden;margin:20px 0;border:2px dashed var(--border);cursor:pointer;transition:border-color 0.2s;}
+.reveal-block:hover{border-color:var(--navy-md);}
+.reveal-prompt{padding:18px 20px;display:flex;align-items:center;gap:14px;background:var(--navy-lt);}
+.reveal-prompt-icon{font-size:26px;}
+.reveal-prompt-text{font-size:16px;font-weight:700;color:var(--navy-md);flex:1;}
+.reveal-prompt-arrow{font-size:18px;color:var(--navy-md);transition:transform 0.3s;}
+.reveal-block.open .reveal-prompt-arrow{transform:rotate(90deg);}
+.reveal-answer{max-height:0;overflow:hidden;transition:max-height 0.45s cubic-bezier(.4,0,.2,1),padding 0.3s;background:var(--white);padding:0 20px;}
+.reveal-block.open .reveal-answer{max-height:400px;padding:18px 20px;}
+.reveal-answer-inner{font-size:16px;color:var(--slate);line-height:1.75;}
+.tap-question{background:var(--navy-lt);border:1.5px solid #C5D0E8;border-radius:13px;padding:20px 20px;margin:20px 0;}
+.tap-q-label{font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--navy-md);margin-bottom:8px;}
+.tap-q-text{font-size:17px;font-weight:700;color:var(--navy);margin-bottom:14px;line-height:1.4;}
+.tap-options{display:flex;flex-direction:column;gap:9px;}
+.tap-opt{padding:13px 18px;border-radius:10px;border:2px solid var(--border);background:var(--white);font-size:16px;font-weight:700;font-family:'Nunito',sans-serif;color:var(--slate);cursor:pointer;transition:0.18s;text-align:left;}
+.tap-opt:hover:not(:disabled){border-color:var(--navy-md);background:var(--navy-lt);color:var(--navy);}
+.tap-opt.correct{background:var(--green-lt);border-color:var(--green);color:var(--green);pointer-events:none;}
+.tap-opt.wrong{background:#FEF2F2;border-color:#FCA5A5;color:#B91C1C;pointer-events:none;}
+.tap-opt.dim{opacity:0.4;pointer-events:none;}
+.tap-result{font-size:15px;font-weight:700;margin-top:12px;padding:11px 14px;border-radius:9px;display:none;}
+.tap-result.show{display:block;}
+.tap-result.good{background:var(--green-lt);color:var(--green);}
+.tap-result.oops{background:#FEF2F2;color:#B91C1C;}
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0;}
+.compare-card{background:var(--cream);border:1.5px solid var(--border);border-radius:12px;padding:16px 14px;text-align:center;}
+.compare-card-icon{font-size:30px;margin-bottom:6px;}
+.compare-card-name{font-size:14px;font-weight:800;color:var(--navy);margin-bottom:4px;}
+.compare-card-desc{font-size:12px;color:var(--slate-lt);line-height:1.5;}
+.folder-list{display:flex;flex-direction:column;gap:10px;margin:16px 0;}
+.folder-row{display:flex;align-items:center;gap:14px;padding:13px 16px;background:var(--cream);border:1.5px solid var(--border);border-radius:11px;}
+.folder-icon{font-size:22px;width:36px;text-align:center;flex-shrink:0;}
+.folder-name{font-size:15px;font-weight:800;color:var(--navy);}
+.folder-desc{font-size:13px;color:var(--slate-lt);margin-top:2px;}
+.completion-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;animation:fadeUp 0.4s cubic-bezier(.4,0,.2,1) both;}
+.completion-top{background:linear-gradient(135deg,var(--gmail-dark) 0%,var(--gmail) 100%);padding:44px 28px 36px;text-align:center;}
+.completion-big-icon{font-size:72px;margin-bottom:16px;}
+.completion-title{font-family:'Lora',serif;font-size:28px;font-weight:600;color:#fff;margin-bottom:8px;}
+.completion-sub{font-size:16px;color:rgba(255,255,255,0.88);line-height:1.6;}
+.completion-body{padding:32px 28px;}
+.learned-list{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:28px;}
+.learned-item{display:flex;align-items:center;gap:12px;padding:13px 16px;background:var(--green-lt);border:1.5px solid #B7DEC9;border-radius:10px;font-size:16px;font-weight:700;color:var(--green);}
+.completion-actions{display:flex;flex-direction:column;gap:12px;}
+.btn-primary{padding:16px 24px;border-radius:12px;border:none;background:var(--navy);color:#fff;font-size:17px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;transition:background 0.15s;}
+.btn-primary:hover{background:var(--navy-md);}
+.btn-secondary{padding:14px 24px;border-radius:12px;border:1.5px solid var(--border);background:var(--white);color:var(--navy);font-size:16px;font-weight:700;font-family:'Nunito',sans-serif;cursor:pointer;transition:0.15s;}
+.btn-secondary:hover{border-color:var(--navy);background:var(--navy-lt);}
+.nav-bar{position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:1.5px solid var(--border);padding:14px 20px;display:flex;gap:12px;z-index:200;box-shadow:0 -4px 20px rgba(27,42,74,0.09);}
+.btn-back{padding:14px 22px;border-radius:12px;border:1.5px solid var(--border);background:var(--white);font-size:16px;font-weight:700;font-family:'Nunito',sans-serif;color:var(--slate);cursor:pointer;transition:0.15s;}
+.btn-back:hover{border-color:var(--navy);color:var(--navy);background:var(--navy-lt);}
+.btn-next{flex:1;padding:14px 24px;border-radius:12px;border:none;background:var(--navy);font-size:17px;font-weight:800;font-family:'Nunito',sans-serif;color:#fff;cursor:pointer;transition:background 0.15s;}
+.btn-next:hover{background:var(--navy-md);}
+.hidden{display:none!important;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="back-btn" href="../courses.html">&#8592; Courses</a>
+  <div class="topbar-center">
+    <div class="email-dot">✉️</div>
+    <span class="topbar-title">Email Basics</span>
+  </div>
+  <span class="level-badge">Intermediate</span>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-row">
+    <span class="progress-label" id="progressLabel">Step 1 of 5</span>
+    <span class="progress-pct" id="progressPct">0% done</span>
+  </div>
+  <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+</div>
+
+<div class="step-dots" id="stepDots">
+  <div class="dot active" id="dot-0"></div>
+  <div class="dot" id="dot-1"></div>
+  <div class="dot" id="dot-2"></div>
+  <div class="dot" id="dot-3"></div>
+  <div class="dot" id="dot-4"></div>
+</div>
+
+<div class="main" id="mainContent"></div>
+
+<div class="nav-bar" id="navBar">
+  <button class="btn-back" id="btnBack" onclick="prevStep()">&#8592; Back</button>
+  <button class="btn-next" id="btnNext" onclick="nextStep()">Next →</button>
+</div>
+
+<script type="module">
+import { auth, db } from "../firebase.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const COURSE_KEY = "email-intermediate";
+let currentStep = 0, currentUser = null;
+
+const STEPS = [
+  () => `<div class="step-card">
+    <div class="card-hero"><div class="hero-emoji">↩️</div><div class="hero-text"><div class="hero-step">Step 1 of 5</div><div class="hero-title">Replying to an Email</div></div></div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">🌸</span><span class="encourage-text">Welcome back! You already know how to send and read emails. Now let's have a proper back-and-forth conversation!</span></div>
+      <p class="body-text">When someone sends you an email, you can <strong>reply</strong> to them directly. Gmail keeps the whole conversation together so it's easy to follow.</p>
+      <ul class="instr-list">
+        <li class="instr-item"><span class="instr-num">1</span><span class="instr-text">Open the email you want to reply to.</span></li>
+        <li class="instr-item"><span class="instr-num">2</span><span class="instr-text">Scroll to the bottom and tap the <strong>Reply button ↩️</strong> (or tap the left-pointing arrow).</span></li>
+        <li class="instr-item"><span class="instr-num">3</span><span class="instr-text">The <strong>"To"</strong> field is already filled with the sender's address — no need to type it!</span></li>
+        <li class="instr-item"><span class="instr-num">4</span><span class="instr-text">Type your <strong>reply message</strong> in the box above the original email.</span></li>
+        <li class="instr-item"><span class="instr-num">5</span><span class="instr-text">Tap the <strong>Send button ➤</strong>. Your reply is sent!</span></li>
+      </ul>
+      <div class="compare-grid">
+        <div class="compare-card"><div class="compare-card-icon">↩️</div><div class="compare-card-name">Reply</div><div class="compare-card-desc">Send back to only the person who emailed you</div></div>
+        <div class="compare-card"><div class="compare-card-icon">↩️↩️</div><div class="compare-card-name">Reply All</div><div class="compare-card-desc">Send back to everyone in the email (if there are many people)</div></div>
+      </div>
+      <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Good to know</div><div class="tip-text">Gmail groups all replies in one place called a <strong>"conversation thread"</strong> — so you can see the whole back-and-forth in one screen, like a chat!</div></div></div>
+    </div>
+  </div>`,
+
+  () => `<div class="step-card">
+    <div class="card-hero"><div class="hero-emoji">➡️</div><div class="hero-text"><div class="hero-step">Step 2 of 5</div><div class="hero-title">Forwarding an Email</div></div></div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">⭐</span><span class="encourage-text">Forwarding is like handing a letter to someone else to read — very useful when you want to share information!</span></div>
+      <p class="body-text"><strong>Forwarding</strong> means sending an email you received to someone else. For example, sharing a doctor's appointment confirmation with your child.</p>
+      <ul class="instr-list">
+        <li class="instr-item"><span class="instr-num">1</span><span class="instr-text">Open the email you want to forward.</span></li>
+        <li class="instr-item"><span class="instr-num">2</span><span class="instr-text">Scroll to the bottom and tap the <strong>three dots ⋮</strong> or tap <strong>Forward</strong>.</span></li>
+        <li class="instr-item"><span class="instr-num">3</span><span class="instr-text">In the <strong>"To"</strong> field, type the email address of the person you want to share it with.</span></li>
+        <li class="instr-item"><span class="instr-num">4</span><span class="instr-text">You can add a note at the top — like <em>"Beta, please see this appointment details"</em>.</span></li>
+        <li class="instr-item"><span class="instr-num">5</span><span class="instr-text">Tap <strong>Send ➤</strong>.</span></li>
+      </ul>
+      <div class="tap-question">
+        <div class="tap-q-label">✏️ Quick check</div>
+        <div class="tap-q-text">You received an important email from the hospital. You want to share it with your son. What do you use?</div>
+        <div class="tap-options">
+          <button class="tap-opt" onclick="tapAnswer(this,false,'q2')">✍️ Compose a new email and retype everything</button>
+          <button class="tap-opt" onclick="tapAnswer(this,true,'q2')">➡️ Forward the email to my son</button>
+          <button class="tap-opt" onclick="tapAnswer(this,false,'q2')">🖨️ Print the email</button>
+        </div>
+        <div class="tap-result" id="res-q2"></div>
+      </div>
+      <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Good to know</div><div class="tip-text">Be careful with <strong>what you forward</strong> — only share emails with people who should see that information, like medical details or private messages.</div></div></div>
+    </div>
+  </div>`,
+
+  () => `<div class="step-card">
+    <div class="card-hero"><div class="hero-emoji">📸</div><div class="hero-text"><div class="hero-step">Step 3 of 5</div><div class="hero-title">Attaching Photos & Documents</div></div></div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">🏡</span><span class="encourage-text">You can send photos or documents by email — like sending a physical envelope with things inside. Let's try it!</span></div>
+      <p class="body-text">An <strong>attachment</strong> is a file (photo, PDF, document) that you send along with an email. The person receives both the message and the file.</p>
+      <ul class="instr-list">
+        <li class="instr-item"><span class="instr-num">1</span><span class="instr-text">Start composing a new email (tap the pencil ✏️ icon).</span></li>
+        <li class="instr-item"><span class="instr-num">2</span><span class="instr-text">Fill in the <strong>To, Subject</strong> and message as usual.</span></li>
+        <li class="instr-item"><span class="instr-num">3</span><span class="instr-text">Tap the <strong>paperclip icon 📎</strong> at the top of the screen.</span></li>
+        <li class="instr-item"><span class="instr-num">4</span><span class="instr-text">Choose <strong>Attach file</strong> to pick a document, or <strong>Insert from Drive</strong> for Google Drive files.</span></li>
+        <li class="instr-item"><span class="instr-num">5</span><span class="instr-text">Select your photo or file — it appears as an attachment. Tap <strong>Send ➤</strong>.</span></li>
+      </ul>
+      <div class="reveal-block" id="rev-3" onclick="toggleReveal('rev-3')">
+        <div class="reveal-prompt"><span class="reveal-prompt-icon">🤔</span><span class="reveal-prompt-text">How do I know if an email I received has an attachment?</span><span class="reveal-prompt-arrow">▶</span></div>
+        <div class="reveal-answer"><div class="reveal-answer-inner">In your inbox, look for a <strong>paperclip icon 📎</strong> next to the email — this means something is attached. When you open the email, you'll see the attachment at the bottom. Tap it to open or download it!</div></div>
+      </div>
+      <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Good to know</div><div class="tip-text">Gmail allows attachments up to <strong>25 MB</strong> in size. Most photos and documents are much smaller than this, so you'll rarely hit the limit.</div></div></div>
+    </div>
+  </div>`,
+
+  () => `<div class="step-card">
+    <div class="card-hero"><div class="hero-emoji">📁</div><div class="hero-text"><div class="hero-step">Step 4 of 5</div><div class="hero-title">Gmail Folders & Labels</div></div></div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">🌟</span><span class="encourage-text">Gmail has several special folders that help organise your emails automatically. Let's explore them!</span></div>
+      <p class="body-text">Your Gmail is sorted into <strong>folders</strong> — Gmail calls them "labels". Each folder has a different purpose:</p>
+      <div class="folder-list">
+        <div class="folder-row"><div class="folder-icon">📥</div><div><div class="folder-name">Inbox</div><div class="folder-desc">All new emails arrive here</div></div></div>
+        <div class="folder-row"><div class="folder-icon">⭐</div><div><div class="folder-name">Starred</div><div class="folder-desc">Emails you've marked as important — tap the star ⭐ on any email</div></div></div>
+        <div class="folder-row"><div class="folder-icon">📤</div><div><div class="folder-name">Sent</div><div class="folder-desc">All emails you have sent</div></div></div>
+        <div class="folder-row"><div class="folder-icon">📝</div><div><div class="folder-name">Drafts</div><div class="folder-desc">Emails you started but didn't send yet</div></div></div>
+        <div class="folder-row"><div class="folder-icon">🗑️</div><div><div class="folder-name">Trash</div><div class="folder-desc">Deleted emails — emptied after 30 days</div></div></div>
+        <div class="folder-row"><div class="folder-icon">🚫</div><div><div class="folder-name">Spam</div><div class="folder-desc">Unwanted emails caught automatically</div></div></div>
+      </div>
+      <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Good to know</div><div class="tip-text">To find these folders, tap the <strong>three lines ☰</strong> (menu) at the top left of Gmail — all folders are listed there.</div></div></div>
+    </div>
+  </div>`,
+
+  () => `<div class="step-card">
+    <div class="card-hero"><div class="hero-emoji">🔍</div><div class="hero-text"><div class="hero-step">Step 5 of 5</div><div class="hero-title">Searching & Deleting Emails</div></div></div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">🎉</span><span class="encourage-text">Last step! Gmail's search is incredibly powerful — you can find any email in seconds, even from years ago!</span></div>
+      <p class="body-text">As you use Gmail, your inbox fills up. Here's how to <strong>search</strong> for old emails and <strong>delete</strong> ones you don't need.</p>
+      <ul class="instr-list">
+        <li class="instr-item"><span class="instr-num">1</span><span class="instr-text">To search: Tap the <strong>Search bar 🔍</strong> at the top of Gmail and type a name, subject, or any word from the email.</span></li>
+        <li class="instr-item"><span class="instr-num">2</span><span class="instr-text">Gmail shows all matching emails instantly — tap one to open it.</span></li>
+        <li class="instr-item"><span class="instr-num">3</span><span class="instr-text">To delete: Open an email and tap the <strong>bin/trash icon 🗑️</strong> at the top.</span></li>
+        <li class="instr-item"><span class="instr-num">4</span><span class="instr-text">To delete many at once: <strong>Press and hold</strong> one email until a tick appears, then tap others, then tap the bin icon.</span></li>
+      </ul>
+      <div class="tap-question">
+        <div class="tap-q-label">✏️ Quick check</div>
+        <div class="tap-q-text">You want to find an old email from the hospital sent months ago. What do you use?</div>
+        <div class="tap-options">
+          <button class="tap-opt" onclick="tapAnswer(this,false,'q5')">📜 Scroll through all emails one by one</button>
+          <button class="tap-opt" onclick="tapAnswer(this,true,'q5')">🔍 Use the Search bar and type "hospital"</button>
+          <button class="tap-opt" onclick="tapAnswer(this,false,'q5')">🗑️ Check the Trash folder</button>
+        </div>
+        <div class="tap-result" id="res-q5"></div>
+      </div>
+      <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Good to know</div><div class="tip-text">Deleted emails go to Trash and stay there for <strong>30 days</strong> — so if you accidentally delete something, you can recover it from Trash within that time!</div></div></div>
+    </div>
+  </div>`,
+];
+
+onAuthStateChanged(auth, async (user) => {
+  if (!user) { window.location.href = "../index.html"; return; }
+  currentUser = user;
+  try {
+    const snap = await getDoc(doc(db, "users", user.uid));
+    if (snap.exists() && snap.data().progress?.[COURSE_KEY] === 100) currentStep = STEPS.length;
+  } catch(e) {}
+  render();
+});
+
+async function saveProgress(pct) {
+  if (!currentUser) return;
+  try { await setDoc(doc(db, "users", currentUser.uid), { progress: { [COURSE_KEY]: pct } }, { merge: true }); } catch(e) {}
+}
+
+function render() {
+  updateProgress(); updateDots();
+  const main = document.getElementById("mainContent");
+  if (currentStep < STEPS.length) { main.innerHTML = STEPS[currentStep](); } else { renderCompletion(main); }
+  updateNav();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function updateProgress() {
+  const pct = Math.round((currentStep / STEPS.length) * 100);
+  document.getElementById("progressFill").style.width = pct + "%";
+  document.getElementById("progressPct").textContent = pct + "% done";
+  document.getElementById("progressLabel").textContent = currentStep < STEPS.length ? `Step ${currentStep + 1} of ${STEPS.length}` : "Lesson Complete!";
+}
+
+function updateDots() {
+  for (let i = 0; i < STEPS.length; i++) {
+    const d = document.getElementById("dot-" + i);
+    if (!d) continue;
+    d.className = "dot" + (i < currentStep ? " done" : i === currentStep ? " active" : "");
+  }
+}
+
+function updateNav() {
+  const navBar = document.getElementById("navBar");
+  if (currentStep >= STEPS.length) { navBar.classList.add("hidden"); return; }
+  navBar.classList.remove("hidden");
+  document.getElementById("btnBack").style.visibility = currentStep === 0 ? "hidden" : "visible";
+  document.getElementById("btnNext").textContent = currentStep === STEPS.length - 1 ? "Finish lesson 🎉" : "Next →";
+}
+
+function renderCompletion(container) {
+  container.innerHTML = `<div class="completion-card">
+    <div class="completion-top">
+      <div class="completion-big-icon">🎊</div>
+      <div class="completion-title">Excellent work!</div>
+      <div class="completion-sub">You've completed Email Basics — Intermediate.<br>You're managing your inbox like a pro!</div>
+    </div>
+    <div class="completion-body">
+      <ul class="learned-list">
+        <li class="learned-item">✅ Replying to emails</li>
+        <li class="learned-item">✅ Forwarding emails to others</li>
+        <li class="learned-item">✅ Attaching photos and documents</li>
+        <li class="learned-item">✅ Understanding Gmail folders</li>
+        <li class="learned-item">✅ Searching and deleting emails</li>
+      </ul>
+      <div class="completion-actions">
+        <button class="btn-primary" onclick="window.location.href='email-advanced.html'">Next: Email Advanced →</button>
+        <button class="btn-secondary" onclick="window.location.href='../courses.html'">Back to all courses</button>
+      </div>
+    </div>
+  </div>`;
+  document.getElementById("navBar").classList.add("hidden");
+  document.getElementById("stepDots").classList.add("hidden");
+  saveProgress(100);
+}
+
+window.toggleReveal = (id) => document.getElementById(id).classList.toggle("open");
+window.tapAnswer = function(btn, isCorrect, qid) {
+  const opts = btn.parentElement.querySelectorAll(".tap-opt");
+  opts.forEach(o => { o.classList.add("dim"); o.disabled = true; });
+  btn.classList.remove("dim"); btn.classList.add(isCorrect ? "correct" : "wrong");
+  if (!isCorrect) { opts.forEach(o => { if (o.getAttribute("onclick")?.includes("true")) { o.classList.remove("dim"); o.classList.add("correct"); } }); }
+  const res = document.getElementById("res-" + qid);
+  if (res) { res.className = "tap-result show " + (isCorrect ? "good" : "oops"); res.textContent = isCorrect ? "✅ Exactly right! Well done!" : "💭 Not quite — the correct answer is highlighted above. That's okay, now you know!"; }
+};
+window.nextStep = function() { currentStep++; saveProgress(Math.round((currentStep / STEPS.length) * 100)); render(); };
+window.prevStep = function() { if (currentStep > 0) { currentStep--; render(); } };
+</script>
+</body>
+</html>

@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>My Notes — Phone Saathi</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@400;500;600;700&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#1B2A4A;--navy-md:#2E4070;--navy-lt:#EEF1F8;
+  --cream:#F7F5F0;--warm:#EDE8DF;
+  --gold:#B07D2F;--gold-lt:#F8EDD8;--gold-md:#C8922A;
+  --slate:#4A5568;--slate-lt:#8896A8;--border:#E2DDD6;
+  --green:#2D6A4F;--green-lt:#E6F4EE;
+  --amber:#92400E;
+  --red:#C0392B;--red-lt:#FDECEA;
+  --shadow:0 2px 14px rgba(27,42,74,.07);
+  --shadow-md:0 6px 28px rgba(27,42,74,.12);
+}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy);font-size:17px;line-height:1.7;min-height:100vh}
+
+/* ── NAV ── */
+.nav{background:var(--navy);padding:0 28px;display:flex;align-items:center;justify-content:space-between;height:64px;position:sticky;top:0;z-index:100;box-shadow:0 2px 20px rgba(0,0,0,.15)}
+.nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo{width:36px;height:36px;background:var(--gold);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.nav-name{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:#fff}
+.nav-name span{color:#D4A843}
+.nav-links{display:flex;gap:4px;list-style:none}
+.nav-links a{color:rgba(255,255,255,.65);text-decoration:none;font-size:14px;font-weight:600;padding:8px 14px;border-radius:8px;transition:.15s}
+.nav-links a:hover,.nav-links a.active{background:rgba(255,255,255,.14);color:#fff}
+.nav-back{color:rgba(255,255,255,.75);font-size:14px;font-weight:700;text-decoration:none;padding:9px 16px;border-radius:8px;border:1.5px solid rgba(255,255,255,.25);transition:.15s}
+.nav-back:hover{background:rgba(255,255,255,.12);color:#fff}
+
+/* ── HERO ── */
+.hero{background:linear-gradient(155deg,#1B2A4A,#2E4070);padding:48px 28px 44px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'📝';position:absolute;right:50px;top:18px;font-size:90px;opacity:.06;transform:rotate(15deg)}
+.hero::after{content:'✏️';position:absolute;left:30px;bottom:8px;font-size:80px;opacity:.06;transform:rotate(-20deg)}
+.hero-icon{font-size:52px;margin-bottom:14px;display:block;animation:float 3s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.hero h1{font-family:'Playfair Display',serif;font-size:34px;font-weight:700;color:#fff;margin-bottom:10px;letter-spacing:-.3px}
+.hero p{font-size:17px;color:rgba(255,255,255,.7);max-width:460px;margin:0 auto;line-height:1.65}
+
+/* ── TOOLBAR ── */
+.toolbar{max-width:940px;margin:28px auto 0;padding:0 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.add-btn{display:flex;align-items:center;gap:9px;padding:15px 26px;background:var(--navy);color:#fff;border:none;border-radius:14px;font-size:16px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;transition:.2s;box-shadow:0 4px 16px rgba(27,42,74,.2);white-space:nowrap;letter-spacing:.1px}
+.add-btn:hover{background:var(--navy-md);transform:translateY(-1px)}
+.add-btn:active{transform:scale(.97)}
+.search-wrap{flex:1;position:relative;min-width:180px}
+.search-input{width:100%;padding:14px 16px 14px 44px;border:2px solid var(--border);border-radius:14px;font-size:16px;font-family:'DM Sans',sans-serif;color:var(--navy);background:#fff;outline:none;transition:.15s;font-weight:500}
+.search-input:focus{border-color:var(--navy-md);box-shadow:0 0 0 4px rgba(46,64,112,.08)}
+.search-input::placeholder{color:#aaa}
+.search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:18px;pointer-events:none}
+.sort-btn{padding:14px 18px;border:2px solid var(--border);border-radius:14px;background:#fff;font-size:14px;font-weight:700;font-family:'DM Sans',sans-serif;color:var(--slate);cursor:pointer;transition:.15s;white-space:nowrap}
+.sort-btn:hover{border-color:var(--navy-md);color:var(--navy)}
+.count-pill{background:var(--warm);color:var(--slate);font-size:14px;font-weight:700;padding:10px 16px;border-radius:22px;white-space:nowrap}
+
+/* ── COLOUR FILTER BAR ── */
+.color-bar{max-width:940px;margin:14px auto 0;padding:0 20px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.color-label{font-size:13px;font-weight:700;color:var(--slate-lt);letter-spacing:.5px;margin-right:4px}
+.color-dot{width:26px;height:26px;border-radius:50%;cursor:pointer;border:2.5px solid transparent;transition:.15s;flex-shrink:0}
+.color-dot:hover,.color-dot.active{transform:scale(1.3);border-color:var(--navy) !important;outline:2px solid var(--navy);outline-offset:2px}
+.color-dot.all{background:linear-gradient(135deg,#FDE68A,#BBF7D0,#BFDBFE,#FECDD3);border:2px solid var(--border) !important}
+
+/* ── EMPTY STATE ── */
+.empty-state{text-align:center;padding:72px 20px;max-width:420px;margin:0 auto}
+.empty-icon{font-size:72px;margin-bottom:18px;display:block;opacity:.55}
+.empty-title{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--navy);margin-bottom:10px}
+.empty-desc{font-size:16px;color:var(--slate-lt);line-height:1.7;font-weight:500}
+
+/* ── NOTES GRID ── */
+.notes-grid{max-width:940px;margin:22px auto 0;padding:0 20px 80px;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px}
+
+/* ── NOTE CARD ── */
+.note{border-radius:18px;box-shadow:var(--shadow);transition:transform .2s,box-shadow .2s;animation:noteIn .3s cubic-bezier(.34,1.56,.64,1);position:relative;display:flex;flex-direction:column;border:2px solid transparent}
+@keyframes noteIn{from{opacity:0;transform:scale(.85) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.note:hover{transform:translateY(-5px) rotate(.25deg);box-shadow:var(--shadow-md)}
+.note-header{padding:14px 16px 10px;display:flex;align-items:center;justify-content:space-between;gap:8px;border-bottom:1.5px solid rgba(0,0,0,.07)}
+.note-type-badge{font-size:11px;font-weight:800;letter-spacing:.7px;text-transform:uppercase;padding:4px 10px;border-radius:20px;background:rgba(0,0,0,.06)}
+.note-actions{display:flex;gap:6px;opacity:0;transition:opacity .15s}
+.note:hover .note-actions,.note:focus-within .note-actions{opacity:1}
+.note-action-btn{width:32px;height:32px;border-radius:9px;border:none;background:rgba(0,0,0,.08);cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;transition:.15s}
+.note-action-btn:hover{background:rgba(0,0,0,.17)}
+.note-body{padding:14px 16px 18px;flex:1;display:flex;flex-direction:column}
+.note-title{font-family:'Caveat',cursive;font-size:21px;font-weight:700;color:rgba(0,0,0,.85);margin-bottom:8px;line-height:1.2;word-break:break-word}
+.note-content{font-size:15px;color:rgba(0,0,0,.68);line-height:1.65;white-space:pre-wrap;word-break:break-word;flex:1;font-weight:500}
+.note-date{font-size:12px;color:rgba(0,0,0,.38);margin-top:14px;font-weight:700;letter-spacing:.3px}
+.checklist{list-style:none;display:flex;flex-direction:column;gap:8px}
+.checklist li{display:flex;align-items:center;gap:10px;font-size:15px;color:rgba(0,0,0,.68);cursor:pointer;font-weight:500;user-select:none;padding:4px 0}
+.checklist li.done{text-decoration:line-through;opacity:.45}
+.checklist li .cb{width:20px;height:20px;border-radius:5px;border:2px solid rgba(0,0,0,.3);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;transition:.15s;background:transparent;min-width:20px}
+.checklist li.done .cb{background:#2D6A4F;border-color:#2D6A4F;color:#fff}
+
+/* ── MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(10,20,40,.55);backdrop-filter:blur(6px);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .25s}
+.modal-overlay.open{opacity:1;pointer-events:auto}
+.modal{background:#fff;border-radius:22px;width:100%;max-width:580px;box-shadow:0 24px 60px rgba(0,0,0,.2);transform:scale(.9) translateY(20px);transition:transform .3s cubic-bezier(.34,1.56,.64,1);overflow:hidden;max-height:90vh;overflow-y:auto}
+.modal-overlay.open .modal{transform:scale(1) translateY(0)}
+.modal-top{padding:22px 24px 18px;border-bottom:1.5px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#fff;z-index:1}
+.modal-title-el{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--navy)}
+.modal-close{width:38px;height:38px;border-radius:10px;border:2px solid var(--border);background:transparent;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:.15s;color:var(--slate);font-weight:700}
+.modal-close:hover{background:var(--warm);color:var(--navy)}
+.modal-body{padding:22px 24px}
+.form-row{margin-bottom:18px}
+.form-label{font-size:14px;font-weight:700;color:var(--slate);margin-bottom:8px;display:block;letter-spacing:.1px}
+.form-hint{font-size:13px;font-weight:500;color:var(--slate-lt);margin-bottom:8px;display:block}
+.form-input{width:100%;padding:13px 16px;border:2px solid var(--border);border-radius:12px;font-size:16px;font-family:'DM Sans',sans-serif;color:var(--navy);background:var(--cream);outline:none;transition:.15s;font-weight:600}
+.form-input:focus{border-color:var(--navy-md);background:#fff;box-shadow:0 0 0 4px rgba(46,64,112,.08)}
+.form-input::placeholder{color:#b0a99e;font-weight:400}
+.form-textarea{width:100%;padding:13px 16px;border:2px solid var(--border);border-radius:12px;font-size:16px;font-family:'DM Sans',sans-serif;color:var(--navy);background:var(--cream);outline:none;transition:.15s;resize:none;min-height:130px;line-height:1.65;font-weight:500}
+.form-textarea:focus{border-color:var(--navy-md);background:#fff;box-shadow:0 0 0 4px rgba(46,64,112,.08)}
+.type-row{display:flex;gap:10px;flex-wrap:wrap}
+.type-opt{display:flex;align-items:center;gap:7px;padding:11px 18px;border:2px solid var(--border);border-radius:12px;cursor:pointer;font-size:14px;font-weight:700;color:var(--slate);transition:.15s;background:#fff}
+.type-opt:hover{border-color:var(--navy-md);color:var(--navy)}
+.type-opt.selected{border-color:var(--navy);background:var(--navy-lt);color:var(--navy)}
+.colour-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.colour-opt{width:32px;height:32px;border-radius:50%;cursor:pointer;border:2.5px solid transparent;transition:.15s;flex-shrink:0}
+.colour-opt:hover,.colour-opt.sel{transform:scale(1.3);outline:3px solid var(--navy);outline-offset:2px}
+.colour-opt.sel{border-color:var(--navy) !important}
+.colour-label-text{font-size:13px;font-weight:600;color:var(--slate-lt);margin-left:6px}
+.todo-list{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+.todo-item-row{display:flex;align-items:center;gap:10px}
+.todo-item-input{flex:1;padding:11px 14px;border:2px solid var(--border);border-radius:10px;font-size:15px;font-family:'DM Sans',sans-serif;outline:none;background:var(--cream);color:var(--navy);transition:.15s;font-weight:500}
+.todo-item-input:focus{border-color:var(--navy-md);background:#fff}
+.todo-del-btn{width:34px;height:34px;border-radius:10px;border:2px solid var(--border);background:#fff;cursor:pointer;color:var(--slate-lt);font-size:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:.15s;font-weight:700}
+.todo-del-btn:hover{background:var(--red-lt);border-color:var(--red);color:var(--red)}
+.add-item-btn{display:flex;align-items:center;gap:7px;font-size:14px;font-weight:700;color:var(--navy-md);cursor:pointer;padding:9px 0;background:none;border:none;font-family:'DM Sans',sans-serif;margin-top:6px}
+.add-item-btn:hover{color:var(--navy)}
+.modal-footer{padding:18px 24px;border-top:1.5px solid var(--border);display:flex;gap:12px;justify-content:flex-end;position:sticky;bottom:0;background:#fff}
+.modal-save-btn{padding:14px 32px;background:var(--navy);color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;transition:.15s}
+.modal-save-btn:hover{background:var(--navy-md)}
+.modal-cancel-btn{padding:14px 22px;background:var(--warm);color:var(--slate);border:2px solid var(--border);border-radius:12px;font-size:16px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;transition:.15s}
+.modal-cancel-btn:hover{border-color:var(--navy-md);color:var(--navy)}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--green);color:#fff;padding:15px 28px;border-radius:14px;font-size:15px;font-weight:700;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;z-index:999;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,.2)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.error{background:var(--red)}
+
+/* ── CONFETTI ── */
+.confetti-piece{position:fixed;width:8px;height:8px;border-radius:50%;pointer-events:none;z-index:9999;animation:confettiFall 1.4s ease-in forwards}
+@keyframes confettiFall{0%{transform:translateY(-10px) rotate(0) scale(1);opacity:1}100%{transform:translateY(100vh) rotate(720deg) scale(.3);opacity:0}}
+
+/* ── COLOUR THEMES for note cards ── */
+.note-yellow{background:#FFFBEB;border-color:#FDE68A}
+.note-yellow .note-type-badge{color:#78350F;background:rgba(120,53,15,.09)}
+.note-yellow .note-header{border-bottom-color:rgba(120,53,15,.12)}
+
+.note-green{background:#F0FDF4;border-color:#86EFAC}
+.note-green .note-type-badge{color:#166534;background:rgba(22,101,52,.09)}
+.note-green .note-header{border-bottom-color:rgba(22,101,52,.12)}
+
+.note-blue{background:#EFF6FF;border-color:#93C5FD}
+.note-blue .note-type-badge{color:#1E40AF;background:rgba(30,64,175,.09)}
+.note-blue .note-header{border-bottom-color:rgba(30,64,175,.12)}
+
+.note-pink{background:#FFF1F2;border-color:#FECDD3}
+.note-pink .note-type-badge{color:#9F1239;background:rgba(159,18,57,.09)}
+.note-pink .note-header{border-bottom-color:rgba(159,18,57,.12)}
+
+.note-purple{background:#FAF5FF;border-color:#D8B4FE}
+.note-purple .note-type-badge{color:#6B21A8;background:rgba(107,33,168,.09)}
+.note-purple .note-header{border-bottom-color:rgba(107,33,168,.12)}
+
+.note-orange{background:#FFF7ED;border-color:#FED7AA}
+.note-orange .note-type-badge{color:#9A3412;background:rgba(154,52,18,.09)}
+.note-orange .note-header{border-bottom-color:rgba(154,52,18,.12)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:560px){
+  .nav-links{display:none}
+  .notes-grid{grid-template-columns:1fr 1fr}
+  .toolbar{gap:10px}
+  .hero h1{font-size:28px}
+  .type-row{gap:8px}
+}
+@media(max-width:380px){
+  .notes-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav" role="navigation" aria-label="Main navigation">
+  <a href="dashboard.html" class="nav-brand" aria-label="Phone Saathi home">
+    <div class="nav-logo" aria-hidden="true">📱</div>
+    <div class="nav-name">Phone<span>Saathi</span></div>
+  </a>
+  <ul class="nav-links" role="list">
+    <li><a href="dashboard.html">🏠 Home</a></li>
+    <li><a href="courses.html">📚 Courses</a></li>
+    <li><a href="quizzes.html">🧠 Quiz</a></li>
+    <li><a href="games.html">🎮 Games</a></li>
+    <li><a href="ai-chat.html" class="active">🤖 AI Chat</a></li>
+    <li><a href="notes.html" class="active" aria-current="page">📝 Notes</a></li>
+  </ul>
+  <a href="dashboard.html" class="nav-back">← Dashboard</a>
+</nav>
+
+<header class="hero" role="banner">
+  <span class="hero-icon" aria-hidden="true">📓</span>
+  <h1>My Learning Notes</h1>
+  <p>Write what you learned today, make a to-do list, or save little reminders — all in one safe place.</p>
+</header>
+
+<main>
+  <div class="toolbar" role="toolbar" aria-label="Notes controls">
+    <button class="add-btn" onclick="openModal()" aria-label="Add a new note">
+      ✚ New Note
+    </button>
+    <div class="search-wrap">
+      <span class="search-icon" aria-hidden="true">🔍</span>
+      <input
+        class="search-input"
+        id="searchInput"
+        placeholder="Search your notes…"
+        oninput="renderNotes()"
+        aria-label="Search notes"
+        type="search"
+      >
+    </div>
+    <button class="sort-btn" id="sortBtn" onclick="toggleSort()" aria-label="Toggle sort order">📅 Newest first</button>
+    <div class="count-pill" id="countPill" aria-live="polite">0 notes</div>
+  </div>
+
+  <div class="color-bar" role="group" aria-label="Filter notes by colour">
+    <span class="color-label" id="filterLabel">Filter by colour:</span>
+    <div class="color-dot all active" onclick="setColorFilter(null,this)" title="Show all colours" role="button" tabindex="0" aria-label="Show all colours" onkeydown="if(event.key==='Enter'||event.key===' ')setColorFilter(null,this)"></div>
+    <div class="color-dot" style="background:#FFFBEB;border-color:#FDE68A" onclick="setColorFilter('yellow',this)" title="Yellow notes" role="button" tabindex="0" aria-label="Filter yellow notes" onkeydown="if(event.key==='Enter'||event.key===' ')setColorFilter('yellow',this)"></div>
+    <div class="color-dot" style="background:#F0FDF4;border-color:#86EFAC" onclick="setColorFilter('green',this)" title="Green notes" role="button" tabindex="0" aria-label="Filter green notes" onkeydown="if(event.key==='Enter'||event.key===' ')setColorFilter('green',this)"></div>
+    <div class="color-dot" style="background:#EFF6FF;border-color:#93C5FD" onclick="setColorFilter('blue',this)" title="Blue notes" role="button" tabindex="0" aria-label="Filter blue notes" onkeydown="if(event.key==='Enter'||event.key===' ')setColorFilter('blue',this)"></div>
+    <div class="color-dot" style="background:#FFF1F2;border-color:#FECDD3" onclick="setColorFilter('pink',this)" title="Pink notes" role="button" tabindex="0" aria-label="Filter pink notes" onkeydown="if(event.key==='Enter'||event.key===' ')setColorFilter('pink',this)"></div>
+    <div class="color-dot" style="background:#FAF5FF;border-color:#D8B4FE" onclick="setColorFilter('purple',this)" title="Purple notes" role="button" tabindex="0" aria-label="Filter purple notes" onkeydown="if(event.key==='Enter'||event.key===' ')setColorFilter('purple',this)"></div>
+    <div class="color-dot" style="background:#FFF7ED;border-color:#FED7AA" onclick="setColorFilter('orange',this)" title="Orange notes" role="button" tabindex="0" aria-label="Filter orange notes" onkeydown="if(event.key==='Enter'||event.key===' ')setColorFilter('orange',this)"></div>
+  </div>
+
+  <div class="notes-grid" id="notesGrid" role="list" aria-label="Your notes"></div>
+
+  <div class="empty-state" id="emptyState" style="display:none" role="status">
+    <span class="empty-icon" aria-hidden="true">🌱</span>
+    <div class="empty-title">No notes yet!</div>
+    <div class="empty-desc">Tap <strong>New Note</strong> above to write your first note. You can jot down what you learned today, make a to-do list, or write a reminder!</div>
+  </div>
+</main>
+
+<!-- ADD / EDIT MODAL -->
+<div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalHeading" onclick="handleOverlayClick(event)">
+  <div class="modal" id="modal">
+    <div class="modal-top">
+      <div class="modal-title-el" id="modalHeading">New Note</div>
+      <button class="modal-close" onclick="closeModal()" aria-label="Close this window">✕</button>
+    </div>
+    <div class="modal-body">
+
+      <div class="form-row">
+        <div class="form-label" id="typeLabel">What kind of note is this?</div>
+        <div class="type-row" role="group" aria-labelledby="typeLabel">
+          <div class="type-opt selected" data-type="note" onclick="selectType('note',this)" role="radio" aria-checked="true" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')selectType('note',this)">📝 Note</div>
+          <div class="type-opt" data-type="todo" onclick="selectType('todo',this)" role="radio" aria-checked="false" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')selectType('todo',this)">✅ To-do list</div>
+          <div class="type-opt" data-type="learned" onclick="selectType('learned',this)" role="radio" aria-checked="false" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')selectType('learned',this)">💡 What I learned</div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <label class="form-label" for="noteTitle">Title</label>
+        <span class="form-hint">Give your note a short name so you can find it easily.</span>
+        <input class="form-input" id="noteTitle" placeholder="e.g. How to send a WhatsApp message" maxlength="80" autocomplete="off">
+      </div>
+
+      <div class="form-row" id="contentRow">
+        <label class="form-label" for="noteContent">Write here</label>
+        <span class="form-hint">Type anything you want to remember.</span>
+        <textarea class="form-textarea" id="noteContent" placeholder="e.g. To send a photo on WhatsApp, tap the paperclip icon…"></textarea>
+      </div>
+
+      <div class="form-row" id="todoRow" style="display:none">
+        <div class="form-label">Your to-do items</div>
+        <span class="form-hint">Write one task per line. Tick them off when done!</span>
+        <div class="todo-list" id="todoList"></div>
+        <button class="add-item-btn" onclick="addTodoItem()">+ Add another task</button>
+      </div>
+
+      <div class="form-row">
+        <div class="form-label" id="colourLabel">Choose a colour for this note</div>
+        <div class="colour-row" role="group" aria-labelledby="colourLabel" id="colourRow">
+          <div class="colour-opt sel" data-color="yellow" style="background:#FFFBEB;border-color:#FDE68A" onclick="selectColor('yellow',this)" role="radio" aria-checked="true" tabindex="0" aria-label="Yellow" onkeydown="if(event.key==='Enter'||event.key===' ')selectColor('yellow',this)"></div>
+          <div class="colour-opt" data-color="green" style="background:#F0FDF4;border-color:#86EFAC" onclick="selectColor('green',this)" role="radio" aria-checked="false" tabindex="0" aria-label="Green" onkeydown="if(event.key==='Enter'||event.key===' ')selectColor('green',this)"></div>
+          <div class="colour-opt" data-color="blue" style="background:#EFF6FF;border-color:#93C5FD" onclick="selectColor('blue',this)" role="radio" aria-checked="false" tabindex="0" aria-label="Blue" onkeydown="if(event.key==='Enter'||event.key===' ')selectColor('blue',this)"></div>
+          <div class="colour-opt" data-color="pink" style="background:#FFF1F2;border-color:#FECDD3" onclick="selectColor('pink',this)" role="radio" aria-checked="false" tabindex="0" aria-label="Pink" onkeydown="if(event.key==='Enter'||event.key===' ')selectColor('pink',this)"></div>
+          <div class="colour-opt" data-color="purple" style="background:#FAF5FF;border-color:#D8B4FE" onclick="selectColor('purple',this)" role="radio" aria-checked="false" tabindex="0" aria-label="Purple" onkeydown="if(event.key==='Enter'||event.key===' ')selectColor('purple',this)"></div>
+          <div class="colour-opt" data-color="orange" style="background:#FFF7ED;border-color:#FED7AA" onclick="selectColor('orange',this)" role="radio" aria-checked="false" tabindex="0" aria-label="Orange" onkeydown="if(event.key==='Enter'||event.key===' ')selectColor('orange',this)"></div>
+          <span class="colour-label-text" id="selectedColorName">Yellow selected</span>
+        </div>
+      </div>
+
+    </div>
+    <div class="modal-footer">
+      <button class="modal-cancel-btn" onclick="closeModal()">Cancel</button>
+      <button class="modal-save-btn" onclick="saveNote()">Save note ✓</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="assertive"></div>
+
+<script>
+const STORAGE_KEY = "phonesaathi_notes_v2";
+
+/* ----- colour names for screen readers ----- */
+const COLOR_NAMES = {
+  yellow:"Yellow", green:"Green", blue:"Blue",
+  pink:"Pink", purple:"Purple", orange:"Orange"
+};
+
+const TYPE_LABELS = {
+  note:"📝 Note", todo:"✅ To-do", learned:"💡 Learned"
+};
+
+let notes = [], editingId = null, sortNewest = true,
+    colorFilter = null, selectedType = "note",
+    selectedColor = "yellow", todoItems = [];
+
+/* ----- persistence ----- */
+function loadNotes(){
+  try{ notes = JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+  catch(e){ notes = []; }
+}
+function persistNotes(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(notes)); }
+
+/* ----- toast ----- */
+function showToast(msg, isError = false){
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.toggle("error", isError);
+  t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 2800);
+}
+
+/* ----- confetti ----- */
+function launchConfetti(){
+  const colors = ["#FDE68A","#BBF7D0","#BFDBFE","#FECDD3","#E9D5FF","#FED7AA","#B07D2F"];
+  for(let i = 0; i < 34; i++){
+    const p = document.createElement("div");
+    p.className = "confetti-piece";
+    p.style.left = Math.random() * 100 + "vw";
+    p.style.background = colors[Math.floor(Math.random() * colors.length)];
+    p.style.animationDelay = Math.random() * .9 + "s";
+    p.style.animationDuration = (.9 + Math.random() * .8) + "s";
+    p.style.borderRadius = Math.random() > .5 ? "50%" : "3px";
+    p.style.width = p.style.height = (6 + Math.random() * 9) + "px";
+    document.body.appendChild(p);
+    setTimeout(() => p.remove(), 2400);
+  }
+}
+
+/* ----- render ----- */
+function renderNotes(){
+  const grid = document.getElementById("notesGrid");
+  const empty = document.getElementById("emptyState");
+  const query = document.getElementById("searchInput").value.toLowerCase().trim();
+
+  let filtered = notes.filter(n => {
+    const mc = !colorFilter || n.color === colorFilter;
+    const mq = !query
+      || (n.title||"").toLowerCase().includes(query)
+      || (n.content||"").toLowerCase().includes(query)
+      || (n.items||[]).some(i => i.text.toLowerCase().includes(query));
+    return mc && mq;
+  });
+
+  filtered = [...filtered].sort((a,b) =>
+    sortNewest ? b.createdAt - a.createdAt : a.createdAt - b.createdAt
+  );
+
+  const total = notes.length;
+  document.getElementById("countPill").textContent =
+    total + " note" + (total === 1 ? "" : "s");
+
+  grid.innerHTML = "";
+  if(filtered.length === 0){
+    empty.style.display = "block";
+  } else {
+    empty.style.display = "none";
+    filtered.forEach(n => grid.appendChild(buildCard(n)));
+  }
+}
+
+/* ----- build a single card ----- */
+function buildCard(n){
+  const el = document.createElement("article");
+  el.className = "note note-" + (n.color || "yellow");
+  el.setAttribute("role", "listitem");
+  el.setAttribute("aria-label", (n.title || "Untitled note"));
+
+  const dateStr = new Date(n.createdAt).toLocaleDateString("en-IN",{
+    day:"numeric", month:"long", year:"numeric"
+  });
+
+  let bodyHTML = "";
+  if(n.type === "todo" && n.items && n.items.length){
+    const doneCount = n.items.filter(i => i.done).length;
+    bodyHTML = `
+      <div style="font-size:12px;font-weight:700;color:rgba(0,0,0,.4);margin-bottom:8px;">
+        ${doneCount} of ${n.items.length} done
+      </div>
+      <ul class="checklist" role="list">
+        ${n.items.map((item,idx) =>
+          `<li class="${item.done?'done':''}" onclick="toggleItem('${n.id}',${idx})"
+              role="checkbox" aria-checked="${item.done}"
+              title="${item.done?'Mark as not done':'Mark as done'}">
+            <span class="cb" aria-hidden="true">${item.done?"✓":""}</span>
+            <span>${esc(item.text)}</span>
+          </li>`
+        ).join("")}
+      </ul>`;
+  } else {
+    const preview = (n.content||"").slice(0,200) + ((n.content||"").length > 200 ? "…" : "");
+    bodyHTML = `<div class="note-content">${esc(preview)}</div>`;
+  }
+
+  el.innerHTML = `
+    <div class="note-header">
+      <span class="note-type-badge">${TYPE_LABELS[n.type] || "📝 Note"}</span>
+      <div class="note-actions" aria-label="Note actions">
+        <button class="note-action-btn" onclick="editNote('${n.id}')" aria-label="Edit this note" title="Edit">✏️</button>
+        <button class="note-action-btn" onclick="deleteNote('${n.id}')" aria-label="Delete this note" title="Delete">🗑️</button>
+      </div>
+    </div>
+    <div class="note-body">
+      <div class="note-title">${esc(n.title||"")}</div>
+      ${bodyHTML}
+      <div class="note-date">📅 ${dateStr}</div>
+    </div>`;
+  return el;
+}
+
+function esc(s){
+  return (s||"")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/\n/g,"<br>");
+}
+
+/* ----- toggle checklist item ----- */
+window.toggleItem = function(id, idx){
+  const n = notes.find(x => x.id === id);
+  if(!n) return;
+  n.items[idx].done = !n.items[idx].done;
+  persistNotes();
+  renderNotes();
+};
+
+/* ----- sort ----- */
+window.toggleSort = function(){
+  sortNewest = !sortNewest;
+  document.getElementById("sortBtn").textContent =
+    sortNewest ? "📅 Newest first" : "📅 Oldest first";
+  renderNotes();
+};
+
+/* ----- colour filter ----- */
+window.setColorFilter = function(color, el){
+  colorFilter = color;
+  document.querySelectorAll(".color-dot").forEach(d => d.classList.remove("active"));
+  el.classList.add("active");
+  renderNotes();
+};
+
+/* ----- modal open ----- */
+window.openModal = function(prefillId){
+  editingId = prefillId || null;
+  document.getElementById("modalHeading").textContent =
+    editingId ? "Edit Note" : "New Note";
+
+  if(editingId){
+    const n = notes.find(x => x.id === editingId);
+    if(!n) return;
+    selectedType  = n.type  || "note";
+    selectedColor = n.color || "yellow";
+    document.getElementById("noteTitle").value   = n.title   || "";
+    document.getElementById("noteContent").value = n.content || "";
+    todoItems = (n.items || []).map(i => ({...i}));
+  } else {
+    selectedType  = "note";
+    selectedColor = "yellow";
+    document.getElementById("noteTitle").value   = "";
+    document.getElementById("noteContent").value = "";
+    todoItems = [{text:"", done:false}];
+  }
+
+  /* sync type buttons */
+  document.querySelectorAll(".type-opt").forEach(o => {
+    const sel = o.dataset.type === selectedType;
+    o.classList.toggle("selected", sel);
+    o.setAttribute("aria-checked", sel);
+  });
+
+  /* sync colour buttons */
+  document.querySelectorAll(".colour-opt").forEach(o => {
+    const sel = o.dataset.color === selectedColor;
+    o.classList.toggle("sel", sel);
+    o.setAttribute("aria-checked", sel);
+  });
+  document.getElementById("selectedColorName").textContent =
+    (COLOR_NAMES[selectedColor] || selectedColor) + " selected";
+
+  showHideFields();
+  renderTodoBuilder();
+  document.getElementById("modalOverlay").classList.add("open");
+  document.getElementById("modalOverlay").removeAttribute("aria-hidden");
+  setTimeout(() => document.getElementById("noteTitle").focus(), 200);
+};
+
+/* ----- modal close ----- */
+window.closeModal = function(){
+  document.getElementById("modalOverlay").classList.remove("open");
+  document.getElementById("modalOverlay").setAttribute("aria-hidden","true");
+  editingId = null;
+};
+window.handleOverlayClick = function(e){
+  if(e.target === document.getElementById("modalOverlay")) closeModal();
+};
+
+/* ----- select type ----- */
+window.selectType = function(type, el){
+  selectedType = type;
+  document.querySelectorAll(".type-opt").forEach(o => {
+    const sel = o === el;
+    o.classList.toggle("selected", sel);
+    o.setAttribute("aria-checked", sel);
+  });
+  showHideFields();
+};
+
+function showHideFields(){
+  const isTodo = selectedType === "todo";
+  document.getElementById("contentRow").style.display = isTodo ? "none" : "block";
+  document.getElementById("todoRow").style.display    = isTodo ? "block" : "none";
+  if(isTodo) renderTodoBuilder();
+}
+
+/* ----- select colour ----- */
+window.selectColor = function(color, el){
+  selectedColor = color;
+  document.querySelectorAll(".colour-opt").forEach(o => {
+    const sel = o === el;
+    o.classList.toggle("sel", sel);
+    o.setAttribute("aria-checked", sel);
+  });
+  document.getElementById("selectedColorName").textContent =
+    (COLOR_NAMES[color] || color) + " selected";
+};
+
+/* ----- to-do builder ----- */
+function renderTodoBuilder(){
+  if(!todoItems.length) todoItems = [{text:"", done:false}];
+  const list = document.getElementById("todoList");
+  list.innerHTML = "";
+  todoItems.forEach((item, idx) => {
+    const row = document.createElement("div");
+    row.className = "todo-item-row";
+    row.innerHTML = `
+      <input class="todo-item-input"
+        placeholder="e.g. Learn how to video call"
+        value="${esc(item.text)}"
+        oninput="todoItems[${idx}].text=this.value"
+        onkeydown="if(event.key==='Enter')addTodoItem()"
+        aria-label="Task ${idx+1}">
+      <button class="todo-del-btn" onclick="removeTodoItem(${idx})" aria-label="Remove task ${idx+1}">✕</button>`;
+    list.appendChild(row);
+  });
+}
+
+window.addTodoItem = function(){
+  todoItems.push({text:"", done:false});
+  renderTodoBuilder();
+  const inputs = document.getElementById("todoList").querySelectorAll(".todo-item-input");
+  inputs[inputs.length - 1].focus();
+};
+
+window.removeTodoItem = function(idx){
+  if(todoItems.length <= 1){
+    todoItems[0] = {text:"", done:false};
+    renderTodoBuilder();
+    return;
+  }
+  todoItems.splice(idx, 1);
+  renderTodoBuilder();
+};
+
+/* ----- save ----- */
+window.saveNote = function(){
+  const title   = document.getElementById("noteTitle").value.trim();
+  const content = document.getElementById("noteContent").value.trim();
+  const items   = todoItems.filter(i => i.text.trim());
+
+  if(!title && !content && !items.length){
+    showToast("Please write something first!", true);
+    document.getElementById("noteTitle").focus();
+    return;
+  }
+
+  if(editingId){
+    const note = notes.find(n => n.id === editingId);
+    if(note){
+      Object.assign(note, {
+        title, content, items,
+        type: selectedType,
+        color: selectedColor,
+        updatedAt: Date.now()
+      });
+    }
+    showToast("Note updated ✓");
+  } else {
+    const isFirst = notes.length === 0;
+    notes.unshift({
+      id: (crypto.randomUUID
+        ? crypto.randomUUID()
+        : Date.now().toString(36) + Math.random().toString(36).slice(2)),
+      title, content, items,
+      type: selectedType,
+      color: selectedColor,
+      createdAt: Date.now()
+    });
+    showToast("Note saved! Great job 🎉");
+    if(isFirst) launchConfetti();
+  }
+
+  persistNotes();
+  renderNotes();
+  closeModal();
+};
+
+window.editNote   = id => openModal(id);
+window.deleteNote = function(id){
+  if(!confirm("Are you sure you want to delete this note?\n\nThis cannot be undone.")) return;
+  notes = notes.filter(n => n.id !== id);
+  persistNotes();
+  renderNotes();
+  showToast("Note deleted");
+};
+
+/* ----- keyboard shortcuts ----- */
+document.addEventListener("keydown", e => {
+  const modalOpen = document.getElementById("modalOverlay").classList.contains("open");
+  if((e.ctrlKey || e.metaKey) && e.key === "n" && !modalOpen){
+    e.preventDefault();
+    openModal();
+  }
+  if(e.key === "Escape") closeModal();
+});
+
+/* ----- init ----- */
+loadNotes();
+renderNotes();
+</script>
+</body>
+</html>

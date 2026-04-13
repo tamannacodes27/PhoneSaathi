@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Phone Saathi — Help Centre</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --navy:#1B2A4A; --navy-md:#2E4070; --navy-lt:#EEF1F8;
+  --cream:#FAF8F5; --warm:#F3EFE8; --gold:#B07D2F; --gold-lt:#F5EDD8;
+  --slate:#4A5568; --slate-lt:#718096; --border:#DDD8CF;
+  --green:#2D6A4F; --green-lt:#E8F5EF; --amber:#92400E;
+  --red:#C0392B; --red-lt:#FDECEC;
+  --whatsapp:#25D366;
+  --radius:12px; --shadow:0 2px 12px rgba(27,42,74,0.08);
+}
+body { font-family:'Inter',sans-serif; background:var(--cream); color:var(--navy); font-size:16px; line-height:1.6; }
+
+/* NAV */
+.nav { background:var(--navy); padding:0 24px; display:flex; align-items:center; justify-content:space-between; height:56px; position:sticky; top:0; z-index:100; }
+.nav-brand { display:flex; align-items:center; gap:8px; text-decoration:none; }
+.nav-logo { width:32px; height:32px; background:var(--gold); border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:16px; }
+.nav-name { font-family:'Lora',Georgia,serif; font-size:18px; font-weight:600; color:#fff; }
+.nav-name span { color:var(--gold); }
+.nav-links { display:flex; gap:4px; list-style:none; }
+.nav-links a { color:rgba(255,255,255,0.65); text-decoration:none; font-size:13px; font-weight:500; padding:6px 12px; border-radius:6px; transition:background 0.15s, color 0.15s; }
+.nav-links a:hover { background:rgba(255,255,255,0.12); color:#fff; }
+.nav-back { color:rgba(255,255,255,0.65); font-size:13px; font-weight:500; text-decoration:none; padding:6px 12px; border-radius:6px; border:1px solid rgba(255,255,255,0.2); transition:background 0.15s; }
+.nav-back:hover { background:rgba(255,255,255,0.1); color:#fff; }
+
+/* HERO */
+.hero { background:var(--navy); padding:36px 24px 32px; text-align:center; }
+.hero-eyebrow { font-size:12px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:var(--gold); margin-bottom:10px; }
+.hero-title { font-family:'Lora',Georgia,serif; font-size:26px; font-weight:600; color:#fff; margin-bottom:8px; }
+.hero-sub { font-size:15px; color:rgba(255,255,255,0.55); max-width:400px; margin:0 auto; }
+
+/* LAYOUT */
+.wrap { max-width:720px; margin:0 auto; padding:28px 20px 64px; }
+.section-label { font-size:11px; font-weight:600; letter-spacing:1.8px; text-transform:uppercase; color:var(--slate-lt); margin-bottom:14px; margin-top:32px; }
+.section-label:first-child { margin-top:0; }
+
+/* QUICK TIPS */
+.tips-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.tip-card { background:#fff; border:1.5px solid var(--border); border-radius:var(--radius); padding:18px 20px; box-shadow:var(--shadow); display:flex; align-items:flex-start; gap:14px; }
+.tip-icon { font-size:24px; flex-shrink:0; margin-top:2px; }
+.tip-title { font-size:14px; font-weight:600; color:var(--navy); margin-bottom:4px; }
+.tip-body { font-size:13px; color:var(--slate-lt); line-height:1.55; }
+
+/* FAQ */
+.faq-list { display:flex; flex-direction:column; gap:8px; }
+.faq-item { background:#fff; border:1.5px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow); overflow:hidden; }
+.faq-q { width:100%; display:flex; align-items:center; justify-content:space-between; padding:16px 20px; background:none; border:none; font-size:15px; font-weight:600; color:var(--navy); font-family:'Inter',sans-serif; cursor:pointer; text-align:left; gap:12px; transition:background 0.15s; }
+.faq-q:hover { background:var(--navy-lt); }
+.faq-q.open { background:var(--navy-lt); }
+.faq-chevron { font-size:13px; color:var(--slate-lt); flex-shrink:0; transition:transform 0.2s; }
+.faq-q.open .faq-chevron { transform:rotate(180deg); }
+.faq-a { font-size:14px; color:var(--slate); line-height:1.65; padding:0 20px 16px; display:none; }
+.faq-a.open { display:block; }
+.faq-a strong { color:var(--navy); }
+
+/* CONTACT */
+.contact-card { background:#fff; border:1.5px solid var(--border); border-radius:var(--radius); padding:24px; box-shadow:var(--shadow); }
+.contact-intro { font-size:14px; color:var(--slate); margin-bottom:20px; line-height:1.65; }
+.contact-options { display:flex; flex-direction:column; gap:12px; }
+.contact-btn { display:flex; align-items:center; gap:14px; padding:16px 20px; border-radius:10px; border:1.5px solid var(--border); background:var(--cream); text-decoration:none; transition:border-color 0.15s, background 0.15s; cursor:pointer; font-family:'Inter',sans-serif; }
+.contact-btn:hover { background:#fff; border-color:var(--navy-md); }
+.contact-btn.whatsapp { border-color:#b2edd0; background:#f0fdf6; }
+.contact-btn.whatsapp:hover { border-color:var(--whatsapp); }
+.contact-icon { width:42px; height:42px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0; }
+.contact-icon.wa { background:#dcfce7; }
+.contact-icon.em { background:var(--navy-lt); }
+.contact-text-wrap { flex:1; }
+.contact-title { font-size:14px; font-weight:600; color:var(--navy); }
+.contact-sub { font-size:12px; color:var(--slate-lt); margin-top:2px; }
+.contact-arrow { font-size:16px; color:var(--slate-lt); }
+
+/* HOURS NOTE */
+.hours-note { text-align:center; font-size:13px; color:var(--slate-lt); margin-top:14px; padding:12px 16px; background:var(--warm); border-radius:8px; border:1px solid var(--border); }
+
+/* STRIP */
+.strip { background:var(--gold-lt); border-top:1.5px solid #E8D5A8; padding:16px 24px; text-align:center; font-family:'Lora',Georgia,serif; font-size:15px; color:var(--amber); font-style:italic; }
+
+@media(max-width:520px) {
+  .tips-grid { grid-template-columns:1fr; }
+  .nav-links { display:none; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="dashboard.html" class="nav-brand">
+    <div class="nav-logo">📱</div>
+    <div class="nav-name">Phone<span>Saathi</span></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="dashboard.html">🏠 Home</a></li>
+    <li><a href="courses.html">📚 Courses</a></li>
+    <li><a href="quizzes.html">🧠 Quiz</a></li>
+    <li><a href="games.html">🎮 Games</a></li>
+    <li><a href="ai-chat.html" class="active">🤖 AI Chat</a></li>
+    <li><a href="notes.html">📝 Notes</a></li>
+  </ul>
+  <a href="dashboard.html" class="nav-back">← Dashboard</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">Help Centre</div>
+  <div class="hero-title">How can we help you? 🤝</div>
+  <div class="hero-sub">You'll find answers to common questions, helpful tips, and ways to reach us below</div>
+</div>
+
+<div class="wrap">
+
+  <!-- QUICK TIPS -->
+  <div class="section-label">Quick tips</div>
+  <div class="tips-grid">
+    <div class="tip-card">
+      <div class="tip-icon">🐢</div>
+      <div>
+        <div class="tip-title">Go at your own pace</div>
+        <div class="tip-body">There is no rush. You can pause a lesson any time and come back to it later — your progress is always saved.</div>
+      </div>
+    </div>
+    <div class="tip-card">
+      <div class="tip-icon">🔁</div>
+      <div>
+        <div class="tip-title">Repeat as many times as you like</div>
+        <div class="tip-body">You can redo any lesson or quiz as many times as you want. Practice makes it easier!</div>
+      </div>
+    </div>
+    <div class="tip-card">
+      <div class="tip-icon">📶</div>
+      <div>
+        <div class="tip-title">Need a good internet connection</div>
+        <div class="tip-body">Make sure your phone or device is connected to Wi-Fi or mobile data before you start a lesson.</div>
+      </div>
+    </div>
+    <div class="tip-card">
+      <div class="tip-icon">🔤</div>
+      <div>
+        <div class="tip-title">Make text bigger</div>
+        <div class="tip-body">Go to <strong>My Profile</strong> and turn on <em>Larger text</em> if the words feel too small to read comfortably.</div>
+      </div>
+    </div>
+    <div class="tip-card">
+      <div class="tip-icon">🔐</div>
+      <div>
+        <div class="tip-title">Forgot your password?</div>
+        <div class="tip-body">On the sign-in page, tap <em>Forgot password?</em> and we will send a reset link to your email address.</div>
+      </div>
+    </div>
+    <div class="tip-card">
+      <div class="tip-icon">👤</div>
+      <div>
+        <div class="tip-title">Update your profile anytime</div>
+        <div class="tip-body">Your name, skill level, and preferences can all be changed from the <strong>My Profile</strong> page at any time.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAQs -->
+  <div class="section-label">Frequently asked questions</div>
+  <div class="faq-list" id="faqList">
+
+    <div class="faq-item">
+      <button class="faq-q">Is PhoneSaathi free to use? <span class="faq-chevron">▼</span></button>
+      <div class="faq-a">Yes — completely free, forever. There are no hidden charges, no subscription fees, and no advertisements. Every lesson, quiz, and feature is free for everyone.</div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q">How do I start a lesson? <span class="faq-chevron">▼</span></button>
+      <div class="faq-a">From your <strong>Dashboard</strong>, tap <em>Continue learning</em> or go to <strong>All Courses</strong>. Choose a topic that interests you and tap on it to begin. You can stop at any time — your progress will be saved automatically.</div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q">Will my progress be saved if I close the app? <span class="faq-chevron">▼</span></button>
+      <div class="faq-a">Yes. Your progress is saved to your account, so you can close the app or switch devices and pick up right where you left off — as long as you are signed in.</div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q">I forgot my password. What do I do? <span class="faq-chevron">▼</span></button>
+      <div class="faq-a">Go to the sign-in page and tap <em>Forgot password?</em> below the password box. Enter your email address and we will send you a link to reset your password. Check your inbox (and your spam/junk folder just in case).</div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q">Can I change my name, age or preferences? <span class="faq-chevron">▼</span></button>
+      <div class="faq-a">Yes, easily. Go to <strong>My Profile</strong> from the dashboard. You will see an <em>Edit</em> button next to each section. Make your changes and tap <em>Save changes</em>.</div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q">The text is too small. Can I make it bigger? <span class="faq-chevron">▼</span></button>
+      <div class="faq-a">Yes. Go to <strong>My Profile</strong> and scroll down to the <em>Accessibility</em> section. Turn on the <strong>Larger text</strong> toggle and all text on the page will become bigger straight away.</div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q">What courses are available? <span class="faq-chevron">▼</span></button>
+      <div class="faq-a">We currently have 15 lessons covering topics like <strong>WhatsApp</strong>, <strong>Online Payments</strong>, <strong>Email</strong>, <strong>Social Media</strong>, and <strong>Smartphone Basics</strong> — each at Beginner, Intermediate, and Advanced levels. More courses are being added regularly.</div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q">Is my personal information safe? <span class="faq-chevron">▼</span></button>
+      <div class="faq-a">Yes. We only store your name, email, and learning preferences — nothing else. We never share your data with anyone, and we do not show any advertisements. Your account is secured with a password you choose.</div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q">Can I use PhoneSaathi on a computer or tablet? <span class="faq-chevron">▼</span></button>
+      <div class="faq-a">Yes. PhoneSaathi works on any device with a web browser — smartphones, tablets, laptops, and desktop computers. Just open your browser, go to the website, and sign in.</div>
+    </div>
+
+  </div>
+
+  <!-- CONTACT -->
+  <div class="section-label">Still need help?</div>
+  <div class="contact-card">
+    <div class="contact-intro">
+      Our team is here to help. If you could not find the answer above, reach out to us directly — we are happy to assist, in simple language, step by step.
+    </div>
+    <div class="contact-options">
+
+      <a href="https://wa.me/919999999999?text=Hello%2C%20I%20need%20help%20with%20PhoneSaathi" target="_blank" class="contact-btn whatsapp">
+        <div class="contact-icon wa">💬</div>
+        <div class="contact-text-wrap">
+          <div class="contact-title">Chat on WhatsApp</div>
+          <div class="contact-sub">Tap to open a chat — we reply in simple, friendly language</div>
+        </div>
+        <div class="contact-arrow">→</div>
+      </a>
+
+      <a href="mailto:help@phonesaathi.in?subject=I%20need%20help%20with%20PhoneSaathi" class="contact-btn">
+        <div class="contact-icon em">📧</div>
+        <div class="contact-text-wrap">
+          <div class="contact-title">Send us an email</div>
+          <div class="contact-sub">help@phonesaathi.in — we reply within 1–2 working days</div>
+        </div>
+        <div class="contact-arrow">→</div>
+      </a>
+
+    </div>
+    <div class="hours-note">⏰ Support hours: Monday to Saturday, 9 am – 6 pm IST</div>
+  </div>
+
+</div>
+
+<div class="strip">"No question is too small. Asking for help is a sign of wisdom, not weakness."</div>
+
+<script>
+// FAQ accordion
+document.querySelectorAll(".faq-q").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const answer  = btn.nextElementSibling;
+    const isOpen  = btn.classList.contains("open");
+
+    // Close all
+    document.querySelectorAll(".faq-q").forEach(b => {
+      b.classList.remove("open");
+      b.nextElementSibling.classList.remove("open");
+    });
+
+    // Open this one if it was closed
+    if (!isOpen) {
+      btn.classList.add("open");
+      answer.classList.add("open");
+    }
+  });
+});
+</script>
+</body>
+</html>

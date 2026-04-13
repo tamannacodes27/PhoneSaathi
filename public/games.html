@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phone Saathi — Games & Practice</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#1B2A4A;--navy-md:#2E4070;--navy-lt:#EEF1F8;
+  --cream:#F7F5F2;--warm:#F0EBE3;
+  --gold:#B07D2F;--gold-lt:#F8EDD8;--gold-md:#C8922A;
+  --slate:#4A5568;--slate-lt:#8896A8;--border:#E2DDD6;
+  --green:#2D6A4F;--green-lt:#E6F4EE;
+  --amber:#92400E;--amber-lt:#FEF3C7;
+  --purple:#4C1D95;--purple-lt:#EDE9FE;
+  --red:#C0392B;--red-lt:#FDECEA;
+  --radius:14px;--shadow:0 2px 14px rgba(27,42,74,.07);
+}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy);font-size:16px;line-height:1.6}
+
+/* NAV */
+.nav{background:var(--navy);padding:0 28px;display:flex;align-items:center;justify-content:space-between;height:60px;position:sticky;top:0;z-index:100;box-shadow:0 2px 20px rgba(0,0,0,.15)}
+.nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo{width:34px;height:34px;background:var(--gold);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px}
+.nav-name{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:#fff}
+.nav-name span{color:#D4A843}
+.nav-links{display:flex;gap:4px;list-style:none}
+.nav-links a{color:rgba(255,255,255,.6);text-decoration:none;font-size:13px;font-weight:500;padding:6px 13px;border-radius:7px;transition:.15s}
+.nav-links a:hover,.nav-links a.active{background:rgba(255,255,255,.12);color:#fff}
+.nav-back{color:rgba(255,255,255,.65);font-size:13px;font-weight:600;text-decoration:none;padding:7px 14px;border-radius:8px;border:1px solid rgba(255,255,255,.2);transition:.15s}
+.nav-back:hover{background:rgba(255,255,255,.1);color:#fff}
+
+/* HERO */
+.hero{background:linear-gradient(160deg,#1B2A4A,#2E4070 100%);padding:52px 32px 48px;text-align:center;position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;right:-80px;top:-80px;width:320px;height:320px;border-radius:50%;background:rgba(176,125,47,.07);pointer-events:none}
+.hero-eyebrow{font-size:12px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold-md);margin-bottom:14px}
+.hero h1{font-family:'Playfair Display',serif;font-size:38px;font-weight:700;color:#fff;margin-bottom:12px;line-height:1.2;letter-spacing:-.5px}
+.hero p{font-size:17px;color:rgba(255,255,255,.68);max-width:500px;margin:0 auto 26px;line-height:1.65}
+.hero-pills{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+.hero-pill{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);color:rgba(255,255,255,.85);padding:6px 16px;border-radius:40px;font-size:13px;font-weight:600}
+
+/* BADGES */
+.badges-wrap{max-width:1080px;margin:28px auto 0;padding:0 28px}
+.badges-label{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--slate-lt);margin-bottom:12px}
+.badges-row{display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;padding-bottom:6px}
+.badges-row::-webkit-scrollbar{display:none}
+.badge{display:flex;align-items:center;gap:8px;background:#fff;border:1.5px solid var(--border);padding:9px 16px;border-radius:40px;box-shadow:var(--shadow);opacity:.38;filter:grayscale(1);transition:all .3s;white-space:nowrap;flex-shrink:0}
+.badge.earned{opacity:1;filter:grayscale(0);border-color:#D4A843;background:var(--gold-lt)}
+.badge-icon{font-size:18px}
+.badge-text{font-size:13px;font-weight:700;color:var(--navy)}
+
+/* SECTION HEADER */
+.sec-header{max-width:1080px;margin:40px auto 0;padding:0 28px;border-top:1.5px solid var(--border);padding-top:36px}
+.sec-header.first{border-top:none;padding-top:0;margin-top:36px}
+.sec-title{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--navy);margin-bottom:4px}
+.sec-sub{font-size:14px;color:var(--slate-lt);font-weight:500}
+
+/* GRID — single card per section, always full-width */
+.grid{display:block;padding:18px 28px 0;max-width:1080px;margin:0 auto}
+
+/* GAME CARD */
+.card{background:#fff;border:1.5px solid var(--border);border-radius:var(--radius);overflow:hidden;cursor:pointer;transition:box-shadow .2s,transform .2s,border-color .2s;box-shadow:var(--shadow);display:flex;flex-direction:row;text-decoration:none;width:100%}
+.card:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(27,42,74,.12);border-color:var(--navy-md)}
+
+/* Left accent stripe — vertical on desktop */
+.card-stripe{width:6px;flex-shrink:0;border-radius:0}
+.stripe-basics{background:var(--navy-md)}
+.stripe-whatsapp{background:var(--green)}
+.stripe-email{background:var(--red)}
+.stripe-upi{background:var(--gold-md)}
+.stripe-scam{background:var(--purple)}
+
+/* STATUS BADGE */
+.status-badge{font-size:11px;font-weight:700;padding:4px 11px;border-radius:20px;white-space:nowrap;flex-shrink:0;letter-spacing:.4px}
+.status-badge.not-started{background:var(--warm);color:var(--slate)}
+.status-badge.in-progress{background:var(--navy-lt);color:var(--navy-md)}
+.status-badge.completed{background:var(--green-lt);color:var(--green)}
+
+.card-body{padding:22px 28px 20px;flex:1;display:flex;flex-direction:column}
+.card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:4px}
+.card-title{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--navy);line-height:1.3}
+.card-diff{font-size:12px;color:var(--slate-lt);font-weight:600;margin-bottom:10px}
+.card-desc{font-size:15px;color:var(--slate);line-height:1.65;margin-bottom:16px;flex:1;font-weight:500;max-width:680px}
+
+/* PROGRESS PILLS */
+.prog-wrap{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+.pills{display:flex;gap:6px;flex:1;max-width:360px}
+.pill{flex:1;height:8px;background:var(--warm);border-radius:4px;transition:background .4s;border:1px solid var(--border)}
+.pill.done{background:var(--navy-md);border-color:var(--navy-md)}
+.pill.done.complete{background:var(--green);border-color:var(--green)}
+.prog-label{font-size:13px;font-weight:700;color:var(--slate-lt);white-space:nowrap}
+.prog-label.complete{color:var(--green)}
+
+/* SCORE TAG */
+.score-tag{display:none;font-size:11px;font-weight:700;padding:4px 10px;background:var(--gold-lt);color:var(--amber);border-radius:20px;border:1.5px solid #E8D5A8}
+.score-tag.visible{display:inline-block}
+
+/* CARD FOOTER */
+.card-footer{display:flex;align-items:center;justify-content:space-between;padding-top:14px;border-top:1px solid var(--border)}
+.card-meta{font-size:13px;color:var(--slate-lt);font-weight:600;display:flex;gap:14px}
+.card-meta span{display:flex;align-items:center;gap:5px}
+.play-btn{background:var(--navy);color:#fff;border:none;border-radius:9px;padding:11px 26px;font-size:14px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;transition:.15s;letter-spacing:.2px;white-space:nowrap}
+.play-btn:hover{background:var(--navy-md)}
+.play-btn.done{background:var(--green)}
+
+/* MOTIVE STRIP */
+.motive-strip{background:var(--gold-lt);border-top:1.5px solid #E8D5A8;border-bottom:1.5px solid #E8D5A8;padding:20px 32px;text-align:center;margin-top:40px}
+.motive-strip p{font-family:'Playfair Display',serif;font-size:16px;color:var(--amber);font-style:italic}
+
+.footer{height:60px}
+
+@media(max-width:700px){
+  .nav-links{display:none}
+  .hero{padding:36px 20px 32px}
+  .hero h1{font-size:28px}
+  .grid{padding:14px 16px 0}
+  .sec-header,.badges-wrap{padding-left:16px;padding-right:16px}
+  .card{flex-direction:column}
+  .card-stripe{width:100%;height:5px}
+  .card-body{padding:18px 18px 16px}
+  .card-title{font-size:18px}
+  .card-desc{font-size:14px}
+  .pills{max-width:100%}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="index.html" class="nav-brand">
+    <div class="nav-logo">📱</div>
+    <div class="nav-name">Phone<span>Saathi</span></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="dashboard.html">🏠 Home</a></li>
+    <li><a href="courses.html">📚 Courses</a></li>
+    <li><a href="quizzes.html">🧠 Quiz</a></li>
+    <li><a href="games.html" class="active">🎮 Games</a></li>
+    <li><a href="ai-chat.html" class="active">🤖 AI Chat</a></li>
+    <li><a href="notes.html">📝 Notes</a></li>
+  </ul>
+  <a href="dashboard.html" class="nav-back">← Dashboard</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">Interactive Practice</div>
+  <h1>Learn by doing 🎮</h1>
+  <p>Practice real-life digital skills safely — tap any course below to begin!</p>
+  <div class="hero-pills">
+    <span class="hero-pill">5 Courses</span>
+    <span class="hero-pill">Safe to practise</span>
+    <span class="hero-pill">No mistakes count!</span>
+  </div>
+</div>
+
+<!-- BADGES -->
+<div class="badges-wrap">
+  <div class="badges-label">Your badges</div>
+  <div class="badges-row">
+    <div class="badge" id="badge-first">  <span class="badge-icon">🎯</span><span class="badge-text">First Step</span></div>
+    <div class="badge" id="badge-basics"> <span class="badge-icon">📱</span><span class="badge-text">Hardware Pro</span></div>
+    <div class="badge" id="badge-whatsapp"><span class="badge-icon">💬</span><span class="badge-text">Super Texter</span></div>
+    <div class="badge" id="badge-email">  <span class="badge-icon">📧</span><span class="badge-text">Mail Master</span></div>
+    <div class="badge" id="badge-upi">    <span class="badge-icon">💳</span><span class="badge-text">Pay Safe</span></div>
+    <div class="badge" id="badge-scam">   <span class="badge-icon">🛡️</span><span class="badge-text">Scam Spotter</span></div>
+    <div class="badge" id="badge-all">    <span class="badge-icon">🏆</span><span class="badge-text">Digital Expert</span></div>
+  </div>
+</div>
+
+<!-- Course 1: Smartphone Basics -->
+<div class="sec-header first">
+  <div class="sec-title">📱 Smartphone Basics</div>
+  <div class="sec-sub">Course 1 — Get comfortable with your device essentials</div>
+</div>
+<div class="grid">
+  <a href="games/basics.html" class="card" id="card-basics">
+    <div class="card-stripe stripe-basics"></div>
+    <div class="card-body">
+      <div class="card-top">
+        <div class="card-title">Device Essentials</div>
+        <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+          <span class="score-tag" id="score-basics"></span>
+          <span class="status-badge not-started" id="status-basics">▶️ Start</span>
+        </div>
+      </div>
+      <div class="card-diff">Beginner · Intermediate · Advanced</div>
+      <div class="card-desc">Practice unlocking your phone, navigating the home screen, and securely connecting to Wi-Fi networks.</div>
+      <div class="prog-wrap">
+        <div class="pills"><div class="pill" id="basics-p1"></div><div class="pill" id="basics-p2"></div><div class="pill" id="basics-p3"></div><div class="pill" id="basics-p4"></div><div class="pill" id="basics-p5"></div></div>
+        <div class="prog-label" id="text-basics">0 of 5 done</div>
+      </div>
+      <div class="card-footer">
+        <div class="card-meta"><span>⏱ 5 levels</span><span>🎮 Interactive</span></div>
+        <button class="play-btn" id="btn-basics">Start course</button>
+      </div>
+    </div>
+  </a>
+</div>
+
+<!-- Course 2: WhatsApp -->
+<div class="sec-header">
+  <div class="sec-title">💬 WhatsApp</div>
+  <div class="sec-sub">Course 2 — Master messaging and staying connected</div>
+</div>
+<div class="grid">
+  <a href="games/whatsapp.html" class="card" id="card-whatsapp">
+    <div class="card-stripe stripe-whatsapp"></div>
+    <div class="card-body">
+      <div class="card-top">
+        <div class="card-title">Messaging Mastery</div>
+        <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+          <span class="score-tag" id="score-whatsapp"></span>
+          <span class="status-badge not-started" id="status-whatsapp">▶️ Start</span>
+        </div>
+      </div>
+      <div class="card-diff">Beginner · Intermediate · Advanced</div>
+      <div class="card-desc">Practice replying to messages, safely attaching photos, and properly forwarding important information.</div>
+      <div class="prog-wrap">
+        <div class="pills"><div class="pill" id="whatsapp-p1"></div><div class="pill" id="whatsapp-p2"></div><div class="pill" id="whatsapp-p3"></div></div>
+        <div class="prog-label" id="text-whatsapp">0 of 3 done</div>
+      </div>
+      <div class="card-footer">
+        <div class="card-meta"><span>⏱ 3 levels</span><span>🎮 Interactive</span></div>
+        <button class="play-btn" id="btn-whatsapp">Start course</button>
+      </div>
+    </div>
+  </a>
+</div>
+
+<!-- Course 3: Email -->
+<div class="sec-header">
+  <div class="sec-title">📧 Email (Gmail)</div>
+  <div class="sec-sub">Course 3 — Communicate confidently over email</div>
+</div>
+<div class="grid">
+  <a href="games/email.html" class="card" id="card-email">
+    <div class="card-stripe stripe-email"></div>
+    <div class="card-body">
+      <div class="card-top">
+        <div class="card-title">Email Expert</div>
+        <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+          <span class="score-tag" id="score-email"></span>
+          <span class="status-badge not-started" id="status-email">▶️ Start</span>
+        </div>
+      </div>
+      <div class="card-diff">Beginner · Intermediate · Advanced</div>
+      <div class="card-desc">Learn to structure emails properly, spot dangerous spam in your inbox, and communicate confidently.</div>
+      <div class="prog-wrap">
+        <div class="pills"><div class="pill" id="email-p1"></div><div class="pill" id="email-p2"></div><div class="pill" id="email-p3"></div><div class="pill" id="email-p4"></div><div class="pill" id="email-p5"></div></div>
+        <div class="prog-label" id="text-email">0 of 5 done</div>
+      </div>
+      <div class="card-footer">
+        <div class="card-meta"><span>⏱ 5 levels</span><span>🎮 Interactive</span></div>
+        <button class="play-btn" id="btn-email">Start course</button>
+      </div>
+    </div>
+  </a>
+</div>
+
+<!-- Course 4: UPI Payments -->
+<div class="sec-header">
+  <div class="sec-title">💳 Online Payments (UPI)</div>
+  <div class="sec-sub">Course 4 — Pay safely and stop payment fraud</div>
+</div>
+<div class="grid">
+  <a href="games/upi.html" class="card" id="card-upi">
+    <div class="card-stripe stripe-upi"></div>
+    <div class="card-body">
+      <div class="card-top">
+        <div class="card-title">Safe UPI Payments</div>
+        <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+          <span class="score-tag" id="score-upi"></span>
+          <span class="status-badge not-started" id="status-upi">▶️ Start</span>
+        </div>
+      </div>
+      <div class="card-diff">Beginner · Intermediate · Advanced</div>
+      <div class="card-desc">Simulate securely checking your balance, transferring funds safely, and stopping fraudulent payment requests.</div>
+      <div class="prog-wrap">
+        <div class="pills"><div class="pill" id="upi-p1"></div><div class="pill" id="upi-p2"></div><div class="pill" id="upi-p3"></div></div>
+        <div class="prog-label" id="text-upi">0 of 3 done</div>
+      </div>
+      <div class="card-footer">
+        <div class="card-meta"><span>⏱ 3 levels</span><span>🎮 Interactive</span></div>
+        <button class="play-btn" id="btn-upi">Start course</button>
+      </div>
+    </div>
+  </a>
+</div>
+
+<!-- Course 5: Online Safety -->
+<div class="sec-header">
+  <div class="sec-title">🛡️ Online Safety</div>
+  <div class="sec-sub">Course 5 — Train your eye to spot scams and fraud</div>
+</div>
+<div class="grid">
+  <a href="games/scam.html" class="card" id="card-scam">
+    <div class="card-stripe stripe-scam"></div>
+    <div class="card-body">
+      <div class="card-top">
+        <div class="card-title">Spot the Scam</div>
+        <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+          <span class="score-tag" id="score-scam"></span>
+          <span class="status-badge not-started" id="status-scam">▶️ Start</span>
+        </div>
+      </div>
+      <div class="card-diff">Beginner · Intermediate · Advanced</div>
+      <div class="card-desc">Train your eye to recognise deceptive Facebook posts, urgent SMS scams, and sophisticated phishing links.</div>
+      <div class="prog-wrap">
+        <div class="pills"><div class="pill" id="scam-p1"></div><div class="pill" id="scam-p2"></div><div class="pill" id="scam-p3"></div><div class="pill" id="scam-p4"></div><div class="pill" id="scam-p5"></div><div class="pill" id="scam-p6"></div></div>
+        <div class="prog-label" id="text-scam">0 of 6 done</div>
+      </div>
+      <div class="card-footer">
+        <div class="card-meta"><span>⏱ 6 levels</span><span>🎮 Interactive</span></div>
+        <button class="play-btn" id="btn-scam">Start course</button>
+      </div>
+    </div>
+  </a>
+</div>
+
+<div class="motive-strip">
+  <p>"Practice makes progress. Every attempt — right or wrong — is a step forward." 🌟</p>
+</div>
+<div class="footer"></div>
+
+<script>
+// ── Robust progress hydration (works with or without Firebase) ────────────────
+const GAMES = ["basics","whatsapp","email","upi","scam"];
+const MAX_LEVELS = {basics:5, whatsapp:3, email:5, upi:3, scam:6};
+
+function hydrateUI(data) {
+  const progress     = data.gamesProgress  || {};
+  const scores       = data.scores         || {};
+  const achievements = data.achievements   || [];
+
+  GAMES.forEach(g => {
+    const level  = progress[g] || 0;
+    const maxLvl = MAX_LEVELS[g];
+    const score  = scores[g];
+    const done   = level >= maxLvl;
+
+    const textEl   = document.getElementById(`text-${g}`);
+    const statusEl = document.getElementById(`status-${g}`);
+    const btnEl    = document.getElementById(`btn-${g}`);
+    const scoreEl  = document.getElementById(`score-${g}`);
+    if (!textEl) return;
+
+    // Score tag
+    if (score !== undefined && score !== null) {
+      scoreEl.textContent = `⭐ ${score} XP`;
+      scoreEl.classList.add("visible");
+    }
+
+    // Pills (support variable max levels)
+    for (let i = 1; i <= maxLvl; i++) {
+      const pill = document.getElementById(`${g}-p${i}`);
+      if (!pill) continue;
+      if (level >= i) {
+        pill.classList.add("done");
+        if (done) pill.classList.add("complete");
+      }
+    }
+
+    // Status + button
+    if (done) {
+      textEl.textContent    = `${maxLvl} of ${maxLvl} done ✓`;
+      textEl.classList.add("complete");
+      statusEl.textContent  = "✓ Done";
+      statusEl.className    = "status-badge completed";
+      btnEl.textContent     = "Replay course";
+      btnEl.classList.add("done");
+    } else if (level > 0) {
+      textEl.textContent    = `${level} of ${maxLvl} done`;
+      statusEl.textContent  = "▶️ Continue";
+      statusEl.className    = "status-badge in-progress";
+      btnEl.textContent     = "Continue course";
+    } else {
+      textEl.textContent    = `0 of ${maxLvl} done`;
+      statusEl.textContent  = "▶️ Start";
+      statusEl.className    = "status-badge not-started";
+      btnEl.textContent     = "Start course";
+    }
+  });
+
+  // Badges
+  if (achievements.includes("first_game"))    document.getElementById("badge-first")?.classList.add("earned");
+  if (achievements.includes("all_games"))     document.getElementById("badge-all")?.classList.add("earned");
+  if (achievements.includes("fraud_fighter")) document.getElementById("badge-scam")?.classList.add("earned");
+  GAMES.forEach(g => {
+    if (achievements.includes(`master_${g}`)) document.getElementById(`badge-${g}`)?.classList.add("earned");
+  });
+}
+
+// Load local progress immediately
+const local = JSON.parse(localStorage.getItem("dlp_sync") || "{}");
+hydrateUI(local);
+
+// Then try Firebase sync (non-blocking, best-effort)
+(async () => {
+  try {
+    const {auth, db} = await import("./firebase.js");
+    const {onAuthStateChanged} = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js");
+    const {doc, getDoc, setDoc} = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) return;
+      try {
+        const snap = await getDoc(doc(db, "users", user.uid));
+        if (snap.exists()) {
+          const data = snap.data();
+          const merged = {
+            gamesProgress: {...(local.gamesProgress||{}), ...(data.gamesProgress||{})},
+            scores:        {...(local.scores||{}),        ...(data.scores||{})},
+            achievements:  [...new Set([...(local.achievements||[]), ...(data.achievements||[])])]
+          };
+          localStorage.setItem("dlp_sync", JSON.stringify(merged));
+          hydrateUI(merged);
+        } else {
+          await setDoc(doc(db, "users", user.uid), local, {merge: true});
+        }
+      } catch(e) { console.warn("Firestore sync error:", e); }
+    });
+  } catch(e) { /* Firebase not available — local-only mode */ }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Online Payments — Advanced · Digital Literacy</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --navy:#1B2A4A;--navy-md:#2E4070;--navy-lt:#EEF1F8;--cream:#FAF8F5;--warm:#F3EFE8;
+  --gold:#B07D2F;--gold-lt:#FDF3DC;--slate:#4A5568;--slate-lt:#718096;--border:#E2DDD6;
+  --white:#FFFFFF;--green:#2D6A4F;--green-lt:#E8F5EF;
+  --upi:#1A6DC8;--upi-dark:#0F4A8A;--upi-lt:#E8F0FC;
+  --purple:#4C1D95;--purple-lt:#EDE9FE;
+  --red:#B91C1C;--red-lt:#FEF2F2;
+  --radius:16px;--shadow:0 4px 24px rgba(27,42,74,0.10);
+}
+body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--navy);min-height:100vh;font-size:18px;}
+.topbar{background:var(--navy);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,0.2);}
+.back-btn{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:700;color:rgba(255,255,255,0.7);cursor:pointer;padding:6px 14px;border:1px solid rgba(255,255,255,0.18);border-radius:8px;background:rgba(255,255,255,0.06);transition:0.15s;text-decoration:none;}
+.back-btn:hover{background:rgba(255,255,255,0.13);color:#fff;}
+.topbar-center{display:flex;align-items:center;gap:10px;}
+.pay-dot{width:30px;height:30px;background:var(--upi);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;}
+.topbar-title{font-family:'Lora',serif;font-size:16px;font-weight:600;color:#fff;}
+.level-badge{font-size:12px;font-weight:800;background:var(--purple);color:#fff;padding:3px 12px;border-radius:20px;}
+.progress-wrap{background:var(--white);border-bottom:1.5px solid var(--border);padding:14px 24px;}
+.progress-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.progress-label{font-size:13px;font-weight:700;color:var(--slate);}
+.progress-pct{font-size:13px;font-weight:800;color:var(--green);}
+.progress-track{height:8px;background:var(--warm);border-radius:8px;overflow:hidden;}
+.progress-fill{height:8px;background:linear-gradient(90deg,var(--upi-dark),var(--upi));border-radius:8px;transition:width 0.6s cubic-bezier(.4,0,.2,1);}
+.step-dots{display:flex;justify-content:center;gap:8px;padding:16px 24px 0;}
+.dot{height:8px;border-radius:8px;background:var(--border);transition:all 0.35s cubic-bezier(.4,0,.2,1);width:8px;}
+.dot.done{background:var(--upi);}
+.dot.active{background:var(--navy);width:28px;}
+.main{max-width:680px;margin:0 auto;padding:24px 20px 110px;}
+.step-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;animation:fadeUp 0.4s cubic-bezier(.4,0,.2,1) both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.card-hero{padding:28px 28px 22px;background:linear-gradient(135deg,var(--navy) 0%,#243860 100%);display:flex;gap:18px;align-items:center;}
+.hero-emoji{font-size:56px;line-height:1;flex-shrink:0;filter:drop-shadow(0 3px 10px rgba(0,0,0,0.25));}
+.hero-step{font-size:11px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:#60A5FA;margin-bottom:5px;}
+.hero-title{font-family:'Lora',serif;font-size:24px;font-weight:600;color:#fff;line-height:1.25;}
+.card-body{padding:26px 28px 28px;}
+.body-text{font-size:17px;color:var(--slate);line-height:1.85;margin-bottom:18px;}
+.encourage{display:flex;align-items:center;gap:12px;background:var(--gold-lt);border:1.5px solid #EDD9A0;border-radius:12px;padding:14px 18px;margin-bottom:22px;}
+.encourage-icon{font-size:22px;flex-shrink:0;}
+.encourage-text{font-size:15px;font-weight:700;color:var(--gold);line-height:1.5;}
+.instr-list{list-style:none;display:flex;flex-direction:column;gap:12px;margin-bottom:24px;}
+.instr-item{display:flex;gap:13px;align-items:flex-start;padding:14px 16px;background:var(--cream);border:1.5px solid var(--border);border-radius:12px;}
+.instr-num{width:30px;height:30px;border-radius:50%;background:var(--navy);color:#fff;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.instr-text{font-size:16px;color:var(--slate);line-height:1.7;padding-top:3px;}
+.tip-box{display:flex;gap:13px;align-items:flex-start;background:var(--green-lt);border:1.5px solid #B7DEC9;border-radius:12px;padding:16px 18px;margin-top:20px;}
+.tip-icon{font-size:22px;flex-shrink:0;margin-top:1px;}
+.tip-label{font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);margin-bottom:3px;}
+.tip-text{font-size:15px;color:#285C42;line-height:1.65;}
+.warn-box{display:flex;gap:13px;align-items:flex-start;background:var(--red-lt);border:1.5px solid #FCA5A5;border-radius:12px;padding:16px 18px;margin:16px 0;}
+.warn-icon{font-size:22px;flex-shrink:0;margin-top:1px;}
+.warn-label{font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--red);margin-bottom:3px;}
+.warn-text{font-size:15px;color:#7F1D1D;line-height:1.65;}
+.reveal-block{border-radius:13px;overflow:hidden;margin:20px 0;border:2px dashed var(--border);cursor:pointer;}
+.reveal-prompt{padding:18px 20px;display:flex;align-items:center;gap:14px;background:var(--navy-lt);}
+.reveal-prompt-icon{font-size:26px;}
+.reveal-prompt-text{font-size:16px;font-weight:700;color:var(--navy-md);flex:1;}
+.reveal-prompt-arrow{font-size:18px;color:var(--navy-md);transition:transform 0.3s;}
+.reveal-block.open .reveal-prompt-arrow{transform:rotate(90deg);}
+.reveal-answer{max-height:0;overflow:hidden;transition:max-height 0.45s cubic-bezier(.4,0,.2,1),padding 0.3s;background:var(--white);padding:0 20px;}
+.reveal-block.open .reveal-answer{max-height:400px;padding:18px 20px;}
+.reveal-answer-inner{font-size:16px;color:var(--slate);line-height:1.75;}
+.tap-question{background:var(--navy-lt);border:1.5px solid #C5D0E8;border-radius:13px;padding:20px 20px;margin:20px 0;}
+.tap-q-label{font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--navy-md);margin-bottom:8px;}
+.tap-q-text{font-size:17px;font-weight:700;color:var(--navy);margin-bottom:14px;line-height:1.4;}
+.tap-options{display:flex;flex-direction:column;gap:9px;}
+.tap-opt{padding:13px 18px;border-radius:10px;border:2px solid var(--border);background:var(--white);font-size:16px;font-weight:700;font-family:'Nunito',sans-serif;color:var(--slate);cursor:pointer;transition:0.18s;text-align:left;}
+.tap-opt:hover:not(:disabled){border-color:var(--navy-md);background:var(--navy-lt);color:var(--navy);}
+.tap-opt.correct{background:var(--green-lt);border-color:var(--green);color:var(--green);pointer-events:none;}
+.tap-opt.wrong{background:#FEF2F2;border-color:#FCA5A5;color:#B91C1C;pointer-events:none;}
+.tap-opt.dim{opacity:0.4;pointer-events:none;}
+.tap-result{font-size:15px;font-weight:700;margin-top:12px;padding:11px 14px;border-radius:9px;display:none;}
+.tap-result.show{display:block;}
+.tap-result.good{background:var(--green-lt);color:var(--green);}
+.tap-result.oops{background:#FEF2F2;color:#B91C1C;}
+.scam-list{display:flex;flex-direction:column;gap:10px;margin:16px 0;}
+.scam-item{display:flex;align-items:flex-start;gap:12px;padding:13px 16px;background:var(--red-lt);border:1.5px solid #FCA5A5;border-radius:11px;}
+.scam-icon{font-size:20px;flex-shrink:0;}
+.scam-text{font-size:15px;color:#7F1D1D;font-weight:600;line-height:1.5;}
+.safe-list{display:flex;flex-direction:column;gap:10px;margin:16px 0;}
+.safe-item{display:flex;align-items:flex-start;gap:12px;padding:13px 16px;background:var(--green-lt);border:1.5px solid #B7DEC9;border-radius:11px;}
+.safe-icon{font-size:20px;flex-shrink:0;}
+.safe-text{font-size:15px;color:#285C42;font-weight:600;line-height:1.5;}
+.completion-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;animation:fadeUp 0.4s cubic-bezier(.4,0,.2,1) both;}
+.completion-top{background:linear-gradient(135deg,var(--upi-dark) 0%,var(--upi) 100%);padding:44px 28px 36px;text-align:center;}
+.completion-big-icon{font-size:72px;margin-bottom:16px;}
+.completion-title{font-family:'Lora',serif;font-size:28px;font-weight:600;color:#fff;margin-bottom:8px;}
+.completion-sub{font-size:16px;color:rgba(255,255,255,0.88);line-height:1.6;}
+.completion-body{padding:32px 28px;}
+.learned-list{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:28px;}
+.learned-item{display:flex;align-items:center;gap:12px;padding:13px 16px;background:var(--green-lt);border:1.5px solid #B7DEC9;border-radius:10px;font-size:16px;font-weight:700;color:var(--green);}
+.completion-actions{display:flex;flex-direction:column;gap:12px;}
+.btn-primary{padding:16px 24px;border-radius:12px;border:none;background:var(--navy);color:#fff;font-size:17px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;transition:background 0.15s;}
+.btn-primary:hover{background:var(--navy-md);}
+.btn-secondary{padding:14px 24px;border-radius:12px;border:1.5px solid var(--border);background:var(--white);color:var(--navy);font-size:16px;font-weight:700;font-family:'Nunito',sans-serif;cursor:pointer;transition:0.15s;}
+.btn-secondary:hover{border-color:var(--navy);background:var(--navy-lt);}
+.nav-bar{position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:1.5px solid var(--border);padding:14px 20px;display:flex;gap:12px;z-index:200;box-shadow:0 -4px 20px rgba(27,42,74,0.09);}
+.btn-back{padding:14px 22px;border-radius:12px;border:1.5px solid var(--border);background:var(--white);font-size:16px;font-weight:700;font-family:'Nunito',sans-serif;color:var(--slate);cursor:pointer;transition:0.15s;}
+.btn-back:hover{border-color:var(--navy);color:var(--navy);background:var(--navy-lt);}
+.btn-next{flex:1;padding:14px 24px;border-radius:12px;border:none;background:var(--navy);font-size:17px;font-weight:800;font-family:'Nunito',sans-serif;color:#fff;cursor:pointer;transition:background 0.15s;}
+.btn-next:hover{background:var(--navy-md);}
+.hidden{display:none!important;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="back-btn" href="../courses.html">&#8592; Courses</a>
+  <div class="topbar-center">
+    <div class="pay-dot">💳</div>
+    <span class="topbar-title">Online Payments</span>
+  </div>
+  <span class="level-badge">Advanced</span>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-row">
+    <span class="progress-label" id="progressLabel">Step 1 of 5</span>
+    <span class="progress-pct" id="progressPct">0% done</span>
+  </div>
+  <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+</div>
+
+<div class="step-dots" id="stepDots">
+  <div class="dot active" id="dot-0"></div>
+  <div class="dot" id="dot-1"></div>
+  <div class="dot" id="dot-2"></div>
+  <div class="dot" id="dot-3"></div>
+  <div class="dot" id="dot-4"></div>
+</div>
+
+<div class="main" id="mainContent"></div>
+
+<div class="nav-bar" id="navBar">
+  <button class="btn-back" id="btnBack" onclick="prevStep()">&#8592; Back</button>
+  <button class="btn-next" id="btnNext" onclick="nextStep()">Next →</button>
+</div>
+
+<script type="module">
+import { auth, db } from "../firebase.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const COURSE_KEY = "payments-advanced";
+let currentStep = 0, currentUser = null;
+
+const STEPS = [
+  () => `<div class="step-card">
+    <div class="card-hero"><div class="hero-emoji">🚨</div><div class="hero-text"><div class="hero-step">Step 1 of 5</div><div class="hero-title">Common Payment Scams</div></div></div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">🛡️</span><span class="encourage-text">You're at the advanced level — wonderful! This lesson could save you a lot of money. Please read carefully.</span></div>
+      <p class="body-text">Scammers try to trick people into sending money or sharing their UPI PIN. Here are the most common tricks used in India — recognise them and stay safe!</p>
+      <div class="scam-list">
+        <div class="scam-item"><span class="scam-icon">🚨</span><div class="scam-text">"I'm sending you Rs 5,000 — just enter your UPI PIN to receive it." You NEVER need your PIN to RECEIVE money. This is a scam!</div></div>
+        <div class="scam-item"><span class="scam-icon">🚨</span><div class="scam-text">"Your KYC is expired. Share your Aadhaar and UPI PIN to update it." Real banks NEVER ask for your PIN on phone or WhatsApp.</div></div>
+        <div class="scam-item"><span class="scam-icon">🚨</span><div class="scam-text">"You've won a lottery! Pay Rs 500 processing fee to claim your Rs 1 lakh." If you never entered a lottery, you cannot win one.</div></div>
+        <div class="scam-item"><span class="scam-icon">🚨</span><div class="scam-text">A "bank officer" calls and asks for an OTP. Hang up immediately — your bank will NEVER ask for OTP over the phone.</div></div>
+      </div>
+      <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">The golden rule</div><div class="tip-text">You enter your UPI PIN only when <strong>YOU are sending</strong> money. You NEVER need a PIN to receive money. Anyone saying otherwise is a scammer.</div></div></div>
+    </div>
+  </div>`,
+
+  () => `<div class="step-card">
+    <div class="card-hero"><div class="hero-emoji">🔐</div><div class="hero-text"><div class="hero-step">Step 2 of 5</div><div class="hero-title">Keeping Your Account Safe</div></div></div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">🧠</span><span class="encourage-text">A few simple habits will keep your money safe. These are easy to remember and very important!</span></div>
+      <div class="safe-list">
+        <div class="safe-item"><span class="safe-icon">✅</span><div class="safe-text">Set a <strong>strong UPI PIN</strong> — not your birth year or "1234". Change it every few months.</div></div>
+        <div class="safe-item"><span class="safe-icon">✅</span><div class="safe-text">Always <strong>lock your phone</strong> with a fingerprint or PIN so no one else can open it.</div></div>
+        <div class="safe-item"><span class="safe-icon">✅</span><div class="safe-text">Never share your UPI PIN or OTP with <strong>anyone</strong> — not family, not bank staff, not on the phone.</div></div>
+        <div class="safe-item"><span class="safe-icon">✅</span><div class="safe-text">Check your <strong>transaction history</strong> every week — look for any payments you did not make.</div></div>
+        <div class="safe-item"><span class="safe-icon">✅</span><div class="safe-text">Only download Google Pay from the <strong>official Play Store</strong> — never from a link sent by someone.</div></div>
+      </div>
+      <div class="tap-question">
+        <div class="tap-q-label">✏️ Quick check</div>
+        <div class="tap-q-text">Someone calls saying they are from your bank and asks for your UPI PIN to "verify your account". What do you do?</div>
+        <div class="tap-options">
+          <button class="tap-opt" onclick="tapAnswer(this,false,'q2')">📞 Give them the PIN — they are from the bank</button>
+          <button class="tap-opt" onclick="tapAnswer(this,true,'q2')">🚫 Hang up — banks NEVER ask for your PIN</button>
+          <button class="tap-opt" onclick="tapAnswer(this,false,'q2')">💬 Share it on WhatsApp instead</button>
+        </div>
+        <div class="tap-result" id="res-q2"></div>
+      </div>
+    </div>
+  </div>`,
+
+  () => `<div class="step-card">
+    <div class="card-hero"><div class="hero-emoji">❌</div><div class="hero-text"><div class="hero-step">Step 3 of 5</div><div class="hero-title">What to Do If Something Goes Wrong</div></div></div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">💪</span><span class="encourage-text">Even if something goes wrong, there are steps you can take to protect yourself and get help. Don't panic!</span></div>
+      <p class="body-text">If you accidentally pay the wrong person, or think you've been scammed, act quickly — the faster you act, the better the chance of getting help.</p>
+      <ul class="instr-list">
+        <li class="instr-item"><span class="instr-num">1</span><span class="instr-text"><strong>Call your bank immediately</strong> — use the number on the back of your ATM card. Ask them to block UPI transactions.</span></li>
+        <li class="instr-item"><span class="instr-num">2</span><span class="instr-text">Open Google Pay → History → tap the payment → tap <strong>"Raise a dispute"</strong> or <strong>"Report a problem"</strong>.</span></li>
+        <li class="instr-item"><span class="instr-num">3</span><span class="instr-text">Report the scam to the <strong>Cyber Crime helpline: dial 1930</strong> (free, 24 hours).</span></li>
+        <li class="instr-item"><span class="instr-num">4</span><span class="instr-text">File a complaint at <strong>cybercrime.gov.in</strong> with details of the fraud.</span></li>
+      </ul>
+      <div class="reveal-block" id="rev-3" onclick="toggleReveal('rev-3')">
+        <div class="reveal-prompt"><span class="reveal-prompt-icon">🤔</span><span class="reveal-prompt-text">What if I paid the wrong person by mistake?</span><span class="reveal-prompt-arrow">▶</span></div>
+        <div class="reveal-answer"><div class="reveal-answer-inner">In Google Pay, open the payment → tap <strong>"Raise a dispute"</strong>. Google Pay will contact the recipient's bank and request a refund. Keep the Transaction ID safe as proof. Most accidental payments are resolved within 7 working days.</div></div>
+      </div>
+      <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Important number</div><div class="tip-text">Save <strong>1930</strong> in your phone right now — it is the National Cyber Crime Helpline. Free to call, available 24/7.</div></div></div>
+    </div>
+  </div>`,
+
+  () => `<div class="step-card">
+    <div class="card-hero"><div class="hero-emoji">🔄</div><div class="hero-text"><div class="hero-step">Step 4 of 5</div><div class="hero-title">Changing Your UPI PIN</div></div></div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">🌟</span><span class="encourage-text">Changing your UPI PIN regularly is a great habit — like changing the lock on your door. Let's learn how!</span></div>
+      <p class="body-text">It's a good idea to <strong>change your UPI PIN</strong> every few months, or immediately if you think someone may know it.</p>
+      <ul class="instr-list">
+        <li class="instr-item"><span class="instr-num">1</span><span class="instr-text">Open Google Pay and tap your <strong>profile picture</strong> in the top right corner.</span></li>
+        <li class="instr-item"><span class="instr-num">2</span><span class="instr-text">Tap <strong>Bank account</strong> and select your bank account.</span></li>
+        <li class="instr-item"><span class="instr-num">3</span><span class="instr-text">Tap <strong>"Forgot UPI PIN"</strong> or <strong>"Change UPI PIN"</strong>.</span></li>
+        <li class="instr-item"><span class="instr-num">4</span><span class="instr-text">Enter the last <strong>6 digits of your ATM/Debit card number</strong> and your card's expiry date to verify.</span></li>
+        <li class="instr-item"><span class="instr-num">5</span><span class="instr-text">Set your new <strong>4 or 6 digit PIN</strong> — choose something only you would know.</span></li>
+      </ul>
+      <div class="warn-box"><span class="warn-icon">⚠️</span><div><div class="warn-label">Important warning</div><div class="warn-text">Choose a PIN that is NOT your birth year, phone number, or "1234". Avoid anything a family member could easily guess.</div></div></div>
+      <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Good to know</div><div class="tip-text">Write your PIN in a <strong>safe place at home</strong> — not on your phone — in case you ever forget it.</div></div></div>
+    </div>
+  </div>`,
+
+  () => `<div class="step-card">
+    <div class="card-hero"><div class="hero-emoji">🏦</div><div class="hero-text"><div class="hero-step">Step 5 of 5</div><div class="hero-title">Using Multiple UPI Apps Safely</div></div></div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">🎉</span><span class="encourage-text">Last step! Some people use more than one UPI app — let's understand how to manage them safely.</span></div>
+      <p class="body-text">You can link the <strong>same bank account</strong> to multiple UPI apps like Google Pay, PhonePe, and Paytm. Each app gets its own UPI ID but uses the same bank balance.</p>
+      <ul class="instr-list">
+        <li class="instr-item"><span class="instr-num">1</span><span class="instr-text">It is perfectly fine to use <strong>one app</strong> only — you don't need multiple apps.</span></li>
+        <li class="instr-item"><span class="instr-num">2</span><span class="instr-text">If you use multiple apps, each needs its <strong>own UPI PIN</strong> — they are separate.</span></li>
+        <li class="instr-item"><span class="instr-num">3</span><span class="instr-text">Only download UPI apps from the <strong>official Play Store</strong> — never from links sent by others.</span></li>
+        <li class="instr-item"><span class="instr-num">4</span><span class="instr-text">If you want to remove a UPI app, go to its settings and <strong>delink your bank account</strong> before deleting.</span></li>
+      </ul>
+      <div class="tap-question">
+        <div class="tap-q-label">✏️ Quick check</div>
+        <div class="tap-q-text">Someone sends you a link on WhatsApp to download "a new safe UPI app". What should you do?</div>
+        <div class="tap-options">
+          <button class="tap-opt" onclick="tapAnswer(this,false,'q5')">📲 Download it — it might be useful</button>
+          <button class="tap-opt" onclick="tapAnswer(this,true,'q5')">🚫 Do not download it — only use the official Play Store</button>
+          <button class="tap-opt" onclick="tapAnswer(this,false,'q5')">📤 Forward it to family members</button>
+        </div>
+        <div class="tap-result" id="res-q5"></div>
+      </div>
+      <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Good to know</div><div class="tip-text">When in doubt about any payment situation, <strong>call your bank directly</strong> using the number on your ATM card — they are always happy to help!</div></div></div>
+    </div>
+  </div>`,
+];
+
+onAuthStateChanged(auth, async (user) => {
+  if (!user) { window.location.href = "../index.html"; return; }
+  currentUser = user;
+  try {
+    const snap = await getDoc(doc(db, "users", user.uid));
+    if (snap.exists() && snap.data().progress?.[COURSE_KEY] === 100) currentStep = STEPS.length;
+  } catch(e) {}
+  render();
+});
+
+async function saveProgress(pct) {
+  if (!currentUser) return;
+  try { await setDoc(doc(db, "users", currentUser.uid), { progress: { [COURSE_KEY]: pct } }, { merge: true }); } catch(e) {}
+}
+
+function render() {
+  updateProgress(); updateDots();
+  const main = document.getElementById("mainContent");
+  if (currentStep < STEPS.length) { main.innerHTML = STEPS[currentStep](); } else { renderCompletion(main); }
+  updateNav();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function updateProgress() {
+  const pct = Math.round((currentStep / STEPS.length) * 100);
+  document.getElementById("progressFill").style.width = pct + "%";
+  document.getElementById("progressPct").textContent = pct + "% done";
+  document.getElementById("progressLabel").textContent = currentStep < STEPS.length ? `Step ${currentStep + 1} of ${STEPS.length}` : "Lesson Complete!";
+}
+
+function updateDots() {
+  for (let i = 0; i < STEPS.length; i++) {
+    const d = document.getElementById("dot-" + i);
+    if (!d) continue;
+    d.className = "dot" + (i < currentStep ? " done" : i === currentStep ? " active" : "");
+  }
+}
+
+function updateNav() {
+  const navBar = document.getElementById("navBar");
+  if (currentStep >= STEPS.length) { navBar.classList.add("hidden"); return; }
+  navBar.classList.remove("hidden");
+  document.getElementById("btnBack").style.visibility = currentStep === 0 ? "hidden" : "visible";
+  document.getElementById("btnNext").textContent = currentStep === STEPS.length - 1 ? "Finish lesson 🎉" : "Next →";
+}
+
+function renderCompletion(container) {
+  container.innerHTML = `<div class="completion-card">
+    <div class="completion-top">
+      <div class="completion-big-icon">🏆</div>
+      <div class="completion-title">Payments Expert!</div>
+      <div class="completion-sub">You've completed all three Online Payments levels.<br>Your money is now in very safe hands — yours!</div>
+    </div>
+    <div class="completion-body">
+      <ul class="learned-list">
+        <li class="learned-item">✅ Recognising common payment scams</li>
+        <li class="learned-item">✅ Keeping your UPI account secure</li>
+        <li class="learned-item">✅ What to do if something goes wrong</li>
+        <li class="learned-item">✅ How to change your UPI PIN safely</li>
+        <li class="learned-item">✅ Using multiple UPI apps safely</li>
+      </ul>
+      <div class="completion-actions">
+        <button class="btn-primary" onclick="window.location.href='../courses.html'">Explore more courses →</button>
+        <button class="btn-secondary" onclick="window.location.href='../courses.html'">Back to all courses</button>
+      </div>
+    </div>
+  </div>`;
+  document.getElementById("navBar").classList.add("hidden");
+  document.getElementById("stepDots").classList.add("hidden");
+  saveProgress(100);
+}
+
+window.toggleReveal = (id) => document.getElementById(id).classList.toggle("open");
+window.tapAnswer = function(btn, isCorrect, qid) {
+  const opts = btn.parentElement.querySelectorAll(".tap-opt");
+  opts.forEach(o => { o.classList.add("dim"); o.disabled = true; });
+  btn.classList.remove("dim"); btn.classList.add(isCorrect ? "correct" : "wrong");
+  if (!isCorrect) { opts.forEach(o => { if (o.getAttribute("onclick")?.includes("true")) { o.classList.remove("dim"); o.classList.add("correct"); } }); }
+  const res = document.getElementById("res-" + qid);
+  if (res) { res.className = "tap-result show " + (isCorrect ? "good" : "oops"); res.textContent = isCorrect ? "✅ Exactly right! Well done!" : "💭 Not quite — the correct answer is highlighted above. That's okay, now you know!"; }
+};
+window.nextStep = function() { currentStep++; saveProgress(Math.round((currentStep / STEPS.length) * 100)); render(); };
+window.prevStep = function() { if (currentStep > 0) { currentStep--; render(); } };
+</script>
+</body>
+</html>

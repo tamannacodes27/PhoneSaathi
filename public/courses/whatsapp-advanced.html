@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WhatsApp — Advanced · Digital Literacy</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+--navy:#1B2A4A;--navy-md:#2E4070;--navy-lt:#EEF1F8;--cream:#FAF8F5;--warm:#F3EFE8;
+--gold:#B07D2F;--gold-lt:#FDF3DC;--slate:#4A5568;--slate-lt:#718096;--border:#E2DDD6;
+--white:#FFFFFF;--green:#2D6A4F;--green-lt:#E8F5EF;--wa:#25D366;--wa-dark:#128C7E;
+--purple:#4C1D95;--purple-lt:#EDE9FE;--red:#B91C1C;--red-lt:#FEF2F2;
+--radius:16px;--shadow:0 4px 24px rgba(27,42,74,0.10);
+}
+body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--navy);min-height:100vh;font-size:18px;}
+.topbar{background:var(--navy);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,0.2);}
+.back-btn{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:700;color:rgba(255,255,255,0.7);cursor:pointer;padding:6px 14px;border:1px solid rgba(255,255,255,0.18);border-radius:8px;background:rgba(255,255,255,0.06);transition:0.15s;text-decoration:none;}
+.back-btn:hover{background:rgba(255,255,255,0.13);color:#fff;}
+.topbar-center{display:flex;align-items:center;gap:10px;}
+.wa-dot{width:30px;height:30px;background:var(--wa);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;}
+.topbar-title{font-family:'Lora',serif;font-size:16px;font-weight:600;color:#fff;}
+.level-badge{font-size:12px;font-weight:800;background:var(--purple);color:#fff;padding:3px 12px;border-radius:20px;}
+.progress-wrap{background:var(--white);border-bottom:1.5px solid var(--border);padding:14px 24px;}
+.progress-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.progress-label{font-size:13px;font-weight:700;color:var(--slate);}
+.progress-pct{font-size:13px;font-weight:800;color:var(--green);}
+.progress-track{height:8px;background:var(--warm);border-radius:8px;overflow:hidden;}
+.progress-fill{height:8px;background:linear-gradient(90deg,var(--wa-dark),var(--wa));border-radius:8px;transition:width 0.6s cubic-bezier(.4,0,.2,1);}
+.step-dots{display:flex;justify-content:center;gap:8px;padding:16px 24px 0;}
+.dot{height:8px;border-radius:8px;background:var(--border);transition:all 0.35s cubic-bezier(.4,0,.2,1);width:8px;}
+.dot.done{background:var(--wa);}
+.dot.active{background:var(--navy);width:28px;}
+.main{max-width:680px;margin:0 auto;padding:24px 20px 110px;}
+.step-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;animation:fadeUp 0.4s cubic-bezier(.4,0,.2,1) both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.card-hero{padding:28px 28px 22px;background:linear-gradient(135deg,var(--navy) 0%,#243860 100%);display:flex;gap:18px;align-items:center;}
+.hero-emoji{font-size:56px;line-height:1;flex-shrink:0;filter:drop-shadow(0 3px 10px rgba(0,0,0,0.25));}
+.hero-step{font-size:11px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--wa);margin-bottom:5px;}
+.hero-title{font-family:'Lora',serif;font-size:24px;font-weight:600;color:#fff;line-height:1.25;}
+.card-body{padding:26px 28px 28px;}
+.body-text{font-size:17px;color:var(--slate);line-height:1.85;margin-bottom:18px;}
+.encourage{display:flex;align-items:center;gap:12px;background:var(--gold-lt);border:1.5px solid #EDD9A0;border-radius:12px;padding:14px 18px;margin-bottom:22px;}
+.encourage-icon{font-size:22px;flex-shrink:0;}
+.encourage-text{font-size:15px;font-weight:700;color:var(--gold);line-height:1.5;}
+.instr-list{list-style:none;display:flex;flex-direction:column;gap:12px;margin-bottom:24px;}
+.instr-item{display:flex;gap:13px;align-items:flex-start;padding:14px 16px;background:var(--cream);border:1.5px solid var(--border);border-radius:12px;}
+.instr-num{width:30px;height:30px;border-radius:50%;background:var(--navy);color:#fff;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.instr-text{font-size:16px;color:var(--slate);line-height:1.7;padding-top:3px;}
+.tip-box{display:flex;gap:13px;align-items:flex-start;background:var(--green-lt);border:1.5px solid #B7DEC9;border-radius:12px;padding:16px 18px;margin-top:20px;}
+.tip-icon{font-size:22px;flex-shrink:0;margin-top:1px;}
+.tip-label{font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);margin-bottom:3px;}
+.tip-text{font-size:15px;color:#285C42;line-height:1.65;}
+.warn-box{display:flex;gap:13px;align-items:flex-start;background:var(--red-lt);border:1.5px solid #FCA5A5;border-radius:12px;padding:16px 18px;margin:16px 0;}
+.warn-icon{font-size:22px;flex-shrink:0;margin-top:1px;}
+.warn-label{font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--red);margin-bottom:3px;}
+.warn-text{font-size:15px;color:#7F1D1D;line-height:1.65;}
+.reveal-block{border-radius:13px;overflow:hidden;margin:20px 0;border:2px dashed var(--border);cursor:pointer;}
+.reveal-prompt{padding:18px 20px;display:flex;align-items:center;gap:14px;background:var(--navy-lt);}
+.reveal-prompt-icon{font-size:26px;}
+.reveal-prompt-text{font-size:16px;font-weight:700;color:var(--navy-md);flex:1;}
+.reveal-prompt-arrow{font-size:18px;color:var(--navy-md);transition:transform 0.3s;}
+.reveal-block.open .reveal-prompt-arrow{transform:rotate(90deg);}
+.reveal-answer{max-height:0;overflow:hidden;transition:max-height 0.45s cubic-bezier(.4,0,.2,1),padding 0.3s;background:var(--white);padding:0 20px;}
+.reveal-block.open .reveal-answer{max-height:400px;padding:18px 20px;}
+.reveal-answer-inner{font-size:16px;color:var(--slate);line-height:1.75;}
+.tap-question{background:var(--navy-lt);border:1.5px solid #C5D0E8;border-radius:13px;padding:20px 20px;margin:20px 0;}
+.tap-q-label{font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--navy-md);margin-bottom:8px;}
+.tap-q-text{font-size:17px;font-weight:700;color:var(--navy);margin-bottom:14px;line-height:1.4;}
+.tap-options{display:flex;flex-direction:column;gap:9px;}
+.tap-opt{padding:13px 18px;border-radius:10px;border:2px solid var(--border);background:var(--white);font-size:16px;font-weight:700;font-family:'Nunito',sans-serif;color:var(--slate);cursor:pointer;transition:0.18s;text-align:left;}
+.tap-opt:hover:not(:disabled){border-color:var(--navy-md);background:var(--navy-lt);color:var(--navy);}
+.tap-opt.correct{background:var(--green-lt);border-color:var(--green);color:var(--green);pointer-events:none;}
+.tap-opt.wrong{background:#FEF2F2;border-color:#FCA5A5;color:#B91C1C;pointer-events:none;}
+.tap-opt.dim{opacity:0.4;pointer-events:none;}
+.tap-result{font-size:15px;font-weight:700;margin-top:12px;padding:11px 14px;border-radius:9px;display:none;}
+.tap-result.show{display:block;}
+.tap-result.good{background:var(--green-lt);color:var(--green);}
+.tap-result.oops{background:#FEF2F2;color:#B91C1C;}
+.scam-list{display:flex;flex-direction:column;gap:10px;margin:16px 0;}
+.scam-item{display:flex;align-items:flex-start;gap:12px;padding:13px 16px;background:var(--red-lt);border:1.5px solid #FCA5A5;border-radius:11px;}
+.scam-icon{font-size:20px;flex-shrink:0;}
+.scam-text{font-size:15px;color:#7F1D1D;font-weight:600;line-height:1.5;}
+.completion-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;animation:fadeUp 0.4s cubic-bezier(.4,0,.2,1) both;}
+.completion-top{background:linear-gradient(135deg,var(--wa-dark) 0%,var(--wa) 100%);padding:44px 28px 36px;text-align:center;}
+.completion-big-icon{font-size:72px;margin-bottom:16px;}
+.completion-title{font-family:'Lora',serif;font-size:28px;font-weight:600;color:#fff;margin-bottom:8px;}
+.completion-sub{font-size:16px;color:rgba(255,255,255,0.88);line-height:1.6;}
+.completion-body{padding:32px 28px;}
+.learned-list{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:28px;}
+.learned-item{display:flex;align-items:center;gap:12px;padding:13px 16px;background:var(--green-lt);border:1.5px solid #B7DEC9;border-radius:10px;font-size:16px;font-weight:700;color:var(--green);}
+.completion-actions{display:flex;flex-direction:column;gap:12px;}
+.btn-primary{padding:16px 24px;border-radius:12px;border:none;background:var(--navy);color:#fff;font-size:17px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;transition:background 0.15s;}
+.btn-primary:hover{background:var(--navy-md);}
+.btn-secondary{padding:14px 24px;border-radius:12px;border:1.5px solid var(--border);background:var(--white);color:var(--navy);font-size:16px;font-weight:700;font-family:'Nunito',sans-serif;cursor:pointer;transition:0.15s;}
+.btn-secondary:hover{border-color:var(--navy);background:var(--navy-lt);}
+.nav-bar{position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:1.5px solid var(--border);padding:14px 20px;display:flex;gap:12px;z-index:200;box-shadow:0 -4px 20px rgba(27,42,74,0.09);}
+.btn-back{padding:14px 22px;border-radius:12px;border:1.5px solid var(--border);background:var(--white);font-size:16px;font-weight:700;font-family:'Nunito',sans-serif;color:var(--slate);cursor:pointer;transition:0.15s;}
+.btn-back:hover{border-color:var(--navy);color:var(--navy);background:var(--navy-lt);}
+.btn-next{flex:1;padding:14px 24px;border-radius:12px;border:none;background:var(--navy);font-size:17px;font-weight:800;font-family:'Nunito',sans-serif;color:#fff;cursor:pointer;transition:background 0.15s;}
+.btn-next:hover{background:var(--navy-md);}
+.hidden{display:none!important;}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <a class="back-btn" href="../courses.html">&#8592; Courses</a>
+  <div class="topbar-center"><div class="wa-dot">💬</div><span class="topbar-title">WhatsApp</span></div>
+  <span class="level-badge">Advanced</span>
+</div>
+<div class="progress-wrap">
+  <div class="progress-row"><span class="progress-label" id="progressLabel">Step 1 of 5</span><span class="progress-pct" id="progressPct">0% done</span></div>
+  <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+</div>
+<div class="step-dots" id="stepDots">
+  <div class="dot active" id="dot-0"></div><div class="dot" id="dot-1"></div><div class="dot" id="dot-2"></div><div class="dot" id="dot-3"></div><div class="dot" id="dot-4"></div>
+</div>
+<div class="main" id="mainContent"></div>
+<div class="nav-bar" id="navBar">
+  <button class="btn-back" id="btnBack" onclick="prevStep()">&#8592; Back</button>
+  <button class="btn-next" id="btnNext" onclick="nextStep()">Next →</button>
+</div>
+<script type="module">
+import { auth, db } from "../firebase.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+const COURSE_KEY = "whatsapp-advanced";
+let currentStep = 0, currentUser = null;
+const STEPS = [
+  () => `<div class="step-card">
+    <div class="card-hero"><div class="hero-emoji">🔒</div><div class="hero-text"><div class="hero-step">Step 1 of 5</div><div class="hero-title">Privacy Settings</div></div></div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">🛡️</span><span class="encourage-text">You're now at the advanced level — well done! Let's make sure your WhatsApp is safe and private.</span></div>
+      <p class="body-text">WhatsApp lets you control <strong>who can see your information</strong> — your profile photo, your status, and when you were last online.</p>
+      <ul class="instr-list">
+        <li class="instr-item"><span class="instr-num">1</span><span class="instr-text">Tap <strong>⋮ three dots → Settings → Privacy</strong>.</span></li>
+        <li class="instr-item"><span class="instr-num">2</span><span class="instr-text">Tap <strong>Last seen and online</strong> — set to <strong>My Contacts</strong> so only family can see.</span></li>
+        <li class="instr-item"><span class="instr-num">3</span><span class="instr-text">Tap <strong>Profile Photo</strong> — set to <strong>My Contacts</strong>.</span></li>
+        <li class="instr-item"><span class="instr-num">4</span><span class="instr-text">Tap <strong>Status</strong> — set to <strong>My Contacts</strong>.</span></li>
+      </ul>
+      <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Recommended setting</div><div class="tip-text">Setting everything to <strong>"My Contacts"</strong> means only people saved in your phone can see your details. Strangers cannot.</div></div></div>
+    </div>
+  </div>`,
+
+  () => `<div class="step-card">
+    <div class="card-hero"><div class="hero-emoji">⚠️</div><div class="hero-text"><div class="hero-step">Step 2 of 5</div><div class="hero-title">Spotting WhatsApp Scams</div></div></div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">🧠</span><span class="encourage-text">This is the most important lesson! Knowing how to spot scams keeps you and your family safe.</span></div>
+      <p class="body-text">Sadly, some bad people send <strong>fake messages</strong> to trick you. Here are the most common warning signs:</p>
+      <div class="scam-list">
+        <div class="scam-item"><span class="scam-icon">🚨</span><div class="scam-text">"Congratulations! You've won Rs 50,000! Click this link to claim." — This is ALWAYS fake.</div></div>
+        <div class="scam-item"><span class="scam-icon">🚨</span><div class="scam-text">"Your KYC has expired. Share your Aadhaar number now." — A real bank never asks this on WhatsApp.</div></div>
+        <div class="scam-item"><span class="scam-icon">🚨</span><div class="scam-text">"I'm your grandson, I'm in trouble, please send money urgently." — Always call the person directly to check!</div></div>
+        <div class="scam-item"><span class="scam-icon">🚨</span><div class="scam-text">Any message asking you to share an OTP (one-time password) — <strong>never share OTPs with anyone</strong>.</div></div>
+      </div>
+      <div class="tap-question">
+        <div class="tap-q-label">✏️ Quick check</div>
+        <div class="tap-q-text">You get a message: "You won Rs 1 lakh! Send your bank details to claim." What do you do?</div>
+        <div class="tap-options">
+          <button class="tap-opt" onclick="tapAnswer(this,false,'q2')">✅ Send my bank details quickly</button>
+          <button class="tap-opt" onclick="tapAnswer(this,true,'q2')">🚫 Delete it — this is a scam</button>
+          <button class="tap-opt" onclick="tapAnswer(this,false,'q2')">📱 Forward it to everyone</button>
+        </div>
+        <div class="tap-result" id="res-q2"></div>
+      </div>
+    </div>
+  </div>`,
+
+  () => `<div class="step-card">
+    <div class="card-hero"><div class="hero-emoji">🚫</div><div class="hero-text"><div class="hero-step">Step 3 of 5</div><div class="hero-title">Blocking & Reporting</div></div></div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">💪</span><span class="encourage-text">You have the power to block anyone who bothers you. You don't have to reply to anyone you don't want to!</span></div>
+      <p class="body-text">If someone is sending you unwanted messages or making you uncomfortable, you can <strong>block</strong> them — they will not be able to contact you again.</p>
+      <ul class="instr-list">
+        <li class="instr-item"><span class="instr-num">1</span><span class="instr-text">Open the chat with the person you want to block.</span></li>
+        <li class="instr-item"><span class="instr-num">2</span><span class="instr-text">Tap their <strong>name at the top</strong> of the screen.</span></li>
+        <li class="instr-item"><span class="instr-num">3</span><span class="instr-text">Scroll down and tap <strong>Block</strong> (shown in red).</span></li>
+        <li class="instr-item"><span class="instr-num">4</span><span class="instr-text">Tap <strong>Block</strong> again to confirm. They cannot message or call you anymore.</span></li>
+      </ul>
+      <div class="reveal-block" id="rev-3" onclick="toggleReveal('rev-3')">
+        <div class="reveal-prompt"><span class="reveal-prompt-icon">🤔</span><span class="reveal-prompt-text">Will they know I blocked them?</span><span class="reveal-prompt-arrow">▶</span></div>
+        <div class="reveal-answer"><div class="reveal-answer-inner">WhatsApp does <strong>not</strong> send a notification when you block someone. They simply won't be able to send you messages or call you. You are safe!</div></div>
+      </div>
+      <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Good to know</div><div class="tip-text">You can also tap <strong>Report</strong> after blocking — this sends information to WhatsApp so they can investigate and protect others too.</div></div></div>
+    </div>
+  </div>`,
+
+  () => `<div class="step-card">
+    <div class="card-hero"><div class="hero-emoji">☁️</div><div class="hero-text"><div class="hero-step">Step 4 of 5</div><div class="hero-title">Backing Up Your Chats</div></div></div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">🌟</span><span class="encourage-text">A backup means your precious family memories and messages are saved safely — even if your phone is lost!</span></div>
+      <p class="body-text">WhatsApp can save a <strong>copy of all your chats</strong> to Google Drive (cloud storage) automatically. This means if you get a new phone, all your messages come back!</p>
+      <ul class="instr-list">
+        <li class="instr-item"><span class="instr-num">1</span><span class="instr-text">Tap <strong>⋮ → Settings → Chats → Chat backup</strong>.</span></li>
+        <li class="instr-item"><span class="instr-num">2</span><span class="instr-text">Tap <strong>Back Up Now</strong> to save immediately.</span></li>
+        <li class="instr-item"><span class="instr-num">3</span><span class="instr-text">Tap <strong>Back up to Google Drive</strong> and set it to <strong>Daily</strong> for automatic backups.</span></li>
+        <li class="instr-item"><span class="instr-num">4</span><span class="instr-text">Choose your Google account and tap <strong>OK</strong>.</span></li>
+      </ul>
+      <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Good to know</div><div class="tip-text">Do the backup while on <strong>Wi-Fi</strong> — it saves your mobile data and is much faster!</div></div></div>
+    </div>
+  </div>`,
+
+  () => `<div class="step-card">
+    <div class="card-hero"><div class="hero-emoji">🔕</div><div class="hero-text"><div class="hero-step">Step 5 of 5</div><div class="hero-title">Managing Notifications & Groups</div></div></div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">🎉</span><span class="encourage-text">Last step! Let's take control of notifications so your phone isn't always buzzing!</span></div>
+      <p class="body-text">Group chats can send many messages. You can <strong>mute</strong> a group so it doesn't disturb you — but you can still read it when you want.</p>
+      <ul class="instr-list">
+        <li class="instr-item"><span class="instr-num">1</span><span class="instr-text">Open the group chat you want to silence.</span></li>
+        <li class="instr-item"><span class="instr-num">2</span><span class="instr-text">Tap the <strong>group name</strong> at the top.</span></li>
+        <li class="instr-item"><span class="instr-num">3</span><span class="instr-text">Tap <strong>Mute notifications</strong> and choose how long — <em>8 hours, 1 week,</em> or <em>Always</em>.</span></li>
+        <li class="instr-item"><span class="instr-num">4</span><span class="instr-text">To leave a group: scroll down and tap <strong>Exit Group</strong>.</span></li>
+      </ul>
+      <div class="tap-question">
+        <div class="tap-q-label">✏️ Quick check</div>
+        <div class="tap-q-text">A group chat is sending too many messages and disturbing you. What should you do?</div>
+        <div class="tap-options">
+          <button class="tap-opt" onclick="tapAnswer(this,false,'q5')">📱 Delete WhatsApp completely</button>
+          <button class="tap-opt" onclick="tapAnswer(this,true,'q5')">🔕 Mute the group notifications</button>
+          <button class="tap-opt" onclick="tapAnswer(this,false,'q5')">📵 Turn off your phone</button>
+        </div>
+        <div class="tap-result" id="res-q5"></div>
+      </div>
+      <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Good to know</div><div class="tip-text">Muting a group does <strong>not</strong> remove you from it. You can still read all messages — your phone just won't make noise!</div></div></div>
+    </div>
+  </div>`,
+];
+onAuthStateChanged(auth, async (user) => {
+  if (!user) { window.location.href = "../index.html"; return; }
+  currentUser = user;
+  try { const snap = await getDoc(doc(db,"users",user.uid)); if(snap.exists()&&snap.data().progress?.[COURSE_KEY]===100) currentStep=STEPS.length; } catch(e){}
+  render();
+});
+async function saveProgress(pct){ if(!currentUser)return; try{await setDoc(doc(db,"users",currentUser.uid),{progress:{[COURSE_KEY]:pct}},{merge:true});}catch(e){} }
+function render(){ updateProgress();updateDots(); const main=document.getElementById("mainContent"); if(currentStep<STEPS.length){main.innerHTML=STEPS[currentStep]();}else{renderCompletion(main);} updateNav(); window.scrollTo({top:0,behavior:"smooth"}); }
+function updateProgress(){ const pct=Math.round((currentStep/STEPS.length)*100); document.getElementById("progressFill").style.width=pct+"%"; document.getElementById("progressPct").textContent=pct+"% done"; document.getElementById("progressLabel").textContent=currentStep<STEPS.length?`Step ${currentStep+1} of ${STEPS.length}`:"Lesson Complete!"; }
+function updateDots(){ for(let i=0;i<STEPS.length;i++){const d=document.getElementById("dot-"+i);if(!d)continue;d.className="dot"+(i<currentStep?" done":i===currentStep?" active":"");} }
+function updateNav(){ const navBar=document.getElementById("navBar"); if(currentStep>=STEPS.length){navBar.classList.add("hidden");return;} navBar.classList.remove("hidden"); document.getElementById("btnBack").style.visibility=currentStep===0?"hidden":"visible"; document.getElementById("btnNext").textContent=currentStep===STEPS.length-1?"Finish lesson 🎉":"Next →"; }
+function renderCompletion(container){ container.innerHTML=`<div class="completion-card"><div class="completion-top"><div class="completion-big-icon">🏆</div><div class="completion-title">WhatsApp Master!</div><div class="completion-sub">You've completed all three WhatsApp levels.<br>You now know everything you need to use WhatsApp safely!</div></div><div class="completion-body"><ul class="learned-list"><li class="learned-item">✅ Managing your privacy settings</li><li class="learned-item">✅ Spotting and avoiding scams</li><li class="learned-item">✅ Blocking and reporting unwanted contacts</li><li class="learned-item">✅ Backing up your chats safely</li><li class="learned-item">✅ Managing group notifications</li></ul><div class="completion-actions"><button class="btn-primary" onclick="window.location.href='../courses.html'">Explore more courses →</button><button class="btn-secondary" onclick="window.location.href='../courses.html'">Back to all courses</button></div></div></div>`; document.getElementById("navBar").classList.add("hidden"); document.getElementById("stepDots").classList.add("hidden"); saveProgress(100); }
+window.toggleReveal=(id)=>document.getElementById(id).classList.toggle("open");
+window.tapAnswer=function(btn,isCorrect,qid){ const opts=btn.parentElement.querySelectorAll(".tap-opt"); opts.forEach(o=>{o.classList.add("dim");o.disabled=true;}); btn.classList.remove("dim");btn.classList.add(isCorrect?"correct":"wrong"); if(!isCorrect){opts.forEach(o=>{if(o.getAttribute("onclick")?.includes("true")){o.classList.remove("dim");o.classList.add("correct");}});} const res=document.getElementById("res-"+qid); if(res){res.className="tap-result show "+(isCorrect?"good":"oops");res.textContent=isCorrect?"✅ Exactly right! Well done!":"💭 Not quite — the correct answer is highlighted above. That's okay, now you know!";} };
+window.nextStep=function(){currentStep++;saveProgress(Math.round((currentStep/STEPS.length)*100));render();};
+window.prevStep=function(){if(currentStep>0){currentStep--;render();}};
+</script>
+</body>
+</html>

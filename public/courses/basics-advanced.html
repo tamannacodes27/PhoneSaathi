@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smartphone Basics — Advanced · Digital Literacy</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --navy:#1B2A4A;--navy-md:#2E4070;--navy-lt:#EEF1F8;--cream:#FAF8F5;--warm:#F3EFE8;
+  --gold:#B07D2F;--gold-lt:#FDF3DC;--slate:#4A5568;--slate-lt:#718096;--border:#E2DDD6;
+  --white:#FFFFFF;--green:#2D6A4F;--green-lt:#E8F5EF;
+  --purple:#4C1D95;--purple-md:#7C3AED;--purple-lt:#EDE9FE;
+  --red:#B91C1C;--red-lt:#FEF2F2;
+  --indigo:#3730A3;--indigo-lt:#E0E7FF;
+  --radius:16px;--shadow:0 4px 24px rgba(27,42,74,0.10);
+}
+body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--navy);min-height:100vh;font-size:18px;}
+.topbar{background:var(--navy);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,0.2);}
+.back-btn{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:700;color:rgba(255,255,255,0.7);cursor:pointer;padding:6px 14px;border:1px solid rgba(255,255,255,0.18);border-radius:8px;background:rgba(255,255,255,0.06);transition:0.15s;text-decoration:none;}
+.back-btn:hover{background:rgba(255,255,255,0.13);color:#fff;}
+.topbar-center{display:flex;align-items:center;gap:10px;}
+.dot-icon{width:30px;height:30px;background:var(--purple-md);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;}
+.topbar-title{font-family:'Lora',serif;font-size:16px;font-weight:600;color:#fff;}
+.level-badge{font-size:12px;font-weight:800;background:var(--purple);color:#fff;padding:3px 12px;border-radius:20px;}
+.progress-wrap{background:var(--white);border-bottom:1.5px solid var(--border);padding:14px 24px;}
+.progress-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.progress-label{font-size:13px;font-weight:700;color:var(--slate);}
+.progress-pct{font-size:13px;font-weight:800;color:var(--purple-md);}
+.progress-track{height:8px;background:var(--warm);border-radius:8px;overflow:hidden;}
+.progress-fill{height:8px;background:linear-gradient(90deg,var(--purple),var(--purple-md));border-radius:8px;transition:width 0.6s cubic-bezier(.4,0,.2,1);}
+.step-dots{display:flex;justify-content:center;gap:8px;padding:16px 24px 0;}
+.dot{height:8px;border-radius:8px;background:var(--border);transition:all 0.35s cubic-bezier(.4,0,.2,1);width:8px;}
+.dot.done{background:var(--purple-md);}
+.dot.active{background:var(--navy);width:28px;}
+.main{max-width:680px;margin:0 auto;padding:24px 20px 110px;}
+.step-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;animation:fadeUp 0.4s cubic-bezier(.4,0,.2,1) both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.card-hero{padding:28px 28px 22px;background:linear-gradient(135deg,#2E1065 0%,#4C1D95 60%,#7C3AED 100%);display:flex;gap:18px;align-items:center;}
+.hero-emoji{font-size:56px;line-height:1;flex-shrink:0;filter:drop-shadow(0 3px 10px rgba(0,0,0,0.25));}
+.hero-step{font-size:11px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:#DDD6FE;margin-bottom:5px;}
+.hero-title{font-family:'Lora',serif;font-size:24px;font-weight:600;color:#fff;line-height:1.25;}
+.card-body{padding:26px 28px 28px;}
+.body-text{font-size:17px;color:var(--slate);line-height:1.85;margin-bottom:18px;}
+.encourage{display:flex;align-items:center;gap:12px;background:var(--gold-lt);border:1.5px solid #EDD9A0;border-radius:12px;padding:14px 18px;margin-bottom:22px;}
+.encourage-icon{font-size:22px;flex-shrink:0;}
+.encourage-text{font-size:15px;font-weight:700;color:var(--gold);line-height:1.5;}
+.instr-list{list-style:none;display:flex;flex-direction:column;gap:12px;margin-bottom:24px;}
+.instr-item{display:flex;gap:13px;align-items:flex-start;padding:14px 16px;background:var(--cream);border:1.5px solid var(--border);border-radius:12px;transition:border-color 0.2s,background 0.2s;}
+.instr-item:hover{border-color:var(--navy-md);background:var(--navy-lt);}
+.instr-num{width:30px;height:30px;border-radius:50%;background:var(--navy);color:#fff;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.instr-text{font-size:16px;color:var(--slate);line-height:1.7;padding-top:3px;}
+.tip-box{display:flex;gap:13px;align-items:flex-start;background:var(--green-lt);border:1.5px solid #B7DEC9;border-radius:12px;padding:16px 18px;margin-top:20px;}
+.tip-icon{font-size:22px;flex-shrink:0;margin-top:1px;}
+.tip-label{font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);margin-bottom:3px;}
+.tip-text{font-size:15px;color:#285C42;line-height:1.65;}
+.warn-box{display:flex;gap:13px;align-items:flex-start;background:var(--red-lt);border:1.5px solid #FCA5A5;border-radius:12px;padding:16px 18px;margin:16px 0;}
+.warn-icon{font-size:22px;flex-shrink:0;margin-top:1px;}
+.warn-label{font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--red);margin-bottom:3px;}
+.warn-text{font-size:15px;color:#7F1D1D;line-height:1.65;}
+.reveal-block{border-radius:13px;overflow:hidden;margin:20px 0;border:2px dashed var(--border);cursor:pointer;transition:border-color 0.2s;}
+.reveal-block:hover{border-color:var(--navy-md);}
+.reveal-prompt{padding:18px 20px;display:flex;align-items:center;gap:14px;background:var(--navy-lt);}
+.reveal-prompt-icon{font-size:26px;}
+.reveal-prompt-text{font-size:16px;font-weight:700;color:var(--navy-md);flex:1;}
+.reveal-prompt-arrow{font-size:18px;color:var(--navy-md);transition:transform 0.3s;}
+.reveal-block.open .reveal-prompt-arrow{transform:rotate(90deg);}
+.reveal-answer{max-height:0;overflow:hidden;transition:max-height 0.45s cubic-bezier(.4,0,.2,1),padding 0.3s;background:var(--white);padding:0 20px;}
+.reveal-block.open .reveal-answer{max-height:500px;padding:18px 20px;}
+.reveal-answer-inner{font-size:16px;color:var(--slate);line-height:1.75;}
+.tap-question{background:var(--navy-lt);border:1.5px solid #C5D0E8;border-radius:13px;padding:20px 20px;margin:20px 0;}
+.tap-q-label{font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--navy-md);margin-bottom:8px;}
+.tap-q-text{font-size:17px;font-weight:700;color:var(--navy);margin-bottom:14px;line-height:1.4;}
+.tap-options{display:flex;flex-direction:column;gap:9px;}
+.tap-opt{padding:13px 18px;border-radius:10px;border:2px solid var(--border);background:var(--white);font-size:16px;font-weight:700;font-family:'Nunito',sans-serif;color:var(--slate);cursor:pointer;transition:0.18s;text-align:left;}
+.tap-opt:hover:not(:disabled){border-color:var(--navy-md);background:var(--navy-lt);color:var(--navy);}
+.tap-opt.correct{background:var(--green-lt);border-color:var(--green);color:var(--green);pointer-events:none;}
+.tap-opt.wrong{background:#FEF2F2;border-color:#FCA5A5;color:#B91C1C;pointer-events:none;}
+.tap-opt.dim{opacity:0.4;pointer-events:none;}
+.tap-result{font-size:15px;font-weight:700;margin-top:12px;padding:11px 14px;border-radius:9px;display:none;}
+.tap-result.show{display:block;}
+.tap-result.good{background:var(--green-lt);color:var(--green);}
+.tap-result.oops{background:#FEF2F2;color:#B91C1C;}
+.feature-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0;}
+.feature-card{background:var(--purple-lt);border:1.5px solid #C4B5FD;border-radius:12px;padding:16px 14px;text-align:center;}
+.feature-card-icon{font-size:32px;margin-bottom:8px;}
+.feature-card-name{font-size:14px;font-weight:800;color:var(--purple);margin-bottom:3px;}
+.feature-card-desc{font-size:12px;color:var(--slate-lt);line-height:1.5;}
+.scam-list{display:flex;flex-direction:column;gap:10px;margin:16px 0;}
+.scam-item{display:flex;align-items:flex-start;gap:12px;padding:13px 16px;background:var(--red-lt);border:1.5px solid #FCA5A5;border-radius:11px;}
+.scam-icon{font-size:20px;flex-shrink:0;}
+.scam-text{font-size:15px;color:#7F1D1D;font-weight:600;line-height:1.5;}
+.safe-list{display:flex;flex-direction:column;gap:10px;margin:16px 0;}
+.safe-item{display:flex;align-items:flex-start;gap:12px;padding:13px 16px;background:var(--green-lt);border:1.5px solid #B7DEC9;border-radius:11px;}
+.safe-icon{font-size:20px;flex-shrink:0;}
+.safe-text{font-size:15px;color:#285C42;font-weight:600;line-height:1.5;}
+.completion-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;animation:fadeUp 0.4s cubic-bezier(.4,0,.2,1) both;}
+.completion-top{background:linear-gradient(135deg,#2E1065 0%,#7C3AED 100%);padding:44px 28px 36px;text-align:center;}
+.completion-big-icon{font-size:72px;margin-bottom:16px;}
+.completion-title{font-family:'Lora',serif;font-size:28px;font-weight:600;color:#fff;margin-bottom:8px;}
+.completion-sub{font-size:16px;color:rgba(255,255,255,0.88);line-height:1.6;}
+.completion-body{padding:32px 28px;}
+.learned-list{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:28px;}
+.learned-item{display:flex;align-items:center;gap:12px;padding:13px 16px;background:var(--green-lt);border:1.5px solid #B7DEC9;border-radius:10px;font-size:16px;font-weight:700;color:var(--green);}
+.completion-actions{display:flex;flex-direction:column;gap:12px;}
+.btn-primary{padding:16px 24px;border-radius:12px;border:none;background:var(--navy);color:#fff;font-size:17px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;transition:background 0.15s;}
+.btn-primary:hover{background:var(--navy-md);}
+.btn-secondary{padding:14px 24px;border-radius:12px;border:1.5px solid var(--border);background:var(--white);color:var(--navy);font-size:16px;font-weight:700;font-family:'Nunito',sans-serif;cursor:pointer;transition:0.15s;}
+.btn-secondary:hover{border-color:var(--navy);background:var(--navy-lt);}
+.nav-bar{position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:1.5px solid var(--border);padding:14px 20px;display:flex;gap:12px;z-index:200;box-shadow:0 -4px 20px rgba(27,42,74,0.09);}
+.btn-back{padding:14px 22px;border-radius:12px;border:1.5px solid var(--border);background:var(--white);font-size:16px;font-weight:700;font-family:'Nunito',sans-serif;color:var(--slate);cursor:pointer;transition:0.15s;}
+.btn-back:hover{border-color:var(--navy);color:var(--navy);background:var(--navy-lt);}
+.btn-next{flex:1;padding:14px 22px;border-radius:12px;border:none;background:var(--navy);color:#fff;font-size:17px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;transition:background 0.15s;}
+.btn-next:hover{background:var(--navy-md);}
+.hidden{display:none!important;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="back-btn" href="../courses.html">&#8592; Courses</a>
+  <div class="topbar-center">
+    <div class="dot-icon">🛡️</div>
+    <span class="topbar-title">Smartphone Basics</span>
+  </div>
+  <span class="level-badge">Advanced</span>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-row">
+    <span class="progress-label" id="progressLabel">Step 1 of 7</span>
+    <span class="progress-pct" id="progressPct">0% done</span>
+  </div>
+  <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+</div>
+
+<div class="step-dots" id="stepDots">
+  <div class="dot active" id="dot-0"></div>
+  <div class="dot" id="dot-1"></div>
+  <div class="dot" id="dot-2"></div>
+  <div class="dot" id="dot-3"></div>
+  <div class="dot" id="dot-4"></div>
+  <div class="dot" id="dot-5"></div>
+  <div class="dot" id="dot-6"></div>
+</div>
+
+<div class="main" id="mainContent"></div>
+
+<div class="nav-bar" id="navBar">
+  <button class="btn-back" id="btnBack" onclick="prevStep()">&#8592; Back</button>
+  <button class="btn-next" id="btnNext" onclick="nextStep()">Next →</button>
+</div>
+
+<script type="module">
+import { auth, db } from "/firebase.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const COURSE_KEY = "basics-advanced";
+let currentStep = 0, currentUser = null;
+
+const STEPS = [
+  // ── STEP 1 ── Phone Security & Screen Lock ───────────────────────────────
+  () => `<div class="step-card">
+    <div class="card-hero"><div class="hero-emoji">🔐</div><div class="hero-text"><div class="hero-step">Step 1 of 7</div><div class="hero-title">Securing Your Phone — Lock & Fingerprint</div></div></div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">🌸</span><span class="encourage-text">Welcome to Advanced! You've come so far. In this course we focus on keeping your phone safe and getting the most out of it — starting with securing it properly.</span></div>
+      <p class="body-text">Your phone contains your bank details, photos, contacts and messages. If it's lost or stolen, a strong <strong>screen lock</strong> prevents anyone from accessing your personal information.</p>
+      <ul class="instr-list">
+        <li class="instr-item"><span class="instr-num">1</span><span class="instr-text"><strong>Set a PIN:</strong> Settings → Biometrics & Security → Screen lock → PIN → enter a 6-digit number you'll remember. Avoid 123456 or your birth year.</span></li>
+        <li class="instr-item"><span class="instr-num">2</span><span class="instr-text"><strong>Add Fingerprint:</strong> Settings → Biometrics & Security → Fingerprints → Add fingerprint. Press your finger on the sensor 10–15 times as guided. Now you can unlock with just a touch!</span></li>
+        <li class="instr-item"><span class="instr-num">3</span><span class="instr-text"><strong>Set Face Unlock</strong> (if available): Settings → Biometrics → Face recognition → follow the on-screen guide. Your phone unlocks just by looking at it.</span></li>
+        <li class="instr-item"><span class="instr-num">4</span><span class="instr-text"><strong>Auto lock time:</strong> Settings → Display → Screen timeout → set to <strong>30 seconds</strong> or <strong>1 minute</strong>. Phone locks quickly if left unattended.</span></li>
+        <li class="instr-item"><span class="instr-num">5</span><span class="instr-text"><strong>Find My Device:</strong> Settings → Biometrics & Security → Find My Mobile → turn ON. If phone is lost, you can locate or remotely erase it from <em>findmymobile.samsung.com</em> or <em>android.com/find</em>.</span></li>
+      </ul>
+      <div class="warn-box"><span class="warn-icon">⚠️</span><div><div class="warn-label">Important</div><div class="warn-text">Never share your PIN or unlock pattern with anyone — even people calling and claiming to be from the phone company. A real technician will never ask for your PIN.</div></div></div>
+      <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Good to know</div><div class="tip-text">Write your PIN on a piece of paper and keep it in a safe place at home — not on your phone! If you forget it, you may have to factory reset the phone and lose your data.</div></div></div>
+    </div>
+  </div>`,
+
+  // ── STEP 2 ── UPI & Mobile Payments ──────────────────────────────────────
+  () => `<div class="step-card">
+    <div class="card-hero"><div class="hero-emoji">💳</div><div class="hero-text"><div class="hero-step">Step 2 of 7</div><div class="hero-title">UPI Payments — Pay Safely with Your Phone</div></div></div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">💰</span><span class="encourage-text">Paying with your phone using UPI is fast, free and very safe when done correctly. Millions of Indians use it every day for everything from vegetables to hospital bills!</span></div>
+      <p class="body-text"><strong>UPI (Unified Payments Interface)</strong> lets you send and receive money instantly using apps like <strong>Google Pay, PhonePe or Paytm</strong>. You need a bank account linked to your phone number.</p>
+      <ul class="instr-list">
+        <li class="instr-item"><span class="instr-num">1</span><span class="instr-text"><strong>Set up:</strong> Download Google Pay (or PhonePe) from Play Store → open → enter your mobile number → link your bank account → set a 4 or 6 digit <strong>UPI PIN</strong> (different from your phone lock PIN).</span></li>
+        <li class="instr-item"><span class="instr-num">2</span><span class="instr-text"><strong>Pay at a shop:</strong> Open Google Pay → tap <strong>Pay</strong> → scan the shopkeeper's <strong>QR code</strong> with your camera → enter the amount → enter your UPI PIN → done! Money transfers instantly.</span></li>
+        <li class="instr-item"><span class="instr-num">3</span><span class="instr-text"><strong>Send money to a person:</strong> Tap <strong>New payment</strong> → enter their UPI ID or phone number → enter amount → enter UPI PIN. They receive it immediately.</span></li>
+        <li class="instr-item"><span class="instr-num">4</span><span class="instr-text"><strong>Receive money:</strong> Share your UPI ID or show your QR code (in the app). You don't need to enter any PIN to receive — only to send.</span></li>
+        <li class="instr-item"><span class="instr-num">5</span><span class="instr-text"><strong>Check transaction history:</strong> In the app, tap <strong>History</strong> or <strong>Transactions</strong> to see every payment you made or received with date and amount.</span></li>
+      </ul>
+      <div class="warn-box"><span class="warn-icon">🚨</span><div><div class="warn-label">Critical Safety Rule</div><div class="warn-text">You NEVER need to enter your UPI PIN to <strong>receive</strong> money. If someone asks you to enter your PIN to accept a payment, it is a scam — they are trying to steal money FROM you. Hang up or walk away immediately.</div></div></div>
+      <div class="tap-question">
+        <div class="tap-q-label">✏️ Quick check</div>
+        <div class="tap-q-text">A stranger calls and says "I'm sending you ₹5000 — just enter your UPI PIN to receive it." What do you do?</div>
+        <div class="tap-options">
+          <button class="tap-opt" onclick="tapAnswer(this,false,'q2')">✅ Enter my UPI PIN as they asked</button>
+          <button class="tap-opt" onclick="tapAnswer(this,true,'q2')">🚫 Hang up — this is a scam. I never need a PIN to receive money</button>
+          <button class="tap-opt" onclick="tapAnswer(this,false,'q2')">🤔 Ask them to send only ₹100 first to test</button>
+        </div>
+        <div class="tap-result" id="res-q2"></div>
+      </div>
+      <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Good to know</div><div class="tip-text">UPI transactions are instant and usually <strong>cannot be reversed</strong>. Always double-check the name shown on screen before confirming payment — make sure it matches the person you intend to pay.</div></div></div>
+    </div>
+  </div>`,
+
+  // ── STEP 3 ── Video Calling ───────────────────────────────────────────────
+  () => `<div class="step-card">
+    <div class="card-hero"><div class="hero-emoji">📹</div><div class="hero-text"><div class="hero-step">Step 3 of 7</div><div class="hero-title">Video Calling — See Your Loved Ones</div></div></div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">👨‍👩‍👧</span><span class="encourage-text">Video calling lets you see the faces of your children, grandchildren and friends no matter how far away they are. It feels like they're right there with you!</span></div>
+      <p class="body-text">There are two easy ways to make video calls: <strong>WhatsApp Video Call</strong> (most popular in India) and <strong>Google Meet / Duo</strong>. Both work over Wi-Fi or mobile data.</p>
+      <ul class="instr-list">
+        <li class="instr-item"><span class="instr-num">1</span><span class="instr-text"><strong>WhatsApp video call:</strong> Open WhatsApp → tap the person's name in your chat list → tap the <strong>video camera icon 📹</strong> at the top right → they receive a call on their screen.</span></li>
+        <li class="instr-item"><span class="instr-num">2</span><span class="instr-text"><strong>Answer a video call:</strong> When the screen shows an incoming video call, swipe or tap the <strong>green video button</strong> to answer. The front camera turns on automatically.</span></li>
+        <li class="instr-item"><span class="instr-num">3</span><span class="instr-text"><strong>Switch cameras during call:</strong> Tap the <strong>flip camera 🔄 icon</strong> to show them what you're seeing around you — show a grandchild your garden, cooking, or a festival decoration!</span></li>
+        <li class="instr-item"><span class="instr-num">4</span><span class="instr-text"><strong>Mute yourself:</strong> Tap the <strong>microphone icon 🎤</strong> to mute when there's background noise. Tap again to unmute.</span></li>
+        <li class="instr-item"><span class="instr-num">5</span><span class="instr-text"><strong>Group video call:</strong> In WhatsApp, open a group chat → tap the <strong>video icon</strong> to call everyone in the group. Up to 8 people can join. Perfect for family gatherings!</span></li>
+        <li class="instr-item"><span class="instr-num">6</span><span class="instr-text"><strong>End the call:</strong> Tap the <strong>red button 🔴</strong> at any time to end the call.</span></li>
+      </ul>
+      <div class="reveal-block" id="rev-3" onclick="toggleReveal('rev-3')">
+        <div class="reveal-prompt"><span class="reveal-prompt-icon">🤔</span><span class="reveal-prompt-text">The video looks blurry or keeps freezing — what can I do?</span><span class="reveal-prompt-arrow">▶</span></div>
+        <div class="reveal-answer"><div class="reveal-answer-inner">Poor video quality is almost always caused by a <strong>weak internet connection</strong>. Try these fixes: (1) Move closer to your Wi-Fi router, or (2) Make sure mobile data is on if you're outside, (3) Ask the other person to check their connection too, (4) Close other apps running in the background. If the call keeps dropping, a voice call may work better when the signal is weak.</div></div>
+      </div>
+      <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Good to know</div><div class="tip-text">Position your phone at <strong>eye level</strong> (prop it against a book or cup) so the other person sees your face clearly — not your forehead or the ceiling! Make sure there's good light in front of you, not behind you.</div></div></div>
+    </div>
+  </div>`,
+
+  // ── STEP 4 ── Online Safety & Scam Awareness ─────────────────────────────
+  () => `<div class="step-card">
+    <div class="card-hero"><div class="hero-emoji">🛡️</div><div class="hero-text"><div class="hero-step">Step 4 of 7</div><div class="hero-title">Staying Safe Online — Recognising Scams</div></div></div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">💪</span><span class="encourage-text">Being aware of scams is the most powerful protection you have. Once you know what to look for, scammers cannot fool you — and you can help protect others too!</span></div>
+      <p class="body-text">Scammers specifically target elderly people with phone calls, WhatsApp messages and fake links. Here are the <strong>most common scams</strong> in India and how to spot them instantly:</p>
+      <div class="scam-list">
+        <div class="scam-item"><span class="scam-icon">📞</span><span class="scam-text"><strong>"KYC expiry" call:</strong> Someone calls claiming your bank KYC has expired and asks for your Aadhaar, OTP or bank PIN. Banks NEVER call asking for these details.</span></div>
+        <div class="scam-item"><span class="scam-icon">🎁</span><span class="scam-text"><strong>Lottery / Prize scam:</strong> "You have won ₹25 lakh! Pay ₹5000 processing fee to claim." If you didn't enter a lottery, you didn't win one. Real prizes never require upfront payment.</span></div>
+        <div class="scam-item"><span class="scam-icon">👮</span><span class="scam-text"><strong>Fake police / CBI call:</strong> "Your Aadhaar is linked to a crime case. Pay ₹50,000 to avoid arrest." This is always a scam. Real police never demand money over phone.</span></div>
+        <div class="scam-item"><span class="scam-icon">💻</span><span class="scam-text"><strong>Screen sharing scam:</strong> "Download this app so I can fix your phone remotely." They then see everything on your screen including banking apps and OTPs. Never install apps strangers ask you to.</span></div>
+        <div class="scam-item"><span class="scam-icon">🔗</span><span class="scam-text"><strong>Fake links on WhatsApp:</strong> Messages saying "Your parcel is stuck, click here" or "Win free Jio recharge." Do not tap links from unknown senders.</span></div>
+      </div>
+      <p class="body-text"><strong>What to do when you suspect a scam:</strong></p>
+      <div class="safe-list">
+        <div class="safe-item"><span class="safe-icon">📵</span><span class="safe-text">Hang up immediately — don't try to argue or explain. Just disconnect.</span></div>
+        <div class="safe-item"><span class="safe-icon">🗣️</span><span class="safe-text">Tell a family member right away — don't be embarrassed, scammers are very convincing.</span></div>
+        <div class="safe-item"><span class="safe-icon">🚫</span><span class="safe-text">Never share OTP, PIN, Aadhaar number or bank account details with anyone who called you.</span></div>
+        <div class="safe-item"><span class="safe-icon">📞</span><span class="safe-text">Call your bank's official helpline (on the back of your debit card) if worried about your account.</span></div>
+      </div>
+      <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Good to know</div><div class="tip-text">The National Cyber Crime helpline number is <strong>1930</strong>. If you've been scammed or someone attempted to scam you, call 1930 or visit <strong>cybercrime.gov.in</strong> to report it.</div></div></div>
+    </div>
+  </div>`,
+
+  // ── STEP 5 ── Google Search & YouTube ────────────────────────────────────
+  () => `<div class="step-card">
+    <div class="card-hero"><div class="hero-emoji">🔍</div><div class="hero-text"><div class="hero-step">Step 5 of 7</div><div class="hero-title">Google Search & YouTube</div></div></div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">🌟</span><span class="encourage-text">Google and YouTube put the knowledge of the entire world at your fingertips — recipes, health information, devotional songs, news, everything! Let's learn to use them confidently.</span></div>
+      <p class="body-text"><strong>Google Search</strong> answers any question instantly. <strong>YouTube</strong> has millions of free videos — from bhajans and cooking to exercise and news. Both are completely free to use.</p>
+      <ul class="instr-list">
+        <li class="instr-item"><span class="instr-num">1</span><span class="instr-text"><strong>Search with voice:</strong> Open Google app (or Chrome browser) → tap the <strong>microphone 🎤</strong> → speak your question clearly in Hindi or English. E.g. say <em>"aaj ka mausam Delhi"</em> or <em>"diabetes diet chart"</em>.</span></li>
+        <li class="instr-item"><span class="instr-num">2</span><span class="instr-text"><strong>Search by typing:</strong> Tap the Google search bar → type your question → tap Search or press Enter. Results appear instantly — tap any result to read more.</span></li>
+        <li class="instr-item"><span class="instr-num">3</span><span class="instr-text"><strong>Open YouTube:</strong> Tap the YouTube app (red icon with white triangle ▶). The home page shows videos based on what you enjoy.</span></li>
+        <li class="instr-item"><span class="instr-num">4</span><span class="instr-text"><strong>Search on YouTube:</strong> Tap the <strong>Search 🔍</strong> icon → type or say what you want — e.g. <em>"Hanuman Chalisa"</em>, <em>"dal makhani recipe"</em>, <em>"morning yoga for seniors"</em>. Tap a video to watch.</span></li>
+        <li class="instr-item"><span class="instr-num">5</span><span class="instr-text"><strong>Adjust video quality:</strong> During a video → tap ⋮ menu → Quality → choose <strong>360p</strong> to save mobile data, or <strong>720p</strong> for HD on Wi-Fi.</span></li>
+        <li class="instr-item"><span class="instr-num">6</span><span class="instr-text"><strong>Change YouTube language:</strong> In YouTube → tap your profile photo → Settings → General → App language → choose Hindi or your preferred language.</span></li>
+      </ul>
+      <div class="tap-question">
+        <div class="tap-q-label">✏️ Quick check</div>
+        <div class="tap-q-text">You want to watch a cooking video but your mobile data is limited. Which video quality should you choose?</div>
+        <div class="tap-options">
+          <button class="tap-opt" onclick="tapAnswer(this,false,'q5')">📺 1080p HD — best quality</button>
+          <button class="tap-opt" onclick="tapAnswer(this,true,'q5')">📱 360p — saves mobile data</button>
+          <button class="tap-opt" onclick="tapAnswer(this,false,'q5')">🔇 Mute the video to save data</button>
+        </div>
+        <div class="tap-result" id="res-q5"></div>
+      </div>
+      <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Good to know</div><div class="tip-text">On YouTube, tap the <strong>Like 👍</strong> button on videos you enjoy — YouTube learns your taste and shows you more of what you like. You can also subscribe to channels (like a newspaper subscription) to always see their new videos.</div></div></div>
+    </div>
+  </div>`,
+
+  // ── STEP 6 ── Google Photos & Cloud Backup ────────────────────────────────
+  () => `<div class="step-card">
+    <div class="card-hero"><div class="hero-emoji">☁️</div><div class="hero-text"><div class="hero-step">Step 6 of 7</div><div class="hero-title">Google Photos — Backup & Never Lose Memories</div></div></div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">🖼️</span><span class="encourage-text">Imagine never losing a single photo — even if your phone is lost, broken or stolen. Google Photos saves all your memories safely in the cloud. Let's set it up!</span></div>
+      <p class="body-text"><strong>Google Photos</strong> automatically copies every photo and video you take to Google's secure servers — for free (up to 15 GB). Your memories are safe even if something happens to your phone.</p>
+      <ul class="instr-list">
+        <li class="instr-item"><span class="instr-num">1</span><span class="instr-text"><strong>Open Google Photos</strong> (colourful pinwheel icon). Sign in with your Google account if asked.</span></li>
+        <li class="instr-item"><span class="instr-num">2</span><span class="instr-text"><strong>Turn on Backup:</strong> Tap your <strong>profile photo</strong> (top right) → <strong>Photos settings</strong> → <strong>Backup</strong> → toggle ON. Choose <strong>"Storage saver"</strong> quality — this uses less space and is perfectly clear on a phone screen.</span></li>
+        <li class="instr-item"><span class="instr-num">3</span><span class="instr-text"><strong>Check backup status:</strong> Tap your profile photo → you'll see <strong>"Backup is on"</strong> or how many photos are waiting to upload. Connect to Wi-Fi if many photos are pending.</span></li>
+        <li class="instr-item"><span class="instr-num">4</span><span class="instr-text"><strong>Search your photos:</strong> Tap the <strong>Search 🔍</strong> tab → type <em>"Diwali"</em>, <em>"family"</em>, <em>"temple"</em> — Google Photos recognises faces and places and finds those photos automatically!</span></li>
+        <li class="instr-item"><span class="instr-num">5</span><span class="instr-text"><strong>Share an album:</strong> Tap <strong>Library → Albums → Create album</strong> → add photos → tap Share → send the link to family on WhatsApp. They can see all photos without you sending them one by one.</span></li>
+        <li class="instr-item"><span class="instr-num">6</span><span class="instr-text"><strong>Free up phone storage:</strong> Tap profile photo → <strong>Manage storage</strong> → <strong>Free up space</strong>. Photos already backed up are removed from your phone but stay safely in Google Photos.</span></li>
+      </ul>
+      <div class="reveal-block" id="rev-6" onclick="toggleReveal('rev-6')">
+        <div class="reveal-prompt"><span class="reveal-prompt-icon">🤔</span><span class="reveal-prompt-text">My phone broke — are my photos really still safe?</span><span class="reveal-prompt-arrow">▶</span></div>
+        <div class="reveal-answer"><div class="reveal-answer-inner">Yes! If backup was turned on, <strong>every photo is safely stored on Google's servers</strong> — your phone is just one way to view them. On a new phone, simply sign into the same Google account and open Google Photos — all your photos appear again, exactly as before. You can also view them on a computer by going to <strong>photos.google.com</strong>.</div></div>
+      </div>
+      <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Good to know</div><div class="tip-text">Set backup to happen on Wi-Fi only (it's the default) — this way your mobile data is never used for uploading photos. Connect to home Wi-Fi each night and your photos will quietly back up while you sleep.</div></div></div>
+    </div>
+  </div>`,
+
+  // ── STEP 7 ── Health Apps, Emergency & Digilocker ─────────────────────────
+  () => `<div class="step-card">
+    <div class="card-hero"><div class="hero-emoji">🏥</div><div class="hero-text"><div class="hero-step">Step 7 of 7</div><div class="hero-title">Health Tools, Emergency SOS & DigiLocker</div></div></div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">🎉</span><span class="encourage-text">Final step — and possibly the most valuable one! These features can genuinely help you in an emergency and keep important documents always with you.</span></div>
+      <p class="body-text">Your phone has powerful built-in tools for health and emergencies. Let's learn three that every senior should know about.</p>
+      <ul class="instr-list">
+        <li class="instr-item"><span class="instr-num">1</span><span class="instr-text"><strong>Emergency SOS:</strong> Press the <strong>Power button 5 times quickly</strong> (on most Android phones) → your phone automatically calls emergency services (112) and sends your location to your emergency contacts. Set it up: Settings → Safety & emergency → Emergency SOS.</span></li>
+        <li class="instr-item"><span class="instr-text" style="padding-top:0"><strong>Set Emergency Contacts:</strong> Settings → Safety & emergency → Emergency contacts → Add contact. In an emergency, these people are notified automatically with your location.</span><span class="instr-num" style="visibility:hidden">2</span></li>
+        <li class="instr-item"><span class="instr-num">2</span><span class="instr-text"><strong>Medical ID on lock screen:</strong> Settings → Safety & emergency → Medical information → add your blood group, allergies, conditions. Paramedics can see this even when your phone is locked — vital in an accident.</span></li>
+        <li class="instr-item"><span class="instr-num">3</span><span class="instr-text"><strong>DigiLocker app:</strong> Download DigiLocker from Play Store → sign in with your Aadhaar number → all your government documents (Aadhaar, PAN, driving licence, vehicle RC, vaccination certificate) are stored digitally. Show them on your phone instead of carrying originals!</span></li>
+        <li class="instr-item"><span class="instr-num">4</span><span class="instr-text"><strong>ABHA Health Card:</strong> Download the <strong>ABHA app</strong> (Ayushman Bharat) → create your Health ID → link your medical records, prescriptions and test reports. Doctors at government hospitals can access your history with your consent.</span></li>
+        <li class="instr-item"><span class="instr-num">5</span><span class="instr-text"><strong>Step counter:</strong> Your phone counts your daily steps automatically! Open <strong>Google Fit</strong> or Samsung Health → it shows steps walked, calories and active minutes. A healthy goal is <strong>6,000–8,000 steps per day</strong>.</span></li>
+      </ul>
+      <div class="tap-question">
+        <div class="tap-q-label">✏️ Quick check</div>
+        <div class="tap-q-text">You want your blood group and doctor's name visible on your phone even when it's locked, in case of an emergency. Where do you set this?</div>
+        <div class="tap-options">
+          <button class="tap-opt" onclick="tapAnswer(this,false,'q7')">📷 As my phone wallpaper</button>
+          <button class="tap-opt" onclick="tapAnswer(this,true,'q7')">🏥 Settings → Safety & Emergency → Medical Information</button>
+          <button class="tap-opt" onclick="tapAnswer(this,false,'q7')">📝 Write it in the Notes app</button>
+        </div>
+        <div class="tap-result" id="res-q7"></div>
+      </div>
+      <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Good to know</div><div class="tip-text">DigiLocker documents are <strong>legally valid</strong> across India — accepted by police, airports, banks and hospitals. You can leave your original documents safely at home and always have the digital copies with you on your phone.</div></div></div>
+    </div>
+  </div>`,
+];
+
+onAuthStateChanged(auth, async (user) => {
+  if (!user) { window.location.href = "../index.html"; return; }
+  currentUser = user;
+  try {
+    const snap = await getDoc(doc(db, "users", user.uid));
+    if (snap.exists() && snap.data().progress?.[COURSE_KEY] === 100) currentStep = STEPS.length;
+  } catch(e) {}
+  render();
+});
+
+async function saveProgress(pct) {
+  if (!currentUser) return;
+  try { await setDoc(doc(db, "users", currentUser.uid), { progress: { [COURSE_KEY]: pct } }, { merge: true }); } catch(e) {}
+}
+
+function render() {
+  updateProgress(); updateDots();
+  const main = document.getElementById("mainContent");
+  if (currentStep < STEPS.length) { main.innerHTML = STEPS[currentStep](); } else { renderCompletion(main); }
+  updateNav();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function updateProgress() {
+  const pct = Math.round((currentStep / STEPS.length) * 100);
+  document.getElementById("progressFill").style.width = pct + "%";
+  document.getElementById("progressPct").textContent = pct + "% done";
+  document.getElementById("progressLabel").textContent = currentStep < STEPS.length ? `Step ${currentStep + 1} of ${STEPS.length}` : "Lesson Complete!";
+}
+
+function updateDots() {
+  for (let i = 0; i < STEPS.length; i++) {
+    const d = document.getElementById("dot-" + i);
+    if (!d) continue;
+    d.className = "dot" + (i < currentStep ? " done" : i === currentStep ? " active" : "");
+  }
+}
+
+function updateNav() {
+  const navBar = document.getElementById("navBar");
+  if (currentStep >= STEPS.length) { navBar.classList.add("hidden"); return; }
+  navBar.classList.remove("hidden");
+  document.getElementById("btnBack").style.visibility = currentStep === 0 ? "hidden" : "visible";
+  document.getElementById("btnNext").textContent = currentStep === STEPS.length - 1 ? "Finish lesson 🎉" : "Next →";
+}
+
+function renderCompletion(container) {
+  container.innerHTML = `<div class="completion-card">
+    <div class="completion-top">
+      <div class="completion-big-icon">🏆</div>
+      <div class="completion-title">Smartphone Expert!</div>
+      <div class="completion-sub">You've completed all three Smartphone Basics levels.<br>You are now truly confident and safe on your phone!</div>
+    </div>
+    <div class="completion-body">
+      <ul class="learned-list">
+        <li class="learned-item">✅ How to secure your phone with PIN and fingerprint</li>
+        <li class="learned-item">✅ How to pay safely with UPI and spot payment scams</li>
+        <li class="learned-item">✅ How to make and enjoy video calls with family</li>
+        <li class="learned-item">✅ How to recognise and protect yourself from online scams</li>
+        <li class="learned-item">✅ How to use Google Search and YouTube in any language</li>
+        <li class="learned-item">✅ How to back up and never lose your photos</li>
+        <li class="learned-item">✅ Emergency SOS, DigiLocker and ABHA health tools</li>
+      </ul>
+      <div class="completion-actions">
+        <button class="btn-primary" onclick="window.location.href='../courses.html'">Explore more courses →</button>
+        <button class="btn-secondary" onclick="window.location.href='../courses.html'">Back to all courses</button>
+      </div>
+    </div>
+  </div>`;
+  document.getElementById("navBar").classList.add("hidden");
+  document.getElementById("stepDots").classList.add("hidden");
+  saveProgress(100);
+}
+
+window.toggleReveal = (id) => document.getElementById(id).classList.toggle("open");
+window.tapAnswer = function(btn, isCorrect, qid) {
+  const opts = btn.parentElement.querySelectorAll(".tap-opt");
+  opts.forEach(o => { o.classList.add("dim"); o.disabled = true; });
+  btn.classList.remove("dim"); btn.classList.add(isCorrect ? "correct" : "wrong");
+  if (!isCorrect) { opts.forEach(o => { if (o.getAttribute("onclick")?.includes("true")) { o.classList.remove("dim"); o.classList.add("correct"); } }); }
+  const res = document.getElementById("res-" + qid);
+  if (res) { res.className = "tap-result show " + (isCorrect ? "good" : "oops"); res.textContent = isCorrect ? "✅ Exactly right! Well done!" : "💭 Not quite — the correct answer is highlighted above. That's okay, now you know!"; }
+};
+window.nextStep = function() { currentStep++; saveProgress(Math.round((currentStep / STEPS.length) * 100)); render(); };
+window.prevStep = function() { if (currentStep > 0) { currentStep--; render(); } };
+</script>
+</body>
+</html>

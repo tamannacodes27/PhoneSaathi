@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Email Basics — Beginner · Digital Literacy</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --navy:#1B2A4A;--navy-md:#2E4070;--navy-lt:#EEF1F8;--cream:#FAF8F5;--warm:#F3EFE8;
+  --gold:#B07D2F;--gold-lt:#FDF3DC;--slate:#4A5568;--slate-lt:#718096;--border:#E2DDD6;
+  --white:#FFFFFF;--green:#2D6A4F;--green-lt:#E8F5EF;
+  --gmail:#EA4335;--gmail-dark:#C5221F;--gmail-lt:#FDECEC;
+  --radius:16px;--shadow:0 4px 24px rgba(27,42,74,0.10);
+}
+body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--navy);min-height:100vh;font-size:18px;}
+.topbar{background:var(--navy);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,0.2);}
+.back-btn{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:700;color:rgba(255,255,255,0.7);cursor:pointer;padding:6px 14px;border:1px solid rgba(255,255,255,0.18);border-radius:8px;background:rgba(255,255,255,0.06);transition:0.15s;text-decoration:none;}
+.back-btn:hover{background:rgba(255,255,255,0.13);color:#fff;}
+.topbar-center{display:flex;align-items:center;gap:10px;}
+.email-dot{width:30px;height:30px;background:var(--gmail);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;}
+.topbar-title{font-family:'Lora',serif;font-size:16px;font-weight:600;color:#fff;}
+.level-badge{font-size:12px;font-weight:800;background:var(--green);color:#fff;padding:3px 12px;border-radius:20px;}
+.progress-wrap{background:var(--white);border-bottom:1.5px solid var(--border);padding:14px 24px;}
+.progress-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.progress-label{font-size:13px;font-weight:700;color:var(--slate);}
+.progress-pct{font-size:13px;font-weight:800;color:var(--green);}
+.progress-track{height:8px;background:var(--warm);border-radius:8px;overflow:hidden;}
+.progress-fill{height:8px;background:linear-gradient(90deg,var(--gmail-dark),var(--gmail));border-radius:8px;transition:width 0.6s cubic-bezier(.4,0,.2,1);}
+.step-dots{display:flex;justify-content:center;gap:8px;padding:16px 24px 0;}
+.dot{height:8px;border-radius:8px;background:var(--border);transition:all 0.35s cubic-bezier(.4,0,.2,1);width:8px;}
+.dot.done{background:var(--gmail);}
+.dot.active{background:var(--navy);width:28px;}
+.main{max-width:680px;margin:0 auto;padding:24px 20px 110px;}
+.step-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;animation:fadeUp 0.4s cubic-bezier(.4,0,.2,1) both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.card-hero{padding:28px 28px 22px;background:linear-gradient(135deg,var(--navy) 0%,#243860 100%);display:flex;gap:18px;align-items:center;}
+.hero-emoji{font-size:56px;line-height:1;flex-shrink:0;filter:drop-shadow(0 3px 10px rgba(0,0,0,0.25));}
+.hero-step{font-size:11px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:#FCA5A5;margin-bottom:5px;}
+.hero-title{font-family:'Lora',serif;font-size:24px;font-weight:600;color:#fff;line-height:1.25;}
+.card-body{padding:26px 28px 28px;}
+.body-text{font-size:17px;color:var(--slate);line-height:1.85;margin-bottom:18px;}
+.encourage{display:flex;align-items:center;gap:12px;background:var(--gold-lt);border:1.5px solid #EDD9A0;border-radius:12px;padding:14px 18px;margin-bottom:22px;}
+.encourage-icon{font-size:22px;flex-shrink:0;}
+.encourage-text{font-size:15px;font-weight:700;color:var(--gold);line-height:1.5;}
+.instr-list{list-style:none;display:flex;flex-direction:column;gap:12px;margin-bottom:24px;}
+.instr-item{display:flex;gap:13px;align-items:flex-start;padding:14px 16px;background:var(--cream);border:1.5px solid var(--border);border-radius:12px;transition:border-color 0.2s,background 0.2s;}
+.instr-item:hover{border-color:var(--navy-md);background:var(--navy-lt);}
+.instr-num{width:30px;height:30px;border-radius:50%;background:var(--navy);color:#fff;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.instr-text{font-size:16px;color:var(--slate);line-height:1.7;padding-top:3px;}
+.tip-box{display:flex;gap:13px;align-items:flex-start;background:var(--green-lt);border:1.5px solid #B7DEC9;border-radius:12px;padding:16px 18px;margin-top:20px;}
+.tip-icon{font-size:22px;flex-shrink:0;margin-top:1px;}
+.tip-label{font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);margin-bottom:3px;}
+.tip-text{font-size:15px;color:#285C42;line-height:1.65;}
+.reveal-block{border-radius:13px;overflow:hidden;margin:20px 0;border:2px dashed var(--border);cursor:pointer;transition:border-color 0.2s;}
+.reveal-block:hover{border-color:var(--navy-md);}
+.reveal-prompt{padding:18px 20px;display:flex;align-items:center;gap:14px;background:var(--navy-lt);}
+.reveal-prompt-icon{font-size:26px;}
+.reveal-prompt-text{font-size:16px;font-weight:700;color:var(--navy-md);flex:1;}
+.reveal-prompt-arrow{font-size:18px;color:var(--navy-md);transition:transform 0.3s;}
+.reveal-block.open .reveal-prompt-arrow{transform:rotate(90deg);}
+.reveal-answer{max-height:0;overflow:hidden;transition:max-height 0.45s cubic-bezier(.4,0,.2,1),padding 0.3s;background:var(--white);padding:0 20px;}
+.reveal-block.open .reveal-answer{max-height:400px;padding:18px 20px;}
+.reveal-answer-inner{font-size:16px;color:var(--slate);line-height:1.75;}
+.tap-question{background:var(--navy-lt);border:1.5px solid #C5D0E8;border-radius:13px;padding:20px 20px;margin:20px 0;}
+.tap-q-label{font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--navy-md);margin-bottom:8px;}
+.tap-q-text{font-size:17px;font-weight:700;color:var(--navy);margin-bottom:14px;line-height:1.4;}
+.tap-options{display:flex;flex-direction:column;gap:9px;}
+.tap-opt{padding:13px 18px;border-radius:10px;border:2px solid var(--border);background:var(--white);font-size:16px;font-weight:700;font-family:'Nunito',sans-serif;color:var(--slate);cursor:pointer;transition:0.18s;text-align:left;}
+.tap-opt:hover:not(:disabled){border-color:var(--navy-md);background:var(--navy-lt);color:var(--navy);}
+.tap-opt.correct{background:var(--green-lt);border-color:var(--green);color:var(--green);pointer-events:none;}
+.tap-opt.wrong{background:#FEF2F2;border-color:#FCA5A5;color:#B91C1C;pointer-events:none;}
+.tap-opt.dim{opacity:0.4;pointer-events:none;}
+.tap-result{font-size:15px;font-weight:700;margin-top:12px;padding:11px 14px;border-radius:9px;display:none;}
+.tap-result.show{display:block;}
+.tap-result.good{background:var(--green-lt);color:var(--green);}
+.tap-result.oops{background:#FEF2F2;color:#B91C1C;}
+.email-anatomy{background:var(--gmail-lt);border:1.5px solid #F5C6C4;border-radius:13px;padding:18px 20px;margin:16px 0;}
+.anatomy-title{font-size:13px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--gmail);margin-bottom:12px;}
+.anatomy-row{display:flex;align-items:flex-start;gap:12px;margin-bottom:10px;padding:10px 14px;background:var(--white);border-radius:9px;border:1px solid #F5C6C4;}
+.anatomy-label{font-size:13px;font-weight:800;color:var(--gmail);width:60px;flex-shrink:0;padding-top:2px;}
+.anatomy-desc{font-size:14px;color:var(--slate);line-height:1.5;}
+.feature-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0;}
+.feature-card{background:var(--cream);border:1.5px solid var(--border);border-radius:12px;padding:16px 14px;text-align:center;transition:transform 0.2s,box-shadow 0.2s;}
+.feature-card:hover{transform:translateY(-3px);box-shadow:0 6px 18px rgba(27,42,74,0.10);border-color:var(--navy-md);}
+.feature-card-icon{font-size:32px;margin-bottom:8px;}
+.feature-card-name{font-size:14px;font-weight:800;color:var(--navy);margin-bottom:3px;}
+.feature-card-desc{font-size:12px;color:var(--slate-lt);line-height:1.5;}
+.completion-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;animation:fadeUp 0.4s cubic-bezier(.4,0,.2,1) both;}
+.completion-top{background:linear-gradient(135deg,var(--gmail-dark) 0%,var(--gmail) 100%);padding:44px 28px 36px;text-align:center;}
+.completion-big-icon{font-size:72px;margin-bottom:16px;}
+.completion-title{font-family:'Lora',serif;font-size:28px;font-weight:600;color:#fff;margin-bottom:8px;}
+.completion-sub{font-size:16px;color:rgba(255,255,255,0.88);line-height:1.6;}
+.completion-body{padding:32px 28px;}
+.learned-list{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:28px;}
+.learned-item{display:flex;align-items:center;gap:12px;padding:13px 16px;background:var(--green-lt);border:1.5px solid #B7DEC9;border-radius:10px;font-size:16px;font-weight:700;color:var(--green);}
+.completion-actions{display:flex;flex-direction:column;gap:12px;}
+.btn-primary{padding:16px 24px;border-radius:12px;border:none;background:var(--navy);color:#fff;font-size:17px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;transition:background 0.15s;}
+.btn-primary:hover{background:var(--navy-md);}
+.btn-secondary{padding:14px 24px;border-radius:12px;border:1.5px solid var(--border);background:var(--white);color:var(--navy);font-size:16px;font-weight:700;font-family:'Nunito',sans-serif;cursor:pointer;transition:0.15s;}
+.btn-secondary:hover{border-color:var(--navy);background:var(--navy-lt);}
+.nav-bar{position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:1.5px solid var(--border);padding:14px 20px;display:flex;gap:12px;z-index:200;box-shadow:0 -4px 20px rgba(27,42,74,0.09);}
+.btn-back{padding:14px 22px;border-radius:12px;border:1.5px solid var(--border);background:var(--white);font-size:16px;font-weight:700;font-family:'Nunito',sans-serif;color:var(--slate);cursor:pointer;transition:0.15s;}
+.btn-back:hover{border-color:var(--navy);color:var(--navy);background:var(--navy-lt);}
+.btn-next{flex:1;padding:14px 24px;border-radius:12px;border:none;background:var(--navy);font-size:17px;font-weight:800;font-family:'Nunito',sans-serif;color:#fff;cursor:pointer;transition:background 0.15s;}
+.btn-next:hover{background:var(--navy-md);}
+.hidden{display:none!important;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="back-btn" href="../courses.html">&#8592; Courses</a>
+  <div class="topbar-center">
+    <div class="email-dot">✉️</div>
+    <span class="topbar-title">Email Basics</span>
+  </div>
+  <span class="level-badge">Beginner</span>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-row">
+    <span class="progress-label" id="progressLabel">Step 1 of 5</span>
+    <span class="progress-pct" id="progressPct">0% done</span>
+  </div>
+  <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+</div>
+
+<div class="step-dots" id="stepDots">
+  <div class="dot active" id="dot-0"></div>
+  <div class="dot" id="dot-1"></div>
+  <div class="dot" id="dot-2"></div>
+  <div class="dot" id="dot-3"></div>
+  <div class="dot" id="dot-4"></div>
+</div>
+
+<div class="main" id="mainContent"></div>
+
+<div class="nav-bar" id="navBar">
+  <button class="btn-back" id="btnBack" onclick="prevStep()">&#8592; Back</button>
+  <button class="btn-next" id="btnNext" onclick="nextStep()">Next →</button>
+</div>
+
+<script type="module">
+import { auth, db } from "../firebase.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const COURSE_KEY = "email-beginner";
+let currentStep = 0, currentUser = null;
+
+const STEPS = [
+  () => `<div class="step-card">
+    <div class="card-hero">
+      <div class="hero-emoji">✉️</div>
+      <div class="hero-text">
+        <div class="hero-step">Step 1 of 5</div>
+        <div class="hero-title">What is Email?</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">🙏</span><span class="encourage-text">Welcome! Email is like writing a letter — but it arrives in seconds, anywhere in the world, for free. Let's learn together!</span></div>
+      <p class="body-text"><strong>Email</strong> (short for Electronic Mail) is a way to send and receive messages through the internet. Think of it like a digital letter that arrives instantly — you can send it to anyone, anywhere, for free.</p>
+      <div class="feature-grid">
+        <div class="feature-card"><div class="feature-card-icon">⚡</div><div class="feature-card-name">Instant</div><div class="feature-card-desc">Arrives in seconds, not days</div></div>
+        <div class="feature-card"><div class="feature-card-icon">🆓</div><div class="feature-card-name">Free</div><div class="feature-card-desc">No stamps, no cost at all</div></div>
+        <div class="feature-card"><div class="feature-card-icon">🌍</div><div class="feature-card-name">Anywhere</div><div class="feature-card-desc">Send to anyone in the world</div></div>
+        <div class="feature-card"><div class="feature-card-icon">📎</div><div class="feature-card-name">Send Files</div><div class="feature-card-desc">Photos, documents and more</div></div>
+      </div>
+      <p class="body-text">Email is also used to sign up for apps, receive bills, and get important information from hospitals, banks and government services.</p>
+      <div class="reveal-block" id="rev-0" onclick="toggleReveal('rev-0')">
+        <div class="reveal-prompt"><span class="reveal-prompt-icon">🤔</span><span class="reveal-prompt-text">Do I need email even if I have WhatsApp?</span><span class="reveal-prompt-arrow">▶</span></div>
+        <div class="reveal-answer"><div class="reveal-answer-inner">✅ Yes! WhatsApp is great for chatting with family, but email is used for <strong>official things</strong> — like booking train tickets on IRCTC, creating a Google account, receiving bills, and government services. Most important apps need an email address to register.</div></div>
+      </div>
+      <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Good to know</div><div class="tip-text">The most popular free email service in India is <strong>Gmail</strong>, made by Google. That's what we'll use in this lesson.</div></div></div>
+    </div>
+  </div>`,
+
+  () => `<div class="step-card">
+    <div class="card-hero">
+      <div class="hero-emoji">📧</div>
+      <div class="hero-text">
+        <div class="hero-step">Step 2 of 5</div>
+        <div class="hero-title">Understanding an Email Address</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">⭐</span><span class="encourage-text">Every email address has the same simple shape. Once you understand it, you'll never be confused again!</span></div>
+      <p class="body-text">An email address is like your home address — it tells the internet exactly where to deliver your message. Every email address has two parts separated by an <strong>@ symbol</strong>.</p>
+      <div class="email-anatomy">
+        <div class="anatomy-title">Parts of an Email Address</div>
+        <div class="anatomy-row"><div class="anatomy-label">yourname</div><div class="anatomy-desc">The part YOU choose — your name or nickname</div></div>
+        <div class="anatomy-row"><div class="anatomy-label">@</div><div class="anatomy-desc">The "at" symbol — this is always in the middle</div></div>
+        <div class="anatomy-row"><div class="anatomy-label">gmail.com</div><div class="anatomy-desc">The email service — gmail.com means it's a Gmail address</div></div>
+      </div>
+      <p class="body-text" style="margin-top:8px;">So an address like <strong>ramadevi@gmail.com</strong> belongs to someone named Ramadevi who uses Gmail.</p>
+      <div class="tap-question">
+        <div class="tap-q-label">✏️ Quick check</div>
+        <div class="tap-q-text">In the email address "sunita@gmail.com" — what does "sunita" represent?</div>
+        <div class="tap-options">
+          <button class="tap-opt" onclick="tapAnswer(this,false,'q2')">🌐 The email service company</button>
+          <button class="tap-opt" onclick="tapAnswer(this,true,'q2')">👤 The person's chosen name/username</button>
+          <button class="tap-opt" onclick="tapAnswer(this,false,'q2')">🔑 The password</button>
+        </div>
+        <div class="tap-result" id="res-q2"></div>
+      </div>
+      <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Good to know</div><div class="tip-text">Email addresses are <strong>not case-sensitive</strong> — Sunita@gmail.com and sunita@gmail.com are exactly the same address.</div></div></div>
+    </div>
+  </div>`,
+
+  () => `<div class="step-card">
+    <div class="card-hero">
+      <div class="hero-emoji">🆕</div>
+      <div class="hero-text">
+        <div class="hero-step">Step 3 of 5</div>
+        <div class="hero-title">Creating a Gmail Account</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">🌸</span><span class="encourage-text">Halfway there! Creating a Gmail account is free and only takes a few minutes. You do it just once!</span></div>
+      <p class="body-text">You can create a Gmail account on your phone. You'll need to choose a username (your part of the address) and a password.</p>
+      <ul class="instr-list">
+        <li class="instr-item"><span class="instr-num">1</span><span class="instr-text">Open your phone's <strong>Settings → Accounts → Add account → Google</strong>, or open the Gmail app and tap <strong>Create account</strong>.</span></li>
+        <li class="instr-item"><span class="instr-num">2</span><span class="instr-text">Enter your <strong>first name and last name</strong>, then tap Next.</span></li>
+        <li class="instr-item"><span class="instr-num">3</span><span class="instr-text">Choose your <strong>email address</strong> — like yourname123@gmail.com. If it's taken, try adding numbers.</span></li>
+        <li class="instr-item"><span class="instr-num">4</span><span class="instr-text">Create a <strong>strong password</strong> — use a mix of letters and numbers, at least 8 characters long.</span></li>
+        <li class="instr-item"><span class="instr-num">5</span><span class="instr-text">Enter your <strong>phone number</strong> for recovery (helps if you forget your password), then tap Next and agree.</span></li>
+      </ul>
+      <div class="reveal-block" id="rev-3" onclick="toggleReveal('rev-3')">
+        <div class="reveal-prompt"><span class="reveal-prompt-icon">🤔</span><span class="reveal-prompt-text">What makes a good password?</span><span class="reveal-prompt-arrow">▶</span></div>
+        <div class="reveal-answer"><div class="reveal-answer-inner">A good password: ✅ Is at least 8 characters long ✅ Has both letters AND numbers ✅ Is NOT your name, birthday, or "12345678". Example: <strong>Rama@1952</strong> is much better than <strong>rama1952</strong>. Write it down and keep it safe at home!</div></div>
+      </div>
+      <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Good to know</div><div class="tip-text">Write your email address and password in a <strong>notebook</strong> and keep it at home. Never share your password with anyone!</div></div></div>
+    </div>
+  </div>`,
+
+  () => `<div class="step-card">
+    <div class="card-hero">
+      <div class="hero-emoji">📬</div>
+      <div class="hero-text">
+        <div class="hero-step">Step 4 of 5</div>
+        <div class="hero-title">Reading Your Inbox</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">🌟</span><span class="encourage-text">Almost done! Your Inbox is like your letterbox — all incoming messages arrive here. Let's explore it!</span></div>
+      <p class="body-text">When you open Gmail, you'll see your <strong>Inbox</strong> — a list of all the emails you have received. The newest ones are at the top.</p>
+      <ul class="instr-list">
+        <li class="instr-item"><span class="instr-num">1</span><span class="instr-text">Open the <strong>Gmail app</strong> on your phone (the red M icon).</span></li>
+        <li class="instr-item"><span class="instr-num">2</span><span class="instr-text"><strong>Unread emails</strong> appear in bold text — these are new messages you haven't opened yet.</span></li>
+        <li class="instr-item"><span class="instr-num">3</span><span class="instr-text">Tap any email to <strong>open and read</strong> it. The sender's name is on the left, the subject in the middle.</span></li>
+        <li class="instr-item"><span class="instr-num">4</span><span class="instr-text">Tap the <strong>back arrow ←</strong> to return to your inbox after reading.</span></li>
+      </ul>
+      <div class="email-anatomy">
+        <div class="anatomy-title">Parts of an Email</div>
+        <div class="anatomy-row"><div class="anatomy-label">From</div><div class="anatomy-desc">Who sent you the email</div></div>
+        <div class="anatomy-row"><div class="anatomy-label">Subject</div><div class="anatomy-desc">A short title — what the email is about</div></div>
+        <div class="anatomy-row"><div class="anatomy-label">Body</div><div class="anatomy-desc">The actual message — like the letter itself</div></div>
+      </div>
+      <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Good to know</div><div class="tip-text">Google automatically sends you a <strong>Welcome email</strong> when you create a Gmail account — so your inbox won't be empty on your first day!</div></div></div>
+    </div>
+  </div>`,
+
+  () => `<div class="step-card">
+    <div class="card-hero">
+      <div class="hero-emoji">📤</div>
+      <div class="hero-text">
+        <div class="hero-step">Step 5 of 5</div>
+        <div class="hero-title">Sending Your First Email</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">🎉</span><span class="encourage-text">Last step! Let's send your very first email — try sending one to a family member who has Gmail!</span></div>
+      <p class="body-text">Sending an email is just like writing a letter — you write the address, a subject, and then your message.</p>
+      <ul class="instr-list">
+        <li class="instr-item"><span class="instr-num">1</span><span class="instr-text">In Gmail, tap the <strong>Compose button</strong> (a pencil icon ✏️ or a big + at the bottom right).</span></li>
+        <li class="instr-item"><span class="instr-num">2</span><span class="instr-text">In the <strong>"To"</strong> field, type the email address of the person you want to write to.</span></li>
+        <li class="instr-item"><span class="instr-num">3</span><span class="instr-text">In the <strong>"Subject"</strong> field, type a short title — like <em>"Hello from Amma"</em>.</span></li>
+        <li class="instr-item"><span class="instr-num">4</span><span class="instr-text">Tap the big empty area and type your <strong>message</strong>.</span></li>
+        <li class="instr-item"><span class="instr-num">5</span><span class="instr-text">Tap the <strong>Send button ➤</strong> (a paper plane icon). Your email is on its way!</span></li>
+      </ul>
+      <div class="tap-question">
+        <div class="tap-q-label">✏️ Quick check</div>
+        <div class="tap-q-text">Which field do you fill in first when writing an email?</div>
+        <div class="tap-options">
+          <button class="tap-opt" onclick="tapAnswer(this,false,'q5')">✍️ The message body</button>
+          <button class="tap-opt" onclick="tapAnswer(this,true,'q5')">📬 The "To" field — the recipient's email address</button>
+          <button class="tap-opt" onclick="tapAnswer(this,false,'q5')">📎 The attachment</button>
+        </div>
+        <div class="tap-result" id="res-q5"></div>
+      </div>
+      <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Good to know</div><div class="tip-text">Made a mistake? Tap the <strong>three dots ⋮ → Discard</strong> to cancel, or tap the <strong>back arrow</strong> to save as a Draft and finish it later.</div></div></div>
+    </div>
+  </div>`,
+];
+
+onAuthStateChanged(auth, async (user) => {
+  if (!user) { window.location.href = "../index.html"; return; }
+  currentUser = user;
+  try {
+    const snap = await getDoc(doc(db, "users", user.uid));
+    if (snap.exists() && snap.data().progress?.[COURSE_KEY] === 100) currentStep = STEPS.length;
+  } catch(e) {}
+  render();
+});
+
+async function saveProgress(pct) {
+  if (!currentUser) return;
+  try { await setDoc(doc(db, "users", currentUser.uid), { progress: { [COURSE_KEY]: pct } }, { merge: true }); } catch(e) {}
+}
+
+function render() {
+  updateProgress(); updateDots();
+  const main = document.getElementById("mainContent");
+  if (currentStep < STEPS.length) { main.innerHTML = STEPS[currentStep](); } else { renderCompletion(main); }
+  updateNav();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function updateProgress() {
+  const pct = Math.round((currentStep / STEPS.length) * 100);
+  document.getElementById("progressFill").style.width = pct + "%";
+  document.getElementById("progressPct").textContent = pct + "% done";
+  document.getElementById("progressLabel").textContent = currentStep < STEPS.length ? `Step ${currentStep + 1} of ${STEPS.length}` : "Lesson Complete!";
+}
+
+function updateDots() {
+  for (let i = 0; i < STEPS.length; i++) {
+    const d = document.getElementById("dot-" + i);
+    if (!d) continue;
+    d.className = "dot" + (i < currentStep ? " done" : i === currentStep ? " active" : "");
+  }
+}
+
+function updateNav() {
+  const navBar = document.getElementById("navBar");
+  if (currentStep >= STEPS.length) { navBar.classList.add("hidden"); return; }
+  navBar.classList.remove("hidden");
+  document.getElementById("btnBack").style.visibility = currentStep === 0 ? "hidden" : "visible";
+  document.getElementById("btnNext").textContent = currentStep === STEPS.length - 1 ? "Finish lesson 🎉" : "Next →";
+}
+
+function renderCompletion(container) {
+  container.innerHTML = `<div class="completion-card">
+    <div class="completion-top">
+      <div class="completion-big-icon">🎊</div>
+      <div class="completion-title">Well done!</div>
+      <div class="completion-sub">You've completed Email Basics — Beginner.<br>You now have your very own Gmail account!</div>
+    </div>
+    <div class="completion-body">
+      <ul class="learned-list">
+        <li class="learned-item">✅ What email is and why it's useful</li>
+        <li class="learned-item">✅ How to read an email address</li>
+        <li class="learned-item">✅ How to create a Gmail account</li>
+        <li class="learned-item">✅ How to read emails in your inbox</li>
+        <li class="learned-item">✅ How to send your first email</li>
+      </ul>
+      <div class="completion-actions">
+        <button class="btn-primary" onclick="window.location.href='email-intermediate.html'">Next: Email Intermediate →</button>
+        <button class="btn-secondary" onclick="window.location.href='../courses.html'">Back to all courses</button>
+      </div>
+    </div>
+  </div>`;
+  document.getElementById("navBar").classList.add("hidden");
+  document.getElementById("stepDots").classList.add("hidden");
+  saveProgress(100);
+}
+
+window.toggleReveal = (id) => document.getElementById(id).classList.toggle("open");
+window.tapAnswer = function(btn, isCorrect, qid) {
+  const opts = btn.parentElement.querySelectorAll(".tap-opt");
+  opts.forEach(o => { o.classList.add("dim"); o.disabled = true; });
+  btn.classList.remove("dim"); btn.classList.add(isCorrect ? "correct" : "wrong");
+  if (!isCorrect) { opts.forEach(o => { if (o.getAttribute("onclick")?.includes("true")) { o.classList.remove("dim"); o.classList.add("correct"); } }); }
+  const res = document.getElementById("res-" + qid);
+  if (res) { res.className = "tap-result show " + (isCorrect ? "good" : "oops"); res.textContent = isCorrect ? "✅ Exactly right! Well done!" : "💭 Not quite — the correct answer is highlighted above. That's okay, now you know!"; }
+};
+window.nextStep = function() { currentStep++; saveProgress(Math.round((currentStep / STEPS.length) * 100)); render(); };
+window.prevStep = function() { if (currentStep > 0) { currentStep--; render(); } };
+</script>
+</body>
+</html>

@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Email Basics — Advanced · Digital Literacy</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --navy:#1B2A4A;--navy-md:#2E4070;--navy-lt:#EEF1F8;--cream:#FAF8F5;--warm:#F3EFE8;
+  --gold:#B07D2F;--gold-lt:#FDF3DC;--slate:#4A5568;--slate-lt:#718096;--border:#E2DDD6;
+  --white:#FFFFFF;--green:#2D6A4F;--green-lt:#E8F5EF;
+  --gmail:#EA4335;--gmail-dark:#C5221F;--gmail-lt:#FDECEC;
+  --purple:#4C1D95;--purple-lt:#EDE9FE;
+  --red:#B91C1C;--red-lt:#FEF2F2;
+  --radius:16px;--shadow:0 4px 24px rgba(27,42,74,0.10);
+}
+body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--navy);min-height:100vh;font-size:18px;}
+.topbar{background:var(--navy);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,0.2);}
+.back-btn{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:700;color:rgba(255,255,255,0.7);cursor:pointer;padding:6px 14px;border:1px solid rgba(255,255,255,0.18);border-radius:8px;background:rgba(255,255,255,0.06);transition:0.15s;text-decoration:none;}
+.back-btn:hover{background:rgba(255,255,255,0.13);color:#fff;}
+.topbar-center{display:flex;align-items:center;gap:10px;}
+.email-dot{width:30px;height:30px;background:var(--gmail);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;}
+.topbar-title{font-family:'Lora',serif;font-size:16px;font-weight:600;color:#fff;}
+.level-badge{font-size:12px;font-weight:800;background:var(--purple);color:#fff;padding:3px 12px;border-radius:20px;}
+.progress-wrap{background:var(--white);border-bottom:1.5px solid var(--border);padding:14px 24px;}
+.progress-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.progress-label{font-size:13px;font-weight:700;color:var(--slate);}
+.progress-pct{font-size:13px;font-weight:800;color:var(--green);}
+.progress-track{height:8px;background:var(--warm);border-radius:8px;overflow:hidden;}
+.progress-fill{height:8px;background:linear-gradient(90deg,var(--gmail-dark),var(--gmail));border-radius:8px;transition:width 0.6s cubic-bezier(.4,0,.2,1);}
+.step-dots{display:flex;justify-content:center;gap:8px;padding:16px 24px 0;}
+.dot{height:8px;border-radius:8px;background:var(--border);transition:all 0.35s cubic-bezier(.4,0,.2,1);width:8px;}
+.dot.done{background:var(--gmail);}
+.dot.active{background:var(--navy);width:28px;}
+.main{max-width:680px;margin:0 auto;padding:24px 20px 110px;}
+.step-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;animation:fadeUp 0.4s cubic-bezier(.4,0,.2,1) both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.card-hero{padding:28px 28px 22px;background:linear-gradient(135deg,var(--navy) 0%,#243860 100%);display:flex;gap:18px;align-items:center;}
+.hero-emoji{font-size:56px;line-height:1;flex-shrink:0;filter:drop-shadow(0 3px 10px rgba(0,0,0,0.25));}
+.hero-step{font-size:11px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:#FCA5A5;margin-bottom:5px;}
+.hero-title{font-family:'Lora',serif;font-size:24px;font-weight:600;color:#fff;line-height:1.25;}
+.card-body{padding:26px 28px 28px;}
+.body-text{font-size:17px;color:var(--slate);line-height:1.85;margin-bottom:18px;}
+.encourage{display:flex;align-items:center;gap:12px;background:var(--gold-lt);border:1.5px solid #EDD9A0;border-radius:12px;padding:14px 18px;margin-bottom:22px;}
+.encourage-icon{font-size:22px;flex-shrink:0;}
+.encourage-text{font-size:15px;font-weight:700;color:var(--gold);line-height:1.5;}
+.instr-list{list-style:none;display:flex;flex-direction:column;gap:12px;margin-bottom:24px;}
+.instr-item{display:flex;gap:13px;align-items:flex-start;padding:14px 16px;background:var(--cream);border:1.5px solid var(--border);border-radius:12px;}
+.instr-num{width:30px;height:30px;border-radius:50%;background:var(--navy);color:#fff;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.instr-text{font-size:16px;color:var(--slate);line-height:1.7;padding-top:3px;}
+.tip-box{display:flex;gap:13px;align-items:flex-start;background:var(--green-lt);border:1.5px solid #B7DEC9;border-radius:12px;padding:16px 18px;margin-top:20px;}
+.tip-icon{font-size:22px;flex-shrink:0;margin-top:1px;}
+.tip-label{font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);margin-bottom:3px;}
+.tip-text{font-size:15px;color:#285C42;line-height:1.65;}
+.warn-box{display:flex;gap:13px;align-items:flex-start;background:var(--red-lt);border:1.5px solid #FCA5A5;border-radius:12px;padding:16px 18px;margin:16px 0;}
+.warn-icon{font-size:22px;flex-shrink:0;margin-top:1px;}
+.warn-label{font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--red);margin-bottom:3px;}
+.warn-text{font-size:15px;color:#7F1D1D;line-height:1.65;}
+.reveal-block{border-radius:13px;overflow:hidden;margin:20px 0;border:2px dashed var(--border);cursor:pointer;}
+.reveal-prompt{padding:18px 20px;display:flex;align-items:center;gap:14px;background:var(--navy-lt);}
+.reveal-prompt-icon{font-size:26px;}
+.reveal-prompt-text{font-size:16px;font-weight:700;color:var(--navy-md);flex:1;}
+.reveal-prompt-arrow{font-size:18px;color:var(--navy-md);transition:transform 0.3s;}
+.reveal-block.open .reveal-prompt-arrow{transform:rotate(90deg);}
+.reveal-answer{max-height:0;overflow:hidden;transition:max-height 0.45s cubic-bezier(.4,0,.2,1),padding 0.3s;background:var(--white);padding:0 20px;}
+.reveal-block.open .reveal-answer{max-height:400px;padding:18px 20px;}
+.reveal-answer-inner{font-size:16px;color:var(--slate);line-height:1.75;}
+.tap-question{background:var(--navy-lt);border:1.5px solid #C5D0E8;border-radius:13px;padding:20px 20px;margin:20px 0;}
+.tap-q-label{font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--navy-md);margin-bottom:8px;}
+.tap-q-text{font-size:17px;font-weight:700;color:var(--navy);margin-bottom:14px;line-height:1.4;}
+.tap-options{display:flex;flex-direction:column;gap:9px;}
+.tap-opt{padding:13px 18px;border-radius:10px;border:2px solid var(--border);background:var(--white);font-size:16px;font-weight:700;font-family:'Nunito',sans-serif;color:var(--slate);cursor:pointer;transition:0.18s;text-align:left;}
+.tap-opt:hover:not(:disabled){border-color:var(--navy-md);background:var(--navy-lt);color:var(--navy);}
+.tap-opt.correct{background:var(--green-lt);border-color:var(--green);color:var(--green);pointer-events:none;}
+.tap-opt.wrong{background:#FEF2F2;border-color:#FCA5A5;color:#B91C1C;pointer-events:none;}
+.tap-opt.dim{opacity:0.4;pointer-events:none;}
+.tap-result{font-size:15px;font-weight:700;margin-top:12px;padding:11px 14px;border-radius:9px;display:none;}
+.tap-result.show{display:block;}
+.tap-result.good{background:var(--green-lt);color:var(--green);}
+.tap-result.oops{background:#FEF2F2;color:#B91C1C;}
+.scam-list{display:flex;flex-direction:column;gap:10px;margin:16px 0;}
+.scam-item{display:flex;align-items:flex-start;gap:12px;padding:13px 16px;background:var(--red-lt);border:1.5px solid #FCA5A5;border-radius:11px;}
+.scam-icon{font-size:20px;flex-shrink:0;}
+.scam-text{font-size:15px;color:#7F1D1D;font-weight:600;line-height:1.5;}
+.safe-list{display:flex;flex-direction:column;gap:10px;margin:16px 0;}
+.safe-item{display:flex;align-items:flex-start;gap:12px;padding:13px 16px;background:var(--green-lt);border:1.5px solid #B7DEC9;border-radius:11px;}
+.safe-icon{font-size:20px;flex-shrink:0;}
+.safe-text{font-size:15px;color:#285C42;font-weight:600;line-height:1.5;}
+.completion-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;animation:fadeUp 0.4s cubic-bezier(.4,0,.2,1) both;}
+.completion-top{background:linear-gradient(135deg,var(--gmail-dark) 0%,var(--gmail) 100%);padding:44px 28px 36px;text-align:center;}
+.completion-big-icon{font-size:72px;margin-bottom:16px;}
+.completion-title{font-family:'Lora',serif;font-size:28px;font-weight:600;color:#fff;margin-bottom:8px;}
+.completion-sub{font-size:16px;color:rgba(255,255,255,0.88);line-height:1.6;}
+.completion-body{padding:32px 28px;}
+.learned-list{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:28px;}
+.learned-item{display:flex;align-items:center;gap:12px;padding:13px 16px;background:var(--green-lt);border:1.5px solid #B7DEC9;border-radius:10px;font-size:16px;font-weight:700;color:var(--green);}
+.completion-actions{display:flex;flex-direction:column;gap:12px;}
+.btn-primary{padding:16px 24px;border-radius:12px;border:none;background:var(--navy);color:#fff;font-size:17px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;transition:background 0.15s;}
+.btn-primary:hover{background:var(--navy-md);}
+.btn-secondary{padding:14px 24px;border-radius:12px;border:1.5px solid var(--border);background:var(--white);color:var(--navy);font-size:16px;font-weight:700;font-family:'Nunito',sans-serif;cursor:pointer;transition:0.15s;}
+.btn-secondary:hover{border-color:var(--navy);background:var(--navy-lt);}
+.nav-bar{position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:1.5px solid var(--border);padding:14px 20px;display:flex;gap:12px;z-index:200;box-shadow:0 -4px 20px rgba(27,42,74,0.09);}
+.btn-back{padding:14px 22px;border-radius:12px;border:1.5px solid var(--border);background:var(--white);font-size:16px;font-weight:700;font-family:'Nunito',sans-serif;color:var(--slate);cursor:pointer;transition:0.15s;}
+.btn-back:hover{border-color:var(--navy);color:var(--navy);background:var(--navy-lt);}
+.btn-next{flex:1;padding:14px 24px;border-radius:12px;border:none;background:var(--navy);font-size:17px;font-weight:800;font-family:'Nunito',sans-serif;color:#fff;cursor:pointer;transition:background 0.15s;}
+.btn-next:hover{background:var(--navy-md);}
+.hidden{display:none!important;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="back-btn" href="../courses.html">&#8592; Courses</a>
+  <div class="topbar-center">
+    <div class="email-dot">✉️</div>
+    <span class="topbar-title">Email Basics</span>
+  </div>
+  <span class="level-badge">Advanced</span>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-row">
+    <span class="progress-label" id="progressLabel">Step 1 of 5</span>
+    <span class="progress-pct" id="progressPct">0% done</span>
+  </div>
+  <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+</div>
+
+<div class="step-dots" id="stepDots">
+  <div class="dot active" id="dot-0"></div>
+  <div class="dot" id="dot-1"></div>
+  <div class="dot" id="dot-2"></div>
+  <div class="dot" id="dot-3"></div>
+  <div class="dot" id="dot-4"></div>
+</div>
+
+<div class="main" id="mainContent"></div>
+
+<div class="nav-bar" id="navBar">
+  <button class="btn-back" id="btnBack" onclick="prevStep()">&#8592; Back</button>
+  <button class="btn-next" id="btnNext" onclick="nextStep()">Next →</button>
+</div>
+
+<script type="module">
+import { auth, db } from "../firebase.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const COURSE_KEY = "email-advanced";
+let currentStep = 0, currentUser = null;
+
+const STEPS = [
+  () => `<div class="step-card">
+    <div class="card-hero"><div class="hero-emoji">🎣</div><div class="hero-text"><div class="hero-step">Step 1 of 5</div><div class="hero-title">Spotting Phishing Emails</div></div></div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">🛡️</span><span class="encourage-text">You've reached the advanced level — wonderful! This lesson is the most important one. Please read every word carefully.</span></div>
+      <p class="body-text"><strong>Phishing</strong> is when a scammer sends a fake email that looks like it's from a real company — like your bank, IRCTC, or Google — to trick you into giving your password or money.</p>
+      <div class="scam-list">
+        <div class="scam-item"><span class="scam-icon">🚨</span><div class="scam-text">"Your SBI account will be blocked! Click here to verify." — Banks NEVER send urgent threats by email.</div></div>
+        <div class="scam-item"><span class="scam-icon">🚨</span><div class="scam-text">"You have won an iPhone! Claim now by entering your details." — If you didn't enter a contest, you cannot win.</div></div>
+        <div class="scam-item"><span class="scam-icon">🚨</span><div class="scam-text">"Google detected suspicious activity. Login immediately." — Check the sender's email address carefully.</div></div>
+        <div class="scam-item"><span class="scam-icon">🚨</span><div class="scam-text">Any email asking for your <strong>password, Aadhaar, OTP or bank details</strong> — never share these by email.</div></div>
+      </div>
+      <div class="tap-question">
+        <div class="tap-q-label">✏️ Quick check</div>
+        <div class="tap-q-text">An email says "Your bank account will be closed in 24 hours — click here now!" What do you do?</div>
+        <div class="tap-options">
+          <button class="tap-opt" onclick="tapAnswer(this,false,'q1')">🖱️ Click the link immediately</button>
+          <button class="tap-opt" onclick="tapAnswer(this,true,'q1')">🚫 Do not click — call my bank directly to check</button>
+          <button class="tap-opt" onclick="tapAnswer(this,false,'q1')">📤 Forward it to family to warn them</button>
+        </div>
+        <div class="tap-result" id="res-q1"></div>
+      </div>
+      <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">The golden rule</div><div class="tip-text">Real banks and companies will <strong>NEVER</strong> ask for your password or OTP by email. When in doubt, do not click — call the company directly.</div></div></div>
+    </div>
+  </div>`,
+
+  () => `<div class="step-card">
+    <div class="card-hero"><div class="hero-emoji">🔍</div><div class="hero-text"><div class="hero-step">Step 2 of 5</div><div class="hero-title">How to Check If an Email Is Real</div></div></div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">🧠</span><span class="encourage-text">There are simple tricks to spot a fake email. Once you know these, you will feel very confident!</span></div>
+      <p class="body-text">Even if an email looks real, you can check these things to decide if it is genuine:</p>
+      <div class="safe-list">
+        <div class="safe-item"><span class="safe-icon">✅</span><div class="safe-text"><strong>Check the sender's address carefully.</strong> A real Google email comes from @google.com — not @google-support.net or @gmail-help.com.</div></div>
+        <div class="safe-item"><span class="safe-icon">✅</span><div class="safe-text"><strong>Look for spelling mistakes.</strong> Real companies have professional emails — bad spelling is a warning sign.</div></div>
+        <div class="safe-item"><span class="safe-icon">✅</span><div class="safe-text"><strong>Be suspicious of urgency.</strong> "Act NOW or lose your account!" is a pressure trick — real companies give you time.</div></div>
+        <div class="safe-item"><span class="safe-icon">✅</span><div class="safe-text"><strong>Hover over links (on computer) or don't click them.</strong> A fake link might look like "sbi.bank-login.com" — the real SBI is just "sbi.co.in".</div></div>
+      </div>
+      <div class="reveal-block" id="rev-2" onclick="toggleReveal('rev-2')">
+        <div class="reveal-prompt"><span class="reveal-prompt-icon">🤔</span><span class="reveal-prompt-text">How do I check the sender's email address on my phone?</span><span class="reveal-prompt-arrow">▶</span></div>
+        <div class="reveal-answer"><div class="reveal-answer-inner">Open the email and tap the sender's <strong>name at the top</strong>. A small box appears showing their full email address. Read it carefully — is it really from the company it claims to be?</div></div>
+      </div>
+      <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Good to know</div><div class="tip-text">When in doubt, <strong>do nothing</strong>. Close the email. You can always call the company directly using the number on their official website or your bank card.</div></div></div>
+    </div>
+  </div>`,
+
+  () => `<div class="step-card">
+    <div class="card-hero"><div class="hero-emoji">🚫</div><div class="hero-text"><div class="hero-step">Step 3 of 5</div><div class="hero-title">Blocking Spam & Unwanted Emails</div></div></div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">💪</span><span class="encourage-text">You don't have to put up with unwanted emails! You can block senders and report spam in just a few taps.</span></div>
+      <p class="body-text"><strong>Spam</strong> is unwanted email — advertisements, fake offers, junk. Gmail filters most spam automatically, but some still gets through. Here's how to deal with it:</p>
+      <ul class="instr-list">
+        <li class="instr-item"><span class="instr-num">1</span><span class="instr-text">Open the unwanted email and tap the <strong>three dots ⋮</strong> at the top right.</span></li>
+        <li class="instr-item"><span class="instr-num">2</span><span class="instr-text">Tap <strong>"Report spam"</strong> — Gmail removes it and teaches itself to block similar emails in future.</span></li>
+        <li class="instr-item"><span class="instr-num">3</span><span class="instr-text">To block a sender: tap the three dots ⋮ and select <strong>"Block [sender name]"</strong>. You will never receive emails from them again.</span></li>
+        <li class="instr-item"><span class="instr-num">4</span><span class="instr-text">To unsubscribe from newsletters: scroll to the very bottom of the email and tap <strong>"Unsubscribe"</strong>.</span></li>
+      </ul>
+      <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Good to know</div><div class="tip-text">Gmail's <strong>Spam folder</strong> catches most junk automatically. Check it once a month in case a genuine email landed there by mistake — then delete everything in spam.</div></div></div>
+    </div>
+  </div>`,
+
+  () => `<div class="step-card">
+    <div class="card-hero"><div class="hero-emoji">🔑</div><div class="hero-text"><div class="hero-step">Step 4 of 5</div><div class="hero-title">Keeping Your Gmail Account Secure</div></div></div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">🌟</span><span class="encourage-text">A secure Gmail account protects everything linked to it — your payments, bookings, and important documents. Let's set it up properly!</span></div>
+      <div class="safe-list">
+        <div class="safe-item"><span class="safe-icon">✅</span><div class="safe-text"><strong>Use a strong password</strong> — at least 8 characters, with letters and numbers. Change it if you think someone knows it.</div></div>
+        <div class="safe-item"><span class="safe-icon">✅</span><div class="safe-text"><strong>Add a recovery phone number.</strong> In Settings → Manage your Google Account → Security — this lets you recover your account if locked out.</div></div>
+        <div class="safe-item"><span class="safe-icon">✅</span><div class="safe-text"><strong>Never share your password</strong> — not with children, friends, or anyone who calls claiming to be "Google support".</div></div>
+        <div class="safe-item"><span class="safe-icon">✅</span><div class="safe-text"><strong>Sign out on shared devices.</strong> If you use someone else's phone or a computer, always sign out of Gmail when finished.</div></div>
+      </div>
+      <div class="warn-box"><span class="warn-icon">⚠️</span><div><div class="warn-label">Important warning</div><div class="warn-text">Google will NEVER call you to ask for your password or recovery code. If someone calls claiming to be Google, it is a scam. Hang up!</div></div></div>
+      <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Good to know</div><div class="tip-text">If you are ever locked out of Gmail, you can recover your account by going to <strong>accounts.google.com</strong> and tapping "Forgot password" — Google will send a code to your recovery phone number.</div></div></div>
+    </div>
+  </div>`,
+
+  () => `<div class="step-card">
+    <div class="card-hero"><div class="hero-emoji">⚙️</div><div class="hero-text"><div class="hero-step">Step 5 of 5</div><div class="hero-title">Useful Gmail Settings</div></div></div>
+    <div class="card-body">
+      <div class="encourage"><span class="encourage-icon">🎉</span><span class="encourage-text">Last step! There are a few simple settings that will make Gmail much more comfortable to use every day.</span></div>
+      <p class="body-text">These Gmail settings make your experience better — find them by tapping your <strong>profile picture → Manage your Google Account</strong> or by tapping <strong>Settings</strong> inside Gmail.</p>
+      <ul class="instr-list">
+        <li class="instr-item"><span class="instr-num">1</span><span class="instr-text"><strong>Increase text size:</strong> In Gmail → Settings → General settings → Text scaling. Make emails easier to read!</span></li>
+        <li class="instr-item"><span class="instr-num">2</span><span class="instr-text"><strong>Turn on notifications:</strong> In Gmail → Settings → your email → Notifications → All. Get alerted when new emails arrive.</span></li>
+        <li class="instr-item"><span class="instr-num">3</span><span class="instr-text"><strong>Set a signature:</strong> In Settings → General settings → Mobile Signature. Add your name automatically to every email you send.</span></li>
+        <li class="instr-item"><span class="instr-num">4</span><span class="instr-text"><strong>Confidential mode:</strong> When composing, tap ⋮ → Confidential mode — the email expires after a time you choose and cannot be forwarded.</span></li>
+      </ul>
+      <div class="tap-question">
+        <div class="tap-q-label">✏️ Quick check</div>
+        <div class="tap-q-text">You want all emails you send to automatically show your name at the bottom. Which setting do you use?</div>
+        <div class="tap-options">
+          <button class="tap-opt" onclick="tapAnswer(this,false,'q5')">🔔 Notifications</button>
+          <button class="tap-opt" onclick="tapAnswer(this,true,'q5')">✍️ Mobile Signature</button>
+          <button class="tap-opt" onclick="tapAnswer(this,false,'q5')">🔍 Text scaling</button>
+        </div>
+        <div class="tap-result" id="res-q5"></div>
+      </div>
+      <div class="tip-box"><span class="tip-icon">💡</span><div><div class="tip-label">Good to know</div><div class="tip-text">Gmail works on any device — phone, tablet, or computer. Your emails are always available wherever you sign in with your Google account!</div></div></div>
+    </div>
+  </div>`,
+];
+
+onAuthStateChanged(auth, async (user) => {
+  if (!user) { window.location.href = "../index.html"; return; }
+  currentUser = user;
+  try {
+    const snap = await getDoc(doc(db, "users", user.uid));
+    if (snap.exists() && snap.data().progress?.[COURSE_KEY] === 100) currentStep = STEPS.length;
+  } catch(e) {}
+  render();
+});
+
+async function saveProgress(pct) {
+  if (!currentUser) return;
+  try { await setDoc(doc(db, "users", currentUser.uid), { progress: { [COURSE_KEY]: pct } }, { merge: true }); } catch(e) {}
+}
+
+function render() {
+  updateProgress(); updateDots();
+  const main = document.getElementById("mainContent");
+  if (currentStep < STEPS.length) { main.innerHTML = STEPS[currentStep](); } else { renderCompletion(main); }
+  updateNav();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function updateProgress() {
+  const pct = Math.round((currentStep / STEPS.length) * 100);
+  document.getElementById("progressFill").style.width = pct + "%";
+  document.getElementById("progressPct").textContent = pct + "% done";
+  document.getElementById("progressLabel").textContent = currentStep < STEPS.length ? `Step ${currentStep + 1} of ${STEPS.length}` : "Lesson Complete!";
+}
+
+function updateDots() {
+  for (let i = 0; i < STEPS.length; i++) {
+    const d = document.getElementById("dot-" + i);
+    if (!d) continue;
+    d.className = "dot" + (i < currentStep ? " done" : i === currentStep ? " active" : "");
+  }
+}
+
+function updateNav() {
+  const navBar = document.getElementById("navBar");
+  if (currentStep >= STEPS.length) { navBar.classList.add("hidden"); return; }
+  navBar.classList.remove("hidden");
+  document.getElementById("btnBack").style.visibility = currentStep === 0 ? "hidden" : "visible";
+  document.getElementById("btnNext").textContent = currentStep === STEPS.length - 1 ? "Finish lesson 🎉" : "Next →";
+}
+
+function renderCompletion(container) {
+  container.innerHTML = `<div class="completion-card">
+    <div class="completion-top">
+      <div class="completion-big-icon">🏆</div>
+      <div class="completion-title">Email Expert!</div>
+      <div class="completion-sub">You've completed all three Email Basics levels.<br>Your inbox is now safe, organised and under your control!</div>
+    </div>
+    <div class="completion-body">
+      <ul class="learned-list">
+        <li class="learned-item">✅ Spotting phishing and scam emails</li>
+        <li class="learned-item">✅ Checking if an email is genuine</li>
+        <li class="learned-item">✅ Blocking spam and unwanted senders</li>
+        <li class="learned-item">✅ Keeping your Gmail account secure</li>
+        <li class="learned-item">✅ Useful Gmail settings for comfort</li>
+      </ul>
+      <div class="completion-actions">
+        <button class="btn-primary" onclick="window.location.href='../courses.html'">Explore more courses →</button>
+        <button class="btn-secondary" onclick="window.location.href='../courses.html'">Back to all courses</button>
+      </div>
+    </div>
+  </div>`;
+  document.getElementById("navBar").classList.add("hidden");
+  document.getElementById("stepDots").classList.add("hidden");
+  saveProgress(100);
+}
+
+window.toggleReveal = (id) => document.getElementById(id).classList.toggle("open");
+window.tapAnswer = function(btn, isCorrect, qid) {
+  const opts = btn.parentElement.querySelectorAll(".tap-opt");
+  opts.forEach(o => { o.classList.add("dim"); o.disabled = true; });
+  btn.classList.remove("dim"); btn.classList.add(isCorrect ? "correct" : "wrong");
+  if (!isCorrect) { opts.forEach(o => { if (o.getAttribute("onclick")?.includes("true")) { o.classList.remove("dim"); o.classList.add("correct"); } }); }
+  const res = document.getElementById("res-" + qid);
+  if (res) { res.className = "tap-result show " + (isCorrect ? "good" : "oops"); res.textContent = isCorrect ? "✅ Exactly right! Well done!" : "💭 Not quite — the correct answer is highlighted above. That's okay, now you know!"; }
+};
+window.nextStep = function() { currentStep++; saveProgress(Math.round((currentStep / STEPS.length) * 100)); render(); };
+window.prevStep = function() { if (currentStep > 0) { currentStep--; render(); } };
+</script>
+</body>
+</html>

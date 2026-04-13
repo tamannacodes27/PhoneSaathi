@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phone Saathi — Device Essentials</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --saffron:#FF6B1A;--saffron-lt:#FFF0E8;--saffron-dk:#C94E0A;
+  --navy:#1A2940;--bg:#ECF0F5;--white:#fff;
+  --gray-lt:#F1F5F9;--gray-md:#94A3B8;--gray-dk:#475569;
+  --primary:#2563EB;--success:#059669;--danger:#DC2626;--warn:#D97706;
+}
+body{font-family:'Nunito',sans-serif;background:var(--bg);display:flex;flex-direction:column;align-items:center;min-height:100vh}
+
+/* TOP BAR */
+.top-bar{width:100%;background:var(--navy);padding:0 20px;display:flex;align-items:center;justify-content:space-between;height:56px;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+.nav-brand{font-family:'Baloo 2',cursive;font-size:18px;font-weight:700;color:#fff;text-decoration:none;display:flex;align-items:center;gap:8px}
+.nav-brand span{color:var(--saffron)}
+.nav-links{display:flex;gap:8px}
+.nav-link{display:inline-flex;align-items:center;gap:5px;font-size:13px;font-weight:700;color:rgba(255,255,255,.75);text-decoration:none;padding:6px 12px;border-radius:8px;border:1px solid rgba(255,255,255,.18);transition:.2s}
+.nav-link:hover{background:rgba(255,255,255,.1);color:#fff}
+
+/* COACH BAR */
+.coach-bar{width:100%;background:#fff;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #E2E8F0;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.coach-content{display:flex;align-items:center;gap:10px;flex:1}
+.coach-avatar{width:40px;height:40px;background:var(--saffron-lt);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.coach-text{font-size:14px;font-weight:700;color:var(--navy);line-height:1.4;max-width:240px}
+.coach-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.level-badge{background:#EEF2FF;color:#4338CA;padding:5px 12px;border-radius:100px;font-size:12px;font-weight:800;white-space:nowrap}
+.hint-btn{background:#FFFBEB;border:2px solid #FDE68A;color:#B45309;font-size:12px;font-weight:800;padding:5px 10px;border-radius:100px;cursor:pointer;display:none}
+.hint-btn:hover{background:#FEF3C7}
+
+/* FEEDBACK */
+.feedback-bar{padding:11px 20px;text-align:center;font-size:14px;font-weight:700;display:none;width:100%;animation:slideDown .3s ease}
+@keyframes slideDown{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+.fb-error{background:#FEF2F2;color:#DC2626;border-bottom:2px solid #FCA5A5}
+.fb-success{background:#D1FAE5;color:#059669;border-bottom:2px solid #6EE7B7}
+.fb-warn{background:#FFFBEB;color:#B45309;border-bottom:2px solid #FDE68A}
+
+/* STARS */
+.score-bar{display:none;gap:4px;padding:8px 12px;justify-content:center;background:#fff;border-bottom:1px solid #E2E8F0}
+.score-star{font-size:18px;opacity:.2;transition:opacity .4s,transform .4s}
+.score-star.lit{opacity:1;transform:scale(1.15)}
+
+/* STEPS */
+.steps-bar{display:none;align-items:center;padding:10px 24px;background:#fff;border-bottom:1px solid #E2E8F0;justify-content:center;gap:0}
+.step{width:26px;height:26px;border-radius:50%;border:2px solid #CBD5E1;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#94A3B8;background:#fff;transition:.35s;flex-shrink:0}
+.step.done{background:var(--success);border-color:var(--success);color:#fff}
+.step.active{background:var(--saffron);border-color:var(--saffron);color:#fff}
+.step-line{height:2px;background:#CBD5E1;width:20px;flex-shrink:0;transition:.35s}
+.step-line.done{background:var(--success)}
+
+/* PHONE FRAME */
+.phone{background:#0A0A0A;border-radius:46px;width:310px;height:610px;margin:16px auto;position:relative;overflow:hidden;
+  box-shadow:0 0 0 1px #222,0 0 0 8px #1A2940,0 28px 50px rgba(0,0,0,.4),inset 0 0 0 1px rgba(255,255,255,.04)}
+.phone::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:88px;height:26px;background:#0A0A0A;border-radius:0 0 16px 16px;z-index:100}
+.phone.shake{animation:shake .4s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+
+/* STATUS BAR */
+.sbar{position:absolute;top:0;left:0;right:0;height:28px;z-index:95;display:flex;align-items:flex-end;justify-content:space-between;padding:2px 16px 3px;pointer-events:none}
+.sbar-time{font-size:11px;font-weight:800;letter-spacing:.3px}
+.sbar-icons{display:flex;align-items:center;gap:4px;font-size:11px}
+.sbar.light .sbar-time,.sbar.light .sbar-icons{color:rgba(255,255,255,.95)}
+.sbar.dark .sbar-time,.sbar.dark .sbar-icons{color:rgba(0,0,0,.8)}
+
+/* SCREENS */
+.screen{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .3s;display:flex;flex-direction:column}
+.screen.active{opacity:1;pointer-events:auto}
+
+/* ── INTRO SCREEN ── */
+#sc-intro{background:linear-gradient(155deg,#EEF2FF 0%,#fff 60%);justify-content:center;align-items:center;padding:28px 20px 20px;text-align:center}
+.intro-icon{width:82px;height:82px;background:#fff;border-radius:50%;display:flex;justify-content:center;align-items:center;margin:0 auto 16px;font-size:40px;box-shadow:0 8px 24px rgba(0,0,0,.12);animation:pop .5s cubic-bezier(.34,1.56,.64,1)}
+@keyframes pop{from{transform:scale(.4);opacity:0}to{transform:scale(1);opacity:1}}
+.intro-title{font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:var(--navy);margin-bottom:6px}
+.intro-story{background:#fff;border:1.5px solid #E2E8F0;border-radius:14px;padding:12px 14px;margin-bottom:14px;text-align:left;font-size:13px;color:var(--gray-dk);line-height:1.55}
+.intro-story strong{color:var(--navy)}
+.levels-list{display:flex;flex-direction:column;gap:6px;margin-bottom:16px;width:100%}
+.lv-row{display:flex;align-items:center;gap:10px;background:#fff;border:1.5px solid #E2E8F0;border-radius:10px;padding:8px 12px}
+.lv-icon{font-size:18px;width:26px;text-align:center}
+.lv-info{flex:1;text-align:left}
+.lv-name{font-size:13px;font-weight:800;color:var(--navy)}
+.lv-desc{font-size:11px;color:var(--gray-md);font-weight:600}
+.btn{width:100%;padding:14px;background:var(--saffron);color:#fff;border:none;border-radius:14px;font-family:'Baloo 2',cursive;font-size:16px;font-weight:700;cursor:pointer;transition:.2s;box-shadow:0 4px 14px rgba(255,107,26,.3)}
+.btn:hover{background:var(--saffron-dk);transform:scale(1.02)}
+.btn:active{transform:scale(.97)}
+.btn-ghost{background:#F1F5F9;color:var(--gray-dk);box-shadow:none;margin-top:8px}
+.btn-ghost:hover{background:#E2E8F0}
+
+/* ── LOCK SCREEN ── */
+#sc-lock{background:linear-gradient(170deg,#0F172A,#1E3A5F)}
+.lock-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 25% 35%,#243B6E,#0A1628);z-index:0}
+.lock-inner{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;padding:48px 0 16px;height:100%}
+.lock-time{font-size:72px;font-weight:200;color:#fff;letter-spacing:-3px;text-align:center;line-height:1;text-shadow:0 2px 20px rgba(0,0,0,.4)}
+.lock-date{font-size:15px;color:rgba(255,255,255,.7);margin-top:4px;margin-bottom:18px;font-weight:700}
+.lock-notifs{width:88%;margin:0 auto;display:flex;flex-direction:column;gap:9px}
+.l-notif{background:rgba(255,255,255,.14);backdrop-filter:blur(16px);border-radius:16px;padding:11px 14px;display:flex;align-items:center;gap:11px;border:1px solid rgba(255,255,255,.1)}
+.ln-appico{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.ln-body{flex:1}
+.ln-app{font-size:10px;color:rgba(255,255,255,.6);font-weight:800;margin-bottom:1px;text-transform:uppercase;letter-spacing:.5px}
+.ln-msg{font-size:13px;color:rgba(255,255,255,.92);font-weight:600;line-height:1.35}
+.swipe-hint{margin-top:auto;display:flex;flex-direction:column;align-items:center;padding-bottom:26px;cursor:pointer}
+.swipe-hint .sh-icon{font-size:28px;animation:float 2s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.swipe-hint .sh-text{font-size:13px;color:rgba(255,255,255,.6);font-weight:700;margin-top:5px}
+
+/* PIN OVERLAY */
+.pin-overlay{position:absolute;inset:0;background:rgba(10,18,35,.88);backdrop-filter:blur(10px);display:flex;flex-direction:column;align-items:center;padding:24px 16px 20px;z-index:30;opacity:0;pointer-events:none;transition:.3s}
+.pin-overlay.open{opacity:1;pointer-events:auto}
+.pin-prompt{font-size:15px;color:rgba(255,255,255,.8);font-weight:700;margin-top:16px;margin-bottom:6px}
+.pin-wrong-hint{font-size:12px;color:#FCA5A5;font-weight:700;height:16px;margin-bottom:4px}
+.pin-dots{display:flex;gap:14px;margin-bottom:22px}
+.pdot{width:14px;height:14px;border-radius:50%;border:2px solid rgba(255,255,255,.7);transition:.2s}
+.pdot.filled{background:#fff;transform:scale(1.1)}
+.numpad{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;width:240px}
+.nkey{background:rgba(255,255,255,.12);border:none;color:#fff;font-size:24px;cursor:pointer;padding:16px;border-radius:50%;transition:.15s;font-family:'Nunito';font-weight:700}
+.nkey:active{background:rgba(255,255,255,.3);transform:scale(.9)}
+.nkey.small{font-size:13px}
+.pin-face{margin-top:16px;font-size:13px;color:rgba(255,255,255,.5);font-weight:700;display:flex;align-items:center;gap:6px}
+
+/* ── HOME SCREEN ── */
+#sc-home{background:#1C3B72}
+.home-wallpaper{position:absolute;inset:0;background:radial-gradient(ellipse at 60% 30%,#2563EB,#0F2D6B);z-index:0}
+.home-top{position:relative;z-index:1;text-align:center;padding:36px 0 16px}
+.home-time{font-size:34px;font-weight:200;color:#fff;letter-spacing:-1px}
+.home-date{font-size:13px;color:rgba(255,255,255,.65);font-weight:700;margin-top:2px}
+.app-grid{position:relative;z-index:1;display:grid;grid-template-columns:repeat(4,1fr);gap:14px 8px;padding:6px 12px}
+.app-icon{display:flex;flex-direction:column;align-items:center;cursor:pointer;transition:.2s}
+.app-icon:active{transform:scale(.85)}
+.app-bg{width:50px;height:50px;border-radius:14px;display:flex;justify-content:center;align-items:center;font-size:22px;margin-bottom:5px;box-shadow:0 3px 10px rgba(0,0,0,.25)}
+.app-lbl{font-size:10px;font-weight:700;color:#fff;text-align:center;text-shadow:0 1px 3px rgba(0,0,0,.5);max-width:54px}
+.home-dock{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);z-index:1;background:rgba(255,255,255,.18);backdrop-filter:blur(20px);border-radius:24px;padding:10px 16px;display:flex;gap:14px;border:1px solid rgba(255,255,255,.15)}
+
+/* ── NOTIFICATIONS SCREEN ── */
+#sc-notifs{background:#F8FAFC;flex-direction:column}
+.notif-header{background:var(--white);padding:28px 16px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #E2E8F0}
+.notif-header-title{font-family:'Baloo 2',cursive;font-size:18px;font-weight:700;color:var(--navy)}
+.clear-all{font-size:13px;color:var(--primary);font-weight:700;cursor:pointer}
+.notif-list{flex:1;padding:12px;display:flex;flex-direction:column;gap:10px;overflow-y:auto}
+.notif-card{background:#fff;border-radius:16px;padding:14px 16px;display:flex;align-items:flex-start;gap:12px;box-shadow:0 1px 6px rgba(0,0,0,.06);border:1.5px solid transparent;cursor:pointer;transition:.2s;position:relative;overflow:hidden}
+.notif-card:hover{border-color:#CBD5E1}
+.notif-card:active{transform:scale(.98)}
+.notif-card.correct-card{border-color:#6EE7B7;background:#F0FDF4}
+.notif-card.danger-card{border-color:#FCA5A5;background:#FEF2F2}
+.nc-icon{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.nc-body{flex:1}
+.nc-app{font-size:11px;font-weight:800;color:var(--gray-md);text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px}
+.nc-title{font-size:14px;font-weight:800;color:var(--navy);margin-bottom:2px}
+.nc-msg{font-size:13px;color:var(--gray-dk);line-height:1.4}
+.nc-time{font-size:11px;color:var(--gray-md);font-weight:700}
+.notif-tag{position:absolute;top:8px;right:8px;font-size:10px;font-weight:800;padding:2px 8px;border-radius:100px}
+.tag-safe{background:#D1FAE5;color:#065F46}
+.tag-danger{background:#FEE2E2;color:#991B1B}
+
+/* ── WIFI SCREEN ── */
+#sc-wifi{background:#F8FAFC}
+.settings-header{background:#fff;padding:28px 16px 14px;display:flex;align-items:center;gap:12px;border-bottom:1px solid #E2E8F0}
+.back-btn{font-size:20px;cursor:pointer;color:var(--primary);font-weight:700;padding:2px 6px}
+.settings-title{font-family:'Baloo 2',cursive;font-size:18px;font-weight:700;color:var(--navy)}
+.wifi-toggle-row{background:#fff;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #E2E8F0}
+.wifi-toggle-left{font-size:15px;font-weight:700;color:var(--navy)}
+.toggle{width:44px;height:26px;background:var(--success);border-radius:13px;position:relative;cursor:pointer}
+.toggle-ball{position:absolute;right:3px;top:3px;width:20px;height:20px;background:#fff;border-radius:50%;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.wifi-section-label{font-size:12px;font-weight:800;color:var(--gray-md);text-transform:uppercase;letter-spacing:1px;padding:12px 18px 6px}
+.wifi-list{display:flex;flex-direction:column;gap:8px;padding:0 12px 12px}
+.wifi-item{background:#fff;padding:14px 16px;border-radius:14px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;border:2px solid transparent;transition:.2s;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.wifi-item:hover{border-color:#CBD5E1}
+.wifi-item:active{transform:scale(.98)}
+.wifi-name{font-weight:800;font-size:14px;color:var(--navy)}
+.wifi-status{font-size:12px;color:var(--gray-md);margin-top:3px;font-weight:600}
+.wifi-danger .wifi-name{color:var(--danger)}
+.wifi-danger .wifi-status{color:#EF4444}
+.wifi-signal{font-size:18px}
+.wifi-connected-badge{font-size:11px;background:#D1FAE5;color:#065F46;font-weight:800;padding:2px 8px;border-radius:100px;margin-top:4px;display:inline-block}
+
+/* PASSWORD MODAL */
+.pwd-modal{position:absolute;bottom:0;left:0;right:0;background:#fff;padding:22px 18px;border-radius:24px 24px 0 0;box-shadow:0 -8px 30px rgba(0,0,0,.12);transform:translateY(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);z-index:20}
+.pwd-modal.open{transform:translateY(0)}
+.pwd-modal-title{font-family:'Baloo 2',cursive;font-size:17px;font-weight:700;color:var(--navy);margin-bottom:3px}
+.pwd-modal-sub{font-size:13px;color:var(--gray-dk);margin-bottom:14px;font-weight:600}
+.pwd-input{width:100%;padding:13px 16px;border:2px solid #E2E8F0;border-radius:12px;font-size:15px;outline:none;transition:.2s;letter-spacing:4px;font-family:monospace;background:var(--gray-lt)}
+.pwd-input:focus{border-color:var(--primary);background:#fff}
+.pwd-actions{display:flex;gap:10px;margin-top:12px}
+.pwd-connect{flex:1;padding:13px;background:var(--primary);color:#fff;font-family:'Baloo 2',cursive;font-size:15px;font-weight:700;border:none;border-radius:12px;cursor:pointer;transition:.2s}
+.pwd-connect:hover{background:#1D4ED8}
+.pwd-cancel{padding:13px 18px;background:var(--gray-lt);color:var(--gray-dk);font-family:'Baloo 2',cursive;font-size:15px;font-weight:700;border:none;border-radius:12px;cursor:pointer}
+.pwd-dimmer{position:absolute;inset:0;background:rgba(0,0,0,.4);opacity:0;pointer-events:none;transition:.3s;z-index:15}
+.pwd-dimmer.open{opacity:1;pointer-events:auto}
+
+/* ── SETTINGS SCREEN ── */
+#sc-settings{background:#F8FAFC}
+.settings-group{margin:10px 12px;background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.settings-row{display:flex;align-items:center;gap:14px;padding:14px 16px;border-bottom:1px solid #F1F5F9;cursor:pointer;transition:.15s}
+.settings-row:last-child{border-bottom:none}
+.settings-row:active{background:var(--gray-lt)}
+.settings-row.highlight-row{background:#EEF2FF;border-left:4px solid var(--primary)}
+.sr-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.sr-label{flex:1;font-size:14px;font-weight:700;color:var(--navy)}
+.sr-value{font-size:13px;color:var(--gray-md);font-weight:600}
+.sr-arrow{color:var(--gray-md);font-size:16px}
+.battery-detail{background:#fff;border-radius:14px;margin:10px 12px;padding:16px}
+.battery-pct{font-family:'Baloo 2',cursive;font-size:42px;font-weight:800;color:var(--danger)}
+.battery-bar-wrap{height:16px;background:#F1F5F9;border-radius:8px;overflow:hidden;margin:10px 0}
+.battery-bar-fill{height:100%;width:12%;background:linear-gradient(90deg,#EF4444,#FCA5A5);border-radius:8px}
+.battery-bar-fill.charged{width:85%;background:linear-gradient(90deg,#059669,#34D399)}
+.battery-lpm-row{display:flex;align-items:center;justify-content:space-between;padding:14px 0 0;border-top:1px solid #F1F5F9;margin-top:10px}
+.lpm-label div:first-child{font-size:14px;font-weight:800;color:var(--navy)}
+.lpm-label div:last-child{font-size:12px;color:var(--gray-md);font-weight:600}
+.lpm-toggle{width:46px;height:26px;border-radius:13px;background:#E2E8F0;position:relative;cursor:pointer;transition:.3s;flex-shrink:0}
+.lpm-toggle.on{background:var(--success)}
+.lpm-toggle-ball{position:absolute;left:3px;top:3px;width:20px;height:20px;background:#fff;border-radius:50%;transition:.3s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.lpm-toggle.on .lpm-toggle-ball{transform:translateX(20px)}
+
+/* ── MODALS ── */
+.overlay{position:absolute;inset:0;background:rgba(10,22,42,.7);backdrop-filter:blur(5px);opacity:0;pointer-events:none;transition:opacity .3s;z-index:50;display:flex;justify-content:center;align-items:center;padding:20px}
+.overlay.active{opacity:1;pointer-events:auto}
+.modal-card{background:#fff;padding:28px 22px;border-radius:24px;text-align:center;width:100%;max-width:270px;box-shadow:0 20px 50px rgba(0,0,0,.2);transform:scale(.88) translateY(10px);transition:transform .3s}
+.overlay.active .modal-card{transform:scale(1) translateY(0)}
+.modal-emoji{font-size:52px;margin-bottom:12px;display:block;animation:pop .4s cubic-bezier(.34,1.56,.64,1)}
+.modal-title{font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:var(--navy);margin-bottom:8px}
+.modal-msg{font-size:14px;color:var(--gray-dk);line-height:1.55}
+.modal-actions{display:flex;flex-direction:column;gap:8px;margin-top:18px}
+
+/* CONFETTI */
+.confetti{position:absolute;inset:0;pointer-events:none;z-index:60;overflow:hidden}
+.cp{position:absolute;width:10px;height:10px;border-radius:2px;animation:fall 1.3s ease-in forwards}
+@keyframes fall{0%{transform:translateY(-20px) rotate(0);opacity:1}100%{transform:translateY(700px) rotate(720deg);opacity:0}}
+
+/* SCAM POPUP */
+.scam-popup{position:absolute;inset:0;z-index:40;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(0,0,0,.5);opacity:0;pointer-events:none;transition:.3s}
+.scam-popup.active{opacity:1;pointer-events:auto}
+.scam-card{background:#fff;border-radius:20px;padding:22px 18px;text-align:center;width:100%;box-shadow:0 12px 40px rgba(0,0,0,.25)}
+.scam-badge{background:#FEE2E2;color:#991B1B;font-size:12px;font-weight:800;padding:4px 12px;border-radius:100px;display:inline-block;margin-bottom:10px}
+.scam-icon{font-size:40px;margin-bottom:8px}
+.scam-title{font-family:'Baloo 2',cursive;font-size:17px;font-weight:800;color:var(--navy);margin-bottom:6px}
+.scam-msg{font-size:13px;color:var(--gray-dk);margin-bottom:14px;line-height:1.5}
+.scam-actions{display:flex;gap:8px}
+.scam-btn{flex:1;padding:11px;border:none;border-radius:12px;font-family:'Baloo 2',cursive;font-size:14px;font-weight:700;cursor:pointer;transition:.2s}
+.scam-btn.accept{background:#EF4444;color:#fff}
+.scam-btn.accept:hover{background:#DC2626}
+.scam-btn.decline{background:#F1F5F9;color:var(--gray-dk)}
+.scam-btn.decline:hover{background:#E2E8F0}
+
+/* INCOMING CALL */
+.call-screen{position:absolute;inset:0;z-index:35;background:linear-gradient(160deg,#1E3A5F,#0F172A);display:flex;flex-direction:column;align-items:center;padding:60px 20px 30px;opacity:0;pointer-events:none;transition:.3s}
+.call-screen.active{opacity:1;pointer-events:auto}
+.call-label{font-size:13px;color:rgba(255,255,255,.6);font-weight:700;margin-bottom:10px;letter-spacing:1px;text-transform:uppercase}
+.call-name{font-family:'Baloo 2',cursive;font-size:28px;font-weight:800;color:#fff;margin-bottom:6px}
+.call-number{font-size:14px;color:rgba(255,255,255,.55);font-weight:600;margin-bottom:auto}
+.call-avatar{width:90px;height:90px;border-radius:50%;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:44px;margin-bottom:16px;animation:ring 1.5s ease-in-out infinite}
+@keyframes ring{0%,100%{box-shadow:0 0 0 0 rgba(255,255,255,.3)}50%{box-shadow:0 0 0 16px rgba(255,255,255,0)}}
+.call-btns{display:flex;gap:40px;margin-top:20px}
+.call-btn{width:60px;height:60px;border-radius:50%;border:none;font-size:24px;cursor:pointer;transition:.2s}
+.call-btn:active{transform:scale(.9)}
+.call-btn.decline{background:#EF4444;color:#fff}
+.call-btn.accept{background:#22C55E;color:#fff}
+.call-btn-label{font-size:12px;font-weight:700;margin-top:6px;text-align:center}
+.call-btn-wrap{display:flex;flex-direction:column;align-items:center}
+.call-btn-label.d{color:rgba(255,255,255,.7)}
+.call-btn-label.a{color:rgba(255,255,255,.7)}
+
+/* UTILITY */
+.mt8{margin-top:8px}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a class="nav-brand" href="../index.html">📱 Phone<span>Saathi</span></a>
+  <div class="nav-links">
+    <a class="nav-link" href="../games.html">← All Games</a>
+    <a class="nav-link" href="../dashboard.html">🏠 Home</a>
+  </div>
+</div>
+
+<div class="coach-bar">
+  <div class="coach-content">
+    <div class="coach-avatar">🎓</div>
+    <div class="coach-text" id="coach-text">Meet Kamla Devi — help her use her new phone!</div>
+  </div>
+  <div class="coach-right">
+    <button class="hint-btn" id="hint-btn" onclick="showHint()">💡 Hint</button>
+    <div class="level-badge" id="level-badge">Intro</div>
+  </div>
+</div>
+
+<div class="feedback-bar" id="feedback"></div>
+
+<div class="score-bar" id="score-bar">
+  <span class="score-star lit" id="s1">⭐</span><span class="score-star lit" id="s2">⭐</span>
+  <span class="score-star lit" id="s3">⭐</span><span class="score-star lit" id="s4">⭐</span>
+  <span class="score-star lit" id="s5">⭐</span><span class="score-star lit" id="s6">⭐</span>
+  <span class="score-star lit" id="s7">⭐</span><span class="score-star lit" id="s8">⭐</span>
+  <span class="score-star lit" id="s9">⭐</span><span class="score-star lit" id="s10">⭐</span>
+</div>
+
+<div class="steps-bar" id="steps-bar">
+  <div class="step active" id="step1">1</div><div class="step-line" id="line1"></div>
+  <div class="step" id="step2">2</div><div class="step-line" id="line2"></div>
+  <div class="step" id="step3">3</div><div class="step-line" id="line3"></div>
+  <div class="step" id="step4">4</div><div class="step-line" id="line4"></div>
+  <div class="step" id="step5">5</div>
+</div>
+
+<div class="phone" id="phone">
+
+  <!-- STATUS BAR -->
+  <div class="sbar light" id="sbar">
+    <div class="sbar-time" id="sbar-time">12:00</div>
+    <div class="sbar-icons">🔋 📶</div>
+  </div>
+
+  <!-- ══ SCREEN: INTRO ══ -->
+  <div class="screen active" id="sc-intro">
+    <div style="height:100%;overflow-y:auto;padding:28px 18px 20px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;background:linear-gradient(155deg,#EEF2FF,#fff 65%);padding-top:34px">
+      <div class="intro-icon">📱</div>
+      <div class="intro-title">Device Essentials</div>
+      <div class="intro-story">
+        <strong>Meet Kamla Devi 👵</strong><br>
+        She is 67 years old and just got a smartphone from her son. She needs your help to learn how to use it — from unlocking it safely to connecting to Wi-Fi and ignoring scam calls!
+      </div>
+      <div class="levels-list">
+        <div class="lv-row"><div class="lv-icon">🔓</div><div class="lv-info"><div class="lv-name">Level 1 — Unlock the phone</div><div class="lv-desc">Enter the correct PIN to unlock</div></div></div>
+        <div class="lv-row"><div class="lv-icon">📵</div><div class="lv-info"><div class="lv-name">Level 2 — Scam call alert!</div><div class="lv-desc">Decide whether to pick up or decline</div></div></div>
+        <div class="lv-row"><div class="lv-icon">🔔</div><div class="lv-info"><div class="lv-name">Level 3 — Read notifications</div><div class="lv-desc">Find the real message, ignore the fake</div></div></div>
+        <div class="lv-row"><div class="lv-icon">📶</div><div class="lv-info"><div class="lv-name">Level 4 — Connect to Wi-Fi</div><div class="lv-desc">Pick the safe network and connect</div></div></div>
+        <div class="lv-row"><div class="lv-icon">🔋</div><div class="lv-info"><div class="lv-name">Level 5 — Save the battery</div><div class="lv-desc">Find Battery Settings and turn on Low Power Mode</div></div></div>
+      </div>
+      <button class="btn" onclick="startGame()">▶ Start Game</button>
+    </div>
+  </div>
+
+  <!-- ══ SCREEN: LOCK ══ -->
+  <div class="screen" id="sc-lock">
+    <div class="lock-bg"></div>
+    <div class="lock-inner">
+      <div class="lock-time" id="lock-time">12:00</div>
+      <div class="lock-date">Sunday, 12 April</div>
+      <div class="lock-notifs">
+        <div class="l-notif">
+          <div class="ln-appico" style="background:#1A73E8">📧</div>
+          <div class="ln-body"><div class="ln-app">Gmail</div><div class="ln-msg">Your bank statement is ready</div></div>
+        </div>
+        <div class="l-notif">
+          <div class="ln-appico" style="background:#25D366">💬</div>
+          <div class="ln-body"><div class="ln-app">WhatsApp</div><div class="ln-msg">Rahul: Are you coming today? 😊</div></div>
+        </div>
+      </div>
+      <div class="swipe-hint" onclick="openPinPad()">
+        <div class="sh-icon">☝️</div>
+        <div class="sh-text">Tap to unlock</div>
+      </div>
+    </div>
+    <!-- PIN PAD -->
+    <div class="pin-overlay" id="pin-overlay">
+      <div class="pin-prompt">Enter PIN to unlock</div>
+      <div class="pin-wrong-hint" id="pin-wrong"></div>
+      <div class="pin-dots">
+        <div class="pdot" id="pd1"></div><div class="pdot" id="pd2"></div>
+        <div class="pdot" id="pd3"></div><div class="pdot" id="pd4"></div>
+      </div>
+      <div class="numpad">
+        <button class="nkey" onclick="pinPress(1)">1</button>
+        <button class="nkey" onclick="pinPress(2)">2</button>
+        <button class="nkey" onclick="pinPress(3)">3</button>
+        <button class="nkey" onclick="pinPress(4)">4</button>
+        <button class="nkey" onclick="pinPress(5)">5</button>
+        <button class="nkey" onclick="pinPress(6)">6</button>
+        <button class="nkey" onclick="pinPress(7)">7</button>
+        <button class="nkey" onclick="pinPress(8)">8</button>
+        <button class="nkey" onclick="pinPress(9)">9</button>
+        <button class="nkey small" onclick="cancelPin()">✕</button>
+        <button class="nkey" onclick="pinPress(0)">0</button>
+        <button class="nkey small" onclick="pinBack()">⌫</button>
+      </div>
+      <div class="pin-face">🔐 Tip: Never share your PIN with anyone</div>
+    </div>
+  </div>
+
+  <!-- ══ SCREEN: INCOMING CALL (scam level) ══ -->
+  <div class="call-screen" id="sc-call">
+    <div class="call-label">Incoming Call</div>
+    <div class="call-avatar">👤</div>
+    <div class="call-name">+91 98765 43210</div>
+    <div class="call-number" id="call-subtitle">Unknown Number</div>
+    <div style="margin-top:16px;background:rgba(255,255,255,.12);border-radius:14px;padding:12px 16px;text-align:center;font-size:13px;color:rgba(255,255,255,.8);font-weight:600;line-height:1.5">
+      "Congratulations! You have won ₹5 Lakh. Press 1 to claim your prize now!"
+    </div>
+    <div class="call-btns">
+      <div class="call-btn-wrap">
+        <button class="call-btn decline" onclick="handleCall(false)">📵</button>
+        <div class="call-btn-label d">Decline</div>
+      </div>
+      <div class="call-btn-wrap">
+        <button class="call-btn accept" onclick="handleCall(true)">📞</button>
+        <div class="call-btn-label a">Accept</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SCREEN: NOTIFICATIONS ══ -->
+  <div class="screen" id="sc-notifs">
+    <div class="notif-header">
+      <div class="notif-header-title">🔔 Notifications</div>
+      <div class="clear-all">Clear all</div>
+    </div>
+    <div class="notif-list">
+      <!-- Injected by JS -->
+    </div>
+  </div>
+
+  <!-- ══ SCREEN: HOME (to reach Settings/Wi-Fi) ══ -->
+  <div class="screen" id="sc-home">
+    <div class="home-wallpaper"></div>
+    <div class="home-top">
+      <div class="home-time" id="home-time">12:00</div>
+      <div class="home-date">Sunday, 12 April</div>
+    </div>
+    <div class="app-grid" id="app-grid"></div>
+    <div class="home-dock">
+      <div class="app-icon" onclick="homeAppTap('Phone')">
+        <div class="app-bg" style="background:#22C55E">📞</div>
+      </div>
+      <div class="app-icon" onclick="homeAppTap('Messages')">
+        <div class="app-bg" style="background:#3B82F6">💬</div>
+      </div>
+      <div class="app-icon" onclick="homeAppTap('Camera')">
+        <div class="app-bg" style="background:#8B5CF6">📷</div>
+      </div>
+      <div class="app-icon" onclick="homeAppTap('Chrome')">
+        <div class="app-bg" style="background:#EF4444">🌐</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SCREEN: WI-FI SETTINGS ══ -->
+  <div class="screen" id="sc-wifi">
+    <div class="settings-header">
+      <div class="back-btn" onclick="goToHome()">‹</div>
+      <div class="settings-title">📶 Wi-Fi</div>
+    </div>
+    <div class="wifi-toggle-row">
+      <div class="wifi-toggle-left">Wi-Fi</div>
+      <div class="toggle"><div class="toggle-ball"></div></div>
+    </div>
+    <div class="wifi-section-label">Available Networks</div>
+    <div class="wifi-list">
+      <div class="wifi-item" onclick="selectWifi('HomeNetwork_Kamla', true, false)">
+        <div>
+          <div class="wifi-name">🔒 HomeNetwork_Kamla</div>
+          <div class="wifi-status">Secured · Strong signal</div>
+        </div>
+        <div class="wifi-signal">📶</div>
+      </div>
+      <div class="wifi-item wifi-danger" onclick="selectWifi('FREE_5G_INTERNET', false, true)">
+        <div>
+          <div class="wifi-name">⚠️ FREE_5G_INTERNET</div>
+          <div class="wifi-status">Open · No password · Dangerous</div>
+        </div>
+        <div class="wifi-signal">⚠️</div>
+      </div>
+      <div class="wifi-item" onclick="selectWifi('Sharma_Ji_WiFi', false, false)">
+        <div>
+          <div class="wifi-name">🔒 Sharma_Ji_WiFi</div>
+          <div class="wifi-status">Secured · Weak signal</div>
+        </div>
+        <div class="wifi-signal" style="opacity:.5">📶</div>
+      </div>
+      <div class="wifi-item wifi-danger" onclick="selectWifi('Public_Free_Net', false, true)">
+        <div>
+          <div class="wifi-name">⚠️ Public_Free_Net</div>
+          <div class="wifi-status">Open · Can steal your data</div>
+        </div>
+        <div class="wifi-signal">⚠️</div>
+      </div>
+      <div class="wifi-item" onclick="selectWifi('JioFiber_Home', false, false)">
+        <div>
+          <div class="wifi-name">🔒 JioFiber_Home</div>
+          <div class="wifi-status">Secured · Medium signal · Not yours</div>
+        </div>
+        <div class="wifi-signal" style="opacity:.7">📶</div>
+      </div>
+    </div>
+    <div class="pwd-dimmer" id="pwd-dimmer" onclick="closePwd()"></div>
+    <div class="pwd-modal" id="pwd-modal">
+      <div class="pwd-modal-title" id="pwd-title">🔒 HomeNetwork_Kamla</div>
+      <div class="pwd-modal-sub">Enter the Wi-Fi password to connect</div>
+      <input class="pwd-input" id="pwd-input" type="password" placeholder="Tap to enter password" onclick="typePwd()" readonly>
+      <div class="pwd-actions">
+        <button class="pwd-cancel" onclick="closePwd()">Cancel</button>
+        <button class="pwd-connect" onclick="submitPwd()">Connect</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SCREEN: BATTERY SETTINGS ══ -->
+  <div class="screen" id="sc-battery">
+    <div class="settings-header">
+      <div class="back-btn" onclick="goToSettings()">‹</div>
+      <div class="settings-title">🔋 Battery</div>
+    </div>
+    <div class="battery-detail" id="battery-detail">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div class="battery-pct" id="battery-pct">12%</div>
+        <div style="font-size:13px;color:var(--danger);font-weight:700">Low Battery<br><span style="color:var(--gray-md);font-size:11px">About 18 minutes left</span></div>
+      </div>
+      <div class="battery-bar-wrap"><div class="battery-bar-fill" id="battery-bar"></div></div>
+      <div class="battery-lpm-row">
+        <div class="lpm-label">
+          <div>Low Power Mode</div>
+          <div>Reduces battery usage</div>
+        </div>
+        <div class="lpm-toggle" id="lpm-toggle" onclick="toggleLPM()">
+          <div class="lpm-toggle-ball"></div>
+        </div>
+      </div>
+    </div>
+    <div class="settings-group">
+      <div class="settings-row" onclick="wrongSetting('Screen Time')">
+        <div class="sr-icon" style="background:#EEF2FF">⏱️</div>
+        <div class="sr-label">Screen Time</div>
+        <div class="sr-arrow">›</div>
+      </div>
+      <div class="settings-row" onclick="wrongSetting('Background Apps')">
+        <div class="sr-icon" style="background:#F0FDF4">🔄</div>
+        <div class="sr-label">Background Apps</div>
+        <div class="sr-arrow">›</div>
+      </div>
+      <div class="settings-row" onclick="wrongSetting('Charging')">
+        <div class="sr-icon" style="background:#FFFBEB">⚡</div>
+        <div class="sr-label">Charging</div>
+        <div class="sr-arrow">›</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SCREEN: SETTINGS (for level 5 navigation) ══ -->
+  <div class="screen" id="sc-settings">
+    <div class="settings-header">
+      <div class="back-btn" onclick="goToHome()">‹</div>
+      <div class="settings-title">⚙️ Settings</div>
+    </div>
+    <div class="settings-group" style="margin-top:16px">
+      <div class="settings-row" onclick="wrongSetting('Wi-Fi')">
+        <div class="sr-icon" style="background:#EFF6FF">📶</div>
+        <div class="sr-label">Wi-Fi</div>
+        <div class="sr-value">HomeNetwork_Kamla</div>
+        <div class="sr-arrow">›</div>
+      </div>
+      <div class="settings-row" onclick="wrongSetting('Bluetooth')">
+        <div class="sr-icon" style="background:#EEF2FF">🔵</div>
+        <div class="sr-label">Bluetooth</div>
+        <div class="sr-value">On</div>
+        <div class="sr-arrow">›</div>
+      </div>
+      <div class="settings-row" onclick="wrongSetting('Display')">
+        <div class="sr-icon" style="background:#FFF7ED">💡</div>
+        <div class="sr-label">Display & Brightness</div>
+        <div class="sr-arrow">›</div>
+      </div>
+      <div class="settings-row highlight-row" id="battery-settings-row" onclick="goToBattery()">
+        <div class="sr-icon" style="background:#FEF2F2">🔋</div>
+        <div class="sr-label">Battery</div>
+        <div class="sr-value" style="color:var(--danger);font-weight:800">12% !</div>
+        <div class="sr-arrow">›</div>
+      </div>
+      <div class="settings-row" onclick="wrongSetting('Sounds')">
+        <div class="sr-icon" style="background:#F0FDF4">🔊</div>
+        <div class="sr-label">Sounds</div>
+        <div class="sr-arrow">›</div>
+      </div>
+      <div class="settings-row" onclick="wrongSetting('Privacy')">
+        <div class="sr-icon" style="background:#F5F3FF">🔐</div>
+        <div class="sr-label">Privacy</div>
+        <div class="sr-arrow">›</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUCCESS MODAL -->
+  <div class="overlay" id="success-modal">
+    <div class="modal-card">
+      <span class="modal-emoji" id="success-emoji">🌟</span>
+      <div class="modal-title" id="success-title">Level Complete!</div>
+      <div class="modal-msg" id="success-msg"></div>
+      <div class="modal-actions">
+        <button class="btn" onclick="nextLevel()">Next Level →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FINISH MODAL -->
+  <div class="overlay" id="finish-modal">
+    <div class="confetti" id="confetti"></div>
+    <div class="modal-card">
+      <span class="modal-emoji">🏆</span>
+      <div class="modal-title">All Levels Done!</div>
+      <div class="modal-msg">Kamla Devi can now use her phone safely — thanks to you! 🎉</div>
+      <div class="modal-msg" id="final-score" style="font-size:22px;font-weight:800;color:var(--warn);margin-top:10px"></div>
+      <div class="modal-actions">
+        <button class="btn" onclick="window.location.href='../games.html'">← All Games</button>
+        <button class="btn btn-ghost" onclick="location.reload()">Play Again</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /phone -->
+
+<script>
+const courseId = "basics";
+let level = 0;
+let score = 10;
+let pinEntered = "";
+const correctPin = "1234";
+let pwdTyped = false;
+let lpmOn = false;
+let notifTaskDone = false;
+
+const coachEl   = document.getElementById("coach-text");
+const badgeEl   = document.getElementById("level-badge");
+const feedbackEl= document.getElementById("feedback");
+const phoneEl   = document.getElementById("phone");
+const hintBtn   = document.getElementById("hint-btn");
+
+// ── Clock ─────────────────────────────────────────────────────────────────────
+function tick() {
+  const t = new Date();
+  const s = t.getHours().toString().padStart(2,"0")+":"+t.getMinutes().toString().padStart(2,"0");
+  document.getElementById("sbar-time").textContent  = s;
+  document.getElementById("lock-time").textContent  = s;
+  const h2 = document.getElementById("home-time");
+  if (h2) h2.textContent = s;
+}
+setInterval(tick,1000); tick();
+
+// ── Feedback ──────────────────────────────────────────────────────────────────
+function fb(msg, type="error") {
+  feedbackEl.textContent = msg;
+  feedbackEl.className   = "feedback-bar fb-"+type;
+  feedbackEl.style.display = "block";
+  if (type==="error") {
+    phoneEl.classList.remove("shake");
+    void phoneEl.offsetWidth;
+    phoneEl.classList.add("shake");
+    score = Math.max(0, score-1);
+    updateStars();
+  }
+  clearTimeout(feedbackEl._t);
+  feedbackEl._t = setTimeout(()=>feedbackEl.style.display="none", 4000);
+}
+
+function updateStars() {
+  for(let i=1;i<=10;i++) document.getElementById("s"+i).classList.toggle("lit",i<=score);
+}
+
+// ── Screen switching ──────────────────────────────────────────────────────────
+function show(id) {
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  const el = document.getElementById(id);
+  if (el) el.classList.add("active");
+  // status bar colour
+  const lightScreens = ["sc-notifs","sc-home","sc-wifi","sc-settings","sc-battery"];
+  const sbar = document.getElementById("sbar");
+  if (lightScreens.includes(id)) { sbar.className="sbar dark"; }
+  else { sbar.className="sbar light"; }
+}
+
+// ── Steps ─────────────────────────────────────────────────────────────────────
+function setStep(n) {
+  for(let i=1;i<=5;i++){
+    const s=document.getElementById("step"+i);
+    if(i<n){s.className="step done";s.textContent="✓";}
+    else if(i===n){s.className="step active";s.textContent=i;}
+    else{s.className="step";s.textContent=i;}
+    if(i<5){
+      const l=document.getElementById("line"+i);
+      l.className="step-line"+(i<n?" done":"");
+    }
+  }
+}
+
+// ── START ─────────────────────────────────────────────────────────────────────
+window.startGame = function() {
+  document.getElementById("score-bar").style.display="flex";
+  document.getElementById("steps-bar").style.display="flex";
+  hintBtn.style.display="inline-block";
+  level=1; setStep(1);
+  badgeEl.textContent="Level 1 of 5";
+  coachEl.textContent="Kamla's phone is locked. Tap the screen to unlock it!";
+  show("sc-lock");
+  save(0);
+};
+
+// ══ LEVEL 1 — PIN ═════════════════════════════════════════════════════════════
+window.openPinPad = function() {
+  document.getElementById("pin-overlay").classList.add("open");
+  coachEl.textContent="Enter the PIN: 1 → 2 → 3 → 4";
+};
+window.pinPress = function(n) {
+  if (pinEntered.length>=4) return;
+  pinEntered += n;
+  for(let i=1;i<=4;i++) document.getElementById("pd"+i).classList.toggle("filled",i<=pinEntered.length);
+  if (pinEntered.length===4) {
+    setTimeout(()=>{
+      if (pinEntered===correctPin) {
+        document.getElementById("pin-overlay").classList.remove("open");
+        document.getElementById("success-emoji").textContent="🔓";
+        document.getElementById("success-title").textContent="Phone Unlocked!";
+        document.getElementById("success-msg").textContent="Great job! Kamla's phone is now open. Remember — never share your PIN with anyone, not even your bank!";
+        fb("✅ Correct PIN! Phone unlocked!","success");
+        setTimeout(()=>document.getElementById("success-modal").classList.add("active"),700);
+        save(1);
+      } else {
+        document.getElementById("pin-wrong").textContent="Wrong PIN. Try again.";
+        fb("❌ That's not the right PIN. The PIN is 1234 — tap them in order.","error");
+        pinEntered="";
+        for(let i=1;i<=4;i++) document.getElementById("pd"+i).classList.remove("filled");
+      }
+    },300);
+  }
+};
+window.pinBack = function() {
+  pinEntered=pinEntered.slice(0,-1);
+  for(let i=1;i<=4;i++) document.getElementById("pd"+i).classList.toggle("filled",i<=pinEntered.length);
+};
+window.cancelPin = function() {
+  pinEntered="";
+  for(let i=1;i<=4;i++) document.getElementById("pd"+i).classList.remove("filled");
+  document.getElementById("pin-overlay").classList.remove("open");
+};
+
+// ══ LEVEL 2 — SCAM CALL ═══════════════════════════════════════════════════════
+function startL2() {
+  level=2; setStep(2); badgeEl.textContent="Level 2 of 5";
+  coachEl.textContent="Uh oh! An unknown number is calling with a strange message. What should Kamla do?";
+  // Show call screen (not a .screen div, toggle manually)
+  show("sc-lock"); // use lock as bg
+  document.getElementById("sc-call").classList.add("active");
+  document.getElementById("sbar").className="sbar light";
+}
+window.handleCall = function(accepted) {
+  document.getElementById("sc-call").classList.remove("active");
+  if (accepted) {
+    fb("⚠️ Oh no! That was a scam call. Scammers pretend you won a prize to steal your money. Always decline unknown calls saying you won something!","warn");
+    score=Math.max(0,score-2); updateStars();
+    setTimeout(()=>{
+      document.getElementById("success-emoji").textContent="📵";
+      document.getElementById("success-title").textContent="Be Careful!";
+      document.getElementById("success-msg").textContent="That was a scam call. Real banks or prize companies NEVER call like this. Always decline and block unknown numbers promising prizes!";
+      document.getElementById("success-modal").classList.add("active");
+      save(2);
+    },1500);
+  } else {
+    fb("✅ Smart! Kamla declined the suspicious call. Never trust unknown callers promising prizes.","success");
+    setTimeout(()=>{
+      document.getElementById("success-emoji").textContent="🛡️";
+      document.getElementById("success-title").textContent="Scam Avoided!";
+      document.getElementById("success-msg").textContent="Well done! Real prizes don't arrive through random phone calls. Kamla is safe thanks to you!";
+      document.getElementById("success-modal").classList.add("active");
+      save(2);
+    },900);
+  }
+};
+
+// ══ LEVEL 3 — NOTIFICATIONS ═══════════════════════════════════════════════════
+const NOTIFS = [
+  { id:"n1", icon:"💬", bg:"#25D366", app:"WhatsApp", title:"Message from Rahul", msg:"Namaste Dadi! Can you call me at 6 PM?", time:"10:32 AM", safe:true, correct:true },
+  { id:"n2", icon:"⚠️", bg:"#EF4444", app:"Unknown", title:"🎉 You won ₹10,000!", msg:"Click NOW to claim your prize money!", time:"10:28 AM", safe:false, correct:false },
+  { id:"n3", icon:"📧", bg:"#EA4335", app:"Gmail", title:"Your electricity bill is due", msg:"Pay before 15th April to avoid charges", time:"9:55 AM", safe:true, correct:false },
+  { id:"n4", icon:"🏦", bg:"#1A56DB", app:"Fake-Bank Alert", title:"Account BLOCKED!", msg:"Click link immediately: bit.ly/unblock123", time:"9:40 AM", safe:false, correct:false },
+];
+
+function startL3() {
+  level=3; setStep(3); badgeEl.textContent="Level 3 of 5";
+  coachEl.textContent="Tap the notification from Rahul — ignore the suspicious ones!";
+  const list = document.querySelector("#sc-notifs .notif-list");
+  list.innerHTML="";
+  NOTIFS.forEach(n=>{
+    const d=document.createElement("div");
+    d.className="notif-card"+(n.safe?"":" danger-card");
+    d.innerHTML=`
+      ${n.safe?`<div class="notif-tag tag-safe">✓ Safe</div>`:`<div class="notif-tag tag-danger">⚠️ Suspicious</div>`}
+      <div class="nc-icon" style="background:${n.bg}">${n.icon}</div>
+      <div class="nc-body">
+        <div class="nc-app">${n.app}</div>
+        <div class="nc-title">${n.title}</div>
+        <div class="nc-msg">${n.msg}</div>
+        <div class="nc-time">${n.time}</div>
+      </div>`;
+    d.onclick=()=>notifTap(n);
+    list.appendChild(d);
+  });
+  show("sc-notifs");
+}
+
+function notifTap(n) {
+  if (n.correct) {
+    fb("✅ That's Rahul's message! Good reading.","success");
+    setTimeout(()=>{
+      document.getElementById("success-emoji").textContent="🔔";
+      document.getElementById("success-title").textContent="Notifications Done!";
+      document.getElementById("success-msg").textContent="Kamla can now tell real messages from suspicious ones. Always check who sent it before tapping!";
+      document.getElementById("success-modal").classList.add("active");
+      save(3);
+    },800);
+  } else if (!n.safe) {
+    fb("⚠️ That looks like a scam notification! Don't tap links from unknown senders.","warn");
+    score=Math.max(0,score-1); updateStars();
+  } else {
+    fb("That's a real notification but the task is to find Rahul's WhatsApp message specifically.","error");
+  }
+}
+
+// ══ LEVEL 4 — WI-FI ══════════════════════════════════════════════════════════
+function startL4() {
+  level=4; setStep(4); badgeEl.textContent="Level 4 of 5";
+  coachEl.textContent="Open Settings → find Wi-Fi and connect to YOUR home network safely!";
+  buildHomeGrid(false); // wifi mission
+  show("sc-home");
+}
+window.selectWifi = function(name, isOwn, isDangerous) {
+  if (isDangerous) {
+    fb("⛔ DANGER! Open networks can steal your passwords and photos. Always use YOUR home network with a password!","warn");
+    score=Math.max(0,score-1); updateStars(); return;
+  }
+  if (!isOwn) {
+    fb("That's not Kamla's network. Use YOUR own home Wi-Fi, not a neighbour's — even if it has a password.","error"); return;
+  }
+  document.getElementById("pwd-title").textContent="🔒 "+name;
+  document.getElementById("pwd-dimmer").classList.add("open");
+  document.getElementById("pwd-modal").classList.add("open");
+  pwdTyped=false;
+  document.getElementById("pwd-input").value="";
+  coachEl.textContent="Tap the password box and type the Wi-Fi password, then tap Connect.";
+};
+window.typePwd = function() {
+  document.getElementById("pwd-input").value="Kamla@home2024";
+  pwdTyped=true;
+};
+window.closePwd = function() {
+  document.getElementById("pwd-dimmer").classList.remove("open");
+  document.getElementById("pwd-modal").classList.remove("open");
+};
+window.submitPwd = function() {
+  if (!pwdTyped) { fb("Please tap the password box first to enter the password.","error"); return; }
+  closePwd();
+  fb("✅ Connected to Wi-Fi! Kamla is now online safely.","success");
+  setTimeout(()=>{
+    document.getElementById("success-emoji").textContent="📶";
+    document.getElementById("success-title").textContent="Wi-Fi Connected!";
+    document.getElementById("success-msg").textContent="Always use YOUR own secured home network. Never connect to free open Wi-Fi in public — it can steal your data!";
+    document.getElementById("success-modal").classList.add("active");
+    save(4);
+  },900);
+};
+
+// ══ LEVEL 5 — BATTERY ════════════════════════════════════════════════════════
+function startL5() {
+  level=5; setStep(5); badgeEl.textContent="Level 5 of 5";
+  coachEl.textContent="Kamla's phone is at 12%! Go to Settings → Battery → turn on Low Power Mode!";
+  buildHomeGrid(true); // settings mission
+  show("sc-home");
+}
+window.goToBattery = function() {
+  show("sc-battery");
+  coachEl.textContent="Find 'Low Power Mode' and tap the toggle to turn it ON!";
+};
+window.goToSettings = function() { show("sc-settings"); };
+window.goToHome    = function() { show("sc-home"); };
+window.wrongSetting = function(name) {
+  if (level===5) fb(`That's ${name}. We need 'Battery' — look for the 🔋 icon!`,"error");
+  else fb(`That's ${name} settings. For Wi-Fi, look for the 📶 icon.`,"error");
+};
+window.toggleLPM = function() {
+  if (lpmOn) return;
+  lpmOn=true;
+  const t=document.getElementById("lpm-toggle");
+  t.classList.add("on");
+  document.getElementById("battery-bar").classList.add("charged");
+  document.getElementById("battery-pct").textContent="12%";
+  document.getElementById("battery-pct").style.color="var(--success)";
+  fb("✅ Low Power Mode is ON! The phone will now last longer.","success");
+  setTimeout(()=>{
+    launchConfetti();
+    document.getElementById("final-score").textContent="⭐ Score: "+score*10+" / 100";
+    document.getElementById("finish-modal").classList.add("active");
+    save(5);
+  },1200);
+};
+
+// ── Home screen grid ──────────────────────────────────────────────────────────
+const ALL_APPS = [
+  {label:"WhatsApp",bg:"#25D366",icon:"💬",action:()=>homeAppTap("WhatsApp")},
+  {label:"Photos",bg:"#F59E0B",icon:"🖼️",action:()=>homeAppTap("Photos")},
+  {label:"YouTube",bg:"#EF4444",icon:"▶️",action:()=>homeAppTap("YouTube")},
+  {label:"Maps",bg:"#10B981",icon:"🗺️",action:()=>homeAppTap("Maps")},
+  {label:"Calculator",bg:"#6366F1",icon:"🧮",action:()=>homeAppTap("Calculator")},
+  {label:"Settings",bg:"#64748B",icon:"⚙️",action:()=>homeAppTap("Settings")},
+  {label:"Paytm",bg:"#00B9F1",icon:"💳",action:()=>homeAppTap("Paytm")},
+  {label:"Clock",bg:"#1E40AF",icon:"⏰",action:()=>homeAppTap("Clock")},
+];
+
+function buildHomeGrid(needsSettings) {
+  const g=document.getElementById("app-grid"); g.innerHTML="";
+  const shuffled=[...ALL_APPS].sort(()=>Math.random()-.5);
+  shuffled.forEach(app=>{
+    const el=document.createElement("div"); el.className="app-icon";
+    el.innerHTML=`<div class="app-bg" style="background:${app.bg}">${app.icon}</div><div class="app-lbl">${app.label}</div>`;
+    el.onclick=app.action;
+    g.appendChild(el);
+  });
+}
+
+window.homeAppTap = function(name) {
+  if (level===4) {
+    if (name==="Settings") { show("sc-wifi"); coachEl.textContent="Tap your home network 'HomeNetwork_Kamla' to connect."; }
+    else fb(`That's ${name}. We need the Wi-Fi section — go to Settings ⚙️ first.`,"error");
+  } else if (level===5) {
+    if (name==="Settings") { show("sc-settings"); coachEl.textContent="Find Battery in Settings — look for the 🔋 icon with the red warning!"; }
+    else fb(`That's ${name}. Kamla's phone is dying! Go to Settings ⚙️ → Battery.`,"error");
+  }
+};
+
+// ── Next level ────────────────────────────────────────────────────────────────
+window.nextLevel = function() {
+  document.getElementById("success-modal").classList.remove("active");
+  if (level===1) startL2();
+  else if (level===2) startL3();
+  else if (level===3) startL4();
+  else if (level===4) startL5();
+};
+
+// ── Confetti ──────────────────────────────────────────────────────────────────
+function launchConfetti() {
+  const colors=["#FF6B1A","#2563EB","#059669","#D97706","#7C3AED","#EF4444","#EC4899"];
+  const c=document.getElementById("confetti"); c.innerHTML="";
+  for(let i=0;i<40;i++){
+    const p=document.createElement("div"); p.className="cp";
+    p.style.left=Math.random()*100+"%";
+    p.style.background=colors[Math.floor(Math.random()*colors.length)];
+    p.style.animationDelay=Math.random()*.9+"s";
+    p.style.animationDuration=(.8+Math.random()*.9)+"s";
+    p.style.borderRadius=Math.random()>.5?"50%":"2px";
+    c.appendChild(p);
+  }
+}
+
+// ── Hints ─────────────────────────────────────────────────────────────────────
+const HINTS = {
+  1:"The PIN is 1-2-3-4. Tap the numbers in that order on the keypad.",
+  2:"Look at the message carefully. Does a real prize company call like this? Tap Decline (the red button).",
+  3:"Look for the notification from WhatsApp sent by Rahul. Ignore the ones from unknown senders.",
+  4:"Tap the Settings ⚙️ icon, then tap 'HomeNetwork_Kamla'. It has a 🔒 lock symbol meaning it is secure.",
+  5:"Tap Settings ⚙️, then tap Battery 🔋 (it shows 12% in red). Then tap the Low Power Mode toggle to turn it ON."
+};
+window.showHint = function() {
+  if (HINTS[level]) fb("💡 "+HINTS[level],"warn");
+};
+
+// ── Save ──────────────────────────────────────────────────────────────────────
+async function save(lvl) {
+  let mem=JSON.parse(localStorage.getItem("dlp_sync")||'{"gamesProgress":{},"scores":{},"achievements":[]}');
+  mem.gamesProgress[courseId]=Math.max(mem.gamesProgress[courseId]||0,lvl);
+  if(lvl===5) mem.scores[courseId]=Math.max(mem.scores[courseId]||0,score*10);
+  if(!mem.achievements.includes("first_game")) mem.achievements.push("first_game");
+  if(lvl===5&&!mem.achievements.includes("master_"+courseId)) mem.achievements.push("master_"+courseId);
+  const all=["basics","whatsapp","email","upi","scam"];
+  if(all.every(g=>(mem.gamesProgress[g]||0)>=1)&&!mem.achievements.includes("all_games")) mem.achievements.push("all_games");
+  localStorage.setItem("dlp_sync",JSON.stringify(mem));
+  try{
+    const {auth,db}=await import("../firebase.js");
+    const {onAuthStateChanged}=await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js");
+    const {doc,setDoc}=await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
+    onAuthStateChanged(auth,async u=>{if(u){try{await setDoc(doc(db,"users",u.uid),mem,{merge:true});}catch(e){}}});
+  }catch(e){}
+}
+</script>
+</body>
+</html>
