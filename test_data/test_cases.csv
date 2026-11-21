@@ -1,5 +1,5 @@
 ID,Input,Type,Expected
-T01, Open page with no notes, Normal, "0 notes" + empty state
+T01, Open page with no notes, Normal, "0 notes + empty state"
 T02, Create Note "How to send a WhatsApp message", Normal, Yellow card, "1 note"
 T03, To-do with 3 tasks, Normal, "0 of 3 done"
 T04, Click one task, Normal, Strike-through, "1 of 3 done"
