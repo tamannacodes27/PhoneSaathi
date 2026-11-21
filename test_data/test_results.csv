@@ -1,5 +1,5 @@
 Test_ID,Prompt_version,Expected,Output,Actual,Output,Pass/Fail,Remarks
-T01,V1,(Simple Hindi, max 6 steps, screen hints, safety, 2 questions),{
+T01,V1,"Simple Hindi, max 6 steps, screen hints, safety, 2 questions","{
   "greeting": "नमस्ते जी! मैं आपका फ़ोनसाथी हूँ। आज हम बहुत आसानी से फ़ोन में व्हाट्सएप (WhatsApp) डालना सीखेंगे।",
   "reassurance": "चिंता न करें, आप कभी भी पीछे वाला तीर दबा सकते हैं।",
   "steps": [
@@ -29,4 +29,4 @@ T01,V1,(Simple Hindi, max 6 steps, screen hints, safety, 2 questions),{
     }
   ],
   "closing": "शाबाश! आप बहुत अच्छा सीख रहे हैं। कोई भी परेशानी हो तो मुझसे फिर पूछिएगा।"
-},fail,Answer is too long
+}",fail,Answer is too long
