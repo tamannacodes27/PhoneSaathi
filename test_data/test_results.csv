@@ -1,2 +1,2 @@
-Test_ID,Prompt_version,Expected,Output,Actual,Output,Pass/Fail,Remarks
+Test_ID,Prompt_version,Expected,Output,Actual_Output,Pass/Fail,Remarks
 T01,V1,"Simple Hindi, max 6 steps, screen hints, safety, 2 questions",outputs/T01.json,fail,Answer is too long
