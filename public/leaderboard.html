@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Phone Saathi — Leaderboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,500&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#1B2A4A;--navy-md:#2E4070;--navy-lt:#EEF1F8;
+  --cream:#F7F5F2;--warm:#F0EBE3;
+  --gold:#B07D2F;--gold-lt:#F8EDD8;--gold-md:#C8922A;
+  --slate:#4A5568;--slate-lt:#8896A8;--border:#E2DDD6;
+  --green:#2D6A4F;--green-lt:#E6F4EE;
+  --red:#C0392B;--amber:#92400E;
+  --radius:16px;--shadow:0 2px 16px rgba(27,42,74,0.07);
+  --shadow-md:0 4px 24px rgba(27,42,74,0.11);
+}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy);font-size:16px;line-height:1.6;min-height:100vh}
+
+/* ── NAV ── */
+.nav{background:var(--navy);padding:0 28px;display:flex;align-items:center;justify-content:space-between;height:60px;position:sticky;top:0;z-index:100;box-shadow:0 2px 20px rgba(0,0,0,.15)}
+.nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo{width:34px;height:34px;background:var(--gold);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px}
+.nav-name{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:#fff}
+.nav-name span{color:#D4A843}
+.nav-links{display:flex;gap:4px;list-style:none}
+.nav-links a{color:rgba(255,255,255,.6);text-decoration:none;font-size:13px;font-weight:500;padding:6px 13px;border-radius:7px;transition:.15s}
+.nav-links a:hover,.nav-links a.active{background:rgba(255,255,255,.12);color:#fff}
+.nav-back{color:rgba(255,255,255,.65);font-size:13px;font-weight:600;text-decoration:none;padding:7px 14px;border-radius:8px;border:1px solid rgba(255,255,255,.2);transition:.15s}
+.nav-back:hover{background:rgba(255,255,255,.1);color:#fff}
+
+/* ── HERO ── */
+.hero{background:linear-gradient(160deg,#1B2A4A 0%,#2E4070 100%);padding:40px 28px 48px;text-align:center;position:relative;overflow:hidden}
+.hero::after{content:'🏆';position:absolute;right:5%;top:50%;transform:translateY(-50%);font-size:120px;opacity:.06;pointer-events:none;line-height:1}
+.hero::before{content:'';position:absolute;left:-40px;bottom:-40px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.03);pointer-events:none}
+.hero-subtitle{font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:10px}
+.hero-title{font-family:'Playfair Display',serif;font-size:32px;font-weight:700;color:#fff;margin-bottom:8px;letter-spacing:-.5px}
+.hero-desc{font-size:14px;color:rgba(255,255,255,.5);max-width:420px;margin:0 auto 28px;font-weight:500}
+.hero-divider{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent);max-width:600px;margin:0 auto}
+
+/* ── YOUR RANK BANNER ── */
+.my-rank-banner{max-width:700px;margin:24px auto 0;padding:0 20px}
+.my-rank-card{background:linear-gradient(135deg,var(--gold-md),var(--gold));border-radius:var(--radius);padding:20px 24px;display:flex;align-items:center;gap:18px;box-shadow:var(--shadow-md);position:relative;overflow:hidden}
+.my-rank-card::after{content:'';position:absolute;right:-20px;top:-20px;width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,.12);pointer-events:none}
+.my-rank-num{font-family:'Playfair Display',serif;font-size:48px;font-weight:700;color:#fff;line-height:1;flex-shrink:0;text-shadow:0 2px 10px rgba(0,0,0,.15)}
+.my-rank-info .my-rank-label{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:3px}
+.my-rank-info .my-rank-name{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:#fff}
+.my-rank-info .my-rank-score{font-size:13px;color:rgba(255,255,255,.75);margin-top:4px;font-weight:600}
+.my-rank-emoji{font-size:36px;margin-left:auto;flex-shrink:0}
+
+/* ── TAB BAR ── */
+.wrap{max-width:700px;margin:0 auto;padding:24px 20px 72px}
+.tab-bar{display:flex;gap:8px;margin-bottom:24px;background:#fff;padding:5px;border-radius:12px;border:1.5px solid var(--border);box-shadow:var(--shadow)}
+.tab{flex:1;padding:10px 14px;border-radius:9px;border:none;background:transparent;font-size:13px;font-weight:700;font-family:'DM Sans',sans-serif;color:var(--slate-lt);cursor:pointer;transition:.15s;display:flex;align-items:center;justify-content:center;gap:6px}
+.tab.active{background:var(--navy);color:#fff;box-shadow:0 2px 8px rgba(27,42,74,.2)}
+.tab:not(.active):hover{background:var(--navy-lt);color:var(--navy)}
+
+/* ── TOP 3 PODIUM ── */
+.podium{display:flex;align-items:flex-end;justify-content:center;gap:12px;margin-bottom:28px;padding:0 10px}
+.podium-item{flex:1;max-width:160px;text-align:center;position:relative}
+.podium-block{border-radius:14px 14px 0 0;display:flex;align-items:flex-end;justify-content:center;padding-bottom:14px;position:relative}
+.podium-item:nth-child(1) .podium-block{background:linear-gradient(180deg,#D4B8F0,#C4A0E8);height:100px}
+.podium-item:nth-child(2) .podium-block{background:linear-gradient(180deg,#F5C842,#E8B820);height:140px}
+.podium-item:nth-child(3) .podium-block{background:linear-gradient(180deg,#E8C4A0,#D4A878);height:80px}
+.podium-crown{position:absolute;top:-22px;left:50%;transform:translateX(-50%);font-size:22px}
+.podium-pos{font-size:24px;font-weight:700;color:rgba(255,255,255,.9);font-family:'Playfair Display',serif}
+.podium-avatar{width:54px;height:54px;border-radius:50%;background:rgba(255,255,255,.3);border:3px solid rgba(255,255,255,.5);display:flex;align-items:center;justify-content:center;font-size:24px;margin:10px auto 6px;box-shadow:0 3px 14px rgba(0,0,0,.15)}
+.podium-name{font-size:13px;font-weight:700;color:var(--navy);line-height:1.3;margin-bottom:2px;padding:0 4px}
+.podium-score{font-size:11px;color:var(--slate-lt);font-weight:600;background:rgba(255,255,255,.7);padding:2px 8px;border-radius:20px;display:inline-block}
+
+/* ── LEADERBOARD TABLE ── */
+.lb-card{background:#fff;border:1.5px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+.lb-header{display:grid;grid-template-columns:48px 1fr 80px 80px;gap:8px;padding:12px 18px;background:var(--navy-lt);border-bottom:1.5px solid var(--border);font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--slate-lt)}
+.lb-row{display:grid;grid-template-columns:48px 1fr 80px 80px;gap:8px;padding:14px 18px;border-bottom:1px solid var(--warm);align-items:center;transition:.15s;position:relative}
+.lb-row:last-child{border-bottom:none}
+.lb-row:hover{background:var(--navy-lt)}
+.lb-row.is-me{background:var(--gold-lt)!important;border-left:4px solid var(--gold-md)}
+.lb-row.is-me:hover{background:#f3e1b5!important}
+.lb-rank{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--slate-lt);text-align:center}
+.lb-rank.top1{color:#E8B820}
+.lb-rank.top2{color:#8896A8}
+.lb-rank.top3{color:#C8922A}
+.lb-user{display:flex;align-items:center;gap:10px}
+.lb-avatar{width:36px;height:36px;border-radius:50%;background:var(--navy-lt);display:flex;align-items:center;justify-content:center;font-size:18px;border:2px solid var(--border);flex-shrink:0}
+.lb-name{font-size:14px;font-weight:700;color:var(--navy);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lb-sub{font-size:11px;color:var(--slate-lt);font-weight:500;margin-top:1px}
+.lb-score{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--navy);text-align:center}
+.lb-score.empty{font-size:14px;font-weight:400;color:var(--slate-lt)}
+.lb-lessons{font-size:14px;font-weight:700;color:var(--navy);text-align:center}
+.lb-you-tag{background:var(--gold-md);color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:6px;letter-spacing:.5px;text-transform:uppercase;display:inline-block;margin-left:6px;vertical-align:middle}
+
+/* ── EMPTY + LOADING ── */
+.lb-empty{text-align:center;padding:52px 24px;color:var(--slate-lt)}
+.lb-empty-icon{font-size:40px;margin-bottom:12px}
+.lb-empty-title{font-family:'Playfair Display',serif;font-size:18px;color:var(--navy);margin-bottom:6px}
+.lb-empty-sub{font-size:13px;font-weight:500}
+.loading-row{padding:14px 18px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--warm)}
+.skel{background:linear-gradient(90deg,#eee 25%,#f5f5f5 50%,#eee 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;border-radius:6px}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* ── SCORE METHOD ── */
+.info-box{background:var(--gold-lt);border:1.5px solid #E8D5A8;border-radius:12px;padding:16px 20px;margin-bottom:24px;display:flex;gap:12px;align-items:flex-start}
+.info-box-icon{font-size:20px;flex-shrink:0;margin-top:2px}
+.info-box-text{font-size:13px;color:var(--amber);font-weight:500;line-height:1.5}
+.info-box-text strong{font-weight:700;display:block;margin-bottom:2px}
+
+/* ── MOTI BAR ── */
+.moti-bar{background:var(--gold-lt);border-bottom:1.5px solid #E8D5A8;padding:13px 28px;text-align:center}
+.moti-bar p{font-family:'Playfair Display',serif;font-size:14px;color:var(--amber);font-style:italic;margin:0}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--green);color:#fff;padding:13px 24px;border-radius:12px;font-size:14px;font-weight:700;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;z-index:999;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,.15)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.error{background:var(--red)}
+
+/* ── FOOTER ── */
+.footer-strip{background:var(--gold-lt);border-top:1.5px solid #E8D5A8;padding:18px 28px;text-align:center}
+.footer-strip p{font-family:'Playfair Display',serif;font-size:14px;color:var(--amber);font-style:italic}
+
+@media(max-width:580px){
+  .nav-links{display:none}
+  .hero-title{font-size:24px}
+  .lb-header,.lb-row{grid-template-columns:36px 1fr 60px 60px;gap:6px;padding:12px 14px}
+  .lb-header span:nth-child(4),.lb-row .lb-lessons{display:none}
+  .lb-header{grid-template-columns:36px 1fr 60px}
+  .lb-row{grid-template-columns:36px 1fr 60px}
+  .podium-item{max-width:120px}
+  .podium-avatar{width:44px;height:44px;font-size:20px}
+  .my-rank-card{padding:16px 18px;gap:12px}
+  .my-rank-num{font-size:38px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="dashboard.html" class="nav-brand">
+    <div class="nav-logo">📱</div>
+    <div class="nav-name">Phone<span>Saathi</span></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="dashboard.html">🏠 Home</a></li>
+    <li><a href="courses.html">📚 Courses</a></li>
+    <li><a href="quizzes.html">🧠 Quiz</a></li>
+    <li><a href="leaderboard.html" class="active">🏆 Leaderboard</a></li>
+  </ul>
+  <a href="dashboard.html" class="nav-back">← Dashboard</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-subtitle">Phone Saathi</div>
+  <div class="hero-title">🏆 Community Leaderboard</div>
+  <div class="hero-desc">Celebrate progress together — see the top learners and where you stand</div>
+  <div class="hero-divider"></div>
+</div>
+
+<!-- YOUR RANK BANNER -->
+<div class="my-rank-banner" id="myRankBanner" style="display:none">
+  <div class="my-rank-card">
+    <div class="my-rank-num" id="myRankNum">#—</div>
+    <div class="my-rank-info">
+      <div class="my-rank-label">Your position</div>
+      <div class="my-rank-name" id="myRankName">—</div>
+      <div class="my-rank-score" id="myRankScore">—</div>
+    </div>
+    <div class="my-rank-emoji" id="myRankEmoji">😊</div>
+  </div>
+</div>
+
+<!-- MOTIVATIONAL BAR -->
+<div class="moti-bar"><p id="motiMsg">Loading leaderboard…</p></div>
+
+<div class="wrap">
+
+  <!-- Info box explaining the score -->
+  <div class="info-box">
+    <div class="info-box-icon">💡</div>
+    <div class="info-box-text">
+      <strong>How scores are calculated</strong>
+      Rankings are based on lessons completed + quiz scores. Complete your profile to earn bonus points!
+    </div>
+  </div>
+
+  <!-- Tab bar -->
+  <div class="tab-bar">
+    <button class="tab active" id="tabAll" onclick="switchTab('all')">🌍 All learners</button>
+    <button class="tab" id="tabTop" onclick="switchTab('top')">⭐ Top 10</button>
+    <button class="tab" id="tabNearby" onclick="switchTab('nearby')">📍 Near me</button>
+  </div>
+
+  <!-- Podium (top 3) -->
+  <div class="podium" id="podiumRow" style="display:none"></div>
+
+  <!-- Leaderboard table -->
+  <div class="lb-card">
+    <div class="lb-header">
+      <span>Rank</span>
+      <span>Learner</span>
+      <span style="text-align:center">Best Quiz</span>
+      <span style="text-align:center">Lessons</span>
+    </div>
+    <div id="lbBody">
+      <!-- Loading skeletons -->
+      <div class="loading-row">
+        <div class="skel" style="width:32px;height:32px;border-radius:50%"></div>
+        <div style="flex:1"><div class="skel" style="width:120px;height:14px;margin-bottom:6px"></div><div class="skel" style="width:80px;height:10px"></div></div>
+        <div class="skel" style="width:48px;height:16px;margin-left:auto"></div>
+      </div>
+      <div class="loading-row">
+        <div class="skel" style="width:32px;height:32px;border-radius:50%"></div>
+        <div style="flex:1"><div class="skel" style="width:140px;height:14px;margin-bottom:6px"></div><div class="skel" style="width:90px;height:10px"></div></div>
+        <div class="skel" style="width:48px;height:16px;margin-left:auto"></div>
+      </div>
+      <div class="loading-row">
+        <div class="skel" style="width:32px;height:32px;border-radius:50%"></div>
+        <div style="flex:1"><div class="skel" style="width:100px;height:14px;margin-bottom:6px"></div><div class="skel" style="width:70px;height:10px"></div></div>
+        <div class="skel" style="width:48px;height:16px;margin-left:auto"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Refresh hint -->
+  <p style="text-align:center;font-size:12px;color:var(--slate-lt);margin-top:16px;font-weight:500">
+    Leaderboard refreshes automatically each time you visit 🔄
+  </p>
+
+</div>
+
+<div class="footer-strip">
+  <p>"Learning together makes every step more meaningful. Keep going — you inspire others!"</p>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { auth, db } from "./firebase.js";
+import { onAuthStateChanged }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { collection, getDocs, query, orderBy, doc, getDoc }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+let currentUser = null;
+let allEntries  = [];
+let myRank      = null;
+let activeTab   = 'all';
+
+// ── Toast ─────────────────────────────────────────────────────────────────────
+function showToast(msg, isError=false) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.toggle("error", isError);
+  t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 2800);
+}
+
+// ── Score calculation ─────────────────────────────────────────────────────────
+function calcScore(d) {
+  const lessonsCount = Object.values(d.progress||{}).filter(v=>v>=100).length;
+  const quizScore    = d.quizScore || 0;
+  const profBonus    = d.profileCompletion ? Math.floor(d.profileCompletion / 10) : 0;
+  return (lessonsCount * 10) + quizScore + profBonus;
+}
+
+// ── Motivational message ──────────────────────────────────────────────────────
+function getMotiMsg(rank, total) {
+  if (rank === null) return "Complete some lessons to appear on the leaderboard!";
+  if (rank === 1)    return "You are #1! An inspiration to everyone on Phone Saathi. 🏆";
+  if (rank <= 3)     return `Amazing! You're in the top 3 out of ${total} learners. Keep it up! 🌟`;
+  if (rank <= 10)    return `You're in the top 10! Just ${rank-1} spot${rank-1>1?'s':''} away from the podium. ⭐`;
+  return `You're ranked #${rank} out of ${total}. Keep learning to move up!`;
+}
+
+// ── Render podium ─────────────────────────────────────────────────────────────
+function renderPodium(entries) {
+  if (entries.length < 1) return;
+  const podiumRow = document.getElementById("podiumRow");
+  podiumRow.style.display = "flex";
+
+  // podium order: 2nd, 1st, 3rd
+  const order = [entries[1], entries[0], entries[2]].filter(Boolean);
+  const labels = entries.length > 1 ? ["🥈", "🥇", "🥉"] : ["🥇"];
+  const isActual = entries.length > 1
+    ? [entries[1]?.uid, entries[0]?.uid, entries[2]?.uid]
+    : [entries[0]?.uid];
+
+  const origOrder = entries.length > 1 ? [2, 1, 3] : [1];
+
+  podiumRow.innerHTML = order.map((e, i) => {
+    const pos = origOrder[i];
+    const isMe = e?.uid === currentUser?.uid;
+    return `
+      <div class="podium-item">
+        <div style="position:relative">
+          <div class="podium-avatar" style="background:${pos===1?'rgba(232,184,32,.25)':pos===2?'rgba(200,146,42,.2)':'rgba(136,150,168,.15)'}">
+            ${e?.avatarEmoji || e?.name?.[0]?.toUpperCase() || "?"}
+          </div>
+          ${isMe ? `<div style="position:absolute;top:-6px;right:-4px;background:var(--gold-md);color:#fff;font-size:9px;font-weight:700;padding:2px 5px;border-radius:6px">YOU</div>` : ""}
+        </div>
+        <div class="podium-name">${e?.name || "Learner"}${isMe ? " 👈" : ""}</div>
+        <div class="podium-score">${e?.score} pts</div>
+        <div class="podium-block">
+          <div class="podium-crown">${labels[i]}</div>
+          <div class="podium-pos">#${pos}</div>
+        </div>
+      </div>`;
+  }).join("");
+}
+
+// ── Render leaderboard list ───────────────────────────────────────────────────
+function renderList(entries) {
+  const body = document.getElementById("lbBody");
+
+  if (entries.length === 0) {
+    body.innerHTML = `<div class="lb-empty">
+      <div class="lb-empty-icon">🌱</div>
+      <div class="lb-empty-title">No learners yet!</div>
+      <div class="lb-empty-sub">Be the first to complete a lesson and appear here.</div>
+    </div>`;
+    return;
+  }
+
+  body.innerHTML = entries.map((e, i) => {
+    const isMe    = e.uid === currentUser?.uid;
+    const rankCls = i===0?"top1":i===1?"top2":i===2?"top3":"";
+    const medal   = i===0?"🥇":i===1?"🥈":i===2?"🥉":"";
+    const lessons = Object.values(e.progress||{}).filter(v=>v>=100).length;
+    return `
+      <div class="lb-row${isMe?" is-me":""}">
+        <div class="lb-rank ${rankCls}">${medal || (i+1)}</div>
+        <div class="lb-user">
+          <div class="lb-avatar">${e.avatarEmoji || e.name?.[0]?.toUpperCase() || "?"}</div>
+          <div>
+            <div class="lb-name">
+              ${e.name || "Learner"}
+              ${isMe ? `<span class="lb-you-tag">You</span>` : ""}
+            </div>
+            <div class="lb-sub">${e.score} total pts${e.language ? " · " + e.language : ""}</div>
+          </div>
+        </div>
+        <div class="lb-score ${e.quizScore ? "" : "empty"}">${e.quizScore ? e.quizScore + "%" : "—"}</div>
+        <div class="lb-lessons">${lessons}</div>
+      </div>`;
+  }).join("");
+}
+
+// ── Tab switching ─────────────────────────────────────────────────────────────
+window.switchTab = function(tab) {
+  activeTab = tab;
+  document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+  document.getElementById("tab" + tab.charAt(0).toUpperCase() + tab.slice(1)).classList.add("active");
+  applyTab();
+};
+
+function applyTab() {
+  let entries = [...allEntries];
+  if (activeTab === "top") {
+    entries = entries.slice(0, 10);
+  } else if (activeTab === "nearby") {
+    if (myRank !== null) {
+      const start = Math.max(0, myRank - 3);
+      const end   = Math.min(allEntries.length, myRank + 3);
+      entries = allEntries.slice(start, end);
+    }
+  }
+  renderList(entries);
+}
+
+// ── Load data ─────────────────────────────────────────────────────────────────
+async function loadLeaderboard() {
+  try {
+    const snap = await getDocs(collection(db, "leaderboard"));
+    const raw = [];
+    snap.forEach(d => {
+      const data = d.data();
+      raw.push({
+        uid:         d.id,
+        name:        data.name || data.email?.split("@")[0] || "Learner",
+        avatarEmoji: data.avatarEmoji || null,
+        quizScore:   data.quizScore || 0,
+        language:    data.language || "",
+        progress:    data.progress || {},
+        score:       calcScore(data),
+      });
+    });
+
+    // Sort by total score descending
+    raw.sort((a, b) => b.score - a.score || b.quizScore - a.quizScore);
+    allEntries = raw;
+
+    // Find current user's rank
+    if (currentUser) {
+      const idx = raw.findIndex(e => e.uid === currentUser.uid);
+      myRank = idx >= 0 ? idx : null;
+
+      if (myRank !== null) {
+        const me = raw[myRank];
+        document.getElementById("myRankBanner").style.display = "block";
+        document.getElementById("myRankNum").textContent  = "#" + (myRank + 1);
+        document.getElementById("myRankName").textContent = me.name;
+        document.getElementById("myRankScore").textContent = me.score + " points · Quiz: " + (me.quizScore ? me.quizScore + "%" : "no quiz yet");
+        document.getElementById("myRankEmoji").textContent = me.avatarEmoji || me.name?.[0]?.toUpperCase() || "🙂";
+      }
+    }
+
+    document.getElementById("motiMsg").textContent = getMotiMsg(
+      myRank !== null ? myRank + 1 : null, raw.length
+    );
+
+    // Render podium with top 3
+    if (raw.length >= 1) renderPodium(raw);
+
+    applyTab();
+  } catch (err) {
+    console.error("Leaderboard load error:", err);
+    document.getElementById("lbBody").innerHTML = `
+      <div class="lb-empty">
+        <div class="lb-empty-icon">⚠️</div>
+        <div class="lb-empty-title">Could not load leaderboard</div>
+        <div class="lb-empty-sub">Check your connection and refresh the page.</div>
+      </div>`;
+    showToast("Could not load leaderboard", true);
+  }
+}
+
+// ── Auth ──────────────────────────────────────────────────────────────────────
+onAuthStateChanged(auth, async (user) => {
+  if (!user) { window.location.href = "index.html"; return; }
+  currentUser = user;
+  await loadLeaderboard();
+});
+</script>
+</body>
+</html>

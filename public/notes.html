@@ -178,6 +178,69 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy);
 @media(max-width:380px){
   .notes-grid{grid-template-columns:1fr}
 }
+
+/* ── Polished workspace using the original Phone Saathi palette ── */
+:root{
+  --navy:#1B2A4A;--navy-md:#2E4070;--navy-lt:#EEF1F8;
+  --cream:#F7F5F0;--warm:#EDE8DF;--gold:#B07D2F;--gold-lt:#F8EDD8;--gold-md:#C8922A;
+  --slate:#4A5568;--slate-lt:#8896A8;--border:#E2DDD6;
+  --shadow:0 6px 22px rgba(27,42,74,.08);--shadow-md:0 14px 34px rgba(27,42,74,.14);
+}
+body{background:var(--cream);color:var(--navy)}
+.nav{background:var(--navy);padding:0 max(24px,calc((100vw - 1120px)/2))}
+.nav-logo{background:var(--gold);color:#fff}
+.hero{background:linear-gradient(155deg,#1B2A4A 0%,#2E4070 100%);padding:52px 24px 46px}
+.hero h1{font-size:clamp(30px,4vw,40px);letter-spacing:-.5px}
+.toolbar,.color-bar,.notes-grid{max-width:1120px}
+.toolbar{margin-top:30px;gap:12px}
+.add-btn{background:var(--navy);border-radius:13px}
+.add-btn:hover{background:var(--navy-md)}
+.search-input,.sort-btn{border-radius:13px;border-color:var(--border)}
+.count-pill{background:var(--warm);color:var(--slate)}
+.color-bar{margin-top:17px}
+.notes-grid{gap:20px;margin-top:24px}
+.note{border-radius:17px;box-shadow:var(--shadow)}
+.note:hover{transform:translateY(-4px);box-shadow:var(--shadow-md)}
+.note-title{font-family:'DM Sans',sans-serif;font-size:18px;font-weight:700;letter-spacing:-.2px}
+.note-content,.checklist li{font-size:14px;line-height:1.7}
+.note-header{padding:13px 16px}
+.note-actions{opacity:1}
+.note-action-btn{background:rgba(27,42,74,.08)}
+.modal{border-radius:20px}
+.modal-top{background:#fff}
+.modal-title-el{font-family:'Playfair Display',serif}
+.form-input,.form-textarea,.todo-item-input{background:var(--cream);border-color:var(--border)}
+.modal-save-btn{background:var(--navy)}
+.modal-save-btn:hover{background:var(--navy-md)}
+.practice-panel{max-width:1120px;margin:26px auto 0;padding:0 20px}
+.practice-card{background:#fff;border:1px solid var(--border);border-radius:18px;padding:22px 24px;box-shadow:var(--shadow)}
+.practice-head{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:18px}
+.practice-title{font-size:20px;font-weight:800;color:var(--navy);letter-spacing:-.3px}
+.practice-subtitle{font-size:13px;color:var(--slate-lt);margin-top:3px}
+.practice-summary{font-size:13px;font-weight:700;color:var(--navy);background:var(--gold-lt);border-radius:30px;padding:8px 13px;white-space:nowrap}
+.practice-entry{display:flex;gap:10px;margin-bottom:16px}
+.practice-entry input{flex:1;min-width:0;padding:12px 14px;border:1.5px solid var(--border);border-radius:11px;font:500 14px 'DM Sans',sans-serif;outline:none;color:var(--navy);background:var(--cream)}
+.practice-entry input:focus{border-color:var(--navy-md);box-shadow:0 0 0 3px rgba(46,64,112,.1)}
+.practice-add{border:0;border-radius:11px;padding:0 18px;background:var(--navy);color:#fff;font:700 14px 'DM Sans',sans-serif;cursor:pointer}
+.practice-add:hover{background:var(--navy-md)}
+.practice-tools{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+.practice-filters{display:flex;gap:5px;padding:4px;background:var(--warm);border-radius:10px}
+.practice-filter{border:0;background:transparent;border-radius:7px;padding:7px 12px;color:var(--slate);font:700 12px 'DM Sans',sans-serif;cursor:pointer}
+.practice-filter.active{background:#fff;color:var(--navy);box-shadow:0 1px 4px rgba(27,42,74,.10)}
+.practice-clear{border:0;background:transparent;color:var(--red);font:700 12px 'DM Sans',sans-serif;cursor:pointer}
+.practice-progress{height:7px;background:var(--warm);border-radius:8px;overflow:hidden;margin:13px 0 15px}
+.practice-progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--gold-md));border-radius:8px;transition:width .25s}
+.practice-list{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:8px}
+.practice-task{display:flex;align-items:center;gap:10px;padding:11px 12px;border:1px solid var(--border);border-radius:11px;background:var(--cream)}
+.practice-task input{width:17px;height:17px;accent-color:var(--green);cursor:pointer;flex-shrink:0}
+.practice-task span{flex:1;font-size:13px;color:var(--slate);overflow-wrap:anywhere}
+.practice-task.done span{text-decoration:line-through;color:var(--slate-lt)}
+.practice-delete{border:0;background:transparent;color:var(--slate-lt);font-size:16px;cursor:pointer;padding:2px 5px}
+.practice-delete:hover{color:var(--red)}
+.practice-empty{padding:16px 4px;color:var(--slate-lt);font-size:13px}
+@media(max-width:600px){.practice-card{padding:18px 16px}.practice-head{flex-direction:column;gap:8px}.practice-entry{flex-direction:column}.practice-add{min-height:42px}.note-actions{opacity:1}}
+
+
 </style>
 </head>
 <body>
@@ -234,6 +297,34 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy);
     <div class="color-dot" style="background:#FAF5FF;border-color:#D8B4FE" onclick="setColorFilter('purple',this)" title="Purple notes" role="button" tabindex="0" aria-label="Filter purple notes" onkeydown="if(event.key==='Enter'||event.key===' ')setColorFilter('purple',this)"></div>
     <div class="color-dot" style="background:#FFF7ED;border-color:#FED7AA" onclick="setColorFilter('orange',this)" title="Orange notes" role="button" tabindex="0" aria-label="Filter orange notes" onkeydown="if(event.key==='Enter'||event.key===' ')setColorFilter('orange',this)"></div>
   </div>
+
+
+  <section class="practice-panel" aria-labelledby="practiceHeading">
+    <div class="practice-card">
+      <div class="practice-head">
+        <div>
+          <h2 class="practice-title" id="practiceHeading">🌱 Skills to practise</h2>
+          <p class="practice-subtitle">Small steps today make phone skills easier tomorrow.</p>
+        </div>
+        <div class="practice-summary" id="practiceSummary">0 of 0 completed</div>
+      </div>
+      <form class="practice-entry" id="practiceForm">
+        <input id="practiceInput" maxlength="140" placeholder="Add a skill… e.g. Make a WhatsApp video call" aria-label="New practice task" required>
+        <button class="practice-add" type="submit">＋ Add task</button>
+      </form>
+      <div class="practice-tools">
+        <div class="practice-filters" role="group" aria-label="Filter practice tasks">
+          <button class="practice-filter active" type="button" data-practice-filter="all">All</button>
+          <button class="practice-filter" type="button" data-practice-filter="pending">To practise</button>
+          <button class="practice-filter" type="button" data-practice-filter="done">Completed</button>
+        </div>
+        <button class="practice-clear" type="button" id="clearPracticeDone" hidden>Clear completed</button>
+      </div>
+      <div class="practice-progress" aria-label="Practice progress"><span id="practiceProgress"></span></div>
+      <ul class="practice-list" id="practiceList"></ul>
+      <p class="practice-empty" id="practiceEmpty">Your practice list is ready when you are. Add your first skill above.</p>
+    </div>
+  </section>
 
   <div class="notes-grid" id="notesGrid" role="list" aria-label="Your notes"></div>
 
@@ -304,43 +395,91 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy);
 
 <div class="toast" id="toast" role="status" aria-live="assertive"></div>
 
-<script>
-const STORAGE_KEY = "phonesaathi_notes_v2";
+<script type="module">
+import { auth, db } from "./firebase.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { doc, setDoc, getDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-/* ----- colour names for screen readers ----- */
-const COLOR_NAMES = {
-  yellow:"Yellow", green:"Green", blue:"Blue",
-  pink:"Pink", purple:"Purple", orange:"Orange"
-};
+const LEGACY_KEY = "phonesaathi_notes_v2";
+const KEY_PREFIX = "phonesaathi_notes_v3_";
 
-const TYPE_LABELS = {
-  note:"📝 Note", todo:"✅ To-do", learned:"💡 Learned"
-};
+const COLOR_NAMES = { yellow:"Yellow", green:"Green", blue:"Blue", pink:"Pink", purple:"Purple", orange:"Orange" };
+const TYPE_LABELS = { note:"📝 Note", todo:"✅ To-do", learned:"💡 Learned" };
 
-let notes = [], editingId = null, sortNewest = true,
-    colorFilter = null, selectedType = "note",
-    selectedColor = "yellow", todoItems = [];
+let currentUser = null;
+let notes = [], practiceTasks = [], practiceFilter = "all";
+let loaded = false;      // don't flash "No notes yet" before data arrives
+let cloudOk = false;     // only write to the cloud if we managed to read from it
+let editingId = null, sortNewest = true, colorFilter = null;
+let selectedType = "note", selectedColor = "yellow", todoItems = [];
+let formSnapshot = "";
+const seenIds = new Set();
 
-/* ----- persistence ----- */
-function loadNotes(){
-  try{ notes = JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
-  catch(e){ notes = []; }
+const $ = id => document.getElementById(id);
+
+/* ───────── storage ───────── */
+const keyFor = () => KEY_PREFIX + (currentUser ? currentUser.uid : "guest");
+
+function readLocal(key) {
+  try { return JSON.parse(localStorage.getItem(key)); } catch (e) { return null; }
 }
-function persistNotes(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(notes)); }
 
-/* ----- toast ----- */
-function showToast(msg, isError = false){
-  const t = document.getElementById("toast");
+async function loadNotes() {
+  notes = []; practiceTasks = []; cloudOk = false;
+  let got = false;
+
+  if (currentUser) {
+    try {
+      const snap = await getDoc(doc(db, "users", currentUser.uid));
+      cloudOk = true;
+      const d = snap.exists() ? snap.data() : {};
+      if (Array.isArray(d.notes) || Array.isArray(d.practiceTasks)) {
+        notes = d.notes || []; practiceTasks = d.practiceTasks || []; got = true;
+      }
+    } catch (e) { console.error("Cloud load failed:", e); }
+  }
+
+  if (!got) {
+    let saved = readLocal(keyFor());
+    if (!saved) {                       // one-time move from the old shared key
+      const old = readLocal(LEGACY_KEY);
+      if (old) {
+        saved = Array.isArray(old) ? { notes: old, practiceTasks: [] } : old;
+        try { localStorage.setItem(keyFor(), JSON.stringify(saved)); localStorage.removeItem(LEGACY_KEY); } catch (e) {}
+      }
+    }
+    if (saved) { notes = saved.notes || []; practiceTasks = saved.practiceTasks || []; }
+  }
+  loaded = true;
+}
+
+function persistNotes() {
+  const payload = JSON.parse(JSON.stringify({ notes, practiceTasks })); // strips undefined (Firestore rejects it)
+  try { localStorage.setItem(keyFor(), JSON.stringify(payload)); } catch (e) {}
+  if (!currentUser) return;
+  if (!cloudOk) { showToast("Saved on this device only — couldn't reach the cloud", true); return; }
+  setDoc(doc(db, "users", currentUser.uid), {
+    notes: payload.notes, practiceTasks: payload.practiceTasks, notesUpdatedAt: serverTimestamp()
+  }, { merge: true }).catch(e => {
+    console.error("Cloud save failed:", e);
+    showToast("Couldn't sync to the cloud — saved on this device", true);
+  });
+}
+
+/* ───────── toast + confetti ───────── */
+let toastTimer;
+function showToast(msg, isError = false) {
+  const t = $("toast");
   t.textContent = msg;
   t.classList.toggle("error", isError);
   t.classList.add("show");
-  setTimeout(() => t.classList.remove("show"), 2800);
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove("show"), 2800);
 }
 
-/* ----- confetti ----- */
-function launchConfetti(){
+function launchConfetti() {
   const colors = ["#FDE68A","#BBF7D0","#BFDBFE","#FECDD3","#E9D5FF","#FED7AA","#B07D2F"];
-  for(let i = 0; i < 34; i++){
+  for (let i = 0; i < 34; i++) {
     const p = document.createElement("div");
     p.className = "confetti-piece";
     p.style.left = Math.random() * 100 + "vw";
@@ -354,307 +493,355 @@ function launchConfetti(){
   }
 }
 
-/* ----- render ----- */
-function renderNotes(){
-  const grid = document.getElementById("notesGrid");
-  const empty = document.getElementById("emptyState");
-  const query = document.getElementById("searchInput").value.toLowerCase().trim();
+function esc(s) {
+  return String(s ?? "")
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;").replace(/'/g, "&#39;")
+    .replace(/\n/g, "<br>");
+}
+
+/* ───────── notes list ───────── */
+function renderNotes() {
+  const grid = $("notesGrid"), empty = $("emptyState");
+  const query = $("searchInput").value.toLowerCase().trim();
 
   let filtered = notes.filter(n => {
-    const mc = !colorFilter || n.color === colorFilter;
-    const mq = !query
-      || (n.title||"").toLowerCase().includes(query)
-      || (n.content||"").toLowerCase().includes(query)
-      || (n.items||[]).some(i => i.text.toLowerCase().includes(query));
-    return mc && mq;
+    const okColor = !colorFilter || n.color === colorFilter;
+    const okQuery = !query
+      || (n.title || "").toLowerCase().includes(query)
+      || (n.content || "").toLowerCase().includes(query)
+      || (n.items || []).some(i => (i.text || "").toLowerCase().includes(query));
+    return okColor && okQuery;
   });
+  filtered = [...filtered].sort((a, b) => sortNewest
+    ? (b.createdAt || 0) - (a.createdAt || 0) : (a.createdAt || 0) - (b.createdAt || 0));
 
-  filtered = [...filtered].sort((a,b) =>
-    sortNewest ? b.createdAt - a.createdAt : a.createdAt - b.createdAt
-  );
-
-  const total = notes.length;
-  document.getElementById("countPill").textContent =
-    total + " note" + (total === 1 ? "" : "s");
+  $("countPill").textContent = notes.length + " note" + (notes.length === 1 ? "" : "s");
 
   grid.innerHTML = "";
-  if(filtered.length === 0){
+  if (!loaded) empty.style.display = "none";
+  else if (!filtered.length) {
     empty.style.display = "block";
+    const title = empty.querySelector(".empty-title"), desc = empty.querySelector(".empty-desc");
+    if (!empty.dataset.orig) empty.dataset.orig = JSON.stringify([title.innerHTML, desc.innerHTML]);
+    if (notes.length) {       // notes exist, they're just filtered out
+      title.textContent = "Nothing matches";
+      desc.textContent = "Try a different word, or clear the colour filter.";
+    } else {
+      [title.innerHTML, desc.innerHTML] = JSON.parse(empty.dataset.orig);
+    }
   } else {
     empty.style.display = "none";
     filtered.forEach(n => grid.appendChild(buildCard(n)));
   }
+  renderPracticeTasks();
 }
 
-/* ----- build a single card ----- */
-function buildCard(n){
+function buildCard(n) {
   const el = document.createElement("article");
   el.className = "note note-" + (n.color || "yellow");
   el.setAttribute("role", "listitem");
-  el.setAttribute("aria-label", (n.title || "Untitled note"));
+  el.setAttribute("aria-label", n.title || "Untitled note");
+  el.dataset.id = n.id;
+  if (seenIds.has(n.id)) el.style.animation = "none";   // only brand-new cards pop in
+  seenIds.add(n.id);
 
-  const dateStr = new Date(n.createdAt).toLocaleDateString("en-IN",{
-    day:"numeric", month:"long", year:"numeric"
-  });
+  const dateStr = n.createdAt
+    ? new Date(n.createdAt).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" }) : "";
 
-  let bodyHTML = "";
-  if(n.type === "todo" && n.items && n.items.length){
+  let bodyHTML;
+  if (n.type === "todo" && n.items && n.items.length) {
     const doneCount = n.items.filter(i => i.done).length;
     bodyHTML = `
-      <div style="font-size:12px;font-weight:700;color:rgba(0,0,0,.4);margin-bottom:8px;">
-        ${doneCount} of ${n.items.length} done
-      </div>
+      <div style="font-size:12px;font-weight:700;color:rgba(0,0,0,.4);margin-bottom:8px;">${doneCount} of ${n.items.length} done</div>
       <ul class="checklist" role="list">
-        ${n.items.map((item,idx) =>
-          `<li class="${item.done?'done':''}" onclick="toggleItem('${n.id}',${idx})"
-              role="checkbox" aria-checked="${item.done}"
-              title="${item.done?'Mark as not done':'Mark as done'}">
-            <span class="cb" aria-hidden="true">${item.done?"✓":""}</span>
-            <span>${esc(item.text)}</span>
-          </li>`
-        ).join("")}
+        ${n.items.map((item, idx) => `
+          <li class="${item.done ? "done" : ""}" data-act="toggle" data-idx="${idx}" tabindex="0"
+              role="checkbox" aria-checked="${!!item.done}" title="${item.done ? "Mark as not done" : "Mark as done"}">
+            <span class="cb" aria-hidden="true">${item.done ? "✓" : ""}</span><span>${esc(item.text)}</span>
+          </li>`).join("")}
       </ul>`;
   } else {
-    const preview = (n.content||"").slice(0,200) + ((n.content||"").length > 200 ? "…" : "");
-    bodyHTML = `<div class="note-content">${esc(preview)}</div>`;
+    const c = n.content || "";
+    bodyHTML = `<div class="note-content">${esc(c.slice(0, 200) + (c.length > 200 ? "…" : ""))}</div>`;
   }
 
   el.innerHTML = `
     <div class="note-header">
       <span class="note-type-badge">${TYPE_LABELS[n.type] || "📝 Note"}</span>
       <div class="note-actions" aria-label="Note actions">
-        <button class="note-action-btn" onclick="editNote('${n.id}')" aria-label="Edit this note" title="Edit">✏️</button>
-        <button class="note-action-btn" onclick="deleteNote('${n.id}')" aria-label="Delete this note" title="Delete">🗑️</button>
+        <button class="note-action-btn" data-act="edit" aria-label="Edit this note" title="Edit">✏️</button>
+        <button class="note-action-btn" data-act="delete" aria-label="Delete this note" title="Delete">🗑️</button>
       </div>
     </div>
     <div class="note-body">
-      <div class="note-title">${esc(n.title||"")}</div>
+      <div class="note-title">${esc(n.title || "")}</div>
       ${bodyHTML}
-      <div class="note-date">📅 ${dateStr}</div>
+      <div class="note-date">${dateStr ? "📅 " + dateStr : ""}</div>
     </div>`;
   return el;
 }
 
-function esc(s){
-  return (s||"")
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/\n/g,"<br>");
+// one listener for every card button / checklist row
+$("notesGrid").addEventListener("click", e => {
+  const t = e.target.closest("[data-act]"); if (!t) return;
+  const id = t.closest(".note")?.dataset.id;
+  if (t.dataset.act === "edit") editNote(id);
+  else if (t.dataset.act === "delete") deleteNote(id);
+  else if (t.dataset.act === "toggle") toggleItem(id, +t.dataset.idx);
+});
+$("notesGrid").addEventListener("keydown", e => {
+  if ((e.key === "Enter" || e.key === " ") && e.target.matches('[data-act="toggle"]')) { e.preventDefault(); e.target.click(); }
+});
+
+function toggleItem(id, idx) {
+  const n = notes.find(x => x.id === id);
+  if (!n || !n.items[idx]) return;
+  n.items[idx].done = !n.items[idx].done;
+  persistNotes(); renderNotes();
 }
 
-/* ----- toggle checklist item ----- */
-window.toggleItem = function(id, idx){
-  const n = notes.find(x => x.id === id);
-  if(!n) return;
-  n.items[idx].done = !n.items[idx].done;
-  persistNotes();
-  renderNotes();
-};
-
-/* ----- sort ----- */
-window.toggleSort = function(){
+function toggleSort() {
   sortNewest = !sortNewest;
-  document.getElementById("sortBtn").textContent =
-    sortNewest ? "📅 Newest first" : "📅 Oldest first";
+  $("sortBtn").textContent = sortNewest ? "📅 Newest first" : "📅 Oldest first";
   renderNotes();
-};
+}
 
-/* ----- colour filter ----- */
-window.setColorFilter = function(color, el){
+function setColorFilter(color, el) {
   colorFilter = color;
   document.querySelectorAll(".color-dot").forEach(d => d.classList.remove("active"));
   el.classList.add("active");
   renderNotes();
-};
-
-/* ----- modal open ----- */
-window.openModal = function(prefillId){
-  editingId = prefillId || null;
-  document.getElementById("modalHeading").textContent =
-    editingId ? "Edit Note" : "New Note";
-
-  if(editingId){
-    const n = notes.find(x => x.id === editingId);
-    if(!n) return;
-    selectedType  = n.type  || "note";
-    selectedColor = n.color || "yellow";
-    document.getElementById("noteTitle").value   = n.title   || "";
-    document.getElementById("noteContent").value = n.content || "";
-    todoItems = (n.items || []).map(i => ({...i}));
-  } else {
-    selectedType  = "note";
-    selectedColor = "yellow";
-    document.getElementById("noteTitle").value   = "";
-    document.getElementById("noteContent").value = "";
-    todoItems = [{text:"", done:false}];
-  }
-
-  /* sync type buttons */
-  document.querySelectorAll(".type-opt").forEach(o => {
-    const sel = o.dataset.type === selectedType;
-    o.classList.toggle("selected", sel);
-    o.setAttribute("aria-checked", sel);
-  });
-
-  /* sync colour buttons */
-  document.querySelectorAll(".colour-opt").forEach(o => {
-    const sel = o.dataset.color === selectedColor;
-    o.classList.toggle("sel", sel);
-    o.setAttribute("aria-checked", sel);
-  });
-  document.getElementById("selectedColorName").textContent =
-    (COLOR_NAMES[selectedColor] || selectedColor) + " selected";
-
-  showHideFields();
-  renderTodoBuilder();
-  document.getElementById("modalOverlay").classList.add("open");
-  document.getElementById("modalOverlay").removeAttribute("aria-hidden");
-  setTimeout(() => document.getElementById("noteTitle").focus(), 200);
-};
-
-/* ----- modal close ----- */
-window.closeModal = function(){
-  document.getElementById("modalOverlay").classList.remove("open");
-  document.getElementById("modalOverlay").setAttribute("aria-hidden","true");
-  editingId = null;
-};
-window.handleOverlayClick = function(e){
-  if(e.target === document.getElementById("modalOverlay")) closeModal();
-};
-
-/* ----- select type ----- */
-window.selectType = function(type, el){
-  selectedType = type;
-  document.querySelectorAll(".type-opt").forEach(o => {
-    const sel = o === el;
-    o.classList.toggle("selected", sel);
-    o.setAttribute("aria-checked", sel);
-  });
-  showHideFields();
-};
-
-function showHideFields(){
-  const isTodo = selectedType === "todo";
-  document.getElementById("contentRow").style.display = isTodo ? "none" : "block";
-  document.getElementById("todoRow").style.display    = isTodo ? "block" : "none";
-  if(isTodo) renderTodoBuilder();
 }
 
-/* ----- select colour ----- */
-window.selectColor = function(color, el){
+/* ───────── modal ───────── */
+const formState = () => JSON.stringify([selectedType, selectedColor, $("noteTitle").value, $("noteContent").value, todoItems]);
+
+function openModal(id) {
+  editingId = typeof id === "string" ? id : null;
+  $("modalHeading").textContent = editingId ? "Edit Note" : "New Note";
+
+  if (editingId) {
+    const n = notes.find(x => x.id === editingId);
+    if (!n) { editingId = null; return; }
+    selectedType = n.type || "note"; selectedColor = n.color || "yellow";
+    $("noteTitle").value = n.title || ""; $("noteContent").value = n.content || "";
+    todoItems = (n.items || []).map(i => ({ text: i.text, done: !!i.done }));
+  } else {
+    selectedType = "note"; selectedColor = "yellow";
+    $("noteTitle").value = ""; $("noteContent").value = "";
+    todoItems = [];
+  }
+  if (!todoItems.length) todoItems = [{ text: "", done: false }];
+
+  document.querySelectorAll(".type-opt").forEach(o => {
+    const sel = o.dataset.type === selectedType;
+    o.classList.toggle("selected", sel); o.setAttribute("aria-checked", sel);
+  });
+  document.querySelectorAll(".colour-opt").forEach(o => {
+    const sel = o.dataset.color === selectedColor;
+    o.classList.toggle("sel", sel); o.setAttribute("aria-checked", sel);
+  });
+  $("selectedColorName").textContent = (COLOR_NAMES[selectedColor] || selectedColor) + " selected";
+
+  showHideFields();
+  formSnapshot = formState();
+  $("modalOverlay").classList.add("open");
+  $("modalOverlay").removeAttribute("aria-hidden");
+  setTimeout(() => $("noteTitle").focus(), 200);
+}
+
+function hideModal() {
+  $("modalOverlay").classList.remove("open");
+  $("modalOverlay").setAttribute("aria-hidden", "true");
+  editingId = null;
+}
+
+// closing by ✕ / Cancel / Esc / clicking outside asks first if you've typed something
+function closeModal() {
+  if (!$("modalOverlay").classList.contains("open")) return;
+  if (formState() !== formSnapshot && !confirm("Close without saving?\n\nWhat you wrote will be lost.")) return;
+  hideModal();
+}
+function handleOverlayClick(e) { if (e.target === $("modalOverlay")) closeModal(); }
+
+function selectType(type, el) {
+  selectedType = type;
+  document.querySelectorAll(".type-opt").forEach(o => {
+    const sel = o === el; o.classList.toggle("selected", sel); o.setAttribute("aria-checked", sel);
+  });
+  showHideFields();
+}
+
+function showHideFields() {
+  const isTodo = selectedType === "todo";
+  $("contentRow").style.display = isTodo ? "none" : "block";
+  $("todoRow").style.display = isTodo ? "block" : "none";
+  if (isTodo) renderTodoBuilder();
+}
+
+function selectColor(color, el) {
   selectedColor = color;
   document.querySelectorAll(".colour-opt").forEach(o => {
-    const sel = o === el;
-    o.classList.toggle("sel", sel);
-    o.setAttribute("aria-checked", sel);
+    const sel = o === el; o.classList.toggle("sel", sel); o.setAttribute("aria-checked", sel);
   });
-  document.getElementById("selectedColorName").textContent =
-    (COLOR_NAMES[color] || color) + " selected";
-};
+  $("selectedColorName").textContent = (COLOR_NAMES[color] || color) + " selected";
+}
 
-/* ----- to-do builder ----- */
-function renderTodoBuilder(){
-  if(!todoItems.length) todoItems = [{text:"", done:false}];
-  const list = document.getElementById("todoList");
+/* ───────── to-do builder ─────────
+   Root cause of "adding a task erases what I typed": the old inline oninput="todoItems[i].text=..."
+   can't see a variable inside a <script type="module">, so todoItems never got the text and every
+   re-render rebuilt blank rows. Listeners are attached here, in module scope, instead. */
+function renderTodoBuilder(focusIdx) {
+  if (!todoItems.length) todoItems = [{ text: "", done: false }];
+  const list = $("todoList");
   list.innerHTML = "";
   todoItems.forEach((item, idx) => {
     const row = document.createElement("div");
     row.className = "todo-item-row";
-    row.innerHTML = `
-      <input class="todo-item-input"
-        placeholder="e.g. Learn how to video call"
-        value="${esc(item.text)}"
-        oninput="todoItems[${idx}].text=this.value"
-        onkeydown="if(event.key==='Enter')addTodoItem()"
-        aria-label="Task ${idx+1}">
-      <button class="todo-del-btn" onclick="removeTodoItem(${idx})" aria-label="Remove task ${idx+1}">✕</button>`;
+
+    const input = document.createElement("input");
+    input.className = "todo-item-input";
+    input.placeholder = "e.g. Learn how to video call";
+    input.value = item.text;                       // set as a property, so quotes etc. are safe
+    input.setAttribute("aria-label", "Task " + (idx + 1));
+    input.addEventListener("input", () => { todoItems[idx].text = input.value; });
+    input.addEventListener("keydown", e => {
+      if (e.key === "Enter") { e.preventDefault(); addTodoItem(idx + 1); }
+      else if (e.key === "Backspace" && input.value === "" && todoItems.length > 1) { e.preventDefault(); removeTodoItem(idx, true); }
+    });
+
+    const del = document.createElement("button");
+    del.type = "button"; del.className = "todo-del-btn"; del.textContent = "✕";
+    del.setAttribute("aria-label", "Remove task " + (idx + 1));
+    del.addEventListener("click", () => removeTodoItem(idx));
+
+    row.append(input, del);
     list.appendChild(row);
   });
+  if (focusIdx !== undefined) list.querySelectorAll(".todo-item-input")[focusIdx]?.focus();
 }
 
-window.addTodoItem = function(){
-  todoItems.push({text:"", done:false});
-  renderTodoBuilder();
-  const inputs = document.getElementById("todoList").querySelectorAll(".todo-item-input");
-  inputs[inputs.length - 1].focus();
-};
+function addTodoItem(at) {
+  const pos = Number.isInteger(at) ? at : todoItems.length;
+  todoItems.splice(pos, 0, { text: "", done: false });
+  renderTodoBuilder(pos);
+}
 
-window.removeTodoItem = function(idx){
-  if(todoItems.length <= 1){
-    todoItems[0] = {text:"", done:false};
-    renderTodoBuilder();
-    return;
-  }
+function removeTodoItem(idx, focusPrev = false) {
+  if (todoItems.length <= 1) { todoItems = [{ text: "", done: false }]; renderTodoBuilder(0); return; }
   todoItems.splice(idx, 1);
-  renderTodoBuilder();
-};
+  renderTodoBuilder(focusPrev ? Math.max(0, idx - 1) : undefined);
+}
 
-/* ----- save ----- */
-window.saveNote = function(){
-  const title   = document.getElementById("noteTitle").value.trim();
-  const content = document.getElementById("noteContent").value.trim();
-  const items   = todoItems.filter(i => i.text.trim());
+/* ───────── save / edit / delete ───────── */
+function saveNote() {
+  const title = $("noteTitle").value.trim();
+  const isTodo = selectedType === "todo";
+  const content = isTodo ? "" : $("noteContent").value.trim();
+  const items = isTodo
+    ? todoItems.map(i => ({ text: (i.text || "").trim(), done: !!i.done })).filter(i => i.text) : [];
 
-  if(!title && !content && !items.length){
+  if (!title && !content && !items.length) {
     showToast("Please write something first!", true);
-    document.getElementById("noteTitle").focus();
+    $("noteTitle").focus();
     return;
   }
 
-  if(editingId){
+  if (editingId) {
     const note = notes.find(n => n.id === editingId);
-    if(note){
-      Object.assign(note, {
-        title, content, items,
-        type: selectedType,
-        color: selectedColor,
-        updatedAt: Date.now()
-      });
-    }
+    if (note) Object.assign(note, { title, content, items, type: selectedType, color: selectedColor, updatedAt: Date.now() });
     showToast("Note updated ✓");
   } else {
     const isFirst = notes.length === 0;
     notes.unshift({
-      id: (crypto.randomUUID
-        ? crypto.randomUUID()
-        : Date.now().toString(36) + Math.random().toString(36).slice(2)),
-      title, content, items,
-      type: selectedType,
-      color: selectedColor,
-      createdAt: Date.now()
+      id: crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + Math.random().toString(36).slice(2),
+      title, content, items, type: selectedType, color: selectedColor, createdAt: Date.now()
     });
     showToast("Note saved! Great job 🎉");
-    if(isFirst) launchConfetti();
+    if (isFirst) launchConfetti();
   }
+  persistNotes(); renderNotes(); hideModal();
+}
 
-  persistNotes();
-  renderNotes();
-  closeModal();
-};
+function editNote(id) { openModal(id); }
 
-window.editNote   = id => openModal(id);
-window.deleteNote = function(id){
-  if(!confirm("Are you sure you want to delete this note?\n\nThis cannot be undone.")) return;
+function deleteNote(id) {
+  if (!confirm("Are you sure you want to delete this note?\n\nThis cannot be undone.")) return;
   notes = notes.filter(n => n.id !== id);
-  persistNotes();
-  renderNotes();
-  showToast("Note deleted");
-};
+  persistNotes(); renderNotes(); showToast("Note deleted");
+}
 
-/* ----- keyboard shortcuts ----- */
-document.addEventListener("keydown", e => {
-  const modalOpen = document.getElementById("modalOverlay").classList.contains("open");
-  if((e.ctrlKey || e.metaKey) && e.key === "n" && !modalOpen){
-    e.preventDefault();
-    openModal();
-  }
-  if(e.key === "Escape") closeModal();
+/* ───────── practice checklist ───────── */
+function renderPracticeTasks() {
+  const list = $("practiceList"), empty = $("practiceEmpty");
+  const done = practiceTasks.filter(t => t.done).length, total = practiceTasks.length;
+  $("practiceSummary").textContent = `${done} of ${total} completed`;
+  $("practiceProgress").style.width = total ? `${done / total * 100}%` : "0%";
+  $("clearPracticeDone").hidden = done === 0;
+  document.querySelectorAll("[data-practice-filter]").forEach(b =>
+    b.classList.toggle("active", b.dataset.practiceFilter === practiceFilter));
+
+  const visible = practiceTasks.filter(t => practiceFilter === "all" || (practiceFilter === "done" ? t.done : !t.done));
+  list.innerHTML = "";
+  empty.style.display = visible.length ? "none" : "block";
+  empty.textContent = total ? "No tasks in this view." : "Your practice list is ready when you are. Add your first skill above.";
+
+  visible.forEach(task => {
+    const li = document.createElement("li");
+    li.className = "practice-task" + (task.done ? " done" : "");
+    const cb = document.createElement("input");
+    cb.type = "checkbox"; cb.checked = !!task.done;
+    cb.setAttribute("aria-label", "Mark " + task.text + (task.done ? " as not completed" : " as completed"));
+    cb.addEventListener("change", () => { task.done = cb.checked; persistNotes(); renderPracticeTasks(); });
+    const label = document.createElement("span"); label.textContent = task.text;
+    const del = document.createElement("button");
+    del.type = "button"; del.className = "practice-delete"; del.textContent = "×";
+    del.setAttribute("aria-label", "Delete " + task.text);
+    del.addEventListener("click", () => {
+      practiceTasks = practiceTasks.filter(t => t.id !== task.id);
+      persistNotes(); renderPracticeTasks();
+    });
+    li.append(cb, label, del);
+    list.appendChild(li);
+  });
+}
+
+$("practiceForm").addEventListener("submit", e => {
+  e.preventDefault();
+  const input = $("practiceInput"), text = input.value.trim();
+  if (!text) return;
+  practiceTasks.unshift({ id: crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36), text, done: false, createdAt: Date.now() });
+  input.value = ""; persistNotes(); renderPracticeTasks(); input.focus();
+});
+document.querySelectorAll("[data-practice-filter]").forEach(b =>
+  b.addEventListener("click", () => { practiceFilter = b.dataset.practiceFilter; renderPracticeTasks(); }));
+$("clearPracticeDone").addEventListener("click", () => {
+  practiceTasks = practiceTasks.filter(t => !t.done);
+  persistNotes(); renderPracticeTasks();
 });
 
-/* ----- init ----- */
-loadNotes();
+/* ───────── shortcuts ───────── */
+document.addEventListener("keydown", e => {
+  const modalOpen = $("modalOverlay").classList.contains("open");
+  if (e.altKey && e.key.toLowerCase() === "n" && !modalOpen) { e.preventDefault(); openModal(); }   // Ctrl+N is reserved by browsers
+  if (e.key === "Escape") closeModal();
+});
+
+/* ───────── expose what the HTML's inline onclick/oninput attributes call ───────── */
+Object.assign(window, {
+  renderNotes, toggleSort, setColorFilter, openModal, closeModal, handleOverlayClick,
+  selectType, selectColor, addTodoItem, removeTodoItem, saveNote, editNote, deleteNote, toggleItem
+});
+
+/* ───────── init ───────── */
 renderNotes();
+onAuthStateChanged(auth, async user => {
+  currentUser = user || null;
+  loaded = false;
+  await loadNotes();
+  renderNotes();
+});
 </script>
 </body>
 </html>

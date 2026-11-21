@@ -124,7 +124,7 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--navy);m
 <script type="module">
 import { auth, db } from "../firebase.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { doc, setDoc, getDoc, collection, addDoc, increment, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 const COURSE_KEY = "whatsapp-advanced";
 let currentStep = 0, currentUser = null;
 const STEPS = [
@@ -232,7 +232,32 @@ onAuthStateChanged(auth, async (user) => {
   try { const snap = await getDoc(doc(db,"users",user.uid)); if(snap.exists()&&snap.data().progress?.[COURSE_KEY]===100) currentStep=STEPS.length; } catch(e){}
   render();
 });
-async function saveProgress(pct){ if(!currentUser)return; try{await setDoc(doc(db,"users",currentUser.uid),{progress:{[COURSE_KEY]:pct}},{merge:true});}catch(e){} }
+async function saveProgress(pct) {
+  if (!currentUser) return;
+  try {
+    const userRef = doc(db, "users", currentUser.uid);
+
+    await setDoc(userRef, {
+      progress: {
+        [COURSE_KEY]: pct
+      },
+      lastCourse: COURSE_KEY,
+      streak: increment(1),
+      ...(pct === 100 && { lessonsCompleted: increment(1) })
+    }, { merge: true });
+
+    if (pct === 100) {
+      await addDoc(collection(db, "users", currentUser.uid, "activity"), {
+        type: "lesson_complete",
+        courseId: COURSE_KEY,
+        timestamp: serverTimestamp()
+      });
+    }
+
+  } catch (e) {
+    console.error("saveProgress error:", e);
+  }
+}
 function render(){ updateProgress();updateDots(); const main=document.getElementById("mainContent"); if(currentStep<STEPS.length){main.innerHTML=STEPS[currentStep]();}else{renderCompletion(main);} updateNav(); window.scrollTo({top:0,behavior:"smooth"}); }
 function updateProgress(){ const pct=Math.round((currentStep/STEPS.length)*100); document.getElementById("progressFill").style.width=pct+"%"; document.getElementById("progressPct").textContent=pct+"% done"; document.getElementById("progressLabel").textContent=currentStep<STEPS.length?`Step ${currentStep+1} of ${STEPS.length}`:"Lesson Complete!"; }
 function updateDots(){ for(let i=0;i<STEPS.length;i++){const d=document.getElementById("dot-"+i);if(!d)continue;d.className="dot"+(i<currentStep?" done":i===currentStep?" active":"");} }

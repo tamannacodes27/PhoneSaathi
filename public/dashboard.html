@@ -1,325 +1,1012 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8"/>
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
 <title>Phone Saathi — Dashboard</title>
-<link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,500&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
 <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-:root {
-  --navy:#1B2A4A; --navy-md:#2E4070; --navy-lt:#EEF1F8;
-  --cream:#FAF8F5; --warm:#F3EFE8; --gold:#B07D2F; --gold-lt:#F5EDD8;
-  --slate:#4A5568; --slate-lt:#718096; --border:#DDD8CF;
-  --green:#2D6A4F; --green-lt:#E8F5EF; --amber:#92400E;
-  --red:#C0392B; --red-lt:#FDECEC;
-  --radius:12px; --shadow:0 2px 12px rgba(27,42,74,0.08);
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+
+  --navy:#1B2A4A;--navy-md:#2E4070;--navy-lt:#EEF1F8;
+
+  --cream:#F7F5F2;--warm:#F0EBE3;
+
+  --gold:#B07D2F;--gold-lt:#F8EDD8;--gold-md:#C8922A;
+
+  --slate:#4A5568;--slate-lt:#8896A8;--border:#E2DDD6;
+
+  --green:#2D6A4F;--green-lt:#E6F4EE;
+
+  --red:#C0392B;--red-lt:#FDECEA;--amber:#92400E;
+
+  --radius:16px;--shadow:0 2px 16px rgba(27,42,74,0.07);
+
+  --shadow-md:0 4px 24px rgba(27,42,74,0.11);
+
 }
-body { font-family:'Inter',sans-serif; background:var(--cream); color:var(--navy); font-size:16px; line-height:1.6; }
 
-.nav { background:var(--navy); padding:0 24px; display:flex; align-items:center; justify-content:space-between; height:56px; position:sticky; top:0; z-index:100; }
-.nav-brand { display:flex; align-items:center; gap:8px; text-decoration:none; }
-.nav-logo { width:32px; height:32px; background:var(--gold); border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:16px; }
-.nav-name { font-family:'Lora',Georgia,serif; font-size:18px; font-weight:600; color:#fff; }
-.nav-name span { color:var(--gold); }
-.nav-links { display:flex; gap:4px; list-style:none; }
-.nav-links a { color:rgba(255,255,255,0.65); text-decoration:none; font-size:13px; font-weight:500; padding:6px 12px; border-radius:6px; transition:background 0.15s, color 0.15s; }
-.nav-links a:hover, .nav-links a.active { background:rgba(255,255,255,0.12); color:#fff; }
-.nav-avatar { width:34px; height:34px; border-radius:50%; background:var(--gold); display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700; color:#fff; text-decoration:none; cursor:pointer; flex-shrink:0; }
+html{scroll-behavior:smooth}
 
-.hero { background:var(--navy); padding:32px 24px 36px; text-align:center; }
-.hero-greeting { font-size:13px; color:rgba(255,255,255,0.55); margin-bottom:6px; font-weight:500; }
-.hero-name { font-family:'Lora',Georgia,serif; font-size:26px; font-weight:600; color:#fff; margin-bottom:4px; }
-.hero-sub { font-size:15px; color:rgba(255,255,255,0.55); margin-bottom:22px; }
-.hero-pills { display:flex; justify-content:center; gap:8px; flex-wrap:wrap; margin-bottom:24px; }
-.hero-pill { background:rgba(255,255,255,0.10); border:1px solid rgba(255,255,255,0.15); color:rgba(255,255,255,0.80); padding:4px 14px; border-radius:40px; font-size:12px; font-weight:500; }
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy);font-size:16px;line-height:1.6;min-height:100vh}
 
-.hero-prog { max-width:400px; margin:0 auto; }
-.hero-prog-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:7px; }
-.hero-prog-label { font-size:13px; color:rgba(255,255,255,0.60); font-weight:500; }
-.hero-prog-pct { font-size:13px; font-weight:700; color:rgba(255,255,255,0.90); }
-.hero-prog-track { height:7px; background:rgba(255,255,255,0.15); border-radius:8px; overflow:hidden; }
-.hero-prog-fill { height:7px; background:var(--gold); border-radius:8px; transition:width 0.6s ease; }
 
-.wrap { max-width:800px; margin:0 auto; padding:28px 20px 60px; }
-.section-label { font-size:11px; font-weight:600; letter-spacing:1.8px; text-transform:uppercase; color:var(--slate-lt); margin-bottom:12px; margin-top:28px; }
 
-.stats-row { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
-.stat-card { background:#fff; border:1.5px solid var(--border); border-radius:var(--radius); padding:18px 16px; box-shadow:var(--shadow); text-align:center; }
-.stat-num { font-family:'Lora',Georgia,serif; font-size:28px; font-weight:600; color:var(--navy); }
-.stat-label { font-size:12px; color:var(--slate-lt); margin-top:4px; font-weight:500; }
-.stat-sub { font-size:11px; color:var(--slate-lt); margin-top:3px; }
 
-.banner { background:var(--gold-lt); border:1.5px solid #E8D5A8; border-radius:var(--radius); padding:16px 20px; display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:4px; }
-.banner-text { font-size:14px; color:var(--amber); font-weight:500; }
-.banner-link { padding:9px 18px; background:var(--navy); color:#fff; border:none; border-radius:8px; font-size:13px; font-weight:600; font-family:'Inter',sans-serif; cursor:pointer; white-space:nowrap; text-decoration:none; transition:background 0.15s; }
-.banner-link:hover { background:var(--navy-md); }
+/* ── NAV ── */
 
-.action-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-.action-btn { background:#fff; border:1.5px solid var(--border); border-radius:var(--radius); padding:18px 20px; cursor:pointer; box-shadow:var(--shadow); transition:transform 0.15s, border-color 0.15s; display:flex; align-items:center; gap:14px; text-decoration:none; }
-.action-btn:hover { transform:translateY(-2px); border-color:var(--navy-md); }
-.action-btn.primary { background:var(--navy); border-color:var(--navy); }
-.action-btn.primary .ab-title { color:#fff; }
-.action-btn.primary .ab-sub { color:rgba(255,255,255,0.55); }
-.action-btn.accent { background:var(--gold-lt); border-color:#E8D5A8; }
-.action-btn.accent .ab-title { color:var(--amber); }
-.action-btn.accent .ab-sub { color:#b07d2f; }
-.ab-icon { font-size:22px; flex-shrink:0; }
-.ab-title { font-size:15px; font-weight:600; }
-.ab-sub { font-size:12px; color:var(--slate-lt); margin-top:3px; }
+.nav{background:var(--navy);padding:0 28px;display:flex;align-items:center;justify-content:space-between;height:60px;position:sticky;top:0;z-index:100;box-shadow:0 2px 20px rgba(0,0,0,.15)}
 
-.course-card { background:#fff; border:1.5px solid var(--border); border-radius:var(--radius); padding:20px 24px; box-shadow:var(--shadow); }
-.course-card h3 { font-family:'Lora',Georgia,serif; font-size:16px; font-weight:600; color:var(--navy); margin-bottom:14px; }
-.prog-row { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
-.prog-name { font-size:13px; color:var(--slate); width:180px; flex-shrink:0; font-weight:500; }
-.prog-track { flex:1; height:6px; background:var(--warm); border-radius:6px; overflow:hidden; }
-.prog-fill { height:6px; background:var(--navy-md); border-radius:6px; }
-.prog-pct-lbl { font-size:12px; font-weight:600; color:var(--navy-md); width:32px; text-align:right; }
-.no-progress { font-size:14px; color:var(--slate-lt); }
+.nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none}
 
-.nav-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(140px, 1fr)); gap:12px; }
-.nav-card { background:#fff; border:1.5px solid var(--border); border-radius:var(--radius); padding:22px 16px; text-align:center; cursor:pointer; box-shadow:var(--shadow); transition:transform 0.15s, border-color 0.15s; text-decoration:none; display:block; }
-.nav-card:hover { transform:translateY(-3px); border-color:var(--navy-md); }
-.nav-card.danger { border-color:#f5c6c6; background:#fff8f8; }
-.nav-card.danger .nc-label { color:var(--red); }
-.nc-icon { font-size:26px; margin-bottom:8px; }
-.nc-label { font-size:14px; font-weight:600; color:var(--navy); }
+.nav-logo{width:34px;height:34px;background:var(--gold);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px}
 
-.strip { background:var(--gold-lt); border-top:1.5px solid #E8D5A8; padding:16px 24px; text-align:center; font-family:'Lora',Georgia,serif; font-size:15px; color:var(--amber); font-style:italic; }
+.nav-name{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:#fff}
 
-@media(max-width:520px) {
-  .stats-row { grid-template-columns:1fr 1fr; }
-  .action-row { grid-template-columns:1fr; }
-  .nav-links { display:none; }
-  .banner { flex-direction:column; align-items:flex-start; }
+.nav-name span{color:#D4A843}
+
+.nav-links{display:flex;gap:4px;list-style:none}
+
+.nav-links a{color:rgba(255,255,255,.6);text-decoration:none;font-size:13px;font-weight:500;padding:6px 13px;border-radius:7px;transition:.15s}
+
+.nav-links a:hover,.nav-links a.active{background:rgba(255,255,255,.12);color:#fff}
+
+.nav-avatar{width:36px;height:36px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#fff;text-decoration:none;cursor:pointer;flex-shrink:0;border:2px solid rgba(255,255,255,.25);transition:.15s}
+
+.nav-avatar:hover{border-color:var(--gold)}
+
+
+
+/* ── HERO ── */
+
+.hero{background:linear-gradient(160deg,#1B2A4A 0%,#2E4070 100%);padding:32px 28px 40px;position:relative;overflow:hidden}
+
+.hero::after{content:'';position:absolute;right:-80px;top:-80px;width:300px;height:300px;border-radius:50%;background:rgba(176,125,47,.07);pointer-events:none}
+
+.hero::before{content:'';position:absolute;left:-50px;bottom:-50px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.03);pointer-events:none}
+
+.hero-inner{max-width:800px;margin:0 auto}
+
+.hero-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}
+
+.hero-greet{font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:5px}
+
+.hero-name{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:#fff;letter-spacing:-.4px;line-height:1.2}
+
+.hero-sub{font-size:14px;color:rgba(255,255,255,.5);margin-top:4px;font-weight:500}
+
+.hero-pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+
+.hero-pill{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.82);padding:4px 13px;border-radius:40px;font-size:12px;font-weight:600}
+
+.hero-streak{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:12px 16px;text-align:center;flex-shrink:0;min-width:80px}
+
+.hero-streak-num{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:#F5C842;line-height:1}
+
+.hero-streak-label{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-top:4px}
+
+.hero-prog-wrap{background:rgba(255,255,255,.06);border-radius:12px;padding:16px 20px}
+
+.hero-prog-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+
+.hero-prog-label{font-size:13px;color:rgba(255,255,255,.6);font-weight:600}
+
+.hero-prog-pct{font-size:15px;font-weight:700;color:#fff}
+
+.hero-prog-track{height:8px;background:rgba(255,255,255,.12);border-radius:8px;overflow:hidden}
+
+.hero-prog-fill{height:8px;background:linear-gradient(90deg,var(--gold),#F5C842);border-radius:8px;transition:width .8s ease}
+
+
+
+/* ── WRAP ── */
+
+.wrap{max-width:800px;margin:0 auto;padding:28px 20px 72px}
+
+.section-label{font-size:11px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:var(--slate-lt);margin:28px 0 12px 2px}
+
+.section-label:first-child{margin-top:0}
+
+
+
+/* ── BANNER ── */
+
+.banner{background:var(--gold-lt);border:1.5px solid #E8D5A8;border-radius:var(--radius);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:4px}
+
+.banner-text{font-size:14px;color:var(--amber);font-weight:500}
+
+.banner-link{padding:9px 18px;background:var(--navy);color:#fff;border:none;border-radius:9px;font-size:13px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;white-space:nowrap;text-decoration:none;transition:.15s}
+
+.banner-link:hover{background:var(--navy-md)}
+
+
+
+/* ── STATS ── */
+
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+
+.stat-card{background:#fff;border:1.5px solid var(--border);border-radius:var(--radius);padding:18px 14px;box-shadow:var(--shadow);text-align:center;transition:.2s;cursor:default}
+
+.stat-card:hover{box-shadow:var(--shadow-md);transform:translateY(-1px)}
+
+.stat-card.clickable{cursor:pointer}
+
+.stat-num{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--navy);line-height:1}
+
+.stat-label{font-size:12px;color:var(--slate-lt);margin-top:5px;font-weight:600;letter-spacing:.3px;text-transform:uppercase}
+
+.stat-sub{font-size:11px;color:var(--slate-lt);margin-top:3px;font-weight:500}
+
+
+
+/* ── QUICK ACTIONS ── */
+
+.action-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+.action-btn{background:#fff;border:1.5px solid var(--border);border-radius:var(--radius);padding:18px 20px;cursor:pointer;box-shadow:var(--shadow);transition:transform .15s,border-color .15s,box-shadow .15s;display:flex;align-items:center;gap:14px;text-decoration:none}
+
+.action-btn:hover{transform:translateY(-2px);border-color:var(--navy-md);box-shadow:var(--shadow-md)}
+
+.action-btn.primary{background:var(--navy);border-color:var(--navy)}
+
+.action-btn.primary .ab-title{color:#fff}
+
+.action-btn.primary .ab-sub{color:rgba(255,255,255,.5)}
+
+.action-btn.primary:hover{background:var(--navy-md);border-color:var(--navy-md)}
+
+.action-btn.accent{background:var(--gold-lt);border-color:#E8D5A8}
+
+.action-btn.accent .ab-title{color:var(--amber)}
+
+.action-btn.accent .ab-sub{color:#b07d2f}
+
+.ab-icon{font-size:24px;flex-shrink:0;width:44px;height:44px;background:rgba(255,255,255,.15);border-radius:10px;display:flex;align-items:center;justify-content:center}
+
+.action-btn:not(.primary):not(.accent) .ab-icon{background:var(--navy-lt)}
+
+.action-btn.accent .ab-icon{background:rgba(176,125,47,.15)}
+
+.ab-title{font-size:15px;font-weight:700}
+
+.ab-sub{font-size:12px;color:var(--slate-lt);margin-top:3px;font-weight:500}
+
+
+
+/* ── LEADERBOARD WIDGET ── */
+
+.lb-widget{background:#fff;border:1.5px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+
+.lb-widget-header{background:linear-gradient(135deg,var(--navy),var(--navy-md));padding:16px 20px;display:flex;align-items:center;justify-content:space-between}
+
+.lb-widget-title{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:#fff;display:flex;align-items:center;gap:8px}
+
+.lb-widget-link{font-size:12px;font-weight:700;color:rgba(255,255,255,.6);text-decoration:none;padding:5px 12px;border-radius:7px;border:1px solid rgba(255,255,255,.15);transition:.15s}
+
+.lb-widget-link:hover{background:rgba(255,255,255,.1);color:#fff}
+
+.lb-my-rank{background:var(--gold-lt);border-bottom:1.5px solid #E8D5A8;padding:12px 20px;display:flex;align-items:center;gap:12px}
+
+.lb-my-rank-num{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--gold-md);line-height:1}
+
+.lb-my-rank-text .r-label{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--amber);opacity:.7}
+
+.lb-my-rank-text .r-val{font-size:13px;font-weight:700;color:var(--amber)}
+
+.lb-row{display:flex;align-items:center;gap:12px;padding:12px 20px;border-bottom:1px solid var(--warm);transition:.15s}
+
+.lb-row:last-child{border-bottom:none}
+
+.lb-row:hover{background:var(--navy-lt)}
+
+.lb-row.is-me{background:var(--gold-lt)}
+
+.lb-pos{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--slate-lt);width:28px;text-align:center;flex-shrink:0}
+
+.lb-pos.g{color:#E8B820}.lb-pos.s{color:#8896A8}.lb-pos.b{color:#C8922A}
+
+.lb-avatar{width:32px;height:32px;border-radius:50%;background:var(--navy-lt);display:flex;align-items:center;justify-content:center;font-size:16px;border:2px solid var(--border);flex-shrink:0}
+
+.lb-name{font-size:13px;font-weight:700;color:var(--navy);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+.lb-you{background:var(--gold-md);color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:5px;margin-left:5px;letter-spacing:.5px}
+
+.lb-score{font-size:13px;font-weight:700;color:var(--slate-lt)}
+
+.lb-loading{padding:24px;text-align:center;color:var(--slate-lt);font-size:13px;font-weight:500}
+
+
+
+/* ── COURSE PROGRESS ── */
+
+.course-card{background:#fff;border:1.5px solid var(--border);border-radius:var(--radius);padding:22px 24px;box-shadow:var(--shadow)}
+
+.course-card-title{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--navy);margin-bottom:16px}
+
+.prog-row{display:flex;align-items:center;gap:10px;margin-bottom:11px}
+
+.prog-row:last-child{margin-bottom:0}
+
+.prog-name{font-size:13px;color:var(--slate);width:190px;flex-shrink:0;font-weight:600}
+
+.prog-track{flex:1;height:7px;background:var(--warm);border-radius:7px;overflow:hidden}
+
+.prog-fill{height:7px;background:linear-gradient(90deg,var(--navy-md),var(--gold-md));border-radius:7px;transition:width .6s ease}
+
+.prog-pct-lbl{font-size:12px;font-weight:700;color:var(--navy-md);width:34px;text-align:right}
+
+.no-progress{font-size:14px;color:var(--slate-lt);font-weight:500}
+
+
+
+/* ── EXPLORE GRID ── */
+
+.nav-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px}
+
+.nav-card{background:#fff;border:1.5px solid var(--border);border-radius:var(--radius);padding:22px 14px;text-align:center;cursor:pointer;box-shadow:var(--shadow);transition:transform .15s,border-color .15s,box-shadow .15s;text-decoration:none;display:block}
+
+.nav-card:hover{transform:translateY(-3px);border-color:var(--navy-md);box-shadow:var(--shadow-md)}
+
+.nav-card.danger{border-color:#f5c6c6;background:#fff8f8}
+
+.nav-card.danger .nc-label{color:var(--red)}
+
+.nc-icon{font-size:28px;margin-bottom:9px}
+
+.nc-label{font-size:13px;font-weight:700;color:var(--navy)}
+
+
+
+
+/* ── FOOTER ── */
+
+.strip{background:var(--gold-lt);border-top:1.5px solid #E8D5A8;padding:18px 28px;text-align:center;font-family:'Playfair Display',serif;font-size:14px;color:var(--amber);font-style:italic}
+
+
+
+/* ── SKELETON ── */
+
+.skel{background:linear-gradient(90deg,#eee 25%,#f5f5f5 50%,#eee 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;border-radius:6px}
+
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+
+
+@media(max-width:600px){
+
+  .stats-row{grid-template-columns:1fr 1fr}
+
+  .action-row{grid-template-columns:1fr}
+
+  .nav-links{display:none}
+
+  .hero{padding:24px 20px 32px}
+
+  .hero-name{font-size:22px}
+
+  .hero-top{flex-direction:column;align-items:flex-start;gap:16px}
+
+  .wrap{padding:20px 16px 72px}
+
+  .banner{flex-direction:column;align-items:flex-start}
+
 }
+
 </style>
+
 </head>
+
 <body>
 
+
+
 <nav class="nav">
+
   <a href="dashboard.html" class="nav-brand">
+
     <div class="nav-logo">📱</div>
+
     <div class="nav-name">Phone<span>Saathi</span></div>
+
   </a>
+
   <ul class="nav-links">
+
     <li><a href="dashboard.html" class="active">🏠 Home</a></li>
+
     <li><a href="courses.html">📚 Courses</a></li>
+
     <li><a href="quizzes.html">🧠 Quiz</a></li>
+
     <li><a href="games.html">🎮 Games</a></li>
+
+
     <li><a href="ai-chat.html">🤖 AI Chat</a></li>
+
+
+    <li><a href="leaderboard.html">🏆 Leaderboard</a></li>
+
+
   </ul>
+
   <a href="profile.html" class="nav-avatar" id="avatarBtn" title="My Profile">?</a>
+
 </nav>
 
+
+
 <div class="hero">
-  <div class="hero-greeting">Welcome back</div>
-  <div class="hero-name" id="heroName">Loading…</div>
-  <div class="hero-sub" id="heroSub">Keep going — you're doing great!</div>
-  <div class="hero-pills" id="heroPills"></div>
-  <div class="hero-prog">
-    <div class="hero-prog-top">
-      <span class="hero-prog-label">Overall progress</span>
-      <span class="hero-prog-pct" id="progPct">0%</span>
+
+  <div class="hero-inner">
+
+    <div class="hero-top">
+
+      <div style="flex:1">
+
+        <div class="hero-greet" id="heroGreet">Good morning</div>
+
+        <div class="hero-name" id="heroName">Loading…</div>
+
+        <div class="hero-sub" id="heroSub">Keep going — you're doing great!</div>
+
+        <div class="hero-pills" id="heroPills"></div>
+
+      </div>
+
+      <div class="hero-streak">
+
+        <div class="hero-streak-num" id="streakNum">🔥</div>
+
+        <div class="hero-streak-label">Day streak</div>
+
+      </div>
+
     </div>
-    <div class="hero-prog-track">
-      <div class="hero-prog-fill" id="progBar" style="width:0%"></div>
+
+    <div class="hero-prog-wrap">
+
+      <div class="hero-prog-top">
+
+        <span class="hero-prog-label">Overall progress</span>
+
+        <span class="hero-prog-pct" id="progPct">0%</span>
+
+      </div>
+
+      <div class="hero-prog-track">
+
+        <div class="hero-prog-fill" id="progBar" style="width:0%"></div>
+
+      </div>
+
     </div>
+
   </div>
+
 </div>
+
+
 
 <div class="wrap">
-  <div class="banner" id="profileBanner" style="display:none;">
+
+
+
+
+  <!-- Profile incomplete banner -->
+
+  <div class="banner" id="profileBanner" style="display:none">
+
+
     <div class="banner-text">👋 Complete your profile to get personalised course recommendations</div>
-    <a href="profile.html" class="banner-link">Complete profile</a>
+
+    <a href="profile.html" class="banner-link">Complete profile →</a>
+
   </div>
+
+
 
   <div class="section-label">Your progress</div>
+
   <div class="stats-row">
-    <div class="stat-card">
+
+    <div class="stat-card clickable" onclick="location.href='profile.html'">
+
       <div class="stat-num" id="statProfile">0%</div>
+
       <div class="stat-label">Profile</div>
+
       <div class="stat-sub">complete</div>
+
     </div>
+
     <div class="stat-card">
+
       <div class="stat-num" id="statLessons">0</div>
+
       <div class="stat-label">Lessons</div>
+
       <div class="stat-sub">of 15 done</div>
+
     </div>
+
     <div class="stat-card">
+
       <div class="stat-num" id="statScore">—</div>
-      <div class="stat-label">Best score</div>
-      <div class="stat-sub">quiz</div>
+
+      <div class="stat-label">Best quiz</div>
+
+      <div class="stat-sub">score</div>
+
     </div>
+
+    <div class="stat-card clickable" onclick="location.href='leaderboard.html'">
+
+      <div class="stat-num" id="statRank">—</div>
+
+      <div class="stat-label">Rank</div>
+
+      <div class="stat-sub">leaderboard</div>
+
+    </div>
+
   </div>
+
+
 
   <div class="section-label">Jump back in</div>
+
   <div class="action-row">
-    <div class="action-btn primary" id="continueBtn">
-      <div class="ab-icon">▶</div>
+
+    <div class="action-btn primary" id="continueBtn" style="cursor:pointer">
+
+      <div class="ab-icon">▶️</div>
+
       <div>
+
         <div class="ab-title">Continue learning</div>
+
         <div class="ab-sub" id="continueText">Start your first lesson</div>
+
       </div>
+
     </div>
-    <div class="action-btn accent" id="recommendBtn">
+
+    <div class="action-btn accent" id="recommendBtn" style="cursor:pointer">
+
       <div class="ab-icon">⭐</div>
+
       <div>
+
         <div class="ab-title">Recommended</div>
+
         <div class="ab-sub" id="recommendText">Set your profile to see</div>
+
       </div>
+
     </div>
+
   </div>
+
+
+
+
+  <!-- Leaderboard widget -->
+
+  <div class="section-label">Community leaderboard</div>
+
+  <div class="lb-widget">
+
+    <div class="lb-widget-header">
+
+      <div class="lb-widget-title">🏆 Top learners</div>
+
+      <a href="leaderboard.html" class="lb-widget-link">See full board →</a>
+
+    </div>
+
+    <div id="myRankRow" style="display:none" class="lb-my-rank">
+
+      <div class="lb-my-rank-num" id="myRankNum">#—</div>
+
+      <div class="lb-my-rank-text">
+
+        <div class="r-label">Your rank</div>
+
+        <div class="r-val" id="myRankVal">—</div>
+
+      </div>
+
+    </div>
+
+    <div id="lbWidgetBody">
+
+      <div class="lb-loading">Loading leaderboard…</div>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- Course progress -->
+
 
   <div class="section-label">Course progress</div>
+
   <div class="course-card">
-    <h3>Courses started</h3>
+
+    <div class="course-card-title">Courses started</div>
+
     <div id="courseRows"><p class="no-progress">No lessons started yet — jump in below!</p></div>
+
   </div>
 
+
+
   <div class="section-label">Explore</div>
+
   <div class="nav-grid">
-    <a href="profile.html" class="nav-card"><div class="nc-icon">👤</div><div class="nc-label">My profile</div></a>
-    <a href="courses.html" class="nav-card"><div class="nc-icon">📚</div><div class="nc-label">All courses</div></a>
-    <a href="quizzes.html" class="nav-card"><div class="nc-icon">🧠</div><div class="nc-label">Quizzes</div></a>
-    <a href="games.html" class="nav-card"><div class="nc-icon">🎮</div><div class="nc-label">Games</div></a>
-    <a href="help.html" class="nav-card"><div class="nc-icon">❓</div><div class="nc-label">Help</div></a>
-    <a href="ai-chat.html" class="nav-card"><div class="nc-icon">🤖</div><div class="nc-label">AI Chat</div></a>
+
+
+    <a href="profile.html"     class="nav-card"><div class="nc-icon">👤</div><div class="nc-label">My profile</div></a>
+
+    <a href="courses.html"     class="nav-card"><div class="nc-icon">📚</div><div class="nc-label">All courses</div></a>
+
+    <a href="quizzes.html"     class="nav-card"><div class="nc-icon">🧠</div><div class="nc-label">Quizzes</div></a>
+
+    <a href="games.html"       class="nav-card"><div class="nc-icon">🎮</div><div class="nc-label">Games</div></a>
+
+    <a href="leaderboard.html" class="nav-card"><div class="nc-icon">🏆</div><div class="nc-label">Leaderboard</div></a>
+
+    <a href="help.html"        class="nav-card"><div class="nc-icon">❓</div><div class="nc-label">Help</div></a>
+
+      <a href="ai-chat.html" class="nav-card"><div class="nc-icon">🤖</div><div class="nc-label">AI Chat</div></a>
+
     <div class="nav-card danger" id="logoutBtn"><div class="nc-icon">🚪</div><div class="nc-label">Sign out</div></div>
+
   </div>
+
 </div>
+
+
 
 <div class="strip">"Every step forward, however small, is progress. Take your time — you are doing wonderfully."</div>
 
+
+
 <script type="module">
+
 import { auth, db } from "./firebase.js";
-import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-auth.js";
-import { doc, getDoc } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
+
+
+import { onAuthStateChanged, signOut }
+
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+import { doc, getDoc, collection, getDocs }
+
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+
+
 
 const COURSE_LABELS = {
-  "whatsapp-basic":            "WhatsApp — Beginner",
-  "whatsapp-intermediate":     "WhatsApp — Intermediate",
-  "whatsapp-advanced":         "WhatsApp — Advanced",
-  "payments-beginner":         "Payments — Beginner",
-  "payments-intermediate":     "Payments — Intermediate",
-  "payments-advanced":         "Payments — Advanced",
-  "email-beginner":            "Email — Beginner",
-  "email-intermediate":        "Email — Intermediate",
-  "email-advanced":            "Email — Advanced",
-  "social-media-beginner":     "Social Media — Beginner",
-  "social-media-intermediate": "Social Media — Intermediate",
-  "social-media-advanced":     "Social Media — Advanced",
-  "basics-beginner":           "Smartphone — Beginner",
-  "basics-intermediate":       "Smartphone — Intermediate",
-  "basics-advanced":           "Smartphone — Advanced"
+
+  "whatsapp-basic":"WhatsApp — Beginner","whatsapp-intermediate":"WhatsApp — Intermediate",
+
+  "whatsapp-advanced":"WhatsApp — Advanced","payments-beginner":"Payments — Beginner",
+
+  "payments-intermediate":"Payments — Intermediate","payments-advanced":"Payments — Advanced",
+
+  "email-beginner":"Email — Beginner","email-intermediate":"Email — Intermediate",
+
+  "email-advanced":"Email — Advanced","social-media-beginner":"Social Media — Beginner",
+
+  "social-media-intermediate":"Social Media — Intermediate","social-media-advanced":"Social Media — Advanced",
+
+  "basics-beginner":"Smartphone — Beginner","basics-intermediate":"Smartphone — Intermediate",
+
+  "basics-advanced":"Smartphone — Advanced"
+
 };
 
+
+
 let userData = {};
+
 let lastCourse = null;
 
-onAuthStateChanged(auth, async (user) => {
-  if (!user) {
-    window.location.href = "index.html";
-    return;
+
+
+// ── Greeting ─────────────────────────────────────────────────────────────────
+
+function getGreeting() {
+
+  const h = new Date().getHours();
+
+  if (h < 12) return "Good morning";
+
+  if (h < 17) return "Good afternoon";
+
+  return "Good evening";
+
+}
+
+
+
+// ── Score calc (same as leaderboard) ─────────────────────────────────────────
+
+function calcScore(d) {
+
+  const lessons  = Object.values(d.progress||{}).filter(v=>v>=100).length;
+
+  const quiz     = d.quizScore || 0;
+
+  const profBonus= d.profileCompletion ? Math.floor(d.profileCompletion/10) : 0;
+
+  return (lessons * 10) + quiz + profBonus;
+
+}
+
+
+
+// ── Leaderboard widget ────────────────────────────────────────────────────────
+
+async function loadLeaderboardWidget(currentUid, myData) {
+
+  try {
+
+    const snap = await getDocs(collection(db, "users"));
+
+    const all = [];
+
+    snap.forEach(d => {
+
+      const data = d.data();
+
+      all.push({
+
+        uid: d.id,
+
+        name: data.name || data.email?.split("@")[0] || "Learner",
+
+        avatarEmoji: data.avatarEmoji || null,
+
+        score: calcScore(data),
+
+        quizScore: data.quizScore || 0,
+
+      });
+
+    });
+
+    all.sort((a, b) => b.score - a.score || b.quizScore - a.quizScore);
+
+
+
+    const myIdx = all.findIndex(e => e.uid === currentUid);
+
+
+
+    // Update rank stat card
+
+    if (myIdx >= 0) {
+
+      document.getElementById("statRank").textContent = "#" + (myIdx + 1);
+
+      document.getElementById("myRankRow").style.display = "flex";
+
+      document.getElementById("myRankNum").textContent = "#" + (myIdx + 1);
+
+      document.getElementById("myRankVal").textContent = `out of ${all.length} learners · ${all[myIdx].score} pts`;
+
+    }
+
+
+
+    // Render top 5
+
+    const top5 = all.slice(0, 5);
+
+    const medals = ["🥇","🥈","🥉"];
+
+    const posCls = ["g","s","b"];
+
+
+
+    document.getElementById("lbWidgetBody").innerHTML = top5.map((e, i) => {
+
+      const isMe = e.uid === currentUid;
+
+      return `<div class="lb-row${isMe?" is-me":""}">
+
+        <div class="lb-pos ${posCls[i]||""}">${medals[i]||"#"+(i+1)}</div>
+
+        <div class="lb-avatar">${e.avatarEmoji || e.name?.[0]?.toUpperCase() || "?"}</div>
+
+        <div class="lb-name">${e.name}${isMe?`<span class="lb-you">YOU</span>`:""}</div>
+
+        <div class="lb-score">${e.score} pts</div>
+
+      </div>`;
+
+    }).join("") + (myIdx >= 5 ? `
+
+      <div style="text-align:center;padding:10px;font-size:12px;color:var(--slate-lt);font-weight:600;border-top:1px solid var(--warm)">
+
+        ··· you are at #${myIdx+1} · <a href="leaderboard.html" style="color:var(--gold-md);font-weight:700">see full board</a>
+
+      </div>` : "");
+
+
+
+  } catch(e) {
+
+    document.getElementById("lbWidgetBody").innerHTML =
+
+      `<div class="lb-loading">Could not load leaderboard</div>`;
+
   }
 
+}
+
+
+
+// ── Auth ──────────────────────────────────────────────────────────────────────
+
+onAuthStateChanged(auth, async (user) => {
+
+  if (!user) {
+
+    window.location.href = "index.html";
+
+    return;
+
+  }
+
+
+
+
+  document.getElementById("heroGreet").textContent = getGreeting();
+
+
+
+  // Avatar
+
+
   const initials = (user.displayName || user.email || "?")[0].toUpperCase();
-  document.getElementById("avatarBtn").textContent = initials;
+
+
 
   const snap = await getDoc(doc(db, "users", user.uid));
+
   if (!snap.exists()) return;
 
   userData = snap.data();
+
   const d = userData;
 
+
+
+
+  // Nav avatar
+
+  const avatarEl = document.getElementById("avatarBtn");
+
+  avatarEl.textContent = d.avatarEmoji || initials;
+
+
+
+  // Hero
+
+
   const name = d.name || user.displayName || "Friend";
+
   document.getElementById("heroName").textContent = name;
 
-  if (d.level && d.interest) {
-    document.getElementById("heroSub").textContent = `${d.level} · ${d.interest}`;
-  }
+  if (d.interest) document.getElementById("heroSub").textContent = `Learning: ${d.interest}`;
 
-  const pills = [d.level, d.interest, d.language].filter(Boolean);
+
+
+  const pills = [d.language, d.device].filter(Boolean);
+
   document.getElementById("heroPills").innerHTML =
+
     pills.map(p => `<span class="hero-pill">${p}</span>`).join("");
 
-  const progress = d.progress || {};
+
+
+
+  // Streak (days since last activity — simple version)
+
+  const streak = d.streak || 1;
+
+  document.getElementById("streakNum").textContent = streak;
+
+
+
+  // Progress bar
+
+  const progress    = d.progress || {};
+
   const lessonsDone = Object.values(progress).filter(v => v >= 100).length;
-  const lessonsPct = Math.round((lessonsDone / 15) * 100);
+
+  const lessonsPct  = Math.round((lessonsDone / 15) * 100);
 
   document.getElementById("progPct").textContent = lessonsPct + "%";
+
   document.getElementById("progBar").style.width = lessonsPct + "%";
 
-  const profilePct = d.profileCompletion || 0;
-  document.getElementById("statProfile").textContent = profilePct + "%";
-  document.getElementById("statLessons").textContent = lessonsDone;
-  document.getElementById("statScore").textContent = d.quizScore ? d.quizScore + "%" : "—";
 
-  if (profilePct < 50) {
-    document.getElementById("profileBanner").style.display = "flex";
-  }
+
+  // Stats
+
+  const profilePct = d.profileCompletion || 0;
+
+  document.getElementById("statProfile").textContent = profilePct + "%";
+
+  document.getElementById("statLessons").textContent = lessonsDone;
+
+  document.getElementById("statScore").textContent   = d.quizScore ? d.quizScore + "%" : "—";
+
+
+
+  // Profile banner
+
+  if (profilePct < 50) document.getElementById("profileBanner").style.display = "flex";
+
+
+
+  // Course progress rows
+
 
   const courseKeys = Object.keys(progress);
+
   if (courseKeys.length > 0) {
+
     document.getElementById("courseRows").innerHTML = courseKeys.map(k => `
+
       <div class="prog-row">
+
         <div class="prog-name">${COURSE_LABELS[k] || k}</div>
+
         <div class="prog-track"><div class="prog-fill" style="width:${progress[k]}%"></div></div>
+
         <div class="prog-pct-lbl">${progress[k]}%</div>
+
       </div>
+
     `).join("");
+
   }
+
+
+
+
+  // Continue button
+
 
   lastCourse = d.lastCourse || null;
+
   if (lastCourse) {
+
     document.getElementById("continueText").textContent = COURSE_LABELS[lastCourse] || lastCourse;
+
   }
 
-  if (d.interest && d.level) {
-    document.getElementById("recommendText").textContent = `${d.level} · ${d.interest}`;
+
+
+  // Recommended
+  if (d.interest) {
+    document.getElementById("recommendText").textContent =
+      d.level ? `${d.level} · ${d.interest}` : d.interest;
+
   }
+
+
+
+  // Load leaderboard widget
+
+  loadLeaderboardWidget(user.uid, d);
+
 });
 
+
+
 document.getElementById("continueBtn").onclick = () => {
+
   window.location.href = lastCourse ? `courses/${lastCourse}.html` : "courses.html";
+
 };
+
+
 
 document.getElementById("recommendBtn").onclick = () => {
+
+
   if (!userData) {
+
     window.location.href = "courses.html";
+
     return;
+
   }
+
+
 
   const i = userData.interest;
+
   const l = userData.level;
 
+
+
   const map = {
+
     "Video Calling": "video-calling",
+
     "Online Payments": "payments",
+
     "Social Media": "social-media",
+
     "Email": "email",
+
     "Smartphone Basics": "basics",
+
     "Internet Safety": "basics"
+
   };
 
+
+
   const base = map[i];
+
   if (!base) {
+
     window.location.href = "courses.html";
+
     return;
+
   }
 
+
+
   const suffix =
+
     l === "Intermediate" ? "-intermediate" :
+
     l === "Advanced" ? "-advanced" :
+
     "-beginner";
 
+
+
+
   window.location.href = `courses/${base}${suffix}.html`;
+
 };
 
+
+
 document.getElementById("logoutBtn").onclick = async () => {
+
   await signOut(auth);
+
   window.location.href = "index.html";
+
 };
+
 </script>
+
 </body>
+
 </html>

@@ -119,12 +119,13 @@ body { font-family:'Inter',sans-serif; background:var(--cream); color:var(--navy
 <div class="strip">"Every step forward, however small, is progress. Take your time — you are doing wonderfully."</div>
 
 <script type="module">
-import { auth } from "./firebase.js";
+import { auth, db } from "./firebase.js";
 import {
   signInWithEmailAndPassword,
   sendPasswordResetEmail,
   onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const loginBtn  = document.getElementById("loginBtn");
 const resetBtn  = document.getElementById("resetBtn");
@@ -161,7 +162,11 @@ loginBtn.addEventListener("click", async () => {
   loginBtn.textContent = "Signing in...";
 
   try {
-    await signInWithEmailAndPassword(auth, email, password);
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    // Record last login timestamp
+    await setDoc(doc(db, "users", userCredential.user.uid), {
+      lastLoginAt: serverTimestamp()
+    }, { merge: true });
     window.location.href = "dashboard.html";
   } catch (error) {
     if (error.code === "auth/user-not-found")   showError("No account found with this email.");

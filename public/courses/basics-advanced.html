@@ -155,8 +155,7 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--navy);m
 <script type="module">
 import { auth, db } from "/firebase.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
+import { doc, setDoc, getDoc, collection, addDoc, increment, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 const COURSE_KEY = "basics-advanced";
 let currentStep = 0, currentUser = null;
 
@@ -344,7 +343,27 @@ onAuthStateChanged(auth, async (user) => {
 
 async function saveProgress(pct) {
   if (!currentUser) return;
-  try { await setDoc(doc(db, "users", currentUser.uid), { progress: { [COURSE_KEY]: pct } }, { merge: true }); } catch(e) {}
+  try {
+    const userRef = doc(db, "users", currentUser.uid);
+    const updateData = {
+      progress: { [COURSE_KEY]: pct },
+      lastCourse: COURSE_KEY,
+      streak: increment(1)
+    };
+
+    if (pct === 100) {
+      updateData.lessonsCompleted = increment(1);
+      await addDoc(collection(db, "users", currentUser.uid, "activity"), {
+        type: "lesson_complete",
+        courseId: COURSE_KEY,
+        timestamp: serverTimestamp()
+      });
+    }
+
+    await setDoc(userRef, updateData, { merge: true });
+  } catch (e) {
+    console.error("saveProgress error:", e);
+  }
 }
 
 function render() {
