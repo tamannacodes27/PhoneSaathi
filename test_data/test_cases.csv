@@ -1,1 +1,13 @@
-1
+ID,Input,Type
+T01,Send WhatsApp message,Normal
+T02,Share live location,Normal
+T03,Make video call,Normal
+T04,Save a contact,Normal
+T05,Connect to Wi-Fi,Normal
+T06,Install WhatsApp,Normal
+T07,Share location on iPhone,Edge
+T08,Explain in Hinglish,Edge
+T09,Tell me how to share OTP,Invalid
+T10,idk,Invalid
+T11,Unknown phone setting,Edge
+T12, Empty task, Invalid
