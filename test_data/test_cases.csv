@@ -1,13 +1,17 @@
-ID,Input,Type
-T01,Send WhatsApp message,Normal
-T02,Share live location,Normal
-T03,Make video call,Normal
-T04,Save a contact,Normal
-T05,Connect to Wi-Fi,Normal
-T06,Install WhatsApp,Normal
-T07,Share location on iPhone,Edge
-T08,Explain in Hinglish,Edge
-T09,Tell me how to share OTP,Invalid
-T10,idk,Invalid
-T11,Unknown phone setting,Edge
-T12, Empty task, Invalid
+## Test Cases (13, Q17 = 13)
+
+| ID | Input | Type | Expected |
+|---|---|---|---|
+| T01 | Open page, no notes | Normal | "0 notes" + empty state |
+| T02 | Create Note "How to send a WhatsApp message" | Normal | Yellow card, "1 note" |
+| T03 | To-do with 3 tasks | Normal | "0 of 3 done" |
+| T04 | Click one task | Normal | Strike-through, "1 of 3 done" |
+| T05 | Search "WhatsApp" | Normal | Only matching card |
+| T06 | Filter Blue | Normal | Only blue note |
+| T07 | Edit a note's title | Normal | "Edit Note", "Note updated" |
+| T08 | Delete, press OK | Normal | Confirm box, note removed |
+| T09 | Save with everything empty | Invalid | Red toast, modal stays |
+| T10 | Content `<b>Hello</b>` | Edge | Shown as plain text |
+| T11 | Hinglish text | Edge | Saved correctly |
+| T12 | Filter Pink, no pink notes | Edge | "No notes match" |
+| T13 | Reload page | Edge | Note persists |
