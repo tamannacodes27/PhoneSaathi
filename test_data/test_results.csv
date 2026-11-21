@@ -1,2 +1,3 @@
 Test_ID,Prompt_version,Expected_output,Actual_output,Pass/Fail,Remarks
-T01,V1,"Simple Hindi, max 6 steps, screen hints, safety, 2 questions",outputs/T01.json,fail,Answer is too long
+T01,V1,"Simple Hindi, max 6 steps, screen hints, safety, 2 questions",outputs/T01.json,fail, very less screen hints
+T02,V2,"Simple Hindi, max 6 steps, one action per step, screen hints, simple explanations of technical terms, phone-specific guidance, safety tip, 2 questions",outputs/T02.json,pass,beginner-friendly
