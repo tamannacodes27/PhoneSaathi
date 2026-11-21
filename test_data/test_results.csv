@@ -1,4 +1,4 @@
 Test_ID,Prompt_version,Expected_output,Actual_output,Pass/Fail,Remarks
 T06,V1,"Simple Hindi, max 6 steps, screen hints, safety, 2 questions",outputs/T06V1.json,fail, very less screen hints
 T06,V2,"Simple Hindi, max 6 steps, one action per step, screen hints, simple explanations of technical terms, phone-specific guidance, safety tip, 2 questions",outputs/T06V2.json,pass,beginner-friendly
-T06,V3,"Simple Hindi, max 6 steps, one action per step, clear screen hints, verified knowledge-based instructions, no invented information, safety tip, exactly 2 quiz questions, and valid JSON output.",outputs/T06V3,pass, perfect answer
+T06,V3,"Simple Hindi, max 6 steps, one action per step, clear screen hints, verified knowledge-based instructions, no invented information, safety tip, exactly 2 quiz questions, and valid JSON output.",outputs/T06V3.json,pass, perfect answer
