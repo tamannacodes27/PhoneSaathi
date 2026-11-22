@@ -1,0 +1,1 @@
+now we gotta add a todo option as well and arrange the page a bit and make it look better also give html css in one file
