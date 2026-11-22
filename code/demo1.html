@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Phone Saathi - Notes</title>
+    <meta name="description" content="A basic notes page for Phone Saathi users to write down what they learned." />
+    <meta property="og:title" content="Phone Saathi - Notes" />
+    <meta property="og:description" content="A basic notes page for Phone Saathi users to write down what they learned." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="stylesheet" href="/notes.css" />
+  </head>
+  <body>
+    <main class="notes-container">
+      <h1>Phone Saathi - Notes</h1>
+      <p>Write down what you learned today so you can remember it later.</p>
+
+      <form id="note-form" class="note-form">
+        <div class="field-group">
+          <label for="note-title">Topic (optional)</label>
+          <input
+            id="note-title"
+            type="text"
+            placeholder="e.g., How to send a WhatsApp message"
+          />
+        </div>
+
+        <div class="field-group">
+          <label for="note-content">What I Learned</label>
+          <textarea
+            id="note-content"
+            rows="4"
+            placeholder="Write your note here..."
+            required
+          ></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" id="save-btn">Save Note</button>
+          <button type="button" id="cancel-btn" hidden>Cancel</button>
+        </div>
+      </form>
+
+      <section class="notes-section">
+        <h2>Saved Notes (<span id="notes-count">0</span>)</h2>
+        <p id="empty-state">No notes added yet.</p>
+        <ul id="notes-list" class="notes-list"></ul>
+      </section>
+    </main>
+
+    <script type="module" src="/notes.js"></script>
+  </body>
+</html>
