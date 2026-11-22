@@ -41,4 +41,16 @@ What Changed:
 
 ## P5 - Full themed page with Firebase
 The first send was canceled and gave no output. The second send ran for 5m 51s.
-Files edited (11): firebase-blueprint.json,
+Files edited (11): firebase-blueprint.json, security_spec.md, firestore.rules.test.ts, eslint.config.mjs, DRAFT_firestore.rules, firestore.rules, firebase.js, notes.js, notes.html, metadata.json, tsconfig.json.
+Reply:
+The complete Phone Saathi Learning Notes and Skills to Practise page is ready in notes.html (and synced to the live preview).
+
+Summary of Implementation:
+
+- Phone Saathi Theme & Accessibility: Built with the #1B2A4A Navy navigation bar, #F7F5F0 Cream background, #EDE8DF Warm Beige hero, #B07D2F / #F8EDD8 Gold accents, Playfair Display headings, DM Sans body text, large touch targets (min-height: 46px), clear labels, and high contrast.
+- Learning Notes: Supports creating, editing, and deleting individual pastel cards (Yellow, Green, Blue, Pink, Purple, Orange) across three categories (Note, To-do list, What I learned), preserving to-do items and completion states during edits, plus search, newest/oldest sorting, colour filtering, total counts, and empty states.
+- Separate Skills to Practise: Independent checklist with task input, Add Task, checkboxes, All / To Practise / Completed filters, progress bar, Clear Completed, and individual Delete controls.
+- Firebase Sync (users/{uid}): Imports { auth, db } from ./firebase.js using Firebase 10.12.0 modular SDK, loads and merges { notes, practiceTasks, notesUpdatedAt } on users/{uid} without overwriting existing user profile fields, serializes writes to avoid race conditions, and only shows cloud-save confirmation after Firestore confirms the write.
+- Security Rules: Generated and deployed rules for users/{userId} enforcing authenticated owner-only access; please review and harden the generated Firestore security rules before sharing the app broadly.
+
+The full code for P5 is in code/notes.html.
