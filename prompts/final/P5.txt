@@ -1,0 +1,195 @@
+Project: Phone Saathi — Complete Learning Notes Page
+Broski, there is an existing project of mine called Phone Saathi, which is basically a digital literacy platform for elderly users to help them learn basic smartphone navigation skills.
+The platform teaches elderly users how to perform everyday smartphone tasks, such as:
+Making and receiving calls
+Sending WhatsApp messages
+Sharing photos and attachments
+Making video calls
+Using basic phone settings
+Navigating smartphone applications safely
+We have already developed several features for this platform, including authentication, a dashboard, courses, quizzes, and other learning-related features.
+Background: How the Notes Page Started
+Initially, I wanted to add a simple Notes page to Phone Saathi.
+My original requirement was:
+"Broski, there's this project of mine called Phone Saathi, which is basically a digital literacy platform for elderly users to learn basic smartphone navigation skills. I've added many features, and I want to add a Notes page where users can enter what they have learnt. Let's start with just a basic file, without any theme or styling, where users can simply enter their notes. We are also using Firebase as the backend, where we can store the notes."
+We subsequently developed this basic Notes page and expanded its functionality. We now want to give it a polished, visually appealing design that matches the existing Phone Saathi platform.
+Your Task
+I am attaching my current Notes page HTML file. Treat this file as the primary source of truth.
+Your task is to generate a complete, improved HTML file that preserves the existing functionality while applying a beautiful, consistent Phone Saathi theme.
+Do not create a completely new page from scratch. Improve the attached implementation.
+1. Existing Functionality — MUST BE PRESERVED
+The current HTML already contains the following features. Preserve all of them:
+A. Learning Notes
+Users can create new notes.
+Each note has a title and content.
+Users can edit existing notes.
+Users can delete notes.
+Notes should display as individual cards.
+Display the date on which a note was created.
+B. Note Categories
+Users can create three types of entries:
+Note
+To-do list
+What I learned
+C. To-do Lists Inside Notes
+Users can add multiple tasks.
+Users can remove tasks.
+Users can mark tasks as completed.
+Completed tasks should visually appear different from pending tasks.
+Editing a to-do list must preserve its existing items and completion states.
+D. Note Colours
+Preserve the six available note colours:
+Yellow
+Green
+Blue
+Pink
+Purple
+Orange
+Users should be able to choose a colour when creating or editing a note.
+E. Search, Sorting and Filtering
+Search notes by title and content.
+Sort notes by newest first or oldest first.
+Filter notes by their selected colour.
+Display the total number of notes.
+Show a helpful empty state when no notes exist.
+F. Separate Skills to Practise Section
+This is an important feature and must remain separate from the Notes section.
+It should include:
+An input where users can enter a smartphone skill they want to practise.
+An Add Task button.
+A checkbox to mark a skill as completed.
+Three filters: All, To Practise, and Completed.
+A progress indicator showing completed tasks.
+A Clear Completed option.
+An option to delete individual practice tasks.
+Examples:
+Learn how to make a WhatsApp video call.
+Learn how to share a photograph.
+Practise sending a voice message.
+Learn how to save a contact.
+The Skills to Practise section and Learning Notes section must work independently.
+2. Phone Saathi Theme and Visual Design
+Apply the existing Phone Saathi brand identity.
+IMPORTANT: Use these exact original brand colours. Do not replace them with a different palette.
+Primary palette:
+Navy: #1B2A4A
+Medium Navy: #2E4070
+Cream: #F7F5F0
+Warm Beige: #EDE8DF
+Gold: #B07D2F
+Light Gold: #F8EDD8
+Supporting colours:
+Slate: #4A5568
+Light Slate: #8896A8
+Border: #E2DDD6
+Green: #2D6A4F
+Keep the pastel note card colours mentioned earlier.
+Design Direction
+The page should feel:
+Elegant
+Warm and welcoming
+Calm and trustworthy
+Modern but not overly technical
+Simple and accessible for elderly users
+Use:
+A navy navigation bar.
+The Phone Saathi logo/name in the navigation bar.
+A beautiful hero section with a learning-notes heading.
+Gold accents for important buttons and details.
+Cream background.
+White or subtly coloured cards.
+Rounded corners and soft shadows.
+Consistent spacing and typography.
+Smooth, subtle hover effects and transitions.
+Typography:
+Playfair Display for prominent headings.
+DM Sans for general interface text.
+Use readable font sizes and comfortable line spacing.
+Avoid:
+Neon colours.
+Excessive gradients.
+Overly complicated layouts.
+Tiny text.
+Too many animations.
+Unnecessary decorative elements.
+3. Elderly-Friendly Accessibility
+Remember that Phone Saathi is specifically designed for elderly users.
+Therefore:
+Use sufficiently large text.
+Make buttons large and easy to click.
+Use clear labels rather than relying only on icons.
+Maintain good colour contrast.
+Make forms simple.
+Provide clear success and error messages.
+Make the page responsive on mobile, tablet, and desktop.
+Ensure keyboard accessibility.
+4. Firebase Integration — VERY IMPORTANT
+We are already using Firebase as the backend for Phone Saathi.
+The project has an existing firebase.js file that exports:
+JavaScript
+export const auth = getAuth(app);
+export const db = getFirestore(app);
+Import Firebase using:
+JavaScript
+import { auth, db } from "./firebase.js";
+Use Firebase Authentication to identify the currently signed-in user.
+Use Cloud Firestore to store and retrieve their notes and practice tasks.
+Existing storage structure:
+The current implementation stores both arrays inside:
+JavaScript
+users/{uid}
+Using these fields:
+JavaScript
+{
+  notes: [],
+  practiceTasks: [],
+  notesUpdatedAt: serverTimestamp()
+}
+Preserve this storage structure so the new HTML remains compatible with the existing implementation and existing user data.
+Important requirements:
+Notes must be saved to Firestore.
+Practice tasks must be saved to Firestore.
+Notes and practice tasks must be loaded when the user opens the page.
+Each user must only access their own data.
+Editing and deleting notes must update Firestore.
+Checking or unchecking a to-do item must persist.
+Adding, completing, and deleting practice tasks must persist.
+Refreshing the page must not cause saved data to disappear.
+Avoid overwriting existing data accidentally.
+Handle Firebase errors properly.
+Do not display a successful cloud-save message before Firestore confirms that the write succeeded.
+If cloud synchronisation fails, clearly inform the user rather than silently pretending the data was saved.
+Use asynchronous operations appropriately and prevent race conditions between loading and saving.
+Do not create a new Firebase project or initialize Firebase a second time.
+Do not hardcode Firebase credentials into the HTML.
+Do not change the existing Firestore document structure or require changes to Firebase security rules.
+5. Technical Requirements
+Generate a complete, standalone HTML file.
+Use HTML, CSS, and vanilla JavaScript.
+Use Firebase modular SDK imports compatible with Firebase version 10.12.0.
+Keep the existing firebase.js import.
+Use <script type="module"> for Firebase-related JavaScript.
+Ensure inline HTML event handlers work correctly with module-scoped JavaScript, or replace them with properly registered event listeners.
+Avoid undefined functions and missing event listeners.
+Avoid duplicate event listeners.
+Ensure all buttons and controls actually work.
+Ensure the browser console has no JavaScript errors.
+Use semantic HTML and accessible labels.
+6. Important Instructions About the Existing File
+The attached HTML is the current working implementation.
+Please:
+Preserve its existing features.
+Preserve the original Phone Saathi colour palette.
+Preserve the separate Learning Notes and Skills to Practise sections.
+Preserve compatibility with existing Firestore data.
+Improve the code organisation where necessary.
+Fix any bugs you identify in the existing implementation.
+Improve the visual presentation without removing functionality.
+Do not simplify the page by removing existing features.
+Do not generate only a design mockup or a partial code snippet.
+7. Expected Output
+Generate the complete final HTML file, ready to be saved as:
+notes.html
+I should be able to place this file in my existing Phone Saathi project and run it using the existing Firebase setup.
+Return the complete working HTML source code, not an explanation of how to build it.
+Before finishing, verify that all existing features are implemented and that both Notes and Skills to Practise are correctly saved and retrieved using Firebase Firestore.
